@@ -28,10 +28,10 @@ export function LampColorSelector({
     <div className={cn("flex space-x-3", className)}>
       {colors.map((product) => {
         const colorInfo = getColorInfo(product.color);
-        const isSelected = selectedProductId 
-          ? selectedProductId === product.id 
+        const isSelected = selectedProductId
+          ? selectedProductId === product.id
           : selectedColor === product.color;
-        
+
         return (
           <button
             key={product.id}

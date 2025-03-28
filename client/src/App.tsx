@@ -6,28 +6,32 @@ import Home from "@/pages/Home";
 import NotFound from "@/pages/not-found";
 import Checkout from "@/pages/checkout";
 import { CartProvider } from "@/hooks/useCart";
-import AdminDashboard from "@/pages/admin/Dashboard";
-import AdminOrders from "@/pages/admin/Orders";
-import AdminProducts from "@/pages/admin/Products";
-import AdminAnalytics from "@/pages/admin/Analytics";
-import AdminLogin from "@/pages/admin/Login";
 import { CheckoutProvider } from "@/hooks/useCheckout";
+
+// Pages de gestion
+import GestionLogin from "./pages/gestion/Login";
+import Dashboard from "./pages/gestion/Dashboard";
+import Stocks from "./pages/gestion/Stocks";
+import Commandes from "./pages/gestion/Commandes";
+import Contenu from "./pages/gestion/Contenu";
+import Parametres from "./pages/gestion/Parametres";
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
-      
+
       {/* Checkout Routes */}
       <Route path="/checkout" component={Checkout} />
-      
-      {/* Admin Routes */}
-      <Route path="/admin" component={AdminDashboard} />
-      <Route path="/admin/orders" component={AdminOrders} />
-      <Route path="/admin/products" component={AdminProducts} />
-      <Route path="/admin/analytics" component={AdminAnalytics} />
-      <Route path="/admin/login" component={AdminLogin} />
-      
+
+      {/* Gestion Routes */}
+      <Route path="/gestion" component={GestionLogin} />
+      <Route path="/gestion/dashboard" component={Dashboard} />
+      <Route path="/gestion/stocks" component={Stocks} />
+      <Route path="/gestion/commandes" component={Commandes} />
+      <Route path="/gestion/contenu" component={Contenu} />
+      <Route path="/gestion/parametres" component={Parametres} />
+
       {/* Fallback to 404 */}
       <Route component={NotFound} />
     </Switch>

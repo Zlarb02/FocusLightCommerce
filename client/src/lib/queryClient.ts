@@ -1,5 +1,12 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
 
+// Fonction utilitaire pour obtenir la base URL de l'API
+export function getApiBaseUrl() {
+  // En production, utilisez la même origine que le frontend
+  // En développement, utilisez l'URL du serveur de développement
+  return process.env.NODE_ENV === "production" ? "" : "http://localhost:5000";
+}
+
 async function throwIfResNotOk(res: Response) {
   if (!res.ok) {
     const text = (await res.text()) || res.statusText;
@@ -10,9 +17,11 @@ async function throwIfResNotOk(res: Response) {
 export async function apiRequest(
   method: string,
   url: string,
-  data?: unknown | undefined,
+  data?: unknown | undefined
 ): Promise<Response> {
-  const res = await fetch(url, {
+  const apiUrl = `${getApiBaseUrl()}${url}`;
+
+  const res = await fetch(apiUrl, {
     method,
     headers: data ? { "Content-Type": "application/json" } : {},
     body: data ? JSON.stringify(data) : undefined,
@@ -29,7 +38,10 @@ export const getQueryFn: <T>(options: {
 }) => QueryFunction<T> =
   ({ on401: unauthorizedBehavior }) =>
   async ({ queryKey }) => {
-    const res = await fetch(queryKey[0] as string, {
+    const path = queryKey[0] as string;
+    const apiUrl = `${getApiBaseUrl()}${path}`;
+
+    const res = await fetch(apiUrl, {
       credentials: "include",
     });
 

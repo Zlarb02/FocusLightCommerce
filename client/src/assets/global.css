@@ -1,0 +1,5 @@
+/* Ajout d'une règle globale pour limiter la hauteur des images de produits */
+img[src*="assets/images"] {
+  max-height: 500px;
+  object-fit: contain;
+}

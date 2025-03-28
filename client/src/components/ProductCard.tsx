@@ -19,12 +19,12 @@ export function ProductCard({ product }: ProductCardProps) {
   const handleAddToCart = () => {
     setIsAdding(true);
     addItem(product);
-    
+
     toast({
       title: "Produit ajouté au panier",
       description: `${product.name} (${product.color}) a été ajouté au panier`,
     });
-    
+
     setTimeout(() => {
       setIsAdding(false);
     }, 1500);
@@ -34,21 +34,25 @@ export function ProductCard({ product }: ProductCardProps) {
 
   return (
     <Card className="h-full overflow-hidden hover:shadow-md transition">
-      <div className="bg-white rounded-t-lg p-4 mb-4 aspect-square flex items-center justify-center">
-        <img 
-          src={product.imageUrl} 
-          alt={`FOCUS.01 ${product.color}`} 
-          className="h-48 object-contain transition-transform hover:scale-105"
+      <div className="aspect-square mb-4 overflow-hidden rounded-xl">
+        <img
+          src={getColorInfo(product.color).imagePath}
+          alt={`Lampe FOCUS.01 - ${product.color}`}
+          className="w-full h-full object-contain max-h-[500px]"
         />
       </div>
       <CardContent className="pb-2">
-        <h3 className="font-heading font-semibold text-xl mb-2">{product.color}</h3>
+        <h3 className="font-heading font-semibold text-xl mb-2">
+          {product.color}
+        </h3>
         <p className="text-muted-foreground mb-4">
           Élégance intemporelle qui s'intègre à tous les intérieurs
         </p>
       </CardContent>
       <CardFooter className="flex justify-between items-center">
-        <span className="font-heading font-bold text-xl">{formatPrice(product.price)}</span>
+        <span className="font-heading font-bold text-xl">
+          {formatPrice(product.price)}
+        </span>
         <Button
           onClick={handleAddToCart}
           className="gap-2"
