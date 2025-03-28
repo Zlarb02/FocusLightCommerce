@@ -10,7 +10,7 @@
     "build:client": "cd client && npm install && npm run build",
     "build:server": "cd server && npm install && npm run build",
     "dev": "concurrently \"cd client && npm run dev\" \"cd server && npm run dev\"",
-    "vercel-build": "node deploy-config.js && npm run build:client",
+    "vercel-build": "cd client && npm install && npm run build",
     "deploy": "NODE_ENV=production npm run build && npm start",
     "install:all": "npm install && cd client && npm install && cd ../server && npm install",
     "check": "tsc",

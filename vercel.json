@@ -1,5 +1,7 @@
 {
   "version": 2,
+  "buildCommand": "cd client && npm install && npm run build",
+  "outputDirectory": "client/dist",
   "builds": [
     {
       "src": "client/package.json",
@@ -11,19 +13,19 @@
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "server/index.js"
+      "src": "/assets/(.*)",
+      "dest": "/assets/$1"
     },
     {
-      "src": "/(.*)",
-      "dest": "/client/dist/$1"
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
     },
     {
       "handle": "filesystem"
     },
     {
-      "src": "/.*",
-      "dest": "/client/dist/index.html"
+      "src": "/(.*)",
+      "dest": "/index.html"
     }
   ],
   "regions": ["iad1"]

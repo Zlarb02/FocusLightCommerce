@@ -1,7 +1,11 @@
-const fs = require("fs");
-const path = require("path");
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
 try {
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
+
   // Créer le répertoire dist s'il n'existe pas
   const distDir = path.join(__dirname, "client/dist");
   if (!fs.existsSync(distDir)) {
