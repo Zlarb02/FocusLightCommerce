@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "start": "node server/index.js",
-    "build": "npm run build:client",
+    "build": "cd client && npm install && npm run build",
     "build:client": "cd client && npm install && npm run build",
     "build:server": "cd server && npm install && npm run build",
     "dev": "concurrently \"cd client && npm run dev\" \"cd server && npm run dev\"",

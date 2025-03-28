@@ -61,6 +61,7 @@
   "devDependencies": {
     "@replit/vite-plugin-runtime-error-modal": "^0.0.3",
     "@replit/vite-plugin-shadcn-theme-json": "^0.0.4",
+    "@types/node": "20.16.11",
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.2",
