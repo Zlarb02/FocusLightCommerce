@@ -1,15 +1,18 @@
-import { ReactNode, useState } from "react";
-import { Link, useLocation } from "wouter";
-import { Button } from "@/components/ui/button";
-import {
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import { BarChart, BoxesIcon, Home, LogOut, Package, Menu, Users } from "lucide-react";
-import { useQuery, useMutation } from "@tanstack/react-query";
-import { apiRequest, queryClient } from "@/lib/queryClient";
+import { ReactNode, useEffect } from "react";
+import { useLocation } from "wouter";
 import { useToast } from "@/hooks/use-toast";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { queryClient, apiRequest } from "@/lib/queryClient";
+
+// Définition du type de la réponse d'authentification
+interface AuthResponse {
+  authenticated: boolean;
+  user?: {
+    id: number;
+    username: string;
+    isAdmin: boolean;
+  };
+}
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -19,16 +22,18 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   const [, navigate] = useLocation();
   const [location] = useLocation();
   const { toast } = useToast();
-  
-  // Check if user is authenticated
-  const { data: authStatus, isLoading } = useQuery({
+
+  // Type correct pour useQuery
+  const { data: authStatus, isLoading } = useQuery<AuthResponse>({
     queryKey: ["/api/auth/status"],
-    onSuccess: (data) => {
-      if (!data.authenticated) {
-        navigate("/admin/login");
-      }
-    },
   });
+
+  // Utiliser useEffect pour la redirection
+  useEffect(() => {
+    if (authStatus && !authStatus.authenticated) {
+      navigate("/admin/login");
+    }
+  }, [authStatus, navigate]);
 
   const { mutate: logout } = useMutation({
     mutationFn: async () => {
@@ -50,138 +55,180 @@ export function AdminLayout({ children }: AdminLayoutProps) {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+      <div className="flex h-screen w-full items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-primary"></div>
       </div>
     );
   }
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-      {/* Sidebar - Desktop */}
-      <aside className="hidden lg:flex w-64 flex-col bg-white shadow-sm">
-        <div className="flex items-center justify-center h-16 bg-primary text-primary-foreground">
-          <h1 className="font-heading font-bold text-xl">FOCUS Admin</h1>
+      {/* Sidebar */}
+      <div className="w-64 bg-white shadow-md">
+        <div className="flex h-16 items-center border-b px-6">
+          <span className="text-lg font-bold">FOCUS Admin</span>
         </div>
-        <nav className="flex-1 py-4">
-          <ul className="space-y-1">
+        <nav className="p-4">
+          <ul className="space-y-2">
             <li>
-              <Link href="/admin">
-                <a className={`flex items-center px-4 py-3 ${location === "/admin" ? "bg-blue-50 text-primary" : "text-gray-700 hover:bg-gray-100"}`}>
-                  <Home className="h-5 w-5 mr-3" />
-                  Tableau de bord
-                </a>
-              </Link>
+              <a
+                href="/gestion/dashboard"
+                className={`flex items-center rounded-md px-3 py-2 ${
+                  location === "/gestion/dashboard"
+                    ? "bg-blue-50 text-blue-700"
+                    : "hover:bg-gray-100"
+                }`}
+              >
+                <svg
+                  className="mr-2 h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                  />
+                </svg>
+                Tableau de bord
+              </a>
             </li>
             <li>
-              <Link href="/admin/orders">
-                <a className={`flex items-center px-4 py-3 ${location === "/admin/orders" ? "bg-blue-50 text-primary" : "text-gray-700 hover:bg-gray-100"}`}>
-                  <Package className="h-5 w-5 mr-3" />
-                  Commandes
-                </a>
-              </Link>
+              <a
+                href="/gestion/commandes"
+                className={`flex items-center rounded-md px-3 py-2 ${
+                  location === "/gestion/commandes"
+                    ? "bg-blue-50 text-blue-700"
+                    : "hover:bg-gray-100"
+                }`}
+              >
+                <svg
+                  className="mr-2 h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                  />
+                </svg>
+                Commandes
+              </a>
             </li>
             <li>
-              <Link href="/admin/products">
-                <a className={`flex items-center px-4 py-3 ${location === "/admin/products" ? "bg-blue-50 text-primary" : "text-gray-700 hover:bg-gray-100"}`}>
-                  <BoxesIcon className="h-5 w-5 mr-3" />
-                  Produits
-                </a>
-              </Link>
+              <a
+                href="/gestion/stocks"
+                className={`flex items-center rounded-md px-3 py-2 ${
+                  location === "/gestion/stocks"
+                    ? "bg-blue-50 text-blue-700"
+                    : "hover:bg-gray-100"
+                }`}
+              >
+                <svg
+                  className="mr-2 h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"
+                  />
+                </svg>
+                Gestion des stocks
+              </a>
             </li>
             <li>
-              <Link href="/admin/analytics">
-                <a className={`flex items-center px-4 py-3 ${location === "/admin/analytics" ? "bg-blue-50 text-primary" : "text-gray-700 hover:bg-gray-100"}`}>
-                  <BarChart className="h-5 w-5 mr-3" />
-                  Analytiques
-                </a>
-              </Link>
+              <a
+                href="/gestion/contenu"
+                className={`flex items-center rounded-md px-3 py-2 ${
+                  location === "/gestion/contenu"
+                    ? "bg-blue-50 text-blue-700"
+                    : "hover:bg-gray-100"
+                }`}
+              >
+                <svg
+                  className="mr-2 h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
+                  />
+                </svg>
+                Contenu
+              </a>
+            </li>
+            <li>
+              <a
+                href="/gestion/parametres"
+                className={`flex items-center rounded-md px-3 py-2 ${
+                  location === "/gestion/parametres"
+                    ? "bg-blue-50 text-blue-700"
+                    : "hover:bg-gray-100"
+                }`}
+              >
+                <svg
+                  className="mr-2 h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                </svg>
+                Paramètres
+              </a>
             </li>
           </ul>
         </nav>
-        <div className="p-4 border-t">
-          <Button variant="ghost" className="w-full justify-start text-red-600" onClick={handleLogout}>
-            <LogOut className="h-5 w-5 mr-3" />
-            Déconnexion
-          </Button>
-          <Link href="/">
-            <a className="mt-2 block text-sm text-center text-muted-foreground hover:underline">
-              Retour au site
-            </a>
-          </Link>
-        </div>
-      </aside>
+      </div>
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col">
-        {/* Top nav - Mobile */}
-        <header className="lg:hidden bg-white shadow-sm flex items-center justify-between h-16 px-4">
-          <h1 className="font-heading font-bold text-xl">FOCUS Admin</h1>
-          
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <Menu className="h-6 w-6" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left">
-              <div className="font-heading font-bold text-xl mb-6">FOCUS Admin</div>
-              <nav>
-                <ul className="space-y-3">
-                  <li>
-                    <Link href="/admin">
-                      <a className={`flex items-center py-2 ${location === "/admin" ? "text-primary" : "text-gray-700"}`}>
-                        <Home className="h-5 w-5 mr-3" />
-                        Tableau de bord
-                      </a>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/admin/orders">
-                      <a className={`flex items-center py-2 ${location === "/admin/orders" ? "text-primary" : "text-gray-700"}`}>
-                        <Package className="h-5 w-5 mr-3" />
-                        Commandes
-                      </a>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/admin/products">
-                      <a className={`flex items-center py-2 ${location === "/admin/products" ? "text-primary" : "text-gray-700"}`}>
-                        <BoxesIcon className="h-5 w-5 mr-3" />
-                        Produits
-                      </a>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/admin/analytics">
-                      <a className={`flex items-center py-2 ${location === "/admin/analytics" ? "text-primary" : "text-gray-700"}`}>
-                        <BarChart className="h-5 w-5 mr-3" />
-                        Analytiques
-                      </a>
-                    </Link>
-                  </li>
-                </ul>
-              </nav>
-              <div className="absolute bottom-4 left-4 right-4">
-                <Button variant="ghost" className="w-full justify-start text-red-600" onClick={handleLogout}>
-                  <LogOut className="h-5 w-5 mr-3" />
-                  Déconnexion
-                </Button>
-                <Link href="/">
-                  <a className="mt-2 block text-sm text-center text-muted-foreground hover:underline">
-                    Retour au site
-                  </a>
-                </Link>
-              </div>
-            </SheetContent>
-          </Sheet>
+      {/* Main content */}
+      <div className="flex-1">
+        <header className="flex h-16 items-center justify-between border-b bg-white px-6">
+          <h2 className="text-lg font-medium">Espace de gestion</h2>
+
+          <div className="flex items-center">
+            {authStatus?.user && (
+              <span className="mr-4 text-sm text-gray-600">
+                Connecté en tant que {authStatus.user.username}
+              </span>
+            )}
+            <button
+              onClick={handleLogout}
+              className="rounded-md bg-blue-50 px-3 py-1.5 text-sm font-medium text-blue-700 hover:bg-blue-100"
+            >
+              Déconnexion
+            </button>
+          </div>
         </header>
-        
-        {/* Main content */}
-        <main className="flex-1 overflow-auto">
-          {children}
-        </main>
+
+        <main className="p-6">{children}</main>
       </div>
     </div>
   );
 }
+
+export default AdminLayout;
