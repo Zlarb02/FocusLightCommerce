@@ -1,0 +1,31 @@
+{
+  "name": "focus-light-commerce-server",
+  "version": "1.0.0",
+  "description": "Serveur backend pour Focus Light Commerce",
+  "type": "module",
+  "main": "index.ts",
+  "scripts": {
+    "start": "node dist/index.js",
+    "build": "tsc",
+    "dev": "NODE_OPTIONS='--import tsx' node --experimental-specifier-resolution=node index.ts"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "@neondatabase/serverless": "^0.10.4",
+    "connect-pg-simple": "^10.0.0",
+    "drizzle-orm": "^0.39.1",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "memorystore": "^1.6.7",
+    "passport": "^0.7.0",
+    "passport-local": "^1.0.0",
+    "stripe": "^17.7.0",
+    "ws": "^8.18.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.30.4",
+    "tsx": "^4.19.1",
+    "typescript": "5.6.3"
+  }
+}
