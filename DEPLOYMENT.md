@@ -27,10 +27,30 @@ Cette approche tire parti des avantages de Vercel pour le frontend (CDN, déploi
 #### 1. Déploiement du frontend sur Vercel
 
 1. Connectez votre dépôt GitHub à Vercel
-2. Configurez les variables d'environnement dans Vercel :
-   - `API_URL`: URL de votre API backend (ex: https://api.votredomaine.com)
-   - `NODE_ENV`: "production"
-3. Vercel utilisera automatiquement le script `vercel-build` défini dans package.json
+2. **Configuration des variables d'environnement dans Vercel** :
+
+   - Dans l'interface Vercel, allez dans votre projet
+   - Cliquez sur "Settings" > "Environment Variables"
+   - Ajoutez une variable nommée `API_URL` avec la valeur complète de votre API backend (ex: `https://api-focus.pogodev.com`)
+   - Ajoutez une variable nommée `NODE_ENV` avec la valeur `production`
+   - Sauvegardez les changements
+
+3. Re-déployez votre application depuis Vercel (via "Deployments" > "Redeploy")
+
+![Configuration Vercel](https://i.imgur.com/yzDSh8O.png)
+
+> **Remarque importante** : Lorsque votre application est déployée sur Vercel, le script `vercel-build` (défini dans votre package.json) est exécuté automatiquement. Ce script utilise les variables d'environnement que vous avez configurées pour générer le fichier `env-config.js` avec la bonne URL d'API.
+
+> **Comment ça fonctionne** : En développement, votre application utilise `http://localhost:5000`, mais en production sur Vercel, elle utilisera l'URL que vous avez configurée dans les variables d'environnement Vercel.
+
+3. **Important**: Assurez-vous que le script `vercel-build` exécute correctement `deploy-config.js` qui génère le fichier `env-config.js` avec les bonnes variables.
+4. Vérifiez que le fichier `client/src/lib/queryClient.ts` utilise correctement `window.ENV.API_URL`.
+
+> **Dépannage**: Si vos requêtes continuent d'aller vers localhost malgré la configuration:
+>
+> - Vérifiez dans DevTools que le fichier `env-config.js` est bien chargé avec la bonne valeur API_URL
+> - Ajoutez un log de debug temporaire dans `getApiBaseUrl()` pour afficher l'URL utilisée
+> - Vérifiez que Vercel utilise bien les variables d'environnement définies
 
 #### 2. Déploiement du backend et BDD sur VPS
 
@@ -99,10 +119,6 @@ Le projet est configuré pour utiliser GitHub Actions pour l'automatisation du d
 
    - `DOCKERHUB_USERNAME`: Votre nom d'utilisateur Docker Hub
    - `DOCKERHUB_TOKEN`: Votre token d'accès Docker Hub
-   - `VPS_HOST`: L'adresse IP de votre VPS
-   - `VPS_USERNAME`: Utilisateur SSH sur le VPS
-   - `VPS_SSH_KEY`: Votre clé SSH privée
-   - `VPS_SSH_PASSPHRASE`: La phrase de passe de votre clé SSH (si applicable)
    - `FRONTEND_URL`: URL de votre frontend sur Vercel (ex: https://votresite.vercel.app)
 
    **Configuration des secrets GitHub** :
@@ -115,7 +131,7 @@ Le projet est configuré pour utiliser GitHub Actions pour l'automatisation du d
    4. Ajoutez chaque secret un par un avec son nom et sa valeur
 
    **Configuration de la base de données** :  
-   Pour les variables liées à la base de données, vous pouvez les définir vous-même :
+    Pour les variables liées à la base de données, vous pouvez les définir vous-même :
 
    - `DB_USER`: Choisissez un nom d'utilisateur pour votre base de données (ex: "focuslight")
    - `DB_PASSWORD`: Définissez un mot de passe fort et unique
@@ -127,21 +143,34 @@ Le projet est configuré pour utiliser GitHub Actions pour l'automatisation du d
 
    - `SESSION_SECRET`: Génère une chaîne aléatoire pour sécuriser les sessions (ex: `openssl rand -hex 32`)
    - `API_URL`: URL de l'API backend
-   - `FRONTEND_PORT`: Port pour le frontend (architecture complète Docker)
    - `BACKEND_PORT`: Port pour le backend
 
 2. Le workflow déploiera automatiquement lors des push sur la branche main
 
 ### Workflow de déploiement
 
+Le workflow GitHub Actions est configuré pour:
+
+1. Construire l'image Docker du backend
+2. La pousser sur Docker Hub avec un tag basé sur la date et l'heure
+
+Après cela, vous devez manuellement:
+
+1. Vous connecter à Portainer sur votre VPS
+2. Tirer la nouvelle image: `docker pull username/focuslight-backend:tag`
+3. Mettre à jour votre stack pour utiliser la nouvelle image
+4. Redémarrer les conteneurs
+
 ```mermaid
 graph TD
     A[Push sur main] --> B[Tests]
-    B --> C[Build des images Docker]
-    C --> D[Push des images sur Docker Hub]
-    D --> E[Déploiement sur VPS]
-    D --> F[Déploiement frontend sur Vercel]
+    B --> C[Build de l'image Docker du backend]
+    C --> D[Push de l'image sur Docker Hub]
+    D --> E[Notification de déploiement réussi]
+    E --> F[Mise à jour manuelle via Portainer]
 ```
+
+> **Note**: Cette approche manuelle offre plus de contrôle sur le moment du déploiement et réduit les risques d'erreurs SSH.
 
 ## 🔍 Base de données
 

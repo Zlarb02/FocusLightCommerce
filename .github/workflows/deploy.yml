@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-deploy:
+  build-and-push:
     runs-on: ubuntu-latest
 
     steps:
@@ -39,35 +39,8 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/focuslight-backend:${{ env.TAG }}, ${{ secrets.DOCKERHUB_USERNAME }}/focuslight-backend:latest
 
-      - name: Deploy to VPS via ssh
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USERNAME }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          passphrase: ${{ secrets.VPS_SSH_PASSPHRASE }}
-          script: |
-            cd /opt/portainer/compose/focuslight
-
-            # Enregistrer les variables d'environnement
-            cat > .env << EOL
-            TAG=${{ env.TAG }}
-            DB_USER=${{ secrets.DB_USER }}
-            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-            DB_NAME=${{ secrets.DB_NAME }}
-            DB_CONNECTION_STRING=${{ secrets.DB_CONNECTION_STRING }}
-            SESSION_SECRET=${{ secrets.SESSION_SECRET }}
-            API_URL=${{ secrets.API_URL }}
-            BACKEND_PORT=${{ secrets.BACKEND_PORT }}
-            FRONTEND_URL=${{ secrets.FRONTEND_URL }}
-            EOL
-
-            # Télécharger le fichier docker-compose.yml mis à jour
-            curl -o docker-compose.yml https://raw.githubusercontent.com/YourUsername/FocusLightCommerce/main/docker-compose.yml
-
-            # Redémarrer les conteneurs avec les nouvelles images
-            docker-compose pull
-            docker-compose up -d
-
-            # Nettoyer les anciennes images
-            docker image prune -af
+      # La partie SSH a été supprimée pour utiliser Portainer manuellement
+      - name: Deployment notification
+        run: |
+          echo "Backend image has been pushed to Docker Hub as ${{ secrets.DOCKERHUB_USERNAME }}/focuslight-backend:${{ env.TAG }}"
+          echo "Please pull the new image using Portainer or docker pull command on your VPS"

@@ -1,4 +1,4 @@
 window.ENV = {
-  API_URL: "http://localhost:5000",
-  NODE_ENV: "development",
+  API_URL: "https://api-focus.pogodev.com",
+  NODE_ENV: "production",
 };
