@@ -1,10 +1,23 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
 
+declare global {
+  interface Window {
+    ENV?: {
+      API_URL?: string;
+    };
+  }
+}
+
 // Fonction utilitaire pour obtenir la base URL de l'API
 export function getApiBaseUrl() {
-  // En production, utilisez la même origine que le frontend
-  // En développement, utilisez l'URL du serveur de développement
-  return process.env.NODE_ENV === "production" ? "" : "http://localhost:5000";
+  // En développement, utilisez l'URL locale
+  // En production, utilisez l'URL de l'API déployée avec Docker
+  if (typeof window !== "undefined" && window.ENV && window.ENV.API_URL) {
+    return window.ENV.API_URL;
+  }
+  return process.env.NODE_ENV === "production"
+    ? "https://api.votredomaine.com" // À remplacer par l'URL réelle de votre API en production
+    : "http://localhost:5000";
 }
 
 async function throwIfResNotOk(res: Response) {

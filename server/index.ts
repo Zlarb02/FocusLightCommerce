@@ -47,17 +47,14 @@ app.use((req, res, next) => {
     throw err;
   });
 
-  // Configuration pour le développement ou la production
-  if (app.get("env") === "development") {
-    setupCors(app);
-  } else {
-    serveStatic(app);
-  }
+  // Configuration CORS pour tous les environnements
+  setupCors(app);
 
-  // ALWAYS serve the app on port 5000
-  // this serves both the API and the client.
-  // It is the only port that is not firewalled.
-  const port = 5000;
+  // Nous ne servons plus le frontend statique
+  // serveStatic(app); // Cette ligne est à commenter ou supprimer
+
+  // Définir le port du serveur - utiliser une variable d'environnement ou 5000 par défaut
+  const port = process.env.PORT || 5000;
   server.listen(
     {
       port,
@@ -65,7 +62,7 @@ app.use((req, res, next) => {
       reusePort: true,
     },
     () => {
-      log(`serving on port ${port}`);
+      log(`API servie sur le port ${port}`);
     }
   );
 })();

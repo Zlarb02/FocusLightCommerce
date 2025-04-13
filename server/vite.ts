@@ -4,7 +4,7 @@ import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-import cors from "cors"; // Vous devrez peut-être installer ce package
+import cors from "cors";
 
 export function log(message: string, source = "express") {
   const formattedTime = new Date().toLocaleTimeString("en-US", {
@@ -17,34 +17,36 @@ export function log(message: string, source = "express") {
   console.log(`${formattedTime} [${source}] ${message}`);
 }
 
-// Configuration CORS pour le développement
+// Configuration CORS pour tous les environnements
 export function setupCors(app: Express) {
-  if (process.env.NODE_ENV !== "production") {
-    app.use(
-      cors({
-        origin: "http://localhost:5173",
-        credentials: true,
-      })
-    );
-    log("CORS configuré pour le développement");
-  }
+  // Utilisez l'URL du frontend sur Vercel en production
+  const corsOrigin = process.env.FRONTEND_URL || "http://localhost:5173";
+
+  app.use(
+    cors({
+      origin: corsOrigin,
+      credentials: true,
+    })
+  );
+
+  log(`CORS configuré pour: ${corsOrigin}`);
 }
 
-// Pour servir l'application en production
+// Nous n'avons plus besoin de servir le frontend statique depuis le serveur
+// Cette fonction peut être supprimée ou remplacée par un message d'information
 export function serveStatic(app: Express) {
-  const distPath = path.resolve(__dirname, "..", "client", "dist");
+  log(
+    "Le frontend est hébergé sur Vercel, aucun contenu statique servi depuis le backend"
+  );
 
-  if (!fs.existsSync(distPath)) {
-    throw new Error(
-      `Could not find the build directory: ${distPath}, make sure to build the client first`
-    );
-  }
-
-  app.use(express.static(distPath));
-
-  app.use("*", (_req, res) => {
-    res.sendFile(path.resolve(distPath, "index.html"));
+  // Répondre avec un message informatif pour toutes les routes non-API
+  app.use("*", (req, res, next) => {
+    if (req.path.startsWith("/api")) {
+      return next();
+    }
+    res.status(404).json({
+      message:
+        "Cette API n'est pas destinée à servir du contenu statique. Veuillez accéder au frontend sur l'URL Vercel.",
+    });
   });
-
-  log("Serveur configuré pour servir l'application en production");
 }

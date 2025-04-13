@@ -1,0 +1,61 @@
+version: "3.8"
+
+services:
+  # Nous gardons le frontend pour le développement local
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.dev
+    container_name: focuslight-frontend-dev
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    environment:
+      - API_URL=http://backend:5000
+      - NODE_ENV=development
+    command: npm run dev
+    networks:
+      - focuslight-network
+
+  backend:
+    build:
+      context: .
+      dockerfile: ./server/Dockerfile.dev
+    container_name: focuslight-backend-dev
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=development
+      - DB_CONNECTION_STRING=postgresql://${DB_USER:-focuslight}:${DB_PASSWORD:-password}@db:5432/${DB_NAME:-focuslight}
+      - SESSION_SECRET=focus-lamp-secret-dev
+    command: npm run dev
+    networks:
+      - focuslight-network
+
+  db:
+    image: postgres:15-alpine
+    container_name: focuslight-db-dev
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=${DB_USER:-focuslight}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-password}
+      - POSTGRES_DB=${DB_NAME:-focuslight}
+    volumes:
+      - postgres-data-dev:/var/lib/postgresql/data
+      - ./db/dumps:/dumps
+    ports:
+      - "5432:5432"
+    networks:
+      - focuslight-network
+
+networks:
+  focuslight-network:
+    driver: bridge
+
+volumes:
+  postgres-data-dev:
