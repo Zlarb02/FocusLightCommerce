@@ -2,14 +2,14 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-# Copier package.json et package-lock.json
-COPY package*.json ./
+# Copier package.json du serveur
+COPY server/package*.json ./
 
 # Installer les dépendances
 RUN npm install
 
-# Copier l'ensemble des fichiers sources
-COPY . .
+# Copier uniquement les fichiers du serveur
+COPY server/ .
 
 # Exposer le port
 EXPOSE 5005
