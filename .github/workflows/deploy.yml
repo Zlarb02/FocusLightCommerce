@@ -26,7 +26,7 @@ jobs:
       - name: Build and push Backend Docker image
         uses: docker/build-push-action@v4
         with:
-          context: ./server
+          context: .
           file: ./server/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/focuslight-backend:${{ env.TAG }}, ${{ secrets.DOCKERHUB_USERNAME }}/focuslight-backend:latest
