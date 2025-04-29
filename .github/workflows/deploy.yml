@@ -1,4 +1,4 @@
-name: Deploy to Production
+name: Deploy Backend
 
 on:
   push:
@@ -23,14 +23,6 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # Commenté car nous utilisons Vercel pour le frontend dans l'architecture hybride
-      # - name: Build and push Frontend Docker image
-      #   uses: docker/build-push-action@v4
-      #   with:
-      #     context: ./client
-      #     push: true
-      #     tags: ${{ secrets.DOCKERHUB_USERNAME }}/focuslight-frontend:${{ env.TAG }}, ${{ secrets.DOCKERHUB_USERNAME }}/focuslight-frontend:latest
-
       - name: Build and push Backend Docker image
         uses: docker/build-push-action@v4
         with:
@@ -39,8 +31,6 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/focuslight-backend:${{ env.TAG }}, ${{ secrets.DOCKERHUB_USERNAME }}/focuslight-backend:latest
 
-      # La partie SSH a été supprimée pour utiliser Portainer manuellement
       - name: Deployment notification
         run: |
-          echo "Backend image has been pushed to Docker Hub as ${{ secrets.DOCKERHUB_USERNAME }}/focuslight-backend:${{ env.TAG }}"
-          echo "Please pull the new image using Portainer or docker pull command on your VPS"
+          echo "Backend image has been pushed as ${{ secrets.DOCKERHUB_USERNAME }}/focuslight-backend:${{ env.TAG }}"
