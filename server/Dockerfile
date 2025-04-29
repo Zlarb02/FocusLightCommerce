@@ -3,18 +3,18 @@ FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-# Copier les fichiers nécessaires pour installer les dépendances du backend
-COPY server/package*.json server/tsconfig.json ./server/
-COPY shared/schema.ts ./shared/
-
-# Installer les dépendances
-RUN cd server && npm install
-
-# Copier tout le code backend + les fichiers partagés
-COPY server ./server
+# Copier les fichiers package.json des deux dossiers
+COPY server/package*.json ./server/
+COPY server/tsconfig.json ./server/
 COPY shared ./shared
 
-# Compiler le backend
+# Installer toutes les dépendances, y compris les devDependencies
+RUN cd server && npm install
+
+# Copier le code source du backend
+COPY server ./server
+
+# Compiler le backend TypeScript
 RUN cd server && npm run build
 
 # Étape 2 : Image finale légère
@@ -22,11 +22,11 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-# Reprendre uniquement les fichiers nécessaires à l'exécution
+# Copier package.json et installer uniquement les dépendances de production
 COPY server/package*.json ./server/
 RUN cd server && npm install --omit=dev
 
-# Copier la sortie compilée
+# Copier les fichiers compilés et partagés
 COPY --from=builder /app/server/dist ./server/dist
 COPY --from=builder /app/shared ./shared
 
