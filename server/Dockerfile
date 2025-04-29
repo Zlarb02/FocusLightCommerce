@@ -1,7 +1,7 @@
 # Étape 1 : Builder (avec les devDeps)
 FROM node:18-alpine AS builder
 
-WORKDIR /app
+WORKDIR /app/server
 
 # Installer uniquement ce qui est nécessaire pour compiler
 COPY package*.json tsconfig.json ./
