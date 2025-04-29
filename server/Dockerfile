@@ -17,14 +17,15 @@ RUN npm run build
 # Étape 2 : Image finale (légère, sans TypeScript ni devDeps)
 FROM node:18-alpine
 
-WORKDIR /app
+WORKDIR /app/server
 
 # Copier uniquement les fichiers nécessaires à l'exécution
 COPY package*.json ./
 RUN npm install --omit=dev
 
 # Copier les fichiers compilés depuis l'étape "builder"
-COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/server/dist ./dist
+
 
 # Copier tout autre fichier nécessaire (ex: fichiers statiques, config, etc.)
 # COPY --from=builder /app/public ./public  # ← si besoin
