@@ -1,19 +1,17 @@
-import type { Express, Request, Response, NextFunction } from "express";
+import express, {
+  type Express,
+  Request,
+  Response,
+  NextFunction,
+} from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import {
-  insertProductSchema,
-  insertCustomerSchema,
-  insertOrderSchema,
-  insertOrderItemSchema,
-  insertUserSchema,
-  checkoutSchema,
-} from "@shared/schema";
+import { insertProductSchema, checkoutSchema } from "@shared/schema";
 import { z } from "zod";
 import session from "express-session";
 import MemoryStore from "memorystore";
 
-// Extend Express Session with custom properties
+// Extend Express Session
 declare module "express-session" {
   interface SessionData {
     user?: {
@@ -24,9 +22,48 @@ declare module "express-session" {
   }
 }
 
+const SessionStore = MemoryStore(session);
+
+const requireAuth = (req: Request, res: Response, next: NextFunction) => {
+  if (req.session.user) return next();
+  res.status(401).json({ message: "Unauthorized" });
+};
+
+const handleError = (res: Response, error: unknown) => {
+  if (error instanceof z.ZodError) {
+    res.status(400).json({ message: error.errors });
+    return;
+  }
+  res
+    .status(500)
+    .json({
+      message: error instanceof Error ? error.message : "Unknown error",
+    });
+};
+
+const devCorsMiddleware = (
+  _req: Request,
+  res: Response,
+  next: NextFunction
+): void => {
+  res.header("Access-Control-Allow-Origin", "http://localhost:5173");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  res.header("Access-Control-Allow-Headers", "Content-Type");
+  res.header("Access-Control-Allow-Credentials", "true");
+  if (_req.method === "OPTIONS") {
+    res.sendStatus(200);
+    return;
+  }
+  next();
+};
+
+const addCorsDevSupport = (app: Express) => {
+  if (process.env.NODE_ENV !== "production") {
+    app.use(devCorsMiddleware);
+  }
+};
+
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Set up session
-  const SessionStore = MemoryStore(session);
   app.use(
     session({
       secret: process.env.SESSION_SECRET || "focus-lamp-secret",
@@ -35,303 +72,270 @@ export async function registerRoutes(app: Express): Promise<Server> {
       cookie: {
         secure: process.env.NODE_ENV === "production",
         sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 jours
+        maxAge: 7 * 24 * 60 * 60 * 1000,
       },
-      store: new SessionStore({
-        checkPeriod: 86400000, // prune expired entries every 24h
-      }),
+      store: new SessionStore({ checkPeriod: 86400000 }),
     })
   );
 
-  // Auth middleware
-  const requireAuth = (req: Request, res: Response, next: NextFunction) => {
-    if (req.session.user) {
-      next();
-    } else {
-      res.status(401).json({ message: "Unauthorized" });
-    }
-  };
+  addCorsDevSupport(app);
 
-  // Support pour CORS en mode développement
-  if (process.env.NODE_ENV !== "production") {
-    app.use((req: Request, res: Response, next: NextFunction) => {
-      res.header("Access-Control-Allow-Origin", "http://localhost:5173");
-      res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-      res.header("Access-Control-Allow-Headers", "Content-Type");
-      res.header("Access-Control-Allow-Credentials", "true");
-      if (req.method === "OPTIONS") {
-        return res.sendStatus(200);
-      }
-      next();
-    });
-  }
-
-  // Products routes
-  app.get("/api/products", async (req, res) => {
-    try {
-      const products = await storage.getAllProducts();
-      res.json(products);
-    } catch (error: any) {
-      res.status(500).json({ message: error.message });
-    }
-  });
-
-  app.get("/api/products/:id", async (req, res) => {
+  // Products CRUD
+  const getProductHandler = async (
+    req: Request,
+    res: Response
+  ): Promise<void> => {
     try {
       const id = parseInt(req.params.id);
       const product = await storage.getProductById(id);
-
       if (!product) {
-        return res.status(404).json({ message: "Product not found" });
+        res.status(404).json({ message: "Product not found" });
+        return;
       }
-
       res.json(product);
-    } catch (error: any) {
-      res.status(500).json({ message: error.message });
+    } catch (error) {
+      handleError(res, error);
     }
-  });
+  };
 
-  // Admin product routes
-  app.post("/api/products", requireAuth, async (req, res) => {
+  const getAllProductsHandler = async (
+    req: Request,
+    res: Response
+  ): Promise<void> => {
     try {
-      const productData = insertProductSchema.parse(req.body);
-      const product = await storage.createProduct(productData);
-      res.status(201).json(product);
-    } catch (error: any) {
-      if (error instanceof z.ZodError) {
-        return res.status(400).json({ message: error.errors });
-      }
-      res.status(500).json({ message: error.message });
+      const products = await storage.getAllProducts();
+      res.json(products);
+    } catch (error) {
+      handleError(res, error);
     }
-  });
+  };
 
-  app.put("/api/products/:id", requireAuth, async (req, res) => {
-    try {
-      const id = parseInt(req.params.id);
-      const productData = insertProductSchema.partial().parse(req.body);
-      const product = await storage.updateProduct(id, productData);
+  app.get("/api/products", getAllProductsHandler);
+  app.get("/api/products/:id", getProductHandler);
 
-      if (!product) {
-        return res.status(404).json({ message: "Product not found" });
+  app.post(
+    "/api/products",
+    requireAuth,
+    async (req: Request, res: Response): Promise<void> => {
+      try {
+        const data = insertProductSchema.parse(req.body);
+        const product = await storage.createProduct(data);
+        res.status(201).json(product);
+      } catch (error) {
+        handleError(res, error);
       }
-
-      res.json(product);
-    } catch (error: any) {
-      if (error instanceof z.ZodError) {
-        return res.status(400).json({ message: error.errors });
-      }
-      res.status(500).json({ message: error.message });
     }
-  });
+  );
 
-  app.delete("/api/products/:id", requireAuth, async (req, res) => {
-    try {
-      const id = parseInt(req.params.id);
-      const deleted = await storage.deleteProduct(id);
-
-      if (!deleted) {
-        return res.status(404).json({ message: "Product not found" });
+  app.put(
+    "/api/products/:id",
+    requireAuth,
+    async (req: Request, res: Response): Promise<void> => {
+      try {
+        const id = parseInt(req.params.id);
+        const data = insertProductSchema.partial().parse(req.body);
+        const product = await storage.updateProduct(id, data);
+        if (!product) {
+          res.status(404).json({ message: "Product not found" });
+          return;
+        }
+        res.json(product);
+      } catch (error) {
+        handleError(res, error);
       }
-
-      res.status(204).send();
-    } catch (error: any) {
-      res.status(500).json({ message: error.message });
     }
-  });
+  );
 
-  // Checkout process
-  app.post("/api/checkout", async (req, res) => {
-    try {
-      const checkoutData = checkoutSchema.parse(req.body);
-
-      // Create or get customer
-      let customer = await storage.getCustomerByEmail(
-        checkoutData.customer.email
-      );
-
-      if (!customer) {
-        customer = await storage.createCustomer(checkoutData.customer);
-      } else {
-        // Update customer info if necessary
-        customer =
-          (await storage.updateCustomer(customer.id, checkoutData.customer)) ||
-          customer;
+  app.delete(
+    "/api/products/:id",
+    requireAuth,
+    async (req: Request, res: Response): Promise<void> => {
+      try {
+        const id = parseInt(req.params.id);
+        const deleted = await storage.deleteProduct(id);
+        if (!deleted) {
+          res.status(404).json({ message: "Product not found" });
+          return;
+        }
+        res.status(204).send();
+      } catch (error) {
+        handleError(res, error);
       }
+    }
+  );
 
-      // Create order
-      const order = await storage.createOrder({
-        customerId: customer.id,
-        totalAmount: checkoutData.totalAmount,
-        status: "pending",
-      });
+  // Checkout
+  app.post(
+    "/api/checkout",
+    async (req: Request, res: Response): Promise<void> => {
+      try {
+        const data = checkoutSchema.parse(req.body);
+        let customer = await storage.getCustomerByEmail(data.customer.email);
+        if (!customer) {
+          customer = await storage.createCustomer(data.customer);
+        } else {
+          customer =
+            (await storage.updateCustomer(customer.id, data.customer)) ||
+            customer;
+        }
 
-      // Create order items and update inventory
-      for (const item of checkoutData.items) {
-        await storage.createOrderItem({
-          orderId: order.id,
-          productId: item.productId,
-          quantity: item.quantity,
-          price: item.price,
+        const order = await storage.createOrder({
+          customerId: customer.id,
+          totalAmount: data.totalAmount,
+          status: "pending",
         });
 
-        // Update product stock
-        await storage.updateProductStock(item.productId, -item.quantity);
-      }
+        await Promise.all(
+          data.items.map(async (item) => {
+            await storage.createOrderItem({
+              orderId: order.id,
+              productId: item.productId,
+              quantity: item.quantity,
+              price: item.price,
+            });
+            await storage.updateProductStock(item.productId, -item.quantity);
+          })
+        );
 
-      // Return order confirmation
-      res.status(201).json({
-        orderId: order.id,
-        orderNumber: `FC-${new Date().getFullYear()}${order.id
-          .toString()
-          .padStart(4, "0")}`,
-        customer: customer,
-        totalAmount: order.totalAmount,
-        status: order.status,
-        createdAt: order.createdAt,
-      });
-    } catch (error: any) {
-      if (error instanceof z.ZodError) {
-        return res.status(400).json({ message: error.errors });
+        res.status(201).json({
+          orderId: order.id,
+          orderNumber: `FC-${new Date().getFullYear()}${order.id
+            .toString()
+            .padStart(4, "0")}`,
+          customer,
+          totalAmount: order.totalAmount,
+          status: order.status,
+          createdAt: order.createdAt,
+        });
+      } catch (error) {
+        handleError(res, error);
       }
-      res.status(500).json({ message: error.message });
     }
-  });
+  );
 
-  // Admin auth routes
-  app.post("/api/auth/login", async (req, res) => {
-    try {
-      const { username, password } = req.body;
+  // Auth
+  app.post(
+    "/api/auth/login",
+    async (req: Request, res: Response): Promise<void> => {
+      try {
+        const { username, password } = req.body;
+        if (!username || !password) {
+          res
+            .status(400)
+            .json({ message: "Username and password are required" });
+          return;
+        }
 
-      if (!username || !password) {
-        return res
-          .status(400)
-          .json({ message: "Username and password are required" });
+        const user = await storage.verifyUser(username, password);
+        if (!user) {
+          res.status(401).json({ message: "Invalid credentials" });
+          return;
+        }
+
+        req.session.user = {
+          id: user.id,
+          username: user.username,
+          isAdmin: user.isAdmin,
+        };
+        res.json(req.session.user);
+      } catch (error) {
+        handleError(res, error);
       }
-
-      const user = await storage.verifyUser(username, password);
-
-      if (!user) {
-        return res.status(401).json({ message: "Invalid credentials" });
-      }
-
-      // Set user in session
-      req.session.user = {
-        id: user.id,
-        username: user.username,
-        isAdmin: user.isAdmin,
-      };
-
-      res.json({
-        id: user.id,
-        username: user.username,
-        isAdmin: user.isAdmin,
-      });
-    } catch (error: any) {
-      res.status(500).json({ message: error.message });
     }
-  });
+  );
 
-  app.post("/api/auth/logout", (req, res) => {
+  app.post("/api/auth/logout", (req: Request, res: Response): void => {
     req.session.destroy((err) => {
       if (err) {
-        return res.status(500).json({ message: "Could not log out" });
+        res.status(500).json({ message: "Could not log out" });
+        return;
       }
       res.json({ message: "Logged out successfully" });
     });
   });
 
-  app.get("/api/auth/status", (req, res) => {
+  app.get("/api/auth/status", (req: Request, res: Response): void => {
     if (req.session.user) {
-      res.json({
-        authenticated: true,
-        user: {
-          id: req.session.user.id,
-          username: req.session.user.username,
-          isAdmin: req.session.user.isAdmin,
-        },
-      });
+      res.json({ authenticated: true, user: req.session.user });
     } else {
       res.json({ authenticated: false });
     }
   });
 
-  // Admin order routes
-  app.get("/api/orders", requireAuth, async (req, res) => {
-    try {
-      const orders = await storage.getAllOrders();
-
-      // Get customer details for each order
-      const ordersWithDetails = await Promise.all(
-        orders.map(async (order) => {
-          const customer = await storage.getCustomerById(order.customerId);
-          const items = await storage.getOrderItemsByOrderId(order.id);
-
-          return {
+  // Orders
+  app.get(
+    "/api/orders",
+    requireAuth,
+    async (req: Request, res: Response): Promise<void> => {
+      try {
+        const orders = await storage.getAllOrders();
+        const detailed = await Promise.all(
+          orders.map(async (order) => ({
             ...order,
-            customer,
-            items,
+            customer: await storage.getCustomerById(order.customerId),
+            items: await storage.getOrderItemsByOrderId(order.id),
             orderNumber: `FC-${new Date(
               order.createdAt || new Date()
             ).getFullYear()}${order.id.toString().padStart(4, "0")}`,
-          };
-        })
-      );
-
-      res.json(ordersWithDetails);
-    } catch (error: any) {
-      res.status(500).json({ message: error.message });
-    }
-  });
-
-  app.get("/api/orders/:id", requireAuth, async (req, res) => {
-    try {
-      const id = parseInt(req.params.id);
-      const order = await storage.getOrderById(id);
-
-      if (!order) {
-        return res.status(404).json({ message: "Order not found" });
+          }))
+        );
+        res.json(detailed);
+      } catch (error) {
+        handleError(res, error);
       }
-
-      const customer = await storage.getCustomerById(order.customerId);
-      const items = await storage.getOrderItemsByOrderId(order.id);
-
-      const orderWithDetails = {
-        ...order,
-        customer,
-        items,
-        orderNumber: `FC-${new Date(
-          order.createdAt || new Date()
-        ).getFullYear()}${order.id.toString().padStart(4, "0")}`,
-      };
-
-      res.json(orderWithDetails);
-    } catch (error: any) {
-      res.status(500).json({ message: error.message });
     }
-  });
+  );
 
-  app.put("/api/orders/:id/status", requireAuth, async (req, res) => {
-    try {
-      const id = parseInt(req.params.id);
-      const { status } = req.body;
+  app.get(
+    "/api/orders/:id",
+    requireAuth,
+    async (req: Request, res: Response): Promise<void> => {
+      try {
+        const id = parseInt(req.params.id);
+        const order = await storage.getOrderById(id);
+        if (!order) {
+          res.status(404).json({ message: "Order not found" });
+          return;
+        }
 
-      if (!status) {
-        return res.status(400).json({ message: "Status is required" });
+        res.json({
+          ...order,
+          customer: await storage.getCustomerById(order.customerId),
+          items: await storage.getOrderItemsByOrderId(order.id),
+          orderNumber: `FC-${new Date(
+            order.createdAt || new Date()
+          ).getFullYear()}${order.id.toString().padStart(4, "0")}`,
+        });
+      } catch (error) {
+        handleError(res, error);
       }
-
-      const updatedOrder = await storage.updateOrderStatus(id, status);
-
-      if (!updatedOrder) {
-        return res.status(404).json({ message: "Order not found" });
-      }
-
-      res.json(updatedOrder);
-    } catch (error: any) {
-      res.status(500).json({ message: error.message });
     }
-  });
+  );
 
-  // Create HTTP server
-  const httpServer = createServer(app);
-  return httpServer;
+  app.put(
+    "/api/orders/:id/status",
+    requireAuth,
+    async (req: Request, res: Response): Promise<void> => {
+      try {
+        const id = parseInt(req.params.id);
+        const { status } = req.body;
+        if (!status) {
+          res.status(400).json({ message: "Status is required" });
+          return;
+        }
+
+        const updated = await storage.updateOrderStatus(id, status);
+        if (!updated) {
+          res.status(404).json({ message: "Order not found" });
+          return;
+        }
+
+        res.json(updated);
+      } catch (error) {
+        handleError(res, error);
+      }
+    }
+  );
+
+  return createServer(app);
 }
