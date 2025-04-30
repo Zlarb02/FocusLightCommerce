@@ -41,4 +41,5 @@ ENV PORT=5005
 EXPOSE 5005
 
 # Lancer l'application compilée
-CMD ["node", "server/dist/index.js"]
+CMD ["node", "server/dist/server/index.js"]
+
