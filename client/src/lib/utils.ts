@@ -32,7 +32,7 @@ export const lampColors: Record<string, LampColor> = {
     bgClass: "bg-gray-100",
     borderClass: "border-gray-200",
     textClass: "text-gray-700",
-    imagePath: "/src/assets/images/blanche.png",
+    imagePath: "/images/blanche.png",
   },
   Bleu: {
     name: "Bleu",
@@ -40,7 +40,7 @@ export const lampColors: Record<string, LampColor> = {
     bgClass: "bg-blue-500",
     borderClass: "border-blue-600",
     textClass: "text-blue-500",
-    imagePath: "/src/assets/images/bleue.png",
+    imagePath: "/images/bleue.png",
   },
   Rouge: {
     name: "Rouge",
@@ -48,7 +48,7 @@ export const lampColors: Record<string, LampColor> = {
     bgClass: "bg-red-500",
     borderClass: "border-red-600",
     textClass: "text-red-500",
-    imagePath: "/src/assets/images/rouge.png",
+    imagePath: "/images/rouge.png",
   },
   Orange: {
     name: "Orange",
@@ -56,7 +56,7 @@ export const lampColors: Record<string, LampColor> = {
     bgClass: "bg-orange-500",
     borderClass: "border-orange-600",
     textClass: "text-orange-500",
-    imagePath: "/src/assets/images/orange.png",
+    imagePath: "/images/orange.png",
   },
 };
 
