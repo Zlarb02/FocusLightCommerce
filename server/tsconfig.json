@@ -14,7 +14,7 @@
   },
   "include": [
     "./**/*.ts",
-    "../shared/**/*.ts" // 👈 AJOUT OBLIGATOIRE
+    "../shared/**/*.ts" // AJOUT OBLIGATOIRE
   ],
   "exclude": ["node_modules"]
 }
