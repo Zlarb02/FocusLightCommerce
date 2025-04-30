@@ -1,3 +1,7 @@
+# 🐳 Déploiement Docker multi-arch (amd64 + arm64)
+# GitHub Copilot Prompt :
+# Build and push multi-platform Docker image with GitHub Actions
+
 name: Deploy Backend
 
 on:
@@ -10,12 +14,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: Setup environment variables
-        run: |
-          echo "TAG=$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
+      - name: Setup Docker Buildx (multi-platform)
+        uses: docker/setup-buildx-action@v3
+
+      - name: Setup QEMU for emulation (needed for arm64)
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set timestamp tag
+        run: echo "TAG=$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
 
       - name: Login to Docker Hub
         uses: docker/login-action@v2
@@ -23,20 +31,14 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Build and push Backend Docker image
+      - name: Build and push multi-arch image
         uses: docker/build-push-action@v4
         with:
           context: .
           file: ./server/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/focuslight-backend:${{ env.TAG }}, ${{ secrets.DOCKERHUB_USERNAME }}/focuslight-backend:latest
-          cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/focuslight-backend:buildcache
-          cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/focuslight-backend:buildcache,mode=max
+          platforms: linux/amd64,linux/arm64
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/focuslight-backend:${{ env.TAG }},${{ secrets.DOCKERHUB_USERNAME }}/focuslight-backend:latest
 
-      - name: Deployment notification
-        run: |
-          echo "Backend image has been pushed as ${{ secrets.DOCKERHUB_USERNAME }}/focuslight-backend:${{ env.TAG }}"
-          echo "To update your deployment, run: docker pull ${{ secrets.DOCKERHUB_USERNAME }}/focuslight-backend:latest"
+      - name: Notify
+        run: echo "✅ Image pushed: ${{ env.TAG }}"
