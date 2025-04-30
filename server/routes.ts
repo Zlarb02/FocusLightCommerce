@@ -34,11 +34,9 @@ const handleError = (res: Response, error: unknown) => {
     res.status(400).json({ message: error.errors });
     return;
   }
-  res
-    .status(500)
-    .json({
-      message: error instanceof Error ? error.message : "Unknown error",
-    });
+  res.status(500).json({
+    message: error instanceof Error ? error.message : "Unknown error",
+  });
 };
 
 const devCorsMiddleware = (
@@ -186,7 +184,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
 
         await Promise.all(
-          data.items.map(async (item) => {
+          data.items.map(async (item: any) => {
             await storage.createOrderItem({
               orderId: order.id,
               productId: item.productId,
