@@ -5,8 +5,8 @@ import express, {
   NextFunction,
 } from "express";
 import { createServer, type Server } from "http";
-import { storage } from "./storage";
-import { insertProductSchema, checkoutSchema } from "@shared/schema";
+import { storage } from "./storage.js";
+import { insertProductSchema, checkoutSchema } from "@shared/schema.js";
 import { z } from "zod";
 import session from "express-session";
 import MemoryStore from "memorystore";
