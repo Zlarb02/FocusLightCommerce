@@ -13,13 +13,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup Docker Buildx (multi-platform)
-        uses: docker/setup-buildx-action@v3
-
-      - name: Setup QEMU for emulation (needed for arm64)
+      - name: Setup QEMU for arm64 builds
         uses: docker/setup-qemu-action@v3
 
-      - name: Set timestamp tag
+      - name: Setup environment variables
         run: echo "TAG=$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
 
       - name: Login to Docker Hub
@@ -28,14 +25,23 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push multi-arch image
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build and push Backend Docker image (multi-arch)
         uses: docker/build-push-action@v4
         with:
           context: .
           file: ./server/Dockerfile
           push: true
           platforms: linux/amd64,linux/arm64
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/focuslight-backend:${{ env.TAG }},${{ secrets.DOCKERHUB_USERNAME }}/focuslight-backend:latest
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/focuslight-backend:${{ env.TAG }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/focuslight-backend:latest
+          cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/focuslight-backend:buildcache
+          cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/focuslight-backend:buildcache,mode=max
 
-      - name: Notify
-        run: echo "✅ Image pushed: ${{ env.TAG }}"
+      - name: Deployment notification
+        run: |
+          echo "✅ Backend image pushed: ${{ env.TAG }}"
+          echo "💡 docker pull ${{ secrets.DOCKERHUB_USERNAME }}/focuslight-backend:latest"
