@@ -3,6 +3,10 @@ import { registerRoutes } from "./routes.js";
 import { serveStatic, log, setupCors } from "./vite.js";
 
 const app = express();
+
+// Configuration CORS pour tous les environnements
+setupCors(app);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -47,22 +51,12 @@ app.use((req, res, next) => {
     throw err;
   });
 
-  // Configuration CORS pour tous les environnements
-  setupCors(app);
-
   // Nous ne servons plus le frontend statique
   // serveStatic(app); // Cette ligne est à commenter ou supprimer
 
   // Définir le port du serveur - utiliser une variable d'environnement ou 5000 par défaut
-  const port = process.env.PORT || 5000;
-  server.listen(
-    {
-      port,
-      host: "0.0.0.0",
-      reusePort: true,
-    },
-    () => {
-      log(`API servie sur le port ${port}`);
-    }
-  );
+  const port = parseInt(process.env.PORT || "5000", 10);
+  app.listen(port, "0.0.0.0", () => {
+    log(`API servie sur le port ${port}`);
+  });
 })();

@@ -1,9 +1,4 @@
-import express, { type Express } from "express";
-import fs from "fs";
-import path, { dirname } from "path";
-import { fileURLToPath } from "url";
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+import { type Express } from "express";
 import cors from "cors";
 
 export function log(message: string, source = "express") {
@@ -17,36 +12,46 @@ export function log(message: string, source = "express") {
   console.log(`${formattedTime} [${source}] ${message}`);
 }
 
-// Configuration CORS pour tous les environnements
 export function setupCors(app: Express) {
-  // Utilisez l'URL du frontend sur Vercel en production
-  const corsOrigin = process.env.FRONTEND_URL || "http://localhost:5173";
+  const allowedOrigins = [
+    "http://localhost:5173",
+    "https://alto-lille.fr",
+    "https://www.alto-lille.fr",
+    "https://vps-a.pogodev.com",
+  ];
 
   app.use(
     cors({
-      origin: corsOrigin,
+      origin: (origin, callback) => {
+        if (!origin) {
+          log("CORS: Aucune origine (CLI ou interne) → autorisé");
+          return callback(null, true);
+        }
+        if (allowedOrigins.includes(origin)) {
+          log(`CORS: Autorisé pour ${origin}`);
+          return callback(null, true);
+        }
+
+        log(`❌ CORS refusé pour ${origin}`);
+        return callback(new Error(`CORS non autorisé pour ${origin}`));
+      },
       credentials: true,
     })
   );
 
-  log(`CORS configuré pour: ${corsOrigin}`);
+  log("CORS initialisé");
 }
 
-// Nous n'avons plus besoin de servir le frontend statique depuis le serveur
-// Cette fonction peut être supprimée ou remplacée par un message d'information
 export function serveStatic(app: Express) {
   log(
     "Le frontend est hébergé sur Vercel, aucun contenu statique servi depuis le backend"
   );
 
-  // Répondre avec un message informatif pour toutes les routes non-API
   app.use("*", (req, res, next) => {
-    if (req.path.startsWith("/api")) {
-      return next();
-    }
+    if (req.path.startsWith("/api")) return next();
     res.status(404).json({
       message:
-        "Cette API n'est pas destinée à servir du contenu statique. Veuillez accéder au frontend sur l'URL Vercel.",
+        "Cette API ne sert pas de contenu statique. Utilisez le frontend sur Vercel.",
     });
   });
 }
