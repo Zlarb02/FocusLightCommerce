@@ -9,7 +9,7 @@ import {
   type InsertOrderItem,
   type User,
   type InsertUser,
-} from "@shared/schema.js";
+} from "@shared/schema";
 
 // Storage interface
 export interface IStorage {
