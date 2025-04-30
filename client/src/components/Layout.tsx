@@ -24,11 +24,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/">
             <a className="flex items-center">
-              <img
-                src="/public/images/logo.png"
-                alt="FOCUS"
-                className="h-10 w-auto"
-              />
+              <img src="/images/logo.png" alt="FOCUS" className="h-10 w-auto" />
             </a>
           </Link>
 
@@ -127,7 +123,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
             <div>
               <div className="flex items-center mb-4">
                 <img
-                  src="/public/images/logo.png"
+                  src="/images/logo.png"
                   alt="FOCUS"
                   className="h-10 w-auto"
                 />
