@@ -6,9 +6,12 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatPrice(price: number): string {
+  // Arrondir le prix à l'entier et formater sans décimales
   return new Intl.NumberFormat("fr-FR", {
     style: "currency",
     currency: "EUR",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
   }).format(price);
 }
 

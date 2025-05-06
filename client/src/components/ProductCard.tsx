@@ -50,7 +50,7 @@ export function ProductCard({ product }: ProductCardProps) {
         </p>
       </CardContent>
       <CardFooter className="flex justify-between items-center">
-        <span className="font-heading font-bold text-xl">
+        <span className="font-heading font-bold text-xl mr-3">
           {formatPrice(product.price)}
         </span>
         <Button

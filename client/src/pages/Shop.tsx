@@ -11,6 +11,40 @@ import { useCart } from "@/hooks/useCart";
 import { useToast } from "@/hooks/use-toast";
 import { Separator } from "@/components/ui/separator";
 
+// Ordre pour le sélecteur de la section hero: bleu, rouge, orange, blanc
+const heroOrderMap: Record<string, number> = {
+  Bleu: 0,
+  Rouge: 1,
+  Orange: 2,
+  Blanc: 3,
+};
+
+// Ordre pour la section "Les Coloris": orange, bleu, blanc, rouge
+const colorSectionOrderMap: Record<string, number> = {
+  Orange: 0,
+  Bleu: 1,
+  Blanc: 2,
+  Rouge: 3,
+};
+
+// Fonction pour trier les produits selon l'ordre souhaité pour le sélecteur de couleur
+const sortProductsForHero = (products: Product[]): Product[] => {
+  return [...products].sort((a, b) => {
+    const orderA = heroOrderMap[a.color] ?? 999;
+    const orderB = heroOrderMap[b.color] ?? 999;
+    return orderA - orderB;
+  });
+};
+
+// Fonction pour trier les produits selon l'ordre souhaité pour la section "Les Coloris"
+const sortProductsForColorSection = (products: Product[]): Product[] => {
+  return [...products].sort((a, b) => {
+    const orderA = colorSectionOrderMap[a.color] ?? 999;
+    const orderB = colorSectionOrderMap[b.color] ?? 999;
+    return orderA - orderB;
+  });
+};
+
 export default function Shop() {
   const { data: products = [] } = useQuery<Product[]>({
     queryKey: ["/api/products"],
@@ -22,9 +56,9 @@ export default function Shop() {
 
   useEffect(() => {
     if (products.length > 0 && !selectedProduct) {
-      // Default to the white lamp on initial load
+      // Default to the blue lamp on initial load
       const defaultProduct =
-        products.find((p) => p.color === "Blanc") || products[0];
+        products.find((p) => p.color === "Bleu") || products[0];
       setSelectedProduct(defaultProduct);
     }
   }, [products, selectedProduct]);
@@ -43,6 +77,12 @@ export default function Shop() {
     }
   };
 
+  // Produits triés pour le sélecteur de couleur dans la section hero
+  const sortedProductsForHero = sortProductsForHero(products);
+
+  // Produits triés pour la section "Les Coloris"
+  const sortedProductsForColorSection = sortProductsForColorSection(products);
+
   return (
     <Layout>
       {/* Desktop margin wrapper */}
@@ -50,7 +90,7 @@ export default function Shop() {
         {/* Hero Section - Épuré et minimaliste */}
         <section className="py-12 md:py-20 lg:py-24 animate fade-in-up">
           <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center">
-            <div className="order-2 md:order-1">
+            <div className="order-2 md:order-1 z-10">
               <h1
                 className="font-heading text-4xl md:text-6xl mb-6 tracking-tight"
                 style={{ fontFamily: "var(--font-titles)" }}
@@ -113,11 +153,11 @@ export default function Shop() {
                   <img
                     src={getColorInfo(selectedProduct.color).imagePath}
                     alt={`Lampe FOCUS.01 coloris ${selectedProduct.color}`}
-                    className="w-full max-w-[70%] mx-auto object-contain transition-all duration-700 animate scale-in"
+                    className="w-full max-w-[70%] mx-auto object-contain transition-all duration-700 animate scale-in z-1"
                   />
                   <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full">
                     <LampColorSelector
-                      colors={products}
+                      colors={sortedProductsForHero}
                       onColorSelect={handleColorSelect}
                       selectedProductId={selectedProduct?.id}
                     />
@@ -229,16 +269,8 @@ export default function Shop() {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   >
-                    <path d="M6 22v-4h12v4" />
-                    <path d="M18 5V2" />
-                    <path d="M18 10V8" />
-                    <circle cx="18" cy="6" r="2" />
-                    <circle cx="6" cy="2" r="1" />
-                    <circle cx="6" cy="12" r="1" />
-                    <path d="M6 8v2" />
-                    <path d="M6 4v2" />
-                    <path d="M12 18v-4" />
-                    <path d="M6 12v6" />
+                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+                    <path d="M9 17l-2-2" />
                   </svg>
                 </div>
                 <h3
@@ -414,7 +446,7 @@ export default function Shop() {
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-            {products.map((product, index) => (
+            {sortedProductsForColorSection.map((product, index) => (
               <div
                 key={product.id}
                 className={`animate fade-in-up delay-${index + 1}`}

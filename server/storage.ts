@@ -96,7 +96,7 @@ export class MemStorage implements IStorage {
       name: "FOCUS.01",
       description:
         "Lampe d'appoint imaginée et fabriquée par Anatole Collet. Réaliser en PLA écoresponsable et en chêne écogéré, livré avec une ampoule LED de 60W E14 et un câble avec interrupteur de 1m50.",
-      price: 89.0,
+      price: 80.0,
       stock: 10,
     };
 
