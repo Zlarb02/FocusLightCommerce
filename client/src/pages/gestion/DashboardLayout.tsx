@@ -59,12 +59,12 @@ export default function DashboardLayout({
   ];
 
   return (
-    <div className="flex h-screen bg-gray-50">
-      {/* Sidebar pour desktop */}
-      <aside className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0">
-        <div className="flex flex-col flex-1 min-h-0 bg-white border-r border-gray-200">
-          <div className="flex items-center h-16 flex-shrink-0 px-4 border-b">
-            <h2 className="text-lg font-medium">FOCUS Gestion</h2>
+    <>
+      {/* Menu latéral version desktop */}
+      <aside className="hidden md:block fixed inset-y-0 left-0 w-64 border-r bg-white">
+        <div className="flex flex-col h-full">
+          <div className="flex items-center p-4 border-b h-16">
+            <h2 className="text-lg font-medium">Alto Gestion</h2>
           </div>
           <div className="flex-1 flex flex-col overflow-y-auto">
             <nav className="flex-1 px-2 py-4 space-y-1">
@@ -101,7 +101,7 @@ export default function DashboardLayout({
 
       {/* Header mobile avec menu hamburger */}
       <div className="md:hidden fixed top-0 left-0 right-0 z-10 bg-white border-b px-4 h-16 flex items-center justify-between">
-        <h2 className="text-lg font-medium">FOCUS Gestion</h2>
+        <h2 className="text-lg font-medium">Alto Gestion</h2>
         <Button
           variant="ghost"
           size="icon"
@@ -173,6 +173,6 @@ export default function DashboardLayout({
           {children}
         </div>
       </main>
-    </div>
+    </>
   );
 }

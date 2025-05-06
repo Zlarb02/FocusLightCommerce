@@ -96,10 +96,11 @@ export default function Parametres() {
   const generalSettingsForm = useForm<GeneralSettingsFormValues>({
     resolver: zodResolver(generalSettingsSchema),
     defaultValues: {
-      siteName: "FOCUS Light",
-      siteDescription: "Boutique en ligne de lampes éco-responsables",
-      contactEmail: "contact@focus-design.fr",
-      contactPhone: "01 23 45 67 89",
+      siteName: "Alto Lille",
+      siteDescription:
+        "Lampes d'appoint FOCUS.01 éco-responsables aux lignes épurées",
+      contactEmail: "altolille@gmail.com",
+      contactPhone: "+33 782 086 690",
     },
   });
 
@@ -119,10 +120,10 @@ export default function Parametres() {
     defaultValues: {
       smtpServer: "smtp.example.com",
       smtpPort: 587,
-      smtpUsername: "notifications@focus-design.fr",
+      smtpUsername: "altolille@gmail.com",
       smtpPassword: "password123",
-      senderEmail: "notifications@focus-design.fr",
-      senderName: "FOCUS Light",
+      senderEmail: "altolille@gmail.com",
+      senderName: "Alto Lille",
     },
   });
 

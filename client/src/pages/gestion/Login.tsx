@@ -79,7 +79,7 @@ export default function GestionLogin() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="w-full max-w-md px-4">
         <div className="mb-8 text-center">
-          <h1 className="font-heading font-bold text-3xl mb-2">FOCUS</h1>
+          <h1 className="font-heading font-bold text-3xl mb-2">Alto</h1>
           <p className="text-muted-foreground">Espace de gestion</p>
         </div>
 

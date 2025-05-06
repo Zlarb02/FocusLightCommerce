@@ -33,6 +33,48 @@
     --ring: 222.2 84% 4.9%;
 
     --radius: 0.5rem;
+
+    /* Polices principales */
+    --font-primary: "Noto Sans", system-ui, sans-serif;
+    --font-heading: "Jost", system-ui, sans-serif;
+    --font-accent: "League Spartan", system-ui, sans-serif;
+
+    /* Variantes fonctionnelles par usage */
+    --font-body: var(--font-primary);
+    --font-titles: var(--font-heading);
+    --font-buttons: var(--font-accent);
+    --font-nav: var(--font-accent);
+
+    /* Échelle typographique (ratio 1.25 - Major Third) */
+    --fs-xs: 0.8rem; /* 12.8px */
+    --fs-sm: 0.875rem; /* 14px */
+    --fs-base: 1rem; /* 16px */
+    --fs-lg: 1.125rem; /* 18px */
+    --fs-xl: 1.25rem; /* 20px */
+    --fs-2xl: 1.563rem; /* 25px */
+    --fs-3xl: 1.953rem; /* 31.25px */
+    --fs-4xl: 2.441rem; /* 39.06px */
+    --fs-5xl: 3.052rem; /* 48.83px */
+
+    /* Graisses typographiques */
+    --fw-light: 300;
+    --fw-regular: 400;
+    --fw-medium: 500;
+    --fw-semibold: 600;
+    --fw-bold: 700;
+
+    /* Hauteurs de ligne */
+    --lh-tight: 1.2;
+    --lh-snug: 1.375;
+    --lh-normal: 1.5;
+    --lh-relaxed: 1.625;
+    --lh-loose: 1.75;
+
+    /* Espacement des lettres */
+    --ls-tight: -0.025em;
+    --ls-normal: 0em;
+    --ls-wide: 0.025em;
+    --ls-wider: 0.05em;
   }
 
   .dark {
@@ -70,14 +112,78 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-body);
+    font-size: var(--fs-base);
+    line-height: var(--lh-normal);
+    font-weight: var(--fw-regular);
+  }
+
+  h1 {
+    font-family: var(--font-titles);
+    font-weight: var(--fw-bold);
+    font-size: var(--fs-4xl);
+    line-height: var(--lh-tight);
+    letter-spacing: var(--ls-tight);
+    margin-bottom: 1.5rem;
+  }
+
+  h2 {
+    font-family: var(--font-titles);
+    font-weight: var(--fw-semibold);
+    font-size: var(--fs-3xl);
+    line-height: var(--lh-tight);
+    letter-spacing: var(--ls-tight);
+    margin-bottom: 1.25rem;
+  }
+
+  h3 {
+    font-family: var(--font-titles);
+    font-weight: var(--fw-semibold);
+    font-size: var(--fs-2xl);
+    line-height: var(--lh-snug);
+    margin-bottom: 1rem;
+  }
+
+  h4 {
+    font-family: var(--font-titles);
+    font-weight: var(--fw-medium);
+    font-size: var(--fs-xl);
+    line-height: var(--lh-snug);
+    margin-bottom: 0.75rem;
+  }
+
+  h5,
+  h6 {
+    font-family: var(--font-titles);
+    font-weight: var(--fw-medium);
+    font-size: var(--fs-lg);
+    line-height: var(--lh-normal);
+    margin-bottom: 0.5rem;
   }
 }
 
-.kantumruy-pro,
 .font-heading {
-  font-family: "Kantumruy Pro", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 500;
+  font-family: var(--font-titles);
+  font-weight: var(--fw-medium);
   font-style: normal;
+}
+
+.font-accent {
+  font-family: var(--font-accent);
+  font-weight: var(--fw-medium);
+  font-style: normal;
+}
+
+/* Classes utilitaires pour la typographie */
+.text-caption {
+  font-size: var(--fs-sm);
+  line-height: var(--lh-normal);
+}
+
+.text-button {
+  font-family: var(--font-buttons);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
 }

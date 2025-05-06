@@ -1,4 +1,4 @@
-# Focus Light Commerce
+# Alto
 
 ## Architecture de déploiement hybride
 
@@ -20,8 +20,8 @@ Cette application utilise une approche de déploiement hybride :
 1. Clonez le dépôt sur votre VPS :
 
 ```bash
-git clone https://github.com/YourUsername/FocusLightCommerce.git
-cd FocusLightCommerce
+git clone https://github.com/YourUsername/Alto.git
+cd Alto
 ```
 
 2. Créez un fichier .env basé sur .env.example :
@@ -42,7 +42,7 @@ make deploy-backend
 1. Connectez votre dépôt GitHub à Vercel
 2. Configurez les variables d'environnement suivantes dans le projet Vercel :
 
-   - `API_URL` : L'URL de votre backend (ex: https://api.votredomaine.com)
+   - `API_URL` : L'URL de votre backend (ex: https://api.alto-lille.fr)
 
 3. Déployez le frontend en poussant sur la branche principale ou en utilisant l'interface Vercel
 

@@ -3,33 +3,78 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FOCUS.01 - Lampe d'appoint écologique et design</title>
+    <title>Alto Lille</title>
     <meta
       name="description"
-      content="Lampe d'appoint écologique et design, fabriquée en PLA écoresponsable et en chêne écogéré. Disponible en 4 couleurs."
+      content="Lampe d'appoint FOCUS.01 écologique et design, fabriquée en PLA écoresponsable et en chêne écogéré. Disponible en 4 couleurs."
     />
     <link rel="icon" type="image/png" href="/images/logo.png" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Montserrat:wght@500;600;700&display=swap"
-      rel="stylesheet"
-    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600&family=Jost:wght@500;600;700&family=League+Spartan:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <style>
-      @import url("https://fonts.cdnfonts.com/css/futura-pt");
-
       :root {
-        --font-sans: "Inter", sans-serif;
-        --font-heading: "Montserrat", sans-serif;
-        --font-futura: "Futura PT", "Futura", sans-serif;
+        /* Polices principales */
+        --font-primary: "Noto Sans", sans-serif;
+        --font-heading: "Jost", sans-serif;
+        --font-accent: "League Spartan", sans-serif;
+
+        /* Variantes fonctionnelles par usage */
+        --font-body: var(--font-primary);
+        --font-titles: var(--font-accent);
+        --font-buttons: var(--font-accent);
+        --font-nav: var(--font-accent);
+
+        /* Variables de mise en page améliorées pour flexibilité totale */
+        --flex-gap: clamp(
+          0.02rem,
+          0.3vw,
+          0.1rem
+        ); /* Réduit de 0.25rem, 1.5vw, 1.5rem */
+        --container-padding: clamp(
+          0.5rem,
+          1.5vw,
+          1.5rem
+        ); /* Légèrement réduit */
+        --item-padding: clamp(
+          0.15rem,
+          0.5vw,
+          0.3rem
+        ); /* Réduit de 0.25rem, 1vw, 0.5rem */
+        --item-basis-small: clamp(250px, 30vw, 350px);
+        --item-basis-medium: clamp(300px, 45vw, 500px);
+        --item-basis-large: clamp(350px, 60vw, 650px);
+
+        /* Variables pour les tailles et proportions */
+        --img-scale: clamp(
+          1.05,
+          1.08 + 0.08vw,
+          1.25
+        ); /* Légèrement ajusté pour s'adapter aux marges réduites */
+        --title-size: clamp(2rem, 5vw, 6rem);
+        --subtitle-size: clamp(1rem, 2vw, 1.5rem);
+        --button-font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+
+        /* Variables de couleurs */
+        --color-bg: #ffffff;
+        --color-text: #333333;
+        --color-button: #333333;
+        --color-button-hover: #555555;
+        --color-footer: #777777;
       }
+
       body {
-        font-family: var(--font-sans);
+        font-family: var(--font-body);
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        background-color: var(--color-bg);
+        color: var(--color-text);
       }
+
       .heading,
       h1,
       h2,
@@ -37,10 +82,615 @@
       h4,
       h5,
       h6 {
-        font-family: var(--font-heading);
+        font-family: var(--font-titles);
       }
-      .font-futura {
-        font-family: var(--font-futura);
+
+      /* Styles pour la landing page */
+      .landing-page {
+        min-height: 100vh;
+        width: 100%;
+        position: relative;
+        padding: var(--container-padding);
+      }
+
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0;
+      }
+
+      /* Animations d'apparition */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes fadeInRight {
+        from {
+          opacity: 0;
+          transform: translateX(-30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      @keyframes fadeInLeft {
+        from {
+          opacity: 0;
+          transform: translateX(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      @keyframes scaleIn {
+        from {
+          opacity: 0;
+          transform: scale(0.9);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      /* Styles pour les éléments animés */
+      .animate {
+        opacity: 0;
+        will-change: transform, opacity;
+      }
+
+      .animate.fade-in {
+        animation: fadeIn 0.8s ease-out forwards;
+      }
+
+      .animate.fade-in-up {
+        animation: fadeInUp 0.8s ease-out forwards;
+      }
+
+      .animate.fade-in-right {
+        animation: fadeInRight 0.8s ease-out forwards;
+      }
+
+      .animate.fade-in-left {
+        animation: fadeInLeft 0.8s ease-out forwards;
+      }
+
+      .animate.scale-in {
+        animation: scaleIn 0.8s ease-out forwards;
+      }
+
+      /* Délais d'animation pour créer un effet cascade */
+      .delay-1 {
+        animation-delay: 0.1s;
+      }
+      .delay-2 {
+        animation-delay: 0.2s;
+      }
+      .delay-3 {
+        animation-delay: 0.3s;
+      }
+      .delay-4 {
+        animation-delay: 0.4s;
+      }
+      .delay-5 {
+        animation-delay: 0.5s;
+      }
+      .delay-6 {
+        animation-delay: 0.6s;
+      }
+      .delay-7 {
+        animation-delay: 0.7s;
+      }
+      .delay-8 {
+        animation-delay: 0.8s;
+      }
+
+      /* Remplacer Grid par Flex avec meilleure adaptabilité */
+      .flex-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--flex-gap);
+        justify-content: center;
+        align-items: stretch;
+        margin: -2.3rem; /* Compense les marges pour un alignement plus serré */
+      }
+
+      /* Styles génériques pour les éléments flex */
+      .flex-item {
+        position: relative;
+        overflow: hidden;
+        padding: var(--item-padding);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        /* Valeurs de flex qui s'adaptent à toutes les tailles d'écran */
+        flex: 1 1 var(--item-basis-medium);
+        min-width: 0; /* Permet aux items de rétrécir en dessous de leur largeur minimale */
+        margin-bottom: var(--flex-gap); /* Utilise flex-gap pour la cohérence */
+      }
+
+      /* Style pour les images - Adaptatif et fluide */
+      .flex-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transform: scale(var(--img-scale));
+        transition: transform 0.5s ease, opacity 0.3s ease;
+      }
+
+      /* Style pour les légendes au hover */
+      .caption-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: var(--color-bg);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: 2;
+        padding: 1rem;
+        text-align: center;
+      }
+
+      /* Bouton "Voir plus" dans les légendes */
+      .see-more-btn {
+        margin-top: 1rem;
+        padding: 0.5rem 1rem;
+        background-color: transparent;
+        border: 1px solid var(--color-text);
+        color: var(--color-text);
+        font-family: var(--font-buttons);
+        font-size: clamp(0.8rem, 1.2vw, 0.9rem);
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .see-more-btn:hover {
+        background-color: var(--color-text);
+        color: var(--color-bg);
+      }
+
+      /* Modal plein écran */
+      .project-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--color-bg);
+        z-index: 1000;
+        display: none;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+        overflow-y: auto;
+      }
+
+      .project-modal.active {
+        display: flex;
+        opacity: 1;
+      }
+
+      .modal-content {
+        width: 100%;
+        max-width: 1200px;
+        margin: auto;
+        padding: 2rem;
+        position: relative;
+      }
+
+      /* Styles pour les pages modales */
+      .modal-pages {
+        position: relative;
+        width: 100%;
+      }
+
+      .modal-page {
+        display: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .modal-page.active {
+        display: block;
+        opacity: 1;
+      }
+
+      .modal-close {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        font-size: 2rem;
+        background: none;
+        border: none;
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1001;
+      }
+
+      /* Style pour le bouton de la boutique */
+      .shop-cta {
+        position: absolute;
+        top: 1.6rem;
+        right: 17%;
+        z-index: 1001;
+      }
+
+      .modal-shop-button {
+        padding: 0.5rem 1rem;
+        background-color: var(--color-button);
+        color: white;
+        text-decoration: none;
+        font-size: 0.9rem;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+      }
+
+      .modal-shop-button:hover {
+        background-color: var(--color-button-hover);
+      }
+
+      .modal-header {
+        margin-bottom: 2rem;
+      }
+
+      .modal-title {
+        font-size: clamp(1.8rem, 4vw, 3rem);
+        margin-bottom: 0.5rem;
+      }
+
+      .modal-subtitle {
+        font-size: clamp(1.2rem, 2vw, 1.5rem);
+        font-weight: 400;
+        margin-bottom: 1rem;
+      }
+
+      .modal-body {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      @media (min-width: 768px) {
+        .modal-body {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      .modal-image {
+        width: 100%;
+        height: auto;
+        max-height: 70vh;
+        object-fit: contain;
+      }
+
+      .modal-description {
+        line-height: 1.6;
+      }
+
+      .modal-footer {
+        margin-top: 2rem;
+      }
+
+      /* Empêcher le défilement du body quand la modal est ouverte */
+      body.modal-open {
+        overflow: hidden;
+      }
+
+      .caption-title {
+        font-family: var(--font-titles);
+        font-size: clamp(1.2rem, 3vw, 2rem);
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+
+      .caption-subtitle {
+        font-family: var(--font-body);
+        font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+        font-weight: 400;
+      }
+
+      /* Effet hover pour desktop */
+      @media (hover: hover) {
+        .flex-item:hover .caption-overlay {
+          opacity: 1;
+        }
+
+        .flex-item:hover img {
+          opacity: 0;
+        }
+      }
+
+      /* Pour les appareils tactiles */
+      @media (hover: none) {
+        .flex-item.caption-active .caption-overlay {
+          opacity: 1;
+        }
+
+        .flex-item.caption-active img {
+          opacity: 0;
+        }
+      }
+
+      /* Titre Alto stylisé */
+      .item-alto h2 {
+        font-size: var(--title-size);
+        font-weight: 700;
+        margin: 0;
+      }
+
+      /* Style spécifique pour l'élément Focus.01 */
+      .item-orange {
+        flex-direction: column;
+      }
+
+      .product-title {
+        text-align: center;
+        margin-top: 0.5rem;
+      }
+
+      .product-title h2 {
+        font-size: calc(var(--title-size) * 0.6);
+        font-weight: 700;
+        margin: 0;
+      }
+
+      .product-title p {
+        font-size: var(--subtitle-size);
+        margin: 0;
+      }
+
+      /* Bouton de la boutique */
+      .shop-button {
+        display: inline-block;
+        padding: clamp(0.8rem, 1vw, 1rem) clamp(1.5rem, 3vw, 2.5rem);
+        background-color: var(--color-button);
+        color: white;
+        text-decoration: none;
+        font-family: var(--font-buttons);
+        font-size: var(--button-font-size);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: clamp(1rem, 2vw, 2rem);
+      }
+
+      .shop-button:hover {
+        background-color: var(--color-button-hover);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      footer {
+        text-align: center;
+        font-size: clamp(0.7rem, 1vw, 0.8rem);
+        color: var(--color-footer);
+        padding: clamp(0.5rem, 1vw, 1rem);
+        margin-top: clamp(1rem, 2vw, 2rem);
+      }
+
+      /* Masquer l'app React par défaut */
+      #root {
+        display: none;
+      }
+
+      /* Aspect ratios pour contrôler la hauteur des éléments */
+      .item-sea {
+        aspect-ratio: 16/9;
+        flex: 1 1 var(--item-basis-medium);
+      }
+      .item-shoes {
+        aspect-ratio: 1/1;
+        flex: 1 1 var(--item-basis-small);
+      }
+      .item-orange {
+        aspect-ratio: 3/5; /* Ratio vertical plus naturel */
+        flex: 0 1 calc(var(--item-basis-small) * 0.8); /* Réduit la base pour permettre une forme plus verticale */
+        max-height: 90vh; /* Hauteur maximale relative à la fenêtre */
+        min-height: 400px; /* Hauteur minimale pour garantir la visibilité */
+      }
+      .item-lowtech {
+        aspect-ratio: 4/3;
+        flex: 1 1 var(--item-basis-small);
+      }
+      .item-waterfall {
+        aspect-ratio: 1/1.2; /* Légèrement vertical */
+        flex: 1 1 var(--item-basis-small);
+      }
+      .item-alto {
+        aspect-ratio: 1/1;
+        flex: 1 1 var(--item-basis-small);
+        align-self: stretch;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .item-braderie {
+        order: 7;
+        flex: 1 1 calc(var(--item-basis-medium)); /* Taille de base très réduite */
+        aspect-ratio: 2/3; /* Ratio vertical mais pas trop */
+        min-height: 220px; /* Hauteur minimale encore plus réduite */
+      }
+      .shop-container {
+        order: 8;
+        min-height: 220px; /* Ajusté pour correspondre à braderie */
+      }
+
+      /* Transformations spécifiques pour les images */
+      .item-sea img {
+        transform: scale(var(--img-scale)) translateY(-10%);
+      }
+      .item-shoes img {
+        transform: scale(var(--img-scale)) translateX(-5%);
+      }
+      .item-orange img {
+        object-fit: contain; /* Assure que l'image complète est visible */
+        max-height: 100%;
+        width: auto;
+        transform: scale(0.95); /* Légèrement plus petit pour l'esthétique */
+      }
+      .item-lowtech img {
+        transform: scale(var(--img-scale)) translateX(5%);
+      }
+      .item-waterfall img {
+        transform: scale(var(--img-scale)) translateY(5%);
+      }
+      .item-braderie img {
+        object-fit: contain; /* Assure que l'image complète est visible */
+        max-height: 100%;
+        width: auto;
+      }
+
+      /* Styles pour le conteneur du bouton */
+      .shop-container {
+        flex: 1 1 var(--item-basis-small);
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 350px; /* Alignement avec braderie */
+      }
+
+      /* Ordre des éléments pour contrôler le flux flexible */
+      .item-sea {
+        order: 1;
+      }
+      .item-shoes {
+        order: 3; /* Changé pour créer plus de variété visuelle */
+      }
+      .item-orange {
+        order: 2; /* Placé plus tôt pour plus de visibilité */
+      }
+      .item-lowtech {
+        order: 4;
+      }
+      .item-waterfall {
+        order: 6; /* Échangé avec item-alto */
+      }
+      .item-alto {
+        order: 5; /* Échangé avec item-waterfall */
+      }
+      .item-braderie {
+        order: 7;
+      }
+      .shop-container {
+        order: 8;
+      }
+
+      /* Créer un wrapper pour braderie et shop en mode inline à partir d'une certaine taille */
+      @media (min-width: 490px) {
+        /* Correction de la media query qui manquait "px" */
+        .item-braderie {
+          flex: 1 1 calc(65% - var(--flex-gap)); /* Beaucoup plus petit que 50% */
+          max-width: calc(65% - var(--flex-gap));
+        }
+        .shop-container {
+          flex: 1 1 calc(35% - var(--flex-gap)); /* Significativement plus grand */
+          max-width: calc(35% - var(--flex-gap));
+        }
+      }
+
+      /* Créer un wrapper pour braderie et shop en mode inline à partir d'une certaine taille */
+      @media (min-width: 765px) {
+        .item-braderie {
+          flex: 1 1 calc(35% - var(--flex-gap)); /* Beaucoup plus petit que 50% */
+          max-width: calc(35% - var(--flex-gap));
+        }
+        .shop-container {
+          flex: 1 1 calc(65% - var(--flex-gap)); /* Significativement plus grand */
+          max-width: calc(65% - var(--flex-gap));
+        }
+
+        /* Ordre des éléments pour contrôler le flux flexible */
+        .item-sea {
+          order: 1;
+        }
+        .item-shoes {
+          order: 6; /* Changé pour créer plus de variété visuelle */
+        }
+        .item-orange {
+          order: 2; /* Placé plus tôt pour plus de visibilité */
+        }
+        .item-lowtech {
+          order: 3;
+        }
+        .item-waterfall {
+          order: 5; /* Échangé avec item-alto */
+        }
+        .item-alto {
+          order: 4; /* Échangé avec item-waterfall */
+        }
+        .item-braderie {
+          order: 7;
+        }
+      }
+
+      /* Navigation entre les pages modales */
+      .modal-navigation {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 1.5rem;
+      }
+
+      .page-indicator {
+        font-size: 0.9rem;
+        color: var(--color-text);
+        opacity: 0.7;
+      }
+
+      .nav-arrow {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: opacity 0.3s ease;
+      }
+
+      .nav-arrow:hover {
+        opacity: 0.7;
+      }
+
+      .nav-prev {
+        margin-right: auto;
+      }
+
+      .nav-next {
+        margin-left: auto;
       }
     </style>
     <!-- Chargement de la configuration d'environnement en production -->
@@ -50,7 +700,1070 @@
     <script src="/env-config.js" type="module"></script>
   </head>
   <body>
+    <!-- Landing page -->
+    <div id="landing-container" style="margin-top: 25px">
+      <div class="landing-page">
+        <div class="container">
+          <div class="flex-container">
+            <div class="flex-item item-sea animate fade-in-up delay-1">
+              <img src="/images/sea-cle.jpg" alt="Sea-cle" />
+              <div class="caption-overlay">
+                <div class="caption-title">Sea-cle</div>
+                <div class="caption-subtitle">Ramasseur de déchets</div>
+                <button class="see-more-btn" data-project="sea-cle">
+                  Voir plus
+                </button>
+              </div>
+            </div>
+
+            <div class="flex-item item-shoes animate fade-in-left delay-2">
+              <img src="/images/chaussures-custom.jpg" alt="Custom shoes" />
+              <div class="caption-overlay">
+                <div class="caption-title">Chaussures custom</div>
+                <div class="caption-subtitle">Customisation de chaussures</div>
+                <button class="see-more-btn" data-project="shoes">
+                  Voir plus
+                </button>
+              </div>
+            </div>
+
+            <div class="flex-item item-orange animate scale-in delay-3">
+              <img src="/images/orange.png" alt="Orange lamp" />
+              <div class="caption-overlay">
+                <div class="caption-title">Focus.01</div>
+                <div class="caption-subtitle">Lampe de bureau</div>
+                <button class="see-more-btn" data-project="focus">
+                  Voir plus
+                </button>
+              </div>
+              <div class="product-title">
+                <h2>Focus.01</h2>
+                <p>Produit en vente</p>
+              </div>
+            </div>
+
+            <div class="flex-item item-lowtech animate fade-in-right delay-4">
+              <img src="/images/lowtech-vynil.jpg" alt="Lowtech vinyl" />
+              <div class="caption-overlay">
+                <div class="caption-title">Without speaker</div>
+                <div class="caption-subtitle">Lecteur vinyle Low tech</div>
+                <button class="see-more-btn" data-project="lowtech">
+                  Voir plus
+                </button>
+              </div>
+            </div>
+
+            <div class="flex-item item-waterfall animate fade-in-up delay-5">
+              <img src="/images/Waterfall.jpg" alt="Waterfall" />
+              <div class="caption-overlay">
+                <div class="caption-title">Waterfall</div>
+                <div class="caption-subtitle">Applique murale</div>
+                <button class="see-more-btn" data-project="waterfall">
+                  Voir plus
+                </button>
+              </div>
+            </div>
+
+            <div class="flex-item item-alto animate scale-in delay-6">
+              <h2>Alto</h2>
+            </div>
+
+            <div class="flex-item item-braderie animate fade-in-left delay-7">
+              <img
+                src="/images/braderie-de-l-art.png"
+                alt="Braderie de l'art"
+              />
+              <div class="caption-overlay">
+                <div class="caption-title">Braderie de l'art</div>
+                <div class="caption-subtitle">Roubaix 2023</div>
+                <button class="see-more-btn" data-project="braderie">
+                  Voir plus
+                </button>
+              </div>
+            </div>
+
+            <div class="shop-container animate fade-in delay-8">
+              <a href="/shop" class="shop-button" id="shop-link">
+                Découvrir la boutique
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <footer class="animate fade-in-up delay-8">
+          © 2025 Alto Lille - Tous droits réservés
+        </footer>
+      </div>
+    </div>
+
+    <!-- Modals des projets -->
+    <div id="modal-sea-cle" class="project-modal">
+      <div class="modal-content">
+        <button class="modal-close">&times;</button>
+        <div class="shop-cta">
+          <a href="/shop" class="modal-shop-button">Visiter la boutique</a>
+        </div>
+        <div class="modal-pages">
+          <div class="modal-page modal-page-1 active">
+            <div class="modal-header">
+              <h2 class="modal-title">Sea-cle</h2>
+              <h3 class="modal-subtitle">Ramasseur de déchets</h3>
+            </div>
+            <div class="modal-body">
+              <img
+                src="/images/sea-cle.jpg"
+                alt="Sea-cle"
+                class="modal-image"
+              />
+              <div class="modal-description">
+                <p>
+                  C’est un objet ramasseur de déchets plastiques sur les plages
+                  de sable. L’objet est produit par PLASTICEM une entreprise
+                  d’injection plastique. Il est fabriqué pour les associations
+                  qui ramassent les déchets sur la plage. Sea-cle est fabriqué à
+                  partir des déchets plastiques ramassés.
+                </p>
+                <p>
+                  L’objet a été créé pour remplacer les outils de ramassage de
+                  l’association. L’outil leur permettra de ne plus se baisser
+                  pour ramasser donc s’économiser. Il a été créé pour être
+                  utilisable autant par les enfants que par les adultes de
+                  l’association
+                  <a target="_blank" href="https://www.rivagespropres.fr"
+                    >Rivages Propres</a
+                  >.
+                </p>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <p>Projet réalisé en 2024 dans le cadre d'un projet d'étude.</p>
+              <div class="modal-navigation">
+                <span class="page-indicator">1/2</span>
+                <button
+                  class="nav-arrow nav-next"
+                  data-target="modal-sea-cle"
+                  data-page="2"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="modal-page modal-page-2">
+            <div class="modal-header">
+              <h2 class="modal-title">Sea-cle</h2>
+              <h3 class="modal-subtitle">Informations complémentaires</h3>
+            </div>
+            <div class="modal-body">
+              <img
+                src="/images/sea-cle.jpg"
+                alt="Sea-cle"
+                class="modal-image"
+              />
+              <div class="modal-description">
+                <p>
+                  La conception de Sea-cle repose sur des principes d'économie
+                  circulaire. Les déchets plastiques collectés sur les plages
+                  sont triés, nettoyés puis transformés en un outil fonctionnel
+                  qui retourne servir à la collecte de nouveaux déchets.
+                </p>
+                <p>
+                  Son ergonomie a été spécialement étudiée pour minimiser la
+                  fatigue lors des sessions de ramassage. Son manche
+                  télescopique s'adapte à la taille de l'utilisateur et sa pince
+                  est conçue pour saisir des déchets de différentes tailles sans
+                  effort.
+                </p>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <p>Collaboration avec l'association Rivages Propres.</p>
+              <div class="modal-navigation">
+                <button
+                  class="nav-arrow nav-prev"
+                  data-target="modal-sea-cle"
+                  data-page="1"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                  </svg>
+                </button>
+                <span class="page-indicator">2/2</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="modal-shoes" class="project-modal">
+      <div class="modal-content">
+        <button class="modal-close">&times;</button>
+        <div class="shop-cta">
+          <a href="/shop" class="modal-shop-button">Visiter la boutique</a>
+        </div>
+        <div class="modal-pages">
+          <div class="modal-page modal-page-1 active">
+            <div class="modal-header">
+              <h2 class="modal-title">Chaussures custom</h2>
+              <h3 class="modal-subtitle">Customisation de chaussures</h3>
+            </div>
+            <div class="modal-body">
+              <img
+                src="/images/chaussures-custom.jpg"
+                alt="Custom shoes"
+                class="modal-image"
+              />
+              <div class="modal-description">
+                <p>
+                  Notre service de customisation de chaussures transforme des
+                  modèles classiques en pièces uniques, reflétant la
+                  personnalité de leur propriétaire.
+                </p>
+                <p>
+                  Utilisant des techniques mixtes et des matériaux
+                  éco-responsables, chaque paire devient une œuvre d'art
+                  portable, alliant style et durabilité.
+                </p>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <p>
+                Service disponible sur commande. Délai de réalisation: 2-3
+                semaines.
+              </p>
+              <div class="modal-navigation">
+                <span class="page-indicator">1/2</span>
+                <button
+                  class="nav-arrow nav-next"
+                  data-target="modal-shoes"
+                  data-page="2"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="modal-page modal-page-2">
+            <div class="modal-header">
+              <h2 class="modal-title">Chaussures custom</h2>
+              <h3 class="modal-subtitle">Notre processus créatif</h3>
+            </div>
+            <div class="modal-body">
+              <img
+                src="/images/chaussures-custom.jpg"
+                alt="Custom shoes"
+                class="modal-image"
+              />
+              <div class="modal-description">
+                <p>
+                  Notre processus commence par une consultation approfondie où
+                  nous explorons vos goûts, influences et préférences visuelles.
+                  Nous créons ensuite des maquettes digitales pour vous
+                  permettre de visualiser le résultat final avant toute
+                  intervention.
+                </p>
+                <p>
+                  Chaque paire est préparée, nettoyée, puis customisée à la main
+                  par nos artistes en utilisant des peintures textiles de haute
+                  qualité résistantes à l'eau et à l'usure. Une fois terminées,
+                  les chaussures sont protégées par plusieurs couches de
+                  fixateur pour garantir leur durabilité.
+                </p>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <p>Demandez un devis personnalisé pour votre projet.</p>
+              <div class="modal-navigation">
+                <button
+                  class="nav-arrow nav-prev"
+                  data-target="modal-shoes"
+                  data-page="1"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                  </svg>
+                </button>
+                <span class="page-indicator">2/2</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="modal-focus" class="project-modal">
+      <div class="modal-content">
+        <button class="modal-close">&times;</button>
+        <div class="shop-cta">
+          <a href="/shop" class="modal-shop-button">Visiter la boutique</a>
+        </div>
+        <div class="modal-pages">
+          <div class="modal-page modal-page-1 active">
+            <div class="modal-header">
+              <h2 class="modal-title">Focus.01</h2>
+              <h3 class="modal-subtitle">Lampe de bureau</h3>
+            </div>
+            <div class="modal-body">
+              <img
+                src="/images/orange.png"
+                alt="Focus.01"
+                class="modal-image"
+              />
+              <div class="modal-description">
+                <p>
+                  Focus.01 est une lampe d'appoint écologique et design,
+                  fabriquée en PLA écoresponsable et en chêne écogéré. Son
+                  design minimaliste s'adapte à tous les espaces de travail ou
+                  de vie.
+                </p>
+                <p>
+                  Disponible en 4 couleurs, cette lampe combine esthétique
+                  contemporaine et engagement environnemental, tout en offrant
+                  un éclairage optimal pour la concentration.
+                </p>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <p>Produit disponible à l'achat dans notre boutique en ligne.</p>
+              <div class="modal-navigation">
+                <span class="page-indicator">1/2</span>
+                <button
+                  class="nav-arrow nav-next"
+                  data-target="modal-focus"
+                  data-page="2"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="modal-page modal-page-2">
+            <div class="modal-header">
+              <h2 class="modal-title">Focus.01</h2>
+              <h3 class="modal-subtitle">Caractéristiques techniques</h3>
+            </div>
+            <div class="modal-body">
+              <img
+                src="/images/orange.png"
+                alt="Focus.01"
+                class="modal-image"
+              />
+              <div class="modal-description">
+                <p>
+                  <strong>Matériaux:</strong> PLA biosourcé et chêne issu de
+                  forêts gérées durablement<br />
+                  <strong>Dimensions:</strong> H: 28 cm, L: 12 cm, P: 12 cm<br />
+                  <strong>Alimentation:</strong> USB-C 5V avec interrupteur
+                  tactile<br />
+                  <strong>LED:</strong> 5W, 2700K (blanc chaud), IRC > 90<br />
+                  <strong>Consommation:</strong> 3 watts en utilisation<br />
+                  <strong>Coloris disponibles:</strong> Orange, Blanc, Vert,
+                  Bleu
+                </p>
+                <p>
+                  Chaque lampe Focus.01 est fabriquée à la main dans notre
+                  atelier lillois, ce qui explique les légères variations qui
+                  rendent chaque pièce unique. L'impression 3D en PLA biosourcé
+                  garantit une empreinte carbone réduite tout en offrant une
+                  excellente durabilité.
+                </p>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <p>Garantie 2 ans - Livraison en emballage recyclable</p>
+              <div class="modal-navigation">
+                <button
+                  class="nav-arrow nav-prev"
+                  data-target="modal-focus"
+                  data-page="1"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                  </svg>
+                </button>
+                <span class="page-indicator">2/2</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="modal-lowtech" class="project-modal">
+      <div class="modal-content">
+        <button class="modal-close">&times;</button>
+        <div class="shop-cta">
+          <a href="/shop" class="modal-shop-button">Visiter la boutique</a>
+        </div>
+        <div class="modal-pages">
+          <div class="modal-page modal-page-1 active">
+            <div class="modal-header">
+              <h2 class="modal-title">Without speaker</h2>
+              <h3 class="modal-subtitle">Lecteur vinyle Low tech</h3>
+            </div>
+            <div class="modal-body">
+              <img
+                src="/images/lowtech-vynil.jpg"
+                alt="Lowtech vinyl"
+                class="modal-image"
+              />
+              <div class="modal-description">
+                <p>
+                  Without speaker est un projet de design low-tech qui revisite
+                  le concept de lecteur vinyle. Conçu avec des matériaux
+                  recyclés et une électronique minimale, ce dispositif met en
+                  valeur l'essence même de l'écoute analogique.
+                </p>
+                <p>
+                  L'approche low-tech favorise une relation plus consciente avec
+                  la technologie, tout en offrant une expérience sonore unique
+                  et chaleureuse.
+                </p>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <p>
+                Projet conceptuel, présenté lors de l'exposition Design &
+                Musique 2024.
+              </p>
+              <div class="modal-navigation">
+                <span class="page-indicator">1/2</span>
+                <button
+                  class="nav-arrow nav-next"
+                  data-target="modal-lowtech"
+                  data-page="2"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="modal-page modal-page-2">
+            <div class="modal-header">
+              <h2 class="modal-title">Without speaker</h2>
+              <h3 class="modal-subtitle">Philosophie et technologie</h3>
+            </div>
+            <div class="modal-body">
+              <img
+                src="/images/lowtech-vynil.jpg"
+                alt="Lowtech vinyl"
+                class="modal-image"
+              />
+              <div class="modal-description">
+                <p>
+                  Dans un monde où la technologie devient de plus en plus
+                  complexe et opaque, Without speaker propose une approche
+                  radicalement différente : revenir aux principes fondamentaux
+                  de l'amplification sonore en rendant visibles et
+                  compréhensibles tous les composants.
+                </p>
+                <p>
+                  Le système utilise un amplificateur analogique ultra-simple,
+                  des pavillons acoustiques imprimés en 3D à partir de matériaux
+                  recyclés, et un minimum de composants électroniques. Cette
+                  transparence technologique permet à l'utilisateur de
+                  comprendre comment fonctionne son appareil, de le réparer
+                  facilement, et d'établir une relation plus durable avec
+                  l'objet.
+                </p>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <p>Production limitée disponible sur commande.</p>
+              <div class="modal-navigation">
+                <button
+                  class="nav-arrow nav-prev"
+                  data-target="modal-lowtech"
+                  data-page="1"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                  </svg>
+                </button>
+                <span class="page-indicator">2/2</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="modal-waterfall" class="project-modal">
+      <div class="modal-content">
+        <button class="modal-close">&times;</button>
+        <div class="shop-cta">
+          <a href="/shop" class="modal-shop-button">Visiter la boutique</a>
+        </div>
+        <div class="modal-pages">
+          <div class="modal-page modal-page-1 active">
+            <div class="modal-header">
+              <h2 class="modal-title">Waterfall</h2>
+              <h3 class="modal-subtitle">Applique murale</h3>
+            </div>
+            <div class="modal-body">
+              <img
+                src="/images/Waterfall.jpg"
+                alt="Waterfall"
+                class="modal-image"
+              />
+              <div class="modal-description">
+                <p>
+                  Waterfall est une applique murale inspirée par les flux
+                  naturels de l'eau. Sa conception modulaire permet de créer des
+                  configurations personnalisées selon l'espace disponible.
+                </p>
+                <p>
+                  Les éléments ondulants diffusent la lumière de manière douce
+                  et agréable, créant une ambiance apaisante rappelant le
+                  mouvement des cascades.
+                </p>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <p>Conception sur mesure pour projets d'aménagement intérieur.</p>
+              <div class="modal-navigation">
+                <span class="page-indicator">1/2</span>
+                <button
+                  class="nav-arrow nav-next"
+                  data-target="modal-waterfall"
+                  data-page="2"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="modal-page modal-page-2">
+            <div class="modal-header">
+              <h2 class="modal-title">Waterfall</h2>
+              <h3 class="modal-subtitle">Applications et matériaux</h3>
+            </div>
+            <div class="modal-body">
+              <img
+                src="/images/Waterfall.jpg"
+                alt="Waterfall"
+                class="modal-image"
+              />
+              <div class="modal-description">
+                <p>
+                  Waterfall a été conçue pour s'intégrer dans des espaces
+                  variés, des hôtels et restaurants aux habitations privées. Sa
+                  modularité permet de créer des installations sur mesure,
+                  depuis des appliques minimalistes jusqu'à des murs lumineux
+                  complets.
+                </p>
+                <p>
+                  Chaque module est fabriqué à partir de matériaux durables et
+                  recyclables : diffuseurs en PETG translucide, structures en
+                  aluminium anodisé et composants électriques de haute qualité.
+                  Le système d'éclairage LED intégré est économe en énergie et
+                  offre une durée de vie exceptionnelle de plus de 50 000
+                  heures.
+                </p>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <p>Contactez-nous pour un projet personnalisé.</p>
+              <div class="modal-navigation">
+                <button
+                  class="nav-arrow nav-prev"
+                  data-target="modal-waterfall"
+                  data-page="1"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                  </svg>
+                </button>
+                <span class="page-indicator">2/2</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="modal-braderie" class="project-modal">
+      <div class="modal-content">
+        <button class="modal-close">&times;</button>
+        <div class="shop-cta">
+          <a href="/shop" class="modal-shop-button">Visiter la boutique</a>
+        </div>
+        <div class="modal-pages">
+          <div class="modal-page modal-page-1 active">
+            <div class="modal-header">
+              <h2 class="modal-title">Braderie de l'art</h2>
+              <h3 class="modal-subtitle">Roubaix 2023</h3>
+            </div>
+            <div class="modal-body">
+              <img
+                src="/images/braderie-de-l-art.png"
+                alt="Braderie de l'art"
+                class="modal-image"
+              />
+              <div class="modal-description">
+                <p>
+                  Alto a participé à la Braderie de l'Art de Roubaix en 2023, un
+                  événement emblématique où artistes et designers transforment
+                  des objets récupérés en créations originales pendant 24h
+                  non-stop.
+                </p>
+                <p>
+                  Notre équipe a présenté plusieurs pièces uniques réalisées à
+                  partir de matériaux recyclés, démontrant notre engagement pour
+                  l'upcycling et la créativité durable.
+                </p>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <p>
+                Retrouvez-nous à l'édition 2025 de la Braderie de l'Art à
+                Roubaix.
+              </p>
+              <div class="modal-navigation">
+                <span class="page-indicator">1/2</span>
+                <button
+                  class="nav-arrow nav-next"
+                  data-target="modal-braderie"
+                  data-page="2"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="modal-page modal-page-2">
+            <div class="modal-header">
+              <h2 class="modal-title">Braderie de l'art</h2>
+              <h3 class="modal-subtitle">Créations et impact</h3>
+            </div>
+            <div class="modal-body">
+              <img
+                src="/images/braderie-de-l-art.png"
+                alt="Braderie de l'art"
+                class="modal-image"
+              />
+              <div class="modal-description">
+                <p>
+                  Pour cette édition, notre équipe a relevé le défi de créer des
+                  luminaires et objets décoratifs en utilisant uniquement des
+                  matériaux récupérés dans les déchetteries de la métropole
+                  lilloise.
+                </p>
+                <p>
+                  Parmi nos créations présentées : une lampe suspendue réalisée
+                  à partir d'anciens ventilateurs, un miroir encadré de
+                  composants électroniques recyclés, et une série de petits
+                  objets utilitaires fabriqués à partir de pièces
+                  d'électroménager. Toutes ces pièces ont été vendues lors de
+                  l'événement, démontrant l'intérêt croissant du public pour le
+                  design circulaire et responsable.
+                </p>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <p>
+                Une partie des bénéfices a été reversée à des associations
+                locales.
+              </p>
+              <div class="modal-navigation">
+                <button
+                  class="nav-arrow nav-prev"
+                  data-target="modal-braderie"
+                  data-page="1"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                  </svg>
+                </button>
+                <span class="page-indicator">2/2</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- App React (caché par défaut) -->
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+
+    <!-- Script pour gérer la navigation entre landing et app React -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Gestion des modals de projets
+        const setupModalInteractions = () => {
+          // Boutons "Voir plus"
+          const seeMoreButtons = document.querySelectorAll(".see-more-btn");
+
+          // Pour chaque bouton
+          seeMoreButtons.forEach((button) => {
+            button.addEventListener("click", function (e) {
+              e.stopPropagation();
+
+              // Identifier le projet
+              const projectId = this.getAttribute("data-project");
+              const modal = document.getElementById(`modal-${projectId}`);
+
+              if (modal) {
+                // Ouvrir la modal
+                modal.classList.add("active");
+                document.body.classList.add("modal-open");
+
+                // Si on est sur mobile, fermer d'abord la légende
+                const parentItem = this.closest(".flex-item");
+                if (
+                  parentItem &&
+                  parentItem.classList.contains("caption-active")
+                ) {
+                  setTimeout(() => {
+                    parentItem.classList.remove("caption-active");
+                  }, 400); // Délai pour une meilleure transition visuelle
+                }
+              }
+            });
+          });
+
+          // Boutons de fermeture des modals
+          const closeButtons = document.querySelectorAll(".modal-close");
+          closeButtons.forEach((button) => {
+            button.addEventListener("click", function () {
+              const modal = this.closest(".project-modal");
+              if (modal) {
+                modal.classList.remove("active");
+                document.body.classList.remove("modal-open");
+              }
+            });
+          });
+
+          // Navigation entre les pages modales
+          const setupModalNavigation = () => {
+            const navButtons = document.querySelectorAll(
+              ".nav-prev, .nav-next"
+            );
+
+            navButtons.forEach((button) => {
+              button.addEventListener("click", function () {
+                const modalId = this.getAttribute("data-target");
+                const pageNum = parseInt(this.getAttribute("data-page"));
+                const modal = document.getElementById(modalId);
+
+                if (modal) {
+                  // Masquer toutes les pages
+                  const pages = modal.querySelectorAll(".modal-page");
+                  pages.forEach((page) => {
+                    page.classList.remove("active");
+                  });
+
+                  // Afficher la page demandée
+                  const targetPage = modal.querySelector(
+                    `.modal-page-${pageNum}`
+                  );
+                  if (targetPage) {
+                    targetPage.classList.add("active");
+                  }
+                }
+              });
+            });
+          };
+
+          // Initialiser la navigation modale
+          setupModalNavigation();
+
+          // Fermer la modal en cliquant en dehors du contenu
+          const modals = document.querySelectorAll(".project-modal");
+          modals.forEach((modal) => {
+            modal.addEventListener("click", function (e) {
+              if (e.target === this) {
+                this.classList.remove("active");
+                document.body.classList.remove("modal-open");
+              }
+            });
+          });
+
+          // Fermer la modal avec la touche Echap
+          document.addEventListener("keydown", function (e) {
+            if (e.key === "Escape") {
+              const activeModal = document.querySelector(
+                ".project-modal.active"
+              );
+              if (activeModal) {
+                activeModal.classList.remove("active");
+                document.body.classList.remove("modal-open");
+              }
+            }
+          });
+        };
+
+        // Initialiser les interactions modales
+        setupModalInteractions();
+
+        // Animation au défilement avec Intersection Observer
+        const setupScrollAnimations = () => {
+          const animatedElements = document.querySelectorAll(".animate");
+
+          // Configuration de l'Intersection Observer
+          const observerOptions = {
+            root: null, // viewport
+            rootMargin: "0px",
+            threshold: 0.15, // L'élément doit être visible à 15% pour déclencher l'animation
+          };
+
+          // Callback exécuté lorsqu'un élément devient visible
+          const observerCallback = (entries, observer) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                // Conserver les classes d'animation existantes tout en les activant
+                entry.target.style.visibility = "visible";
+                // Ne plus observer cet élément une fois animé
+                observer.unobserve(entry.target);
+              }
+            });
+          };
+
+          // Créer l'observer
+          const observer = new IntersectionObserver(
+            observerCallback,
+            observerOptions
+          );
+
+          // Observer chaque élément animé
+          animatedElements.forEach((element) => {
+            observer.observe(element);
+          });
+        };
+
+        // Initialiser les animations au chargement
+        setupScrollAnimations();
+
+        // Gérer la navigation basée sur l'URL
+        handleNavigation();
+
+        // Ajouter un gestionnaire pour le bouton de la boutique
+        document
+          .getElementById("shop-link")
+          .addEventListener("click", function (e) {
+            e.preventDefault();
+            navigateToShop();
+          });
+
+        // Écouter les changements d'URL
+        window.addEventListener("popstate", handleNavigation);
+
+        function navigateToShop() {
+          // Mettre à jour l'URL
+          history.pushState({}, "", "/shop");
+          // Afficher l'app React et masquer la landing
+          document.getElementById("landing-container").style.display = "none";
+          document.getElementById("root").style.display = "block";
+          // Notifier l'app React du changement
+          window.dispatchEvent(
+            new CustomEvent("routeChange", { detail: { path: "/shop" } })
+          );
+        }
+
+        function handleNavigation() {
+          // Vérifier l'URL actuelle
+          const path = window.location.pathname;
+          if (path === "/" || path === "") {
+            // Afficher la landing sur la page d'accueil
+            document.getElementById("landing-container").style.display =
+              "block";
+            document.getElementById("root").style.display = "none";
+          } else {
+            // Afficher l'app React pour tous les autres chemins
+            document.getElementById("landing-container").style.display = "none";
+            document.getElementById("root").style.display = "block";
+          }
+        }
+
+        // Gestion du tap pour les appareils tactiles
+        const setupTapInteraction = () => {
+          const flexItems = document.querySelectorAll(".flex-item");
+
+          // Vérifier s'il s'agit d'un appareil tactile
+          const isTouchDevice =
+            "ontouchstart" in window || navigator.maxTouchPoints > 0;
+
+          if (isTouchDevice) {
+            flexItems.forEach((item) => {
+              // Exclure l'item "Alto" qui n'a pas d'image
+              if (!item.classList.contains("item-alto")) {
+                item.addEventListener("click", function (e) {
+                  // Si un autre élément est déjà actif, le désactiver
+                  document
+                    .querySelectorAll(".flex-item.caption-active")
+                    .forEach((activeItem) => {
+                      if (activeItem !== item) {
+                        activeItem.classList.remove("caption-active");
+                      }
+                    });
+
+                  // Basculer la classe active pour cet élément
+                  this.classList.toggle("caption-active");
+                  e.stopPropagation();
+                });
+              }
+            });
+
+            // Cliquer en dehors pour fermer tous les captions
+            document.addEventListener("click", function () {
+              document
+                .querySelectorAll(".flex-item.caption-active")
+                .forEach((item) => {
+                  item.classList.remove("caption-active");
+                });
+            });
+          }
+        };
+
+        // Initialiser l'interaction tactile
+        setupTapInteraction();
+      });
+    </script>
   </body>
 </html>

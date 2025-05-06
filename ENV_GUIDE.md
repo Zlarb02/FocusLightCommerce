@@ -1,6 +1,6 @@
-# Guide des variables d'environnement - FocusLightCommerce
+# Guide des variables d'environnement - Alto
 
-Ce document explique comment les variables d'environnement sont gérées dans le projet FocusLightCommerce.
+Ce document explique comment les variables d'environnement sont gérées dans le projet Alto.
 
 ## Architecture du projet
 
@@ -61,20 +61,19 @@ Pour le backend :
 
    - Dans l'interface Vercel : Project Settings > Environment Variables
    - Variables requises :
-     - `API_URL`: URL de votre API backend (ex: https://api.votredomaine.com)
+     - `API_URL`: URL de votre API backend (ex: https://api.alto-lille.fr)
      - `NODE_ENV`: "production"
 
 2. **Backend & BDD sur VPS via Docker**:
-   - Créez un fichier `.env` sur le VPS :
    ```env
-   DB_USER=focuslight
+   DB_USER=altolille
    DB_PASSWORD=motdepassesecurise
-   DB_NAME=focuslight
-   DB_CONNECTION_STRING=postgresql://focuslight:motdepassesecurise@db:5432/focuslight
+   DB_NAME=altolille
+   DB_CONNECTION_STRING=postgresql://altolille:motdepassesecurise@db:5432/altolille
    NODE_ENV=production
    SESSION_SECRET=motdepassetressecret
    PORT=5000
-   FRONTEND_URL=https://focus-light-commerce.vercel.app,https://focus01.pogodev.com
+   FRONTEND_URL=https://alto-lille.fr
    ```
    - Déployez avec `make deploy-backend`
 

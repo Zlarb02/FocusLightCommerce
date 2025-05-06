@@ -59,7 +59,7 @@ export default function Contenu() {
       name: "Marie T.",
       role: "Architecte d'intérieur",
       content:
-        "Design épuré et matériaux de qualité. La lampe FOCUS.01 sublime parfaitement mon bureau et crée une ambiance de travail idéale.",
+        "Design épuré et matériaux de qualité. La lampe FOCUS.01 de Alto sublime parfaitement mon bureau et crée une ambiance de travail idéale.",
       avatar: "",
       rating: 5,
     },
@@ -68,7 +68,7 @@ export default function Contenu() {
       name: "Pierre L.",
       role: "Designer",
       content:
-        "J'adore le concept éco-responsable allié à un design minimaliste. La version bleue apporte une touche de couleur subtile à mon salon.",
+        "J'adore le concept éco-responsable allié à un design minimaliste. La version bleue de la FOCUS.01 apporte une touche de couleur subtile à mon salon.",
       avatar: "",
       rating: 5,
     },
@@ -86,9 +86,9 @@ export default function Contenu() {
   const homeContentForm = useForm<HomeContentFormValues>({
     resolver: zodResolver(homeContentSchema),
     defaultValues: {
-      heroTitle: "FOCUS.01",
+      heroTitle: "Alto",
       heroSubtitle:
-        "Lampe d'appoint éco-responsable aux lignes épurées, conçue par Anatole Collet",
+        "Lampe d'appoint FOCUS.01 éco-responsable aux lignes épurées, conçue par Anatole Collet",
       featuresTitle: "Conception & Détails",
       featuresDescription:
         "Découvrez les caractéristiques uniques qui font de FOCUS.01 un choix durable et élégant pour votre intérieur.",
@@ -99,10 +99,10 @@ export default function Contenu() {
   const socialLinksForm = useForm<SocialLinksFormValues>({
     resolver: zodResolver(socialLinksSchema),
     defaultValues: {
-      facebook: "https://facebook.com/focus",
-      instagram: "https://instagram.com/focus",
+      facebook: "",
+      instagram: "À venir",
       twitter: "",
-      linkedin: "https://linkedin.com/company/focus",
+      linkedin: "",
     },
   });
 
@@ -474,66 +474,12 @@ export default function Contenu() {
                 >
                   <FormField
                     control={socialLinksForm.control}
-                    name="facebook"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Facebook</FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="https://facebook.com/votrepage"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={socialLinksForm.control}
                     name="instagram"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Instagram</FormLabel>
                         <FormControl>
-                          <Input
-                            placeholder="https://instagram.com/votrepage"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={socialLinksForm.control}
-                    name="twitter"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Twitter</FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="https://twitter.com/votrepage"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={socialLinksForm.control}
-                    name="linkedin"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>LinkedIn</FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="https://linkedin.com/company/votrepage"
-                            {...field}
-                          />
+                          <Input placeholder="À venir" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>

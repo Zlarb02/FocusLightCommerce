@@ -1,4 +1,4 @@
-# Guide de déploiement - FocusLightCommerce
+# Guide de déploiement - Alto
 
 Ce guide présente les différentes options de déploiement pour l'application FocusLightCommerce.
 
