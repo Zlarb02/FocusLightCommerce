@@ -50,8 +50,6 @@ export default function GestionLogin() {
       const response = await apiRequest("POST", "/api/auth/login", data);
 
       if (response?.id) {
-        // Si la réponse contient un ID utilisateur, on est bien authentifié
-        localStorage.setItem("gestion_authenticated", "true");
         // Invalider le cache de la requête d'authentification
         queryClient.invalidateQueries({ queryKey: ["authStatus"] });
         toast({

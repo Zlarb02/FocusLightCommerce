@@ -45,9 +45,10 @@ const devCorsMiddleware = (
   next: NextFunction
 ): void => {
   res.header("Access-Control-Allow-Origin", "http://localhost:5173");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-  res.header("Access-Control-Allow-Headers", "Content-Type");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
   res.header("Access-Control-Allow-Credentials", "true");
+  res.header("Access-Control-Max-Age", "86400");
   if (_req.method === "OPTIONS") {
     res.sendStatus(200);
     return;
@@ -76,7 +77,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
     })
   );
 
+  // Configurer CORS avant la session
   addCorsDevSupport(app);
+
+  app.use(
+    session({
+      secret: process.env.SESSION_SECRET || "focus-lamp-secret",
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      },
+      store: new SessionStore({ checkPeriod: 86400000 }),
+    })
+  );
 
   // Products CRUD
   const getProductHandler = async (
@@ -253,10 +269,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   app.get("/api/auth/status", (req: Request, res: Response): void => {
+    console.log("Session status:", req.session);
     if (req.session.user) {
-      res.json({ authenticated: true, user: req.session.user });
+      res.json({ 
+        authenticated: true, 
+        user: req.session.user,
+        sessionId: req.session.id 
+      });
     } else {
-      res.json({ authenticated: false });
+      console.log("No user in session");
+      res.json({ 
+        authenticated: false,
+        sessionId: req.session.id
+      });
     }
   });
 

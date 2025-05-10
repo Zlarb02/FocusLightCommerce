@@ -35,8 +35,6 @@ export default function DashboardLayout({
       return apiRequest("POST", "/api/auth/logout", undefined);
     },
     onSuccess: () => {
-      // Nettoyer le localStorage
-      localStorage.removeItem("gestion_authenticated");
       // Invalider le cache de la requête d'authentification
       queryClient.invalidateQueries({ queryKey: ["authStatus"] });
       toast({
