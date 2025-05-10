@@ -16,7 +16,7 @@ export function getApiBaseUrl() {
     return window.ENV.API_URL;
   }
   return process.env.NODE_ENV === "production"
-    ? "https://api.votredomaine.com" // À remplacer par l'URL réelle de votre API en production
+    ? "https://api-focus.pogodev.com" // À remplacer par l'URL réelle de votre API en production
     : "http://localhost:5000";
 }
 
@@ -31,7 +31,7 @@ export async function apiRequest(
   method: string,
   url: string,
   data?: unknown | undefined
-): Promise<Response> {
+) {
   const apiUrl = `${getApiBaseUrl()}${url}`;
 
   const res = await fetch(apiUrl, {
@@ -42,7 +42,14 @@ export async function apiRequest(
   });
 
   await throwIfResNotOk(res);
-  return res;
+
+  // Vérifier s'il y a du contenu avant de faire .json()
+  const contentType = res.headers.get("content-type");
+  if (contentType && contentType.includes("application/json")) {
+    return res.json();
+  }
+
+  return null;
 }
 
 type UnauthorizedBehavior = "returnNull" | "throw";
@@ -69,14 +76,9 @@ export const getQueryFn: <T>(options: {
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      queryFn: getQueryFn({ on401: "throw" }),
-      refetchInterval: false,
-      refetchOnWindowFocus: false,
-      staleTime: Infinity,
-      retry: false,
-    },
-    mutations: {
-      retry: false,
+      staleTime: 0,
+      refetchOnWindowFocus: true,
+      retry: 1,
     },
   },
 });

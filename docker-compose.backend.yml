@@ -14,6 +14,7 @@ services:
       - DB_CONNECTION_STRING=${DB_CONNECTION_STRING}
       - SESSION_SECRET=${SESSION_SECRET:-focus-lamp-secret}
       - CORS_ORIGIN=${FRONTEND_URL:-https://focus-light-commerce.vercel.app}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
     depends_on:
       - db
     networks:

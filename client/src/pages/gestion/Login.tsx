@@ -22,7 +22,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useToast } from "@/hooks/use-toast";
-import { apiRequest } from "@/lib/queryClient";
+import { apiRequest, queryClient } from "@/lib/queryClient";
 
 const loginSchema = z.object({
   username: z.string().min(1, "Le nom d'utilisateur est requis"),
@@ -47,20 +47,20 @@ export default function GestionLogin() {
   const onSubmit = async (data: LoginFormValues) => {
     setIsLoading(true);
     try {
-      // Dans un environnement réel, vous devriez appeler votre API ici
-      // Simulation d'une connexion réussie pour la démonstration
-      if (data.username === "gestionnaire" && data.password === "focus2024") {
+      const response = await apiRequest("POST", "/api/auth/login", data);
+
+      if (response?.id) {
+        // Si la réponse contient un ID utilisateur, on est bien authentifié
+        localStorage.setItem("gestion_authenticated", "true");
+        // Invalider le cache de la requête d'authentification
+        queryClient.invalidateQueries({ queryKey: ["authStatus"] });
         toast({
           title: "Connexion réussie",
           description: "Bienvenue sur votre espace de gestion",
         });
-
-        // Simuler la création d'une session (à remplacer par votre logique d'authentification)
-        localStorage.setItem("gestion_authenticated", "true");
-
         setLocation("/gestion/dashboard");
       } else {
-        throw new Error("Identifiants incorrects");
+        throw new Error("La connexion a échoué");
       }
     } catch (error) {
       toast({
@@ -134,13 +134,6 @@ export default function GestionLogin() {
               </form>
             </Form>
           </CardContent>
-          <CardFooter className="flex justify-center border-t pt-6">
-            <div className="text-sm text-muted-foreground">
-              Pour l'accès démo, utilisez{" "}
-              <span className="font-medium">gestionnaire</span> /{" "}
-              <span className="font-medium">focus2024</span>
-            </div>
-          </CardFooter>
         </Card>
 
         <div className="mt-6 text-center">

@@ -2,6 +2,8 @@ import { ReactNode, useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { useMutation } from "@tanstack/react-query";
+import { queryClient, apiRequest } from "@/lib/queryClient";
 
 // Icônes de lucide-react (Assurez-vous que le package est installé)
 import {
@@ -28,26 +30,24 @@ export default function DashboardLayout({
   const { toast } = useToast();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Vérification d'authentification simple (à remplacer par votre logique d'authentification)
-  useEffect(() => {
-    const isAuthenticated =
-      localStorage.getItem("gestion_authenticated") === "true";
-    if (!isAuthenticated) {
+  const { mutate: logout } = useMutation({
+    mutationFn: async () => {
+      return apiRequest("POST", "/api/auth/logout", undefined);
+    },
+    onSuccess: () => {
+      // Nettoyer le localStorage
+      localStorage.removeItem("gestion_authenticated");
+      // Invalider le cache de la requête d'authentification
+      queryClient.invalidateQueries({ queryKey: ["authStatus"] });
       toast({
-        title: "Accès non autorisé",
-        description: "Veuillez vous connecter pour accéder à cette page",
-        variant: "destructive",
+        title: "Déconnexion réussie",
       });
       setLocation("/gestion");
-    }
-  }, [setLocation, toast]);
+    },
+  });
 
   const handleLogout = () => {
-    localStorage.removeItem("gestion_authenticated");
-    toast({
-      title: "Déconnexion réussie",
-    });
-    setLocation("/gestion");
+    logout();
   };
 
   const menuItems = [

@@ -10,6 +10,7 @@ import {
   type User,
   type InsertUser,
 } from "../shared/schema.js";
+import bcrypt from "bcrypt";
 
 // Storage interface
 export interface IStorage {
@@ -81,11 +82,20 @@ export class MemStorage implements IStorage {
     this.orderItemId = 1;
     this.userId = 1;
 
-    // Initialize with default admin user
-    this.createUser({
-      username: "admin",
-      password: "admin123", // In a real app, this would be hashed
-    });
+    // Initialize with default admin user only if ADMIN_PASSWORD is set
+    const adminPassword = process.env.ADMIN_PASSWORD;
+    if (adminPassword) {
+      this.createUser({
+        username: "admin",
+        password: adminPassword,
+      });
+    } else {
+      console.log("No ADMIN_PASSWORD set, fake admin user creation");
+      this.createUser({
+        username: "admin",
+        password: "admin",
+      });
+    }
 
     // Initialize with products (the 4 lamp variants)
     this.initializeProducts();
@@ -274,7 +284,8 @@ export class MemStorage implements IStorage {
 
   async createUser(user: InsertUser): Promise<User> {
     const id = this.userId++;
-    const newUser = { ...user, id, isAdmin: true };
+    const hashedPassword = await bcrypt.hash(user.password, 10);
+    const newUser = { ...user, id, isAdmin: true, password: hashedPassword };
     this.users.set(id, newUser);
     return newUser;
   }
@@ -284,7 +295,10 @@ export class MemStorage implements IStorage {
     password: string
   ): Promise<User | undefined> {
     const user = await this.getUserByUsername(username);
-    if (user && user.password === password) {
+    if (!user) return undefined;
+
+    const match = await bcrypt.compare(password, user.password);
+    if (match) {
       return user;
     }
     return undefined;

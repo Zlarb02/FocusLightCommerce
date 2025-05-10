@@ -30,6 +30,7 @@ DB_PORT=5432
 NODE_ENV=development
 SESSION_SECRET=dev-secret-key
 PORT=5000
+ADMIN_PASSWORD=changeme  # Mot de passe initial de l'administrateur
 
 # Configuration CORS
 FRONTEND_URL=http://localhost:5173

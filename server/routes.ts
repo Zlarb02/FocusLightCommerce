@@ -17,7 +17,7 @@ declare module "express-session" {
     user?: {
       id: number;
       username: string;
-      isAdmin: boolean | null;
+      isAdmin: boolean;
     };
   }
 }
@@ -233,7 +233,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         req.session.user = {
           id: user.id,
           username: user.username,
-          isAdmin: user.isAdmin,
+          isAdmin: user.isAdmin ?? false,
         };
         res.json(req.session.user);
       } catch (error) {
