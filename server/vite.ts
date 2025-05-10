@@ -36,6 +36,8 @@ export function setupCors(app: Express) {
         return callback(new Error(`CORS non autorisé pour ${origin}`));
       },
       credentials: true,
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+      allowedHeaders: ['Content-Type', 'Authorization'],
     })
   );
 

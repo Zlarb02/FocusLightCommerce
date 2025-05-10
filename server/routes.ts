@@ -63,34 +63,23 @@ const addCorsDevSupport = (app: Express) => {
 };
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  app.use(
-    session({
-      secret: process.env.SESSION_SECRET || "focus-lamp-secret",
-      resave: false,
-      saveUninitialized: false,
-      cookie: {
-        secure: process.env.NODE_ENV === "production",
-        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-        maxAge: 7 * 24 * 60 * 60 * 1000,
-      },
-      store: new SessionStore({ checkPeriod: 86400000 }),
-    })
-  );
-
   // Configurer CORS avant la session
   addCorsDevSupport(app);
 
   app.use(
     session({
       secret: process.env.SESSION_SECRET || "focus-lamp-secret",
-      resave: false,
+      resave: true,
+      rolling: true,
       saveUninitialized: false,
-      cookie: {
-        secure: process.env.NODE_ENV === "production",
-        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-        maxAge: 7 * 24 * 60 * 60 * 1000,
-      },
       store: new SessionStore({ checkPeriod: 86400000 }),
+      cookie: {
+        secure: true, // Toujours true en prod
+        httpOnly: true,
+        sameSite: "none",
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 jours
+        path: '/'
+      },
     })
   );
 
@@ -271,16 +260,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/auth/status", (req: Request, res: Response): void => {
     console.log("Session status:", req.session);
     if (req.session.user) {
-      res.json({ 
-        authenticated: true, 
+      res.json({
+        authenticated: true,
         user: req.session.user,
-        sessionId: req.session.id 
+        sessionId: req.session.id,
       });
     } else {
       console.log("No user in session");
-      res.json({ 
+      res.json({
         authenticated: false,
-        sessionId: req.session.id
+        sessionId: req.session.id,
       });
     }
   });
