@@ -54,6 +54,7 @@ export function CartProvider({ children }: CartProviderProps) {
 
   const addItem = (product: ProductWithSelectedVariation) => {
     setItems((prevItems) => {
+      // Recherche par l'ID de variation plutôt que par l'ID de produit
       const existingItemIndex = prevItems.findIndex(
         (item) => item.product.id === product.id
       );

@@ -1,31 +1,59 @@
 import { useState, useEffect } from "react";
-import { Product } from "@shared/schema";
+import { ProductVariation, ProductWithSelectedVariation } from "@shared/schema";
 
 /**
- * Hook personnalisé pour gérer la sélection de produits
+ * Hook personnalisé pour gérer la sélection de produits avec variations
  * Extrait la logique métier du composant pour faciliter les tests et la réutilisation
  */
-export function useProductSelection(products: Product[]) {
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+export function useProductSelection(
+  variations: ProductVariation[],
+  productName: string,
+  productDescription: string,
+  basePrice: number
+) {
+  const [selectedVariation, setSelectedVariation] =
+    useState<ProductWithSelectedVariation | null>(null);
 
-  // Sélectionner un produit par défaut quand les produits sont chargés
+  // Sélectionner une variation par défaut quand les variations sont chargées
   useEffect(() => {
-    if (products.length > 0 && !selectedProduct) {
-      // Priorité au produit blanc, sinon prendre le premier
-      const defaultProduct =
-        products.find((p) => p.color === "Blanc") || products[0];
-      setSelectedProduct(defaultProduct);
-    }
-  }, [products, selectedProduct]);
+    if (variations.length > 0 && !selectedVariation) {
+      // Priorité à la variation "Blanc" si elle existe, sinon prendre la première
+      const defaultVariation =
+        variations.find((v) => v.variationValue === "Blanc") || variations[0];
 
-  // Fonction pour changer de produit sélectionné
-  const handleColorSelect = (product: Product) => {
-    setSelectedProduct(product);
+      // Créer un ProductWithSelectedVariation à partir de la variation
+      const selectedProduct: ProductWithSelectedVariation = {
+        ...defaultVariation,
+        productName,
+        productDescription,
+        basePrice,
+      };
+
+      setSelectedVariation(selectedProduct);
+    }
+  }, [
+    variations,
+    selectedVariation,
+    productName,
+    productDescription,
+    basePrice,
+  ]);
+
+  // Fonction pour changer de variation sélectionnée
+  const handleVariationSelect = (variation: ProductVariation) => {
+    const selectedProduct: ProductWithSelectedVariation = {
+      ...variation,
+      productName,
+      productDescription,
+      basePrice,
+    };
+
+    setSelectedVariation(selectedProduct);
   };
 
   return {
-    selectedProduct,
-    setSelectedProduct,
-    handleColorSelect,
+    selectedVariation,
+    setSelectedVariation,
+    handleVariationSelect,
   };
 }

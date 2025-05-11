@@ -1,9 +1,9 @@
 import { createContext, useContext, useState, ReactNode } from "react";
-import { Customer, Product } from "@shared/schema";
+import { Customer, ProductWithSelectedVariation } from "@shared/schema";
 import { useCart } from "./useCart";
 
 type OrderItem = {
-  product: Product;
+  product: ProductWithSelectedVariation;
   quantity: number;
 };
 
@@ -15,7 +15,9 @@ interface CheckoutContextType {
   clearCheckout: () => void;
 }
 
-const CheckoutContext = createContext<CheckoutContextType | undefined>(undefined);
+const CheckoutContext = createContext<CheckoutContextType | undefined>(
+  undefined
+);
 
 interface CheckoutProviderProps {
   children: ReactNode;
@@ -28,7 +30,7 @@ export function CheckoutProvider({ children }: CheckoutProviderProps) {
 
   const updateCustomer = (customerData: Partial<Customer>) => {
     setCustomer((prevCustomer) => ({
-      ...prevCustomer as Customer,
+      ...(prevCustomer as Customer),
       ...customerData,
     }));
   };
@@ -43,7 +45,10 @@ export function CheckoutProvider({ children }: CheckoutProviderProps) {
   };
 
   // Automatically update order details when cart changes
-  if (items.length > 0 && JSON.stringify(items) !== JSON.stringify(orderDetails)) {
+  if (
+    items.length > 0 &&
+    JSON.stringify(items) !== JSON.stringify(orderDetails)
+  ) {
     updateOrderDetails(items as OrderItem[]);
   }
 

@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/lib/utils";
-import { Product } from "@shared/schema";
+import { ProductWithSelectedVariation } from "@shared/schema";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import { useCart } from "@/hooks/useCart";
 
 interface CartItemProps {
   item: {
-    product: Product;
+    product: ProductWithSelectedVariation;
     quantity: number;
   };
 }
@@ -31,16 +31,19 @@ export function CartItem({ item }: CartItemProps) {
     removeItem(product.id);
   };
 
+  // Calcul du prix (utiliser le prix de la variation s'il est disponible, sinon le prix de base)
+  const itemPrice = product.price || product.basePrice;
+
   return (
     <div className="flex gap-4 border-b pb-4 mb-4">
       <img
-        src={`images/${product.imageUrl} `}
-        alt={`FOCUS.01 ${product.color}`}
+        src={`images/${product.imageUrl}`}
+        alt={`FOCUS.01 ${product.variationValue}`}
         className="w-20 h-20 object-contain"
       />
       <div className="flex-grow">
         <div className="flex justify-between">
-          <h4 className="font-medium">{product.name}</h4>
+          <h4 className="font-medium">{product.productName}</h4>
           <button
             onClick={handleRemove}
             className="text-red-500 text-sm hover:text-red-700"
@@ -50,7 +53,7 @@ export function CartItem({ item }: CartItemProps) {
           </button>
         </div>
         <p className="text-sm text-muted-foreground">
-          Coloris: {product.color}
+          {product.variationType}: {product.variationValue}
         </p>
         <div className="flex justify-between items-center mt-2">
           <div className="flex items-center border rounded">
@@ -73,7 +76,7 @@ export function CartItem({ item }: CartItemProps) {
             </Button>
           </div>
           <span className="font-medium">
-            {formatPrice(product.price * quantity)}
+            {formatPrice(itemPrice * quantity)}
           </span>
         </div>
       </div>
