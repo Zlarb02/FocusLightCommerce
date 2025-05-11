@@ -39,6 +39,7 @@ export default function DashboardLayout({
       queryClient.invalidateQueries({ queryKey: ["authStatus"] });
       toast({
         title: "Déconnexion réussie",
+        variant: "success",
       });
       setLocation("/gestion");
     },

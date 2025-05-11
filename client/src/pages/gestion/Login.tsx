@@ -37,6 +37,12 @@ export default function GestionLogin() {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
+  // Réinitialiser le drapeau de vérification d'authentification quand on arrive sur la page de login
+  useEffect(() => {
+    // Réinitialiser le marqueur d'auth pour éviter les messages répétés
+    sessionStorage.removeItem("auth_checked");
+  }, []);
+
   // Vérifier le statut d'authentification
   const { data: authStatus } = useQuery({
     queryKey: ["authStatus"],
@@ -72,11 +78,26 @@ export default function GestionLogin() {
 
       if (response?.id) {
         // Invalider le cache de la requête d'authentification
+        // en utilisant exactement la même clé que dans AuthGuard
         queryClient.invalidateQueries({ queryKey: ["authStatus"] });
+
+        // Signaler explicitement qu'une connexion vient de réussir
+        // pour bloquer tout toast d'erreur d'AuthGuard
+        sessionStorage.setItem("login_success", "true");
+
+        // Verrouiller temporairement les toasts d'authentification
+        // Ce verrou sera utilisé par AuthGuard pour ne pas afficher
+        // de messages pendant quelques secondes
+        sessionStorage.setItem("auth_toast_lock", Date.now().toString());
+
+        // Afficher le toast de succès immédiatement
         toast({
           title: "Connexion réussie",
           description: "Bienvenue sur votre espace de gestion",
+          variant: "success", // Toast vert pour succès
         });
+
+        // Rediriger immédiatement
         setLocation("/gestion/dashboard");
       } else {
         throw new Error("La connexion a échoué");
