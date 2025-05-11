@@ -47,8 +47,15 @@ export function setupCors(app: Express) {
       },
       credentials: true,
       methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-      allowedHeaders: ["Content-Type", "Authorization", "Origin", "Accept"],
+      allowedHeaders: [
+        "Content-Type",
+        "Authorization",
+        "Origin",
+        "Accept",
+        "Set-Cookie",
+      ],
       exposedHeaders: ["Set-Cookie", "Authorization"],
+      maxAge: 86400, // 24 heures
       preflightContinue: false,
       optionsSuccessStatus: 204,
     })
