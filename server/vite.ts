@@ -18,9 +18,45 @@ export function setupCors(app: Express) {
     "https://alto-lille.fr",
     "https://www.alto-lille.fr",
     "https://api-focus.pogodev.com",
+    "https://focus-light-commerce.vercel.app", // Ajout de votre domaine Vercel
+    "https://focus-light-commerce-etiennepogoda.vercel.app", // Ajout potentiel de sous-domaines Vercel
     ...(isProd ? [] : ["http://localhost:5173"]),
   ];
 
+  // Configuration CORS spéciale pour les requêtes GET sur /uploads
+  app.use("/uploads", (req, res, next) => {
+    // Si c'est une requête GET, autoriser même sans origine en production
+    if (req.method === "GET") {
+      return cors({
+        origin: function (origin, callback) {
+          log(`Requête GET /uploads reçue de l'origine: ${origin || "aucune"}`);
+          // Autoriser même sans origine
+          if (!origin) {
+            log(
+              "CORS: GET /uploads sans origine → autorisé exceptionnellement"
+            );
+            return callback(null, true);
+          }
+
+          // Vérifier si l'origine est autorisée
+          if (allowedOrigins.includes(origin)) {
+            log(`CORS: GET /uploads autorisé pour ${origin}`);
+            return callback(null, true);
+          }
+
+          log(`❌ CORS GET /uploads refusé pour ${origin}`);
+          return callback(new Error(`CORS non autorisé pour ${origin}`));
+        },
+        credentials: true,
+        methods: ["GET"],
+      })(req, res, next);
+    }
+
+    // Si ce n'est pas GET, passer au middleware CORS général
+    next();
+  });
+
+  // Configuration CORS générale pour toutes les autres requêtes
   app.use(
     cors({
       origin: function (origin, callback) {
