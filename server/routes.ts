@@ -91,13 +91,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
     sessionStore = new session.MemoryStore();
   }
 
+  app.set("trust proxy", 1);
+
   app.use(
     session({
       name: "alto.sid",
       secret: process.env.SESSION_SECRET || "focus-lamp-secret",
-      resave: true,
+      resave: false,
       saveUninitialized: false,
       rolling: true,
+      proxy: true,
       store: sessionStore,
       cookie: cookieConfig,
     })
