@@ -10,6 +10,30 @@ import {
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+// Media schema
+export const media = pgTable("media", {
+  id: serial("id").primaryKey(),
+  filename: text("filename").notNull(),
+  path: text("path").notNull(),
+  type: text("type", { enum: ["image", "video", "other"] }).notNull(),
+  size: integer("size").notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+export const insertMediaSchema = createInsertSchema(media).omit({
+  id: true,
+  createdAt: true,
+});
+
+export type Media = {
+  id: number;
+  filename: string;
+  path: string;
+  type: "image" | "video" | "other";
+  size: number;
+  createdAt: string;
+};
+
 // Product schema
 export const products = pgTable("products", {
   id: serial("id").primaryKey(),

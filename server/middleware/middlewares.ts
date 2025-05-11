@@ -14,6 +14,14 @@ export const requireAuth = (
 };
 
 /**
+ * Middleware qui vérifie si l'utilisateur est administrateur
+ */
+export const isAdmin = (req: Request, res: Response, next: NextFunction) => {
+  if (req.session.user && req.session.user.isAdmin) return next();
+  res.status(403).json({ message: "Forbidden: Administrator access required" });
+};
+
+/**
  * Gestionnaire d'erreurs centralisé
  */
 export const handleError = (res: Response, error: unknown) => {

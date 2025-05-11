@@ -15,6 +15,7 @@ import {
   LogOut,
   Menu,
   X,
+  ImageIcon,
 } from "lucide-react";
 
 interface DashboardLayoutProps {
@@ -53,6 +54,7 @@ export default function DashboardLayout({
     { name: "Tableau de bord", href: "/gestion/dashboard", icon: Home },
     { name: "Stocks", href: "/gestion/stocks", icon: Package },
     { name: "Commandes", href: "/gestion/commandes", icon: ShoppingCart },
+    { name: "Médias", href: "/gestion/medias", icon: ImageIcon },
     { name: "Contenu du site", href: "/gestion/contenu", icon: FileText },
     { name: "Paramètres", href: "/gestion/parametres", icon: Settings },
   ];

@@ -1,14 +1,20 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes/index.js";
 import { log, setupCors } from "./vite.js";
+import path from "path";
+import { fileURLToPath } from "url";
 
 const app = express();
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // Configuration de CORS avant tout
 setupCors(app);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// Configuration pour servir les fichiers statiques depuis le dossier uploads
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use((req, res, next) => {
   const start = Date.now();

@@ -32,24 +32,31 @@ const defaultFetchOptions: RequestInit = {
 export async function apiRequest(
   method: string,
   endpoint: string,
-  data?: unknown
+  data?: unknown,
+  options?: { formData: boolean }
 ): Promise<any> {
   const baseUrl = getApiBaseUrl();
   const url = `${baseUrl}${endpoint}`;
 
-  const options: RequestInit = {
+  const fetchOptions: RequestInit = {
     method,
     credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: options?.formData
+      ? {} // Ne pas définir le Content-Type pour FormData, le navigateur le fera automatiquement
+      : {
+          "Content-Type": "application/json",
+        },
   };
 
   if (data) {
-    options.body = JSON.stringify(data);
+    if (options?.formData) {
+      fetchOptions.body = data as FormData;
+    } else {
+      fetchOptions.body = JSON.stringify(data);
+    }
   }
 
-  const response = await fetch(url, options);
+  const response = await fetch(url, fetchOptions);
 
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);

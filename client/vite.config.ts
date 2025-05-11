@@ -43,6 +43,26 @@ export default defineConfig({
       "@assets": path.resolve(__dirname, "..", "attached_assets"),
     },
   },
+  server: {
+    proxy: {
+      "/uploads": {
+        target:
+          process.env.NODE_ENV === "production"
+            ? "https://api-focus.pogodev.com"
+            : "http://localhost:5000",
+        changeOrigin: true,
+        secure: process.env.NODE_ENV === "production",
+      },
+      "/api": {
+        target:
+          process.env.NODE_ENV === "production"
+            ? "https://api-focus.pogodev.com"
+            : "http://localhost:5000",
+        changeOrigin: true,
+        secure: process.env.NODE_ENV === "production",
+      },
+    },
+  },
   build: {
     outDir: path.resolve(__dirname, "dist"),
     emptyOutDir: true,

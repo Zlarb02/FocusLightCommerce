@@ -12,6 +12,7 @@ import {
   type InsertOrderItem,
   type User,
   type InsertUser,
+  type Media,
 } from "../../shared/schema.js";
 
 // Storage interface
@@ -67,4 +68,10 @@ export interface IStorage {
   getUserByUsername(username: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
   verifyUser(username: string, password: string): Promise<User | undefined>;
+
+  // Media
+  getAllMedias(): Promise<Media[]>;
+  getMediaById(id: number): Promise<Media | null>;
+  createMedia(media: Omit<Media, "id" | "createdAt">): Promise<Media>;
+  deleteMedia(id: number): Promise<boolean>;
 }

@@ -10,6 +10,7 @@ import productRoutes from "./productRoutes.js";
 import authRoutes from "./authRoutes.js";
 import orderRoutes from "./orderRoutes.js";
 import checkoutRoutes from "./checkoutRoutes.js";
+import mediaRoutes from "./mediaRoutes.js";
 
 // Déclaration pour étendre les sessions Express
 declare module "express-session" {
@@ -89,6 +90,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.use("/api/auth", authRoutes);
   app.use("/api/orders", orderRoutes);
   app.use("/api/checkout", checkoutRoutes);
+  app.use("/api/medias", mediaRoutes);
 
   return createServer(app);
 }

@@ -4,6 +4,11 @@
   "outputDirectory": "client/dist",
   "routes": [
     { "handle": "filesystem" },
+    {
+      "src": "/uploads/(.*)",
+      "dest": "https://api-focus.pogodev.com/uploads/$1"
+    },
+    { "src": "/api/(.*)", "dest": "https://api-focus.pogodev.com/api/$1" },
     { "src": "/assets/(.*)", "dest": "/assets/$1" },
     { "src": "/(.*)", "dest": "/index.html" }
   ],

@@ -3,6 +3,7 @@ import { ProductStorage } from "./productStorage.js";
 import { CustomerStorage } from "./customerStorage.js";
 import { OrderStorage } from "./orderStorage.js";
 import { UserStorage } from "./userStorage.js";
+import { MediaStorage } from "./mediaStorage.js";
 import {
   type Product,
   type InsertProduct,
@@ -17,6 +18,7 @@ import {
   type InsertOrderItem,
   type User,
   type InsertUser,
+  type Media,
 } from "../../shared/schema.js";
 
 // In-memory storage implementation
@@ -25,12 +27,14 @@ export class MemStorage implements IStorage {
   private customerStorage: CustomerStorage;
   private orderStorage: OrderStorage;
   private userStorage: UserStorage;
+  private mediaStorage: MediaStorage;
 
   constructor() {
     this.productStorage = new ProductStorage();
     this.customerStorage = new CustomerStorage();
     this.orderStorage = new OrderStorage();
     this.userStorage = new UserStorage();
+    this.mediaStorage = new MediaStorage();
 
     // Initialize with default admin user
     this.userStorage.initializeDefaultAdmin();
@@ -167,6 +171,23 @@ export class MemStorage implements IStorage {
     password: string
   ): Promise<User | undefined> {
     return this.userStorage.verifyUser(username, password);
+  }
+
+  // Media Implementation
+  async getAllMedias(): Promise<Media[]> {
+    return this.mediaStorage.getAllMedias();
+  }
+
+  async getMediaById(id: number): Promise<Media | null> {
+    return this.mediaStorage.getMediaById(id);
+  }
+
+  async createMedia(media: Omit<Media, "id" | "createdAt">): Promise<Media> {
+    return this.mediaStorage.createMedia(media);
+  }
+
+  async deleteMedia(id: number): Promise<boolean> {
+    return this.mediaStorage.deleteMedia(id);
   }
 }
 

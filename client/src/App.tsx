@@ -16,6 +16,7 @@ import Stocks from "./pages/gestion/Stocks";
 import Commandes from "./pages/gestion/Commandes";
 import Contenu from "./pages/gestion/Contenu";
 import Parametres from "./pages/gestion/Parametres";
+import Medias from "./pages/gestion/Medias";
 
 // Type pour l'événement personnalisé de changement de route
 interface RouteChangeEvent extends CustomEvent {
@@ -101,6 +102,7 @@ function Router() {
         <Route path="/gestion/dashboard" component={Dashboard} />
         <Route path="/gestion/stocks" component={Stocks} />
         <Route path="/gestion/commandes" component={Commandes} />
+        <Route path="/gestion/medias" component={Medias} />
         <Route path="/gestion/contenu" component={Contenu} />
         <Route path="/gestion/parametres" component={Parametres} />
 
