@@ -8,8 +8,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage.js";
 import { insertProductSchema, checkoutSchema } from "../shared/schema.js";
 import { z } from "zod";
-import session from "express-session";
-import MemoryStore from "memorystore";
+import session, { MemoryStore } from "express-session";
 
 // Extend Express Session
 declare module "express-session" {
@@ -21,8 +20,6 @@ declare module "express-session" {
     };
   }
 }
-
-const SessionStore = MemoryStore(session);
 
 const requireAuth = (req: Request, res: Response, next: NextFunction) => {
   if (req.session.user) return next();
@@ -50,8 +47,23 @@ const corsMiddleware = (
 
 export async function registerRoutes(app: Express): Promise<Server> {
   const isProd = process.env.NODE_ENV === "production";
-  const frontendDomain = isProd ? "alto-lille.fr" : "localhost";
-  const cookieDomain = isProd ? frontendDomain : undefined;
+
+  // Configuration des cookies pour la production et le développement
+  const cookieConfig = isProd
+    ? {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none" as const,
+        path: "/",
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 jours
+      }
+    : {
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax" as const,
+        path: "/",
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 jours
+      };
 
   app.use(
     session({
@@ -60,19 +72,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       resave: true,
       saveUninitialized: false,
       rolling: true,
-      store: new SessionStore({
-        checkPeriod: 86400000, // Nettoyage une fois par jour
-      }),
-      cookie: {
-        httpOnly: true,
-        secure: isProd, // true en production
-        sameSite: isProd ? "none" : "lax", // none pour le cross-domain en prod
-        domain: cookieDomain, // domain principal en production
-        path: "/",
-        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 jours
-      },
+      store: new MemoryStore(),
+      cookie: cookieConfig,
     })
-  ); // CORS est configuré dans vite.ts
+  );
 
   // Products CRUD
   const getProductHandler = async (

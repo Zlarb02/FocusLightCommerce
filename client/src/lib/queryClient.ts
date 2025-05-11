@@ -20,38 +20,54 @@ export function getApiBaseUrl() {
     : "http://localhost:5000";
 }
 
+// Configuration par défaut pour les requêtes fetch
+const defaultFetchOptions: RequestInit = {
+  credentials: "include", // Important pour les cookies cross-domain
+  headers: {
+    "Content-Type": "application/json",
+  },
+};
+
+// Fonction pour faire des requêtes API
+export async function apiRequest(
+  method: string,
+  endpoint: string,
+  data?: unknown
+): Promise<any> {
+  const baseUrl = getApiBaseUrl();
+  const url = `${baseUrl}${endpoint}`;
+
+  const options: RequestInit = {
+    method,
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  if (data) {
+    options.body = JSON.stringify(data);
+  }
+
+  const response = await fetch(url, options);
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  // Pour les réponses 204 No Content
+  if (response.status === 204) {
+    return null;
+  }
+
+  return response.json();
+}
+
 async function throwIfResNotOk(res: Response) {
   if (!res.ok) {
     const text = (await res.text()) || res.statusText;
     throw new Error(`${res.status}: ${text}`);
   }
-}
-
-export async function apiRequest(
-  method: string,
-  url: string,
-  data?: unknown | undefined
-) {
-  // Ensure url starts with /api
-  const apiPath = url.startsWith("/api") ? url : `/api${url}`;
-  const apiUrl = `${getApiBaseUrl()}${apiPath}`;
-
-  const res = await fetch(apiUrl, {
-    method,
-    headers: data ? { "Content-Type": "application/json" } : {},
-    body: data ? JSON.stringify(data) : undefined,
-    credentials: "include",
-  });
-
-  await throwIfResNotOk(res);
-
-  // Vérifier s'il y a du contenu avant de faire .json()
-  const contentType = res.headers.get("content-type");
-  if (contentType && contentType.includes("application/json")) {
-    return res.json();
-  }
-
-  return null;
 }
 
 type UnauthorizedBehavior = "returnNull" | "throw";
@@ -81,6 +97,7 @@ export const queryClient = new QueryClient({
       staleTime: 0,
       refetchOnWindowFocus: true,
       retry: 1,
+      queryFn: getQueryFn({ on401: "returnNull" }),
     },
   },
 });
