@@ -30,7 +30,7 @@ export class ProductStorage {
       name: "FOCUS.01",
       description:
         "Lampe d'appoint imaginée et fabriquée par Anatole Collet. Réaliser en PLA écoresponsable et en chêne écogéré, livré avec une ampoule LED de 60W E14 et un câble avec interrupteur de 1m50.",
-      price: 80.0,
+      price: 70.0,
     });
 
     // Ajouter les variations de couleur
@@ -39,7 +39,7 @@ export class ProductStorage {
       variationType: "color",
       variationValue: "Blanc",
       stock: 10,
-      imageUrl: "blanche.png",
+      imageUrl: "images/blanche.png",
     });
 
     await this.createProductVariation({
@@ -47,7 +47,7 @@ export class ProductStorage {
       variationType: "color",
       variationValue: "Bleu",
       stock: 10,
-      imageUrl: "bleue.png",
+      imageUrl: "images/bleue.png",
     });
 
     await this.createProductVariation({
@@ -55,7 +55,7 @@ export class ProductStorage {
       variationType: "color",
       variationValue: "Rouge",
       stock: 10,
-      imageUrl: "rouge.png",
+      imageUrl: "images/rouge.png",
     });
 
     await this.createProductVariation({
@@ -63,7 +63,7 @@ export class ProductStorage {
       variationType: "color",
       variationValue: "Orange",
       stock: 10,
-      imageUrl: "orange.png",
+      imageUrl: "images/orange.png",
     });
   }
 

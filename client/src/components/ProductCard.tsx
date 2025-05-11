@@ -45,18 +45,28 @@ export function ProductCard({ product, variation }: ProductCardProps) {
 
   return (
     <Card className="h-full overflow-hidden hover:shadow-md transition">
-      <CardContent>
-        <h3 className="font-heading font-bold text-lg">
+      <div className="relative p-4 h-52 flex items-center justify-center bg-gray-50">
+        <img
+          src={variation.imageUrl}
+          alt={`${product.name} - ${variation.variationValue}`}
+          className="max-h-full object-contain transition-transform hover:scale-105"
+        />
+      </div>
+      <CardContent className="pt-6">
+        <h3 className="font-heading font-bold text-lg mb-2">
           {product.name} - {variation.variationValue}
         </h3>
         <p className="text-muted-foreground mb-4">
           Élégance intemporelle qui s'intègre à tous les intérieurs
         </p>
+        <div className="font-bold text-xl mb-4">
+          {formatPrice(displayPrice)}
+        </div>
       </CardContent>
-      <CardFooter className="flex justify-between items-center">
+      <CardFooter className="flex justify-between items-center pt-0">
         <Button
           onClick={handleAddToCart}
-          className="gap-2"
+          className="gap-2 w-full"
           disabled={isAdding || variation.stock <= 0}
         >
           {isAdding ? (
@@ -64,7 +74,7 @@ export function ProductCard({ product, variation }: ProductCardProps) {
           ) : (
             <Plus className="h-4 w-4" />
           )}
-          Ajouter
+          Ajouter au panier
         </Button>
       </CardFooter>
     </Card>
