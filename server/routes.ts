@@ -39,32 +39,42 @@ const handleError = (res: Response, error: unknown) => {
   });
 };
 
-const devCorsMiddleware = (
-  _req: Request,
+const corsMiddleware = (
+  req: Request,
   res: Response,
   next: NextFunction
 ): void => {
-  res.header("Access-Control-Allow-Origin", "http://localhost:5173");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  res.header("Access-Control-Allow-Credentials", "true");
-  res.header("Access-Control-Max-Age", "86400");
-  if (_req.method === "OPTIONS") {
-    res.sendStatus(200);
+  const allowedOrigins = [
+    "http://localhost:5173",
+    "https://alto-lille.fr",
+    "https://www.alto-lille.fr",
+    "https://vps-a.pogodev.com",
+  ];
+
+  const origin = req.headers.origin;
+
+  if (origin && allowedOrigins.includes(origin)) {
+    res.header("Access-Control-Allow-Origin", origin);
+    res.header(
+      "Access-Control-Allow-Methods",
+      "GET, POST, PUT, DELETE, OPTIONS"
+    );
+    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    res.header("Access-Control-Allow-Credentials", "true");
+  }
+
+  if (req.method === "OPTIONS") {
+    res.sendStatus(204);
     return;
   }
   next();
 };
 
-const addCorsDevSupport = (app: Express) => {
-  if (process.env.NODE_ENV !== "production") {
-    app.use(devCorsMiddleware);
-  }
-};
-
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Session configuration FIRST
-  const isProd = process.env.NODE_ENV === "production";
+  // Appliquer CORS avant tout
+  app.use(corsMiddleware);
+
+  // Session configuration ensuite
   app.use(
     session({
       name: "alto.sid",
@@ -77,18 +87,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }),
       cookie: {
         httpOnly: true,
-        secure: isProd, // Only true in production
-        sameSite: isProd ? "none" : "lax",
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
         maxAge: 7 * 24 * 60 * 60 * 1000,
         path: "/",
       },
     })
   );
-
-  // CORS configuration next
-  if (!isProd) {
-    app.use(devCorsMiddleware);
-  }
 
   // Products CRUD
   const getProductHandler = async (
