@@ -4,11 +4,10 @@ import { serveStatic, log, setupCors } from "./vite.js";
 
 const app = express();
 
-// Configuration CORS pour tous les environnements
-setupCors(app);
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// On configure express-session dans routes.js avant CORS
 
 app.use((req, res, next) => {
   const start = Date.now();

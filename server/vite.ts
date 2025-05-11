@@ -13,8 +13,13 @@ export function log(message: string, source = "express") {
 }
 
 export function setupCors(app: Express) {
+  // En développement, CORS est géré par routes.ts
+  if (process.env.NODE_ENV !== "production") {
+    log("CORS: Géré par routes.ts en développement");
+    return;
+  }
+
   const allowedOrigins = [
-    "http://localhost:5173",
     "https://alto-lille.fr",
     "https://www.alto-lille.fr",
     "https://vps-a.pogodev.com",
@@ -36,8 +41,8 @@ export function setupCors(app: Express) {
         return callback(new Error(`CORS non autorisé pour ${origin}`));
       },
       credentials: true,
-      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-      allowedHeaders: ['Content-Type', 'Authorization'],
+      methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+      allowedHeaders: ["Content-Type", "Authorization"],
     })
   );
 

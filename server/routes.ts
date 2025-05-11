@@ -63,25 +63,32 @@ const addCorsDevSupport = (app: Express) => {
 };
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Configurer CORS avant la session
-  addCorsDevSupport(app);
-
+  // Session configuration FIRST
+  const isProd = process.env.NODE_ENV === "production";
   app.use(
     session({
+      name: "alto.sid",
       secret: process.env.SESSION_SECRET || "focus-lamp-secret",
       resave: true,
-      rolling: true,
       saveUninitialized: false,
-      store: new SessionStore({ checkPeriod: 86400000 }),
+      rolling: true,
+      store: new SessionStore({
+        checkPeriod: 86400000,
+      }),
       cookie: {
-        secure: true, // Toujours true en prod
         httpOnly: true,
-        sameSite: "none",
-        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 jours
-        path: '/'
+        secure: isProd, // Only true in production
+        sameSite: isProd ? "none" : "lax",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+        path: "/",
       },
     })
   );
+
+  // CORS configuration next
+  if (!isProd) {
+    app.use(devCorsMiddleware);
+  }
 
   // Products CRUD
   const getProductHandler = async (
@@ -235,12 +242,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
           return;
         }
 
+        // Log session avant
+        console.log("Session avant login:", req.session);
+
         req.session.user = {
           id: user.id,
           username: user.username,
           isAdmin: user.isAdmin ?? false,
         };
-        res.json(req.session.user);
+
+        // Force la sauvegarde de la session
+        await new Promise<void>((resolve, reject) => {
+          req.session.save((err) => {
+            if (err) {
+              console.error("Erreur de sauvegarde de session:", err);
+              reject(err);
+              return;
+            }
+            console.log("Session après login:", req.session);
+            resolve();
+          });
+        });
+
+        res.json({
+          ...req.session.user,
+          sessionId: req.session.id,
+        });
       } catch (error) {
         handleError(res, error);
       }

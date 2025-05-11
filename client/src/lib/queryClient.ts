@@ -32,7 +32,9 @@ export async function apiRequest(
   url: string,
   data?: unknown | undefined
 ) {
-  const apiUrl = `${getApiBaseUrl()}${url}`;
+  // Ensure url starts with /api
+  const apiPath = url.startsWith("/api") ? url : `/api${url}`;
+  const apiUrl = `${getApiBaseUrl()}${apiPath}`;
 
   const res = await fetch(apiUrl, {
     method,

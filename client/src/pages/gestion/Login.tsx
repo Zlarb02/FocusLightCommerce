@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
+import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -35,6 +36,26 @@ export default function GestionLogin() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+
+  // Vérifier le statut d'authentification
+  const { data: authStatus } = useQuery({
+    queryKey: ["authStatus"],
+    queryFn: async () => {
+      try {
+        const response = await apiRequest("GET", "/api/auth/status");
+        return response;
+      } catch (error) {
+        return { authenticated: false };
+      }
+    },
+  });
+
+  // Rediriger vers le dashboard si déjà connecté
+  useEffect(() => {
+    if (authStatus?.authenticated && authStatus?.user?.isAdmin) {
+      setLocation("/gestion/dashboard");
+    }
+  }, [authStatus, setLocation]);
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -72,6 +93,15 @@ export default function GestionLogin() {
       setIsLoading(false);
     }
   };
+
+  // Afficher un loader pendant la vérification
+  if (authStatus?.isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center text-gray-500">Chargement...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
