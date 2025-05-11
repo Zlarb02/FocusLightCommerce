@@ -9,7 +9,6 @@ import { storage } from "./storage.js";
 import { insertProductSchema, checkoutSchema } from "../shared/schema.js";
 import { z } from "zod";
 import session from "express-session";
-import { createClient } from "redis";
 import { RedisStore } from "connect-redis";
 import { createRedisClient } from "./redis.js";
 
