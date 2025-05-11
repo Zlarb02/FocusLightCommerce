@@ -13,11 +13,12 @@ export function log(message: string, source = "express") {
 }
 
 export function setupCors(app: Express) {
+  const isProd = process.env.NODE_ENV === "production";
   const allowedOrigins = [
     "https://alto-lille.fr",
     "https://www.alto-lille.fr",
-    "https://vps-a.pogodev.com",
-    "http://localhost:5173",
+    "https://api-focus.pogodev.com",
+    ...(isProd ? [] : ["http://localhost:5173"]),
   ];
 
   app.use(
@@ -25,10 +26,14 @@ export function setupCors(app: Express) {
       origin: function (origin, callback) {
         log(`Requête reçue de l'origine: ${origin}`);
 
-        // Autoriser les requêtes sans origine (comme les appels API directs)
+        // Autoriser les requêtes sans origine en développement uniquement
         if (!origin) {
-          log("CORS: Aucune origine (CLI ou interne) → autorisé");
-          return callback(null, true);
+          if (!isProd) {
+            log("CORS: Aucune origine (dev) → autorisé");
+            return callback(null, true);
+          }
+          log("CORS: Aucune origine (prod) → refusé");
+          return callback(new Error("CORS requiert une origine en production"));
         }
 
         // Vérifier si l'origine est autorisée
@@ -43,13 +48,17 @@ export function setupCors(app: Express) {
       credentials: true,
       methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
       allowedHeaders: ["Content-Type", "Authorization", "Origin", "Accept"],
-      exposedHeaders: ["Set-Cookie"],
+      exposedHeaders: ["Set-Cookie", "Authorization"],
       preflightContinue: false,
       optionsSuccessStatus: 204,
     })
   );
 
-  log("CORS initialisé");
+  log(
+    `CORS initialisé avec la configuration de production: ${
+      isProd ? "oui" : "non"
+    }`
+  );
 }
 
 export function serveStatic(app: Express) {

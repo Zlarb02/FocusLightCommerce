@@ -44,37 +44,15 @@ const corsMiddleware = (
   res: Response,
   next: NextFunction
 ): void => {
-  const allowedOrigins = [
-    "http://localhost:5173",
-    "https://alto-lille.fr",
-    "https://www.alto-lille.fr",
-    "https://vps-a.pogodev.com",
-  ];
-
-  const origin = req.headers.origin;
-
-  if (origin && allowedOrigins.includes(origin)) {
-    res.header("Access-Control-Allow-Origin", origin);
-    res.header(
-      "Access-Control-Allow-Methods",
-      "GET, POST, PUT, DELETE, OPTIONS"
-    );
-    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-    res.header("Access-Control-Allow-Credentials", "true");
-  }
-
-  if (req.method === "OPTIONS") {
-    res.sendStatus(204);
-    return;
-  }
+  // Ce middleware n'est plus utilisé car CORS est géré dans vite.ts
   next();
 };
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Appliquer CORS avant tout
-  app.use(corsMiddleware);
+  const isProd = process.env.NODE_ENV === "production";
+  const frontendDomain = isProd ? "alto-lille.fr" : "localhost";
+  const cookieDomain = isProd ? frontendDomain : undefined;
 
-  // Session configuration ensuite
   app.use(
     session({
       name: "alto.sid",
@@ -83,17 +61,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
       saveUninitialized: false,
       rolling: true,
       store: new SessionStore({
-        checkPeriod: 86400000,
+        checkPeriod: 86400000, // Nettoyage une fois par jour
       }),
       cookie: {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-        maxAge: 7 * 24 * 60 * 60 * 1000,
+        secure: isProd, // true en production
+        sameSite: isProd ? "none" : "lax", // none pour le cross-domain en prod
+        domain: cookieDomain, // domain principal en production
         path: "/",
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 jours
       },
     })
-  );
+  ); // CORS est configuré dans vite.ts
 
   // Products CRUD
   const getProductHandler = async (
