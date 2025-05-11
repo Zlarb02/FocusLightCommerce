@@ -8,7 +8,9 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage.js";
 import { insertProductSchema, checkoutSchema } from "../shared/schema.js";
 import { z } from "zod";
-import session, { MemoryStore } from "express-session";
+import session from "express-session";
+import { createClient } from "redis";
+import { RedisStore } from "connect-redis";
 
 // Extend Express Session
 declare module "express-session" {
@@ -65,6 +67,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 jours
       };
 
+  let sessionStore;
+
+  if (isProd) {
+    // Configuration Redis pour la production
+    const redisClient = createClient({
+      url: process.env.REDIS_URL || "redis://localhost:6379",
+    });
+
+    redisClient.on("error", (err) => console.log("Redis Client Error", err));
+    redisClient.on("connect", () =>
+      console.log("Connected to Redis successfully")
+    );
+
+    await redisClient.connect();
+
+    sessionStore = new RedisStore({
+      client: redisClient,
+      prefix: "alto:sess:",
+    });
+  } else {
+    // MemoryStore pour le développement uniquement
+    sessionStore = new session.MemoryStore();
+  }
+
   app.use(
     session({
       name: "alto.sid",
@@ -72,7 +98,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       resave: true,
       saveUninitialized: false,
       rolling: true,
-      store: new MemoryStore(),
+      store: sessionStore,
       cookie: cookieConfig,
     })
   );
