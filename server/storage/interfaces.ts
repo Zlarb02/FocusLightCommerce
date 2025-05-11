@@ -1,6 +1,9 @@
 import {
   type Product,
   type InsertProduct,
+  type ProductVariation,
+  type InsertProductVariation,
+  type ProductWithVariations,
   type Customer,
   type InsertCustomer,
   type Order,
@@ -14,19 +17,31 @@ import {
 // Storage interface
 export interface IStorage {
   // Products
-  getAllProducts(): Promise<Product[]>;
-  getProductById(id: number): Promise<Product | undefined>;
-  getProductsByColor(color: string): Promise<Product[]>;
+  getAllProducts(): Promise<ProductWithVariations[]>;
+  getProductById(id: number): Promise<ProductWithVariations | undefined>;
+  getProductsByVariation(
+    type: string,
+    value: string
+  ): Promise<ProductWithVariations[]>;
+  getProductVariationById(id: number): Promise<ProductVariation | undefined>;
   createProduct(product: InsertProduct): Promise<Product>;
+  createProductVariation(
+    variation: InsertProductVariation
+  ): Promise<ProductVariation>;
   updateProduct(
     id: number,
     product: Partial<InsertProduct>
   ): Promise<Product | undefined>;
-  updateProductStock(
+  updateProductVariation(
+    id: number,
+    variation: Partial<InsertProductVariation>
+  ): Promise<ProductVariation | undefined>;
+  updateVariationStock(
     id: number,
     quantity: number
-  ): Promise<Product | undefined>;
+  ): Promise<ProductVariation | undefined>;
   deleteProduct(id: number): Promise<boolean>;
+  deleteProductVariation(id: number): Promise<boolean>;
 
   // Customers
   getCustomerById(id: number): Promise<Customer | undefined>;

@@ -186,7 +186,7 @@ export default function GestionLogin() {
         </Card>
 
         <div className="mt-6 text-center">
-          <Button variant="link" onClick={() => setLocation("/")}>
+          <Button variant="link" onClick={() => setLocation("/shop")}>
             Retourner au site
           </Button>
         </div>

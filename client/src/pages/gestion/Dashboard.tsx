@@ -11,12 +11,13 @@ import {
 import { useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { AuthGuard } from "@/components/AuthGuard";
+import { ProductWithVariations } from "@shared/schema";
 
 export default function Dashboard() {
   const [, setLocation] = useLocation();
 
   // Récupération des données depuis l'API (dans un environnement réel)
-  const { data: products = [] } = useQuery({
+  const { data: products = [] } = useQuery<ProductWithVariations[]>({
     queryKey: ["/api/products"],
     enabled: false, // Désactivé pour la démo - à activer en production
   });

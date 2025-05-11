@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Layout } from "@/components/Layout";
 import { LampColorSelector } from "@/components/LampColorSelector";
-import { Product } from "@shared/schema";
+import { ProductVariation, ProductWithVariations } from "@shared/schema";
 import { ProductCard } from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
 import { Leaf, Lightbulb, ShoppingBag, Trees } from "lucide-react";
@@ -27,61 +27,92 @@ const colorSectionOrderMap: Record<string, number> = {
   Rouge: 3,
 };
 
-// Fonction pour trier les produits selon l'ordre souhaité pour le sélecteur de couleur
-const sortProductsForHero = (products: Product[]): Product[] => {
-  return [...products].sort((a, b) => {
-    const orderA = heroOrderMap[a.color] ?? 999;
-    const orderB = heroOrderMap[b.color] ?? 999;
+// Fonction pour trier les variations selon l'ordre souhaité pour le sélecteur de couleur
+const sortVariationsForHero = (
+  variations: ProductVariation[]
+): ProductVariation[] => {
+  return [...variations].sort((a, b) => {
+    const orderA = heroOrderMap[a.variationValue] ?? 999;
+    const orderB = heroOrderMap[b.variationValue] ?? 999;
     return orderA - orderB;
   });
 };
 
-// Fonction pour trier les produits selon l'ordre souhaité pour la section "Les Coloris"
-const sortProductsForColorSection = (products: Product[]): Product[] => {
-  return [...products].sort((a, b) => {
-    const orderA = colorSectionOrderMap[a.color] ?? 999;
-    const orderB = colorSectionOrderMap[b.color] ?? 999;
+// Fonction pour trier les variations selon l'ordre souhaité pour la section "Les Coloris"
+const sortVariationsForColorSection = (
+  variations: ProductVariation[]
+): ProductVariation[] => {
+  return [...variations].sort((a, b) => {
+    const orderA = colorSectionOrderMap[a.variationValue] ?? 999;
+    const orderB = colorSectionOrderMap[b.variationValue] ?? 999;
     return orderA - orderB;
   });
 };
 
 export default function Shop() {
-  const { data: products = [] } = useQuery<Product[]>({
+  const { data: products = [] } = useQuery<ProductWithVariations[]>({
     queryKey: ["/api/products"],
   });
 
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [selectedProduct, setSelectedProduct] =
+    useState<ProductWithVariations | null>(null);
+  const [selectedVariation, setSelectedVariation] =
+    useState<ProductVariation | null>(null);
   const { addItem } = useCart();
   const { toast } = useToast();
 
   useEffect(() => {
     if (products.length > 0 && !selectedProduct) {
-      // Default to the blue lamp on initial load
-      const defaultProduct =
-        products.find((p) => p.color === "Bleu") || products[0];
+      // Sélectionner le premier produit par défaut (lampe)
+      const defaultProduct = products[0];
       setSelectedProduct(defaultProduct);
+
+      // Sélectionner la variation bleue par défaut ou la première disponible
+      if (defaultProduct.variations && defaultProduct.variations.length > 0) {
+        const blueVariation = defaultProduct.variations.find(
+          (v) => v.variationValue === "Bleu"
+        );
+        setSelectedVariation(blueVariation || defaultProduct.variations[0]);
+      }
     }
   }, [products, selectedProduct]);
 
-  const handleColorSelect = (product: Product) => {
-    setSelectedProduct(product);
+  const handleVariationSelect = (variation: ProductVariation) => {
+    setSelectedVariation(variation);
   };
 
   const handleAddToCart = () => {
-    if (selectedProduct) {
-      addItem(selectedProduct);
+    if (selectedProduct && selectedVariation) {
+      // Créer une représentation complète du produit avec sa variation
+      const productWithVariation = {
+        ...selectedVariation,
+        productName: selectedProduct.name,
+        productDescription: selectedProduct.description,
+        basePrice: selectedProduct.price,
+      };
+
+      addItem(productWithVariation);
+
       toast({
         title: "Produit ajouté au panier",
-        description: `${selectedProduct.name} (${selectedProduct.color}) a été ajouté au panier`,
+        description: `${selectedProduct.name} (${selectedVariation.variationValue}) a été ajouté au panier`,
       });
     }
   };
 
-  // Produits triés pour le sélecteur de couleur dans la section hero
-  const sortedProductsForHero = sortProductsForHero(products);
+  // Obtenez toutes les variations de tous les produits
+  const allVariations = products.flatMap((p) => p.variations || []);
 
-  // Produits triés pour la section "Les Coloris"
-  const sortedProductsForColorSection = sortProductsForColorSection(products);
+  // Variations triées pour le sélecteur de couleur dans la section hero
+  const heroVariations = selectedProduct?.variations
+    ? sortVariationsForHero(selectedProduct.variations)
+    : [];
+
+  // Variations triées pour la section "Les Coloris"
+  const colorSectionVariations =
+    allVariations.length > 0
+      ? sortVariationsForColorSection(allVariations)
+      : [];
 
   return (
     <Layout>
@@ -148,18 +179,19 @@ export default function Shop() {
               </div>
             </div>
             <div className="order-1 md:order-2 relative flex justify-center items-center">
-              {selectedProduct && (
+              {selectedProduct && selectedVariation && (
                 <div className="relative w-full max-w-md h-[400px] flex items-center justify-center">
                   <img
-                    src={getColorInfo(selectedProduct.color).imagePath}
-                    alt={`Lampe FOCUS.01 coloris ${selectedProduct.color}`}
+                    src={selectedVariation.imageUrl}
+                    alt={`Lampe FOCUS.01 coloris ${selectedVariation.variationValue}`}
                     className="w-full max-w-[70%] mx-auto object-contain transition-all duration-700 animate scale-in z-1"
                   />
                   <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full">
                     <LampColorSelector
-                      colors={sortedProductsForHero}
-                      onColorSelect={handleColorSelect}
-                      selectedProductId={selectedProduct?.id}
+                      variations={heroVariations}
+                      productName={selectedProduct.name}
+                      onVariationSelect={handleVariationSelect}
+                      selectedVariationId={selectedVariation?.id}
                     />
                   </div>
                 </div>
@@ -288,9 +320,9 @@ export default function Shop() {
 
             <div className="flex flex-col md:flex-row gap-16">
               <div className="md:w-1/2 animate fade-in-right delay-4">
-                {selectedProduct && (
+                {selectedProduct && selectedVariation && (
                   <img
-                    src={getColorInfo(selectedProduct.color).imagePath}
+                    src={selectedVariation.imageUrl}
                     alt={`FOCUS.01 en détail`}
                     className="w-full max-h-[500px] object-contain"
                   />
@@ -446,14 +478,27 @@ export default function Shop() {
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-            {sortedProductsForColorSection.map((product, index) => (
-              <div
-                key={product.id}
-                className={`animate fade-in-up delay-${index + 1}`}
-              >
-                <ProductCard product={product} />
-              </div>
-            ))}
+            {products.length > 0 &&
+              colorSectionVariations.map((variation, index) => {
+                // Trouver le produit parent pour cette variation
+                const parentProduct = products.find((p) =>
+                  p.variations?.some((v) => v.id === variation.id)
+                );
+
+                if (!parentProduct) return null;
+
+                return (
+                  <div
+                    key={variation.id}
+                    className={`animate fade-in-up delay-${index + 1}`}
+                  >
+                    <ProductCard
+                      product={parentProduct}
+                      variation={variation}
+                    />
+                  </div>
+                );
+              })}
           </div>
         </section>
 

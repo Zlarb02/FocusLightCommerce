@@ -1,52 +1,56 @@
 import { cn, getColorInfo } from "@/lib/utils";
-import { Product } from "@shared/schema";
+import { ProductVariation, ProductWithVariations } from "@shared/schema";
 import { useState } from "react";
 
 interface LampColorSelectorProps {
-  colors: Product[];
-  initialColor?: string;
-  onColorSelect: (product: Product) => void;
-  selectedProductId?: number;
+  variations: ProductVariation[];
+  productName: string;
+  initialVariationValue?: string;
+  onVariationSelect: (variation: ProductVariation) => void;
+  selectedVariationId?: number;
   className?: string;
 }
 
 export function LampColorSelector({
-  colors,
-  initialColor = "Blanc",
-  onColorSelect,
-  selectedProductId,
+  variations,
+  productName,
+  initialVariationValue = "Blanc",
+  onVariationSelect,
+  selectedVariationId,
   className,
 }: LampColorSelectorProps) {
-  const [selectedColor, setSelectedColor] = useState(initialColor);
+  const [selectedValue, setSelectedValue] = useState(initialVariationValue);
 
-  const handleColorSelect = (product: Product) => {
-    setSelectedColor(product.color);
-    onColorSelect(product);
+  const handleVariationSelect = (variation: ProductVariation) => {
+    setSelectedValue(variation.variationValue);
+    onVariationSelect(variation);
   };
 
   return (
     <div className={cn("flex space-x-3", className)}>
-      {colors.map((product) => {
-        const colorInfo = getColorInfo(product.color);
-        const isSelected = selectedProductId
-          ? selectedProductId === product.id
-          : selectedColor === product.color;
+      {variations
+        .filter((variation) => variation.variationType === "color")
+        .map((variation) => {
+          const colorInfo = getColorInfo(variation.variationValue);
+          const isSelected = selectedVariationId
+            ? selectedVariationId === variation.id
+            : selectedValue === variation.variationValue;
 
-        return (
-          <button
-            key={product.id}
-            className={cn(
-              "w-8 h-8 rounded-full border-2 border-white shadow-md transition-transform",
-              colorInfo.bgClass,
-              isSelected && "transform scale-115 shadow-lg"
-            )}
-            onClick={() => handleColorSelect(product)}
-            title={`Lampe FOCUS.01 en ${product.color}`}
-            aria-label={`Sélectionner la couleur ${product.color}`}
-            aria-pressed={isSelected}
-          />
-        );
-      })}
+          return (
+            <button
+              key={variation.id}
+              className={cn(
+                "w-8 h-8 rounded-full border-2 border-white shadow-md transition-transform",
+                colorInfo.bgClass,
+                isSelected && "transform scale-115 shadow-lg"
+              )}
+              onClick={() => handleVariationSelect(variation)}
+              title={`${productName} en ${variation.variationValue}`}
+              aria-label={`Sélectionner la couleur ${variation.variationValue}`}
+              aria-pressed={isSelected}
+            />
+          );
+        })}
     </div>
   );
 }

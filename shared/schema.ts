@@ -1,4 +1,12 @@
-import { pgTable, text, serial, integer, timestamp, boolean, real } from "drizzle-orm/pg-core";
+import {
+  pgTable,
+  text,
+  serial,
+  integer,
+  timestamp,
+  boolean,
+  real,
+} from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -6,14 +14,28 @@ import { z } from "zod";
 export const products = pgTable("products", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
-  color: text("color").notNull(),
   description: text("description").notNull(),
   price: real("price").notNull(),
+});
+
+export const insertProductSchema = createInsertSchema(products).omit({
+  id: true,
+});
+
+// Product Variations schema
+export const productVariations = pgTable("product_variations", {
+  id: serial("id").primaryKey(),
+  productId: integer("product_id").notNull(),
+  variationType: text("variation_type").notNull(), // color, size, material, etc.
+  variationValue: text("variation_value").notNull(), // Blanc, Rouge, 'S', 'M', 'L', etc.
+  price: real("price"), // Price override for this variation (optional)
   stock: integer("stock").notNull().default(0),
   imageUrl: text("image_url").notNull(),
 });
 
-export const insertProductSchema = createInsertSchema(products).omit({
+export const insertProductVariationSchema = createInsertSchema(
+  productVariations
+).omit({
   id: true,
 });
 
@@ -77,6 +99,23 @@ export const insertUserSchema = createInsertSchema(users).omit({
 // Type definitions
 export type Product = typeof products.$inferSelect;
 export type InsertProduct = z.infer<typeof insertProductSchema>;
+
+export type ProductVariation = typeof productVariations.$inferSelect;
+export type InsertProductVariation = z.infer<
+  typeof insertProductVariationSchema
+>;
+
+// Extended Product type with variations
+export type ProductWithVariations = Product & {
+  variations?: ProductVariation[];
+};
+
+// Helper type for product with selected variation
+export type ProductWithSelectedVariation = ProductVariation & {
+  productName: string;
+  productDescription: string;
+  basePrice: number;
+};
 
 export type Customer = typeof customers.$inferSelect;
 export type InsertCustomer = z.infer<typeof insertCustomerSchema>;

@@ -6,6 +6,9 @@ import { UserStorage } from "./userStorage.js";
 import {
   type Product,
   type InsertProduct,
+  type ProductVariation,
+  type InsertProductVariation,
+  type ProductWithVariations,
   type Customer,
   type InsertCustomer,
   type Order,
@@ -37,20 +40,35 @@ export class MemStorage implements IStorage {
   }
 
   // Products Implementation
-  async getAllProducts(): Promise<Product[]> {
+  async getAllProducts(): Promise<ProductWithVariations[]> {
     return this.productStorage.getAllProducts();
   }
 
-  async getProductById(id: number): Promise<Product | undefined> {
+  async getProductById(id: number): Promise<ProductWithVariations | undefined> {
     return this.productStorage.getProductById(id);
   }
 
-  async getProductsByColor(color: string): Promise<Product[]> {
-    return this.productStorage.getProductsByColor(color);
+  async getProductsByVariation(
+    type: string,
+    value: string
+  ): Promise<ProductWithVariations[]> {
+    return this.productStorage.getProductsByVariation(type, value);
+  }
+
+  async getProductVariationById(
+    id: number
+  ): Promise<ProductVariation | undefined> {
+    return this.productStorage.getProductVariationById(id);
   }
 
   async createProduct(product: InsertProduct): Promise<Product> {
     return this.productStorage.createProduct(product);
+  }
+
+  async createProductVariation(
+    variation: InsertProductVariation
+  ): Promise<ProductVariation> {
+    return this.productStorage.createProductVariation(variation);
   }
 
   async updateProduct(
@@ -60,15 +78,26 @@ export class MemStorage implements IStorage {
     return this.productStorage.updateProduct(id, product);
   }
 
-  async updateProductStock(
+  async updateProductVariation(
+    id: number,
+    variation: Partial<InsertProductVariation>
+  ): Promise<ProductVariation | undefined> {
+    return this.productStorage.updateProductVariation(id, variation);
+  }
+
+  async updateVariationStock(
     id: number,
     quantity: number
-  ): Promise<Product | undefined> {
-    return this.productStorage.updateProductStock(id, quantity);
+  ): Promise<ProductVariation | undefined> {
+    return this.productStorage.updateVariationStock(id, quantity);
   }
 
   async deleteProduct(id: number): Promise<boolean> {
     return this.productStorage.deleteProduct(id);
+  }
+
+  async deleteProductVariation(id: number): Promise<boolean> {
+    return this.productStorage.deleteProductVariation(id);
   }
 
   // Customers Implementation

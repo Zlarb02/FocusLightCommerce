@@ -1,16 +1,22 @@
-import { Product } from "@shared/schema";
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { ProductWithSelectedVariation } from "@shared/schema";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
 
 type CartItem = {
-  product: Product;
+  product: ProductWithSelectedVariation;
   quantity: number;
 };
 
 interface CartContextType {
   items: CartItem[];
-  addItem: (product: Product) => void;
-  removeItem: (productId: number) => void;
-  updateQuantity: (productId: number, quantity: number) => void;
+  addItem: (product: ProductWithSelectedVariation) => void;
+  removeItem: (variationId: number) => void;
+  updateQuantity: (variationId: number, quantity: number) => void;
   clearCart: () => void;
   getTotalItems: () => number;
   getTotalPrice: () => number;
@@ -46,7 +52,7 @@ export function CartProvider({ children }: CartProviderProps) {
     }
   }, [items]);
 
-  const addItem = (product: Product) => {
+  const addItem = (product: ProductWithSelectedVariation) => {
     setItems((prevItems) => {
       const existingItemIndex = prevItems.findIndex(
         (item) => item.product.id === product.id
@@ -67,21 +73,21 @@ export function CartProvider({ children }: CartProviderProps) {
     });
   };
 
-  const removeItem = (productId: number) => {
+  const removeItem = (variationId: number) => {
     setItems((prevItems) =>
-      prevItems.filter((item) => item.product.id !== productId)
+      prevItems.filter((item) => item.product.id !== variationId)
     );
   };
 
-  const updateQuantity = (productId: number, quantity: number) => {
+  const updateQuantity = (variationId: number, quantity: number) => {
     if (quantity <= 0) {
-      removeItem(productId);
+      removeItem(variationId);
       return;
     }
 
     setItems((prevItems) =>
       prevItems.map((item) =>
-        item.product.id === productId ? { ...item, quantity } : item
+        item.product.id === variationId ? { ...item, quantity } : item
       )
     );
   };
@@ -95,10 +101,11 @@ export function CartProvider({ children }: CartProviderProps) {
   };
 
   const getTotalPrice = () => {
-    return items.reduce(
-      (total, item) => total + item.product.price * item.quantity,
-      0
-    );
+    return items.reduce((total, item) => {
+      // Calculer le prix en tenant compte soit du prix de la variation, soit du prix de base
+      const itemPrice = item.product.price || item.product.basePrice;
+      return total + itemPrice * item.quantity;
+    }, 0);
   };
 
   return (

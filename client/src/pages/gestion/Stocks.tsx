@@ -2,7 +2,7 @@ import DashboardLayout from "./DashboardLayout";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { queryClient, apiRequest } from "@/lib/queryClient";
-import { Product } from "@shared/schema";
+import { ProductVariation, ProductWithVariations } from "@shared/schema";
 import { formatPrice } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 
@@ -49,10 +49,11 @@ type StockFormValues = z.infer<typeof stockFormSchema>;
 export default function Stocks() {
   const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [selectedVariation, setSelectedVariation] =
+    useState<ProductVariation | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const { data: products = [], isLoading } = useQuery<Product[]>({
+  const { data: products = [], isLoading } = useQuery<ProductWithVariations[]>({
     queryKey: ["/api/products"],
     // Dans un environnement de production, cette requête serait activée
     enabled: true,
@@ -67,13 +68,15 @@ export default function Stocks() {
 
   const { mutate: updateStock } = useMutation({
     mutationFn: async ({ id, stock }: { id: number; stock: number }) => {
-      return apiRequest("PUT", `/api/products/${id}/stock`, { stock });
+      return apiRequest("PUT", `/api/products/variations/${id}/stock`, {
+        stock,
+      });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/products"] });
       toast({
         title: "Stock mis à jour",
-        description: "Le stock du produit a été mis à jour avec succès.",
+        description: "Le stock de la variation a été mis à jour avec succès.",
       });
       setIsDialogOpen(false);
     },
@@ -87,22 +90,26 @@ export default function Stocks() {
     },
   });
 
-  const openStockDialog = (product: Product) => {
-    setSelectedProduct(product);
-    form.reset({ stock: product.stock });
+  const openStockDialog = (variation: ProductVariation) => {
+    setSelectedVariation(variation);
+    form.reset({ stock: variation.stock });
     setIsDialogOpen(true);
   };
 
   const onSubmit = (data: StockFormValues) => {
-    if (selectedProduct) {
-      updateStock({ id: selectedProduct.id, stock: data.stock });
+    if (selectedVariation) {
+      updateStock({ id: selectedVariation.id, stock: data.stock });
     }
   };
 
   const filteredProducts = products.filter(
     (product) =>
       product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.color.toLowerCase().includes(searchTerm.toLowerCase())
+      product.variations?.some((variation) =>
+        variation.variationValue
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
+      )
   );
 
   return (
@@ -145,51 +152,64 @@ export default function Stocks() {
                   </TableCell>
                 </TableRow>
               ) : (
-                filteredProducts.map((product) => (
-                  <TableRow key={product.id}>
-                    <TableCell className="font-medium">{product.id}</TableCell>
-                    <TableCell>
-                      <div className="w-10 h-10 relative">
-                        <img
-                          src={product.imageUrl}
-                          alt={product.name}
-                          className="object-contain w-full h-full"
-                        />
-                      </div>
-                    </TableCell>
-                    <TableCell>{product.name}</TableCell>
-                    <TableCell>
-                      <Badge variant="outline">{product.color}</Badge>
-                    </TableCell>
-                    <TableCell>{formatPrice(product.price)}</TableCell>
-                    <TableCell>
-                      <div className="flex items-center">
-                        <Badge
-                          variant={
-                            product.stock <= 5 ? "destructive" : "outline"
-                          }
-                        >
-                          {product.stock > 0 ? (
-                            `${product.stock} en stock`
-                          ) : (
-                            <span className="flex items-center">
-                              <AlertTriangle className="h-3 w-3 mr-1" /> Épuisé
-                            </span>
-                          )}
-                        </Badge>
-                      </div>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        onClick={() => openStockDialog(product)}
-                      >
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))
+                filteredProducts.flatMap((product) =>
+                  product.variations
+                    ? product.variations.map((variation) => (
+                        <TableRow key={variation.id}>
+                          <TableCell className="font-medium">
+                            {variation.id}
+                          </TableCell>
+                          <TableCell>
+                            <div className="w-10 h-10 relative">
+                              <img
+                                src={variation.imageUrl}
+                                alt={`${product.name} ${variation.variationValue}`}
+                                className="object-contain w-full h-full"
+                              />
+                            </div>
+                          </TableCell>
+                          <TableCell>{product.name}</TableCell>
+                          <TableCell>
+                            <Badge variant="outline">
+                              {variation.variationValue}
+                            </Badge>
+                          </TableCell>
+                          <TableCell>
+                            {formatPrice(variation.price || product.price)}
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex items-center">
+                              <Badge
+                                variant={
+                                  variation.stock <= 5
+                                    ? "destructive"
+                                    : "outline"
+                                }
+                              >
+                                {variation.stock > 0 ? (
+                                  `${variation.stock} en stock`
+                                ) : (
+                                  <span className="flex items-center">
+                                    <AlertTriangle className="h-3 w-3 mr-1" />{" "}
+                                    Épuisé
+                                  </span>
+                                )}
+                              </Badge>
+                            </div>
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <Button
+                              variant="outline"
+                              size="icon"
+                              onClick={() => openStockDialog(variation)}
+                            >
+                              <Edit className="h-4 w-4" />
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    : []
+                )
               )}
             </TableBody>
           </Table>
@@ -203,21 +223,21 @@ export default function Stocks() {
           </DialogHeader>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              {selectedProduct && (
+              {selectedVariation && (
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-12 h-12 relative">
                     <img
-                      src={selectedProduct.imageUrl}
-                      alt={selectedProduct.name}
+                      src={selectedVariation.imageUrl}
+                      alt={selectedVariation.variationValue}
                       className="object-contain w-full h-full"
                     />
                   </div>
                   <div>
                     <p className="font-medium">
-                      {selectedProduct.name} ({selectedProduct.color})
+                      Variation {selectedVariation.variationValue}
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      Prix: {formatPrice(selectedProduct.price)}
+                      Prix: {formatPrice(selectedVariation.price || 0)}
                     </p>
                   </div>
                 </div>
