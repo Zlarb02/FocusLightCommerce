@@ -30,7 +30,8 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
           quantity: item.quantity,
           price: item.price,
         });
-        await storage.updateProductStock(item.productId, -item.quantity);
+        // Mise à jour du stock de la variation (variation est identifiée par son ID)
+        await storage.updateVariationStock(item.productId, -item.quantity);
       })
     );
 

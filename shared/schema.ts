@@ -158,9 +158,11 @@ export const checkoutSchema = z.object({
   customer: insertCustomerSchema,
   items: z.array(
     z.object({
-      productId: z.number(),
+      productId: z.number(), // Maintenant, il s'agit de l'ID de la variation
       quantity: z.number().min(1),
       price: z.number(),
+      variationType: z.string().optional(), // Type de variation (color, size, etc.)
+      variationValue: z.string().optional(), // Valeur de la variation (Rouge, M, etc.)
     })
   ),
   totalAmount: z.number(),
