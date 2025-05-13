@@ -5,71 +5,70 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 const app = express();
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// Configuration pour servir les fichiers statiques depuis le dossier uploads
-// en court-circuitant le middleware CORS
-app.use("/uploads", (req, res, next) => {
-  // Ajouter les en-têtes CORS manuellement pour les fichiers statiques
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+/* ------------------------------------------------------------------ */
+/*  SERVEUR DE FICHIERS PUBLICS (/uploads)                            */
+/* ------------------------------------------------------------------ */
+// Tous les fichiers uploadés sont stockés dans <racine>/uploads
+// → même dossier pour l'upload (multer) et pour la lecture statique
+const uploadsDir = path.join(process.cwd(), "uploads"); // ex : /app/uploads en prod
 
-  // Servir le fichier statique
-  express.static(path.join(__dirname, "uploads"))(req, res, next);
-});
+// Route statique : lecture seule, les headers CORS sont ajoutés par setupCors
+app.use("/uploads", express.static(uploadsDir, { extensions: false }));
 
-// Configuration de CORS pour les autres routes
+/* ------------------------------------------------------------------ */
+/*  CORS GENERAL (API, etc.)                                          */
+/* ------------------------------------------------------------------ */
 setupCors(app);
 
+/* ------------------------------------------------------------------ */
+/*  EXPRESS CORE                                                      */
+/* ------------------------------------------------------------------ */
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// Logging de performance & réponse JSON condensée
 app.use((req, res, next) => {
   const start = Date.now();
-  const path = req.path;
-  let capturedJsonResponse: Record<string, any> | undefined = undefined;
+  const p = req.path;
+  let capturedJsonResponse: Record<string, any> | undefined;
 
   const originalResJson = res.json;
   res.json = function (bodyJson, ...args) {
     capturedJsonResponse = bodyJson;
+    // @ts-ignore – conserver type any du spread
     return originalResJson.apply(res, [bodyJson, ...args]);
   };
 
   res.on("finish", () => {
+    if (!p.startsWith("/api")) return; // on log uniquement l'API
     const duration = Date.now() - start;
-    if (path.startsWith("/api")) {
-      let logLine = `${req.method} ${path} ${res.statusCode} in ${duration}ms`;
-      if (capturedJsonResponse) {
-        logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
-      }
-
-      if (logLine.length > 80) {
-        logLine = logLine.slice(0, 79) + "…";
-      }
-
-      log(logLine);
+    let logLine = `${req.method} ${p} ${res.statusCode} in ${duration}ms`;
+    if (capturedJsonResponse) {
+      logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
     }
+    if (logLine.length > 80) logLine = logLine.slice(0, 79) + "…";
+    log(logLine);
   });
 
   next();
 });
 
+/* ------------------------------------------------------------------ */
+/*  DEMARRAGE                                                         */
+/* ------------------------------------------------------------------ */
 (async () => {
   const server = await registerRoutes(app);
 
+  // Gestion globale des erreurs
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     const status = err.status || err.statusCode || 500;
     const message = err.message || "Internal Server Error";
-
     res.status(status).json({ message });
     throw err;
   });
 
-  // Nous ne servons plus le frontend statique
-  // serveStatic(app); // Cette ligne est à commenter ou supprimer
-
-  // Définir le port du serveur - utiliser une variable d'environnement ou 5000 par défaut
+  // Port configurable via env, 5000 par défaut
   const port = parseInt(process.env.PORT || "5000", 10);
   app.listen(port, "0.0.0.0", () => {
     log(`API servie sur le port ${port}`);
