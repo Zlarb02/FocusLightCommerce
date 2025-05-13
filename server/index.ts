@@ -14,7 +14,7 @@ app.use("/uploads", (req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-  
+
   // Servir le fichier statique
   express.static(path.join(__dirname, "uploads"))(req, res, next);
 });
