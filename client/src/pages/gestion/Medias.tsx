@@ -73,17 +73,24 @@ interface Media {
 
 // Schema pour l'upload de média
 const mediaUploadSchema = z.object({
-  file: z
+  files: z
     .instanceof(FileList)
     .refine((files) => files.length > 0, {
-      message: "Veuillez sélectionner un fichier",
+      message: "Veuillez sélectionner au moins un fichier",
     })
-    .refine((files) => files[0]?.size <= 10 * 1024 * 1024, {
-      message: "Le fichier ne doit pas dépasser 10 MB",
-    }),
-  type: z.enum(["image", "video", "other"], {
-    required_error: "Veuillez sélectionner un type de média",
-  }),
+    .refine(
+      (files) => {
+        for (let i = 0; i < files.length; i++) {
+          if (files[i].size > 10 * 1024 * 1024) {
+            return false;
+          }
+        }
+        return true;
+      },
+      {
+        message: "Chaque fichier ne doit pas dépasser 10 MB",
+      }
+    ),
 });
 
 type MediaUploadValues = z.infer<typeof mediaUploadSchema>;
@@ -130,7 +137,7 @@ export default function Medias() {
   const uploadForm = useForm<MediaUploadValues>({
     resolver: zodResolver(mediaUploadSchema),
     defaultValues: {
-      type: "image",
+      // file: undefined, // Gardé pour la réinitialisation potentielle
     },
   });
 
@@ -160,7 +167,7 @@ export default function Medias() {
         title: "Erreur",
         description:
           error?.message ||
-          "Une erreur est survenue lors de l'upload du fichier.",
+          "Une erreur est survenue lors de l'upload d'un ou plusieurs fichiers.",
         variant: "destructive",
       });
       console.error("Erreur d'upload:", error);
@@ -193,32 +200,33 @@ export default function Medias() {
   });
 
   const onSubmitUpload = (data: MediaUploadValues) => {
-    const formData = new FormData();
-
-    if (data.file && data.file.length > 0) {
-      formData.append("file", data.file[0]);
-      formData.append("type", data.type);
-      uploadMedia(formData);
+    if (data.files && data.files.length > 0) {
+      for (let i = 0; i < data.files.length; i++) {
+        const formData = new FormData();
+        formData.append("file", data.files[i]);
+        // Le type n'est plus envoyé, il sera déterminé par le backend
+        uploadMedia(formData);
+      }
     }
   };
 
   // Gérer l'aperçu du fichier lors de la sélection
   const handleFileChange = (files: FileList | null) => {
     if (files && files.length > 0) {
-      const file = files[0];
+      const firstFile = files[0];
 
-      // Créer l'URL de prévisualisation pour les images
-      if (file.type.startsWith("image/")) {
-        const fileUrl = URL.createObjectURL(file);
+      // Créer l'URL de prévisualisation pour le premier fichier s'il est image/video
+      if (firstFile.type.startsWith("image/")) {
+        const fileUrl = URL.createObjectURL(firstFile);
         setPreviewUrl(fileUrl);
-        uploadForm.setValue("type", "image");
-      } else if (file.type.startsWith("video/")) {
-        const fileUrl = URL.createObjectURL(file);
+        // uploadForm.setValue("type", "image"); // Plus nécessaire
+      } else if (firstFile.type.startsWith("video/")) {
+        const fileUrl = URL.createObjectURL(firstFile);
         setPreviewUrl(fileUrl);
-        uploadForm.setValue("type", "video");
+        // uploadForm.setValue("type", "video"); // Plus nécessaire
       } else {
-        setPreviewUrl(null);
-        uploadForm.setValue("type", "other");
+        setPreviewUrl(null); // Pas de preview pour les autres types ou si plusieurs fichiers
+        // uploadForm.setValue("type", "other"); // Plus nécessaire
       }
     } else {
       setPreviewUrl(null);
@@ -243,8 +251,8 @@ export default function Medias() {
   // Fonction pour réinitialiser le formulaire d'upload
   const resetUploadForm = () => {
     uploadForm.reset({
-      type: "image",
-      file: undefined,
+      // type: "image", // Plus de type par défaut
+      files: undefined,
     });
   };
 
@@ -406,7 +414,8 @@ export default function Medias() {
               onSubmit={uploadForm.handleSubmit(onSubmitUpload)}
               className="space-y-4"
             >
-              <FormField
+              {/* Le champ de sélection de type est supprimé */}
+              {/* <FormField
                 control={uploadForm.control}
                 name="type"
                 render={({ field }) => (
@@ -430,17 +439,18 @@ export default function Medias() {
                     <FormMessage />
                   </FormItem>
                 )}
-              />
+              /> */}
 
               <FormField
                 control={uploadForm.control}
-                name="file"
+                name="files" // Changé de "file" à "files"
                 render={({ field: { onChange, value, ...rest } }) => (
                   <FormItem>
-                    <FormLabel>Fichier</FormLabel>
+                    <FormLabel>Fichier(s)</FormLabel>
                     <FormControl>
                       <Input
                         type="file"
+                        multiple // Permettre la sélection multiple
                         onChange={(e) => {
                           onChange(e.target.files);
                           handleFileChange(e.target.files);
@@ -449,30 +459,32 @@ export default function Medias() {
                       />
                     </FormControl>
                     <FormMessage />
-                    {previewUrl && (
-                      <div className="mt-2">
-                        {uploadForm.getValues("type") === "image" ? (
-                          <div className="w-full max-h-32 overflow-hidden rounded-md">
-                            <img
-                              src={previewUrl}
-                              alt="Prévisualisation"
-                              className="object-contain w-full h-full"
-                            />
-                          </div>
-                        ) : uploadForm.getValues("type") === "video" ? (
-                          <div className="w-full rounded-md">
-                            <video
-                              src={previewUrl}
-                              controls
-                              className="max-h-32 w-full"
-                            >
-                              Votre navigateur ne supporte pas la lecture de
-                              vidéos
-                            </video>
-                          </div>
-                        ) : null}
-                      </div>
-                    )}
+                    {previewUrl &&
+                      value &&
+                      value.length === 1 && ( // Afficher la prévisualisation seulement si un seul fichier est sélectionné
+                        <div className="mt-2">
+                          {value[0].type.startsWith("image/") ? (
+                            <div className="w-full max-h-32 overflow-hidden rounded-md">
+                              <img
+                                src={previewUrl}
+                                alt="Prévisualisation"
+                                className="object-contain w-full h-full"
+                              />
+                            </div>
+                          ) : value[0].type.startsWith("video/") ? (
+                            <div className="w-full rounded-md">
+                              <video
+                                src={previewUrl}
+                                controls
+                                className="max-h-32 w-full"
+                              >
+                                Votre navigateur ne supporte pas la lecture de
+                                vidéos
+                              </video>
+                            </div>
+                          ) : null}
+                        </div>
+                      )}
                   </FormItem>
                 )}
               />

@@ -3,6 +3,9 @@ import { registerRoutes } from "./routes/index.js";
 import { log, setupCors } from "./vite.js";
 import path from "path";
 import { fileURLToPath } from "url";
+import fs from "fs";
+import { storage } from "./storage/index.js";
+import mime from "mime";
 
 const app = express();
 
@@ -57,7 +60,38 @@ app.use((req, res, next) => {
 /* ------------------------------------------------------------------ */
 /*  DEMARRAGE                                                         */
 /* ------------------------------------------------------------------ */
+/**
+ * Importe automatiquement les fichiers présents dans /uploads au démarrage
+ */
+async function importExistingUploads() {
+  const uploadsPath = path.join(process.cwd(), "uploads");
+  if (!fs.existsSync(uploadsPath)) return;
+  const files = fs.readdirSync(uploadsPath);
+  const existingMedias = await storage.getAllMedias();
+  const existingPaths = new Set(existingMedias.map((m) => m.path));
+
+  for (const file of files) {
+    if (file === ".DS_Store") continue;
+    const filePath = path.join(uploadsPath, file);
+    if (!fs.statSync(filePath).isFile()) continue;
+    const relPath = `/uploads/${file}`;
+    if (existingPaths.has(relPath)) continue;
+    const mimetype = mime.getType(filePath) || "application/octet-stream";
+    let type: "image" | "video" | "other" = "other";
+    if (mimetype.startsWith("image/")) type = "image";
+    else if (mimetype.startsWith("video/")) type = "video";
+    const size = fs.statSync(filePath).size;
+    await storage.createMedia({
+      filename: file,
+      path: relPath,
+      type,
+      size,
+    });
+  }
+}
+
 (async () => {
+  await importExistingUploads();
   const server = await registerRoutes(app);
 
   // Gestion globale des erreurs
