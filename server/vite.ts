@@ -12,8 +12,15 @@ export function log(message: string, source = "express") {
   console.log(`${formattedTime} [${source}] ${message}`);
 }
 
+/**
+ * Initialise la stratégie CORS :
+ * – `/uploads/*` : fichiers publics, lecture seule, aucun cookie ni origine requise.
+ * – reste de l’API : allow‑list stricte ; absence d’Origin acceptée (edge/CDN).
+ */
 export function setupCors(app: Express) {
   const isProd = process.env.NODE_ENV === "production";
+
+  /** Origines autorisées pour les requêtes XHR/fetch. */
   const allowedOrigins = [
     "https://alto-lille.fr",
     "https://www.alto-lille.fr",
@@ -21,65 +28,45 @@ export function setupCors(app: Express) {
     ...(isProd ? [] : ["http://localhost:5173"]),
   ];
 
-  // Configuration CORS spéciale pour les requêtes GET sur /uploads
-  app.use("/uploads", (req, res, next) => {
-    // Si c'est une requête GET, autoriser même sans origine en production
-    if (req.method === "GET") {
-      return cors({
-        origin: function (origin, callback) {
-          log(`Requête GET /uploads reçue de l'origine: ${origin || "aucune"}`);
-          // Autoriser même sans origine
-          if (!origin) {
-            log(
-              "CORS: GET /uploads sans origine → autorisé exceptionnellement"
-            );
-            return callback(null, true);
-          }
+  /* ------------------------------------------------------------------ */
+  /*  FICHIERS PUBLICS                                                    */
+  /* ------------------------------------------------------------------ */
+  // Lecture seule, pas de cookies, CORS wildcard (même sans header Origin)
+  app.use(
+    "/uploads",
+    cors({
+      origin: (_origin, cb) => cb(null, true), // accepte même sans Origin
+      methods: ["GET"],
+      credentials: false, // fichier public → pas de cookie transmis
+      maxAge: 86400,
+    })
+  );
 
-          // Vérifier si l'origine est autorisée
-          if (allowedOrigins.includes(origin)) {
-            log(`CORS: GET /uploads autorisé pour ${origin}`);
-            return callback(null, true);
-          }
-
-          log(`❌ CORS GET /uploads refusé pour ${origin}`);
-          return callback(new Error(`CORS non autorisé pour ${origin}`));
-        },
-        credentials: true,
-        methods: ["GET"],
-      })(req, res, next);
-    }
-
-    // Si ce n'est pas GET, passer au middleware CORS général
-    next();
-  });
-
-  // Configuration CORS générale pour toutes les autres requêtes
+  /* ------------------------------------------------------------------ */
+  /*  API & AUTRES ENDPOINTS                                             */
+  /* ------------------------------------------------------------------ */
   app.use(
     cors({
-      origin: function (origin, callback) {
-        log(`Requête reçue de l'origine: ${origin}`);
+      origin: (origin, callback) => {
+        log(`Requête reçue de l'origine: ${origin || "∅"}`);
 
-        // Autoriser les requêtes sans origine en développement uniquement
+        // 1. Absence d'Origin (edge proxy, cURL, server‑to‑server)
         if (!origin) {
-          if (!isProd) {
-            log("CORS: Aucune origine (dev) → autorisé");
-            return callback(null, true);
-          }
-          log("CORS: Aucune origine (prod) → refusé");
-          return callback(new Error("CORS requiert une origine en production"));
+          log("CORS: Aucune origine → autorisé (edge/server-to-server)");
+          return callback(null, true);
         }
 
-        // Vérifier si l'origine est autorisée
+        // 2. Origine présente et dans la whitelist
         if (allowedOrigins.includes(origin)) {
           log(`CORS: Autorisé pour ${origin}`);
           return callback(null, true);
         }
 
+        // 3. Rejet par défaut
         log(`❌ CORS refusé pour ${origin}`);
         return callback(new Error(`CORS non autorisé pour ${origin}`));
       },
-      credentials: true,
+      credentials: true, // cookies de session si besoin
       methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
       allowedHeaders: [
         "Content-Type",
@@ -89,17 +76,13 @@ export function setupCors(app: Express) {
         "Set-Cookie",
       ],
       exposedHeaders: ["Set-Cookie", "Authorization"],
-      maxAge: 86400, // 24 heures
+      maxAge: 86400, // 24 h pour les pré‑vol
       preflightContinue: false,
       optionsSuccessStatus: 204,
     })
   );
 
-  log(
-    `CORS initialisé avec la configuration de production: ${
-      isProd ? "oui" : "non"
-    }`
-  );
+  log(`CORS initialisé (${isProd ? "production" : "développement"})`);
 }
 
 export function serveStatic(app: Express) {
