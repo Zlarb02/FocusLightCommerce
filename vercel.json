@@ -6,7 +6,13 @@
     { "handle": "filesystem" },
     {
       "src": "/uploads/(.*)",
-      "dest": "https://api-focus.pogodev.com/uploads/$1"
+      "dest": "https://api-focus.pogodev.com/uploads/$1",
+      "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET",
+        "Access-Control-Allow-Headers": "Content-Type",
+        "Access-Control-Max-Age": "86400"
+      }
     },
     { "src": "/api/(.*)", "dest": "https://api-focus.pogodev.com/api/$1" },
     { "src": "/assets/(.*)", "dest": "/assets/$1" },

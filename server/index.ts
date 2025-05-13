@@ -7,14 +7,23 @@ import { fileURLToPath } from "url";
 const app = express();
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// Configuration de CORS avant tout
+// Configuration pour servir les fichiers statiques depuis le dossier uploads
+// en court-circuitant le middleware CORS
+app.use("/uploads", (req, res, next) => {
+  // Ajouter les en-têtes CORS manuellement pour les fichiers statiques
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  
+  // Servir le fichier statique
+  express.static(path.join(__dirname, "uploads"))(req, res, next);
+});
+
+// Configuration de CORS pour les autres routes
 setupCors(app);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
-// Configuration pour servir les fichiers statiques depuis le dossier uploads
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use((req, res, next) => {
   const start = Date.now();
