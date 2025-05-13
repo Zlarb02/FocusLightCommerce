@@ -35,6 +35,7 @@ RUN cd server && npm install --omit=dev
 # Copier les fichiers compilés et les fichiers partagés nécessaires
 COPY --from=builder /app/server/dist ./server/dist
 COPY --from=builder /app/shared ./shared
+COPY --from=builder /app/server/uploads ./server/uploads
 
 # Définir la variable d'environnement pour le port
 ENV PORT=5005
