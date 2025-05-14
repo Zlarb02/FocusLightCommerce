@@ -1,3 +1,4 @@
+ ```mermaid
 erDiagram
 products ||--o{ product_variations : "1-n"
 customers ||--o{ orders : "1-n"
@@ -71,3 +72,4 @@ boolean is_active
 timestamp created_at
 timestamp updated_at
 }
+``` 
