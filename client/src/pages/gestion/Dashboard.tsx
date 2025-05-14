@@ -13,7 +13,7 @@ import {
 import { useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { AuthGuard } from "@/components/AuthGuard";
-import { ProductWithVariations } from "/Users/etiennepogoda/Downloads/FocusLightCommerce/shared/schema";
+import { ProductWithVariations } from "../../../../shared/schema";
 import { useState, useEffect } from "react";
 import { Switch } from "@/components/ui/switch";
 import useVersions from "@/hooks/useVersions";

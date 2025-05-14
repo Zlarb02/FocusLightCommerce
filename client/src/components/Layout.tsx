@@ -9,7 +9,7 @@ import { Separator } from "@/components/ui/separator";
 import ThemeDecorator from "@/components/decorations/ThemeDecorator";
 import { useQuery } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
-import { ThemeDecoration } from "/Users/etiennepogoda/Downloads/FocusLightCommerce/shared/schema";
+import { ThemeDecoration } from "../../../shared/schema";
 
 interface LayoutProps {
   children: ReactNode;

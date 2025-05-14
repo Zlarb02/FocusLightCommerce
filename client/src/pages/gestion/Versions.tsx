@@ -45,10 +45,7 @@ import {
   Laugh,
 } from "lucide-react";
 import useVersions from "@/hooks/useVersions";
-import {
-  ShopMode,
-  ThemeDecoration,
-} from "/Users/etiennepogoda/Downloads/FocusLightCommerce/shared/schema";
+import { ShopMode, ThemeDecoration } from "../../../../shared/schema";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 

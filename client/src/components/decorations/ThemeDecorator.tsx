@@ -1,5 +1,5 @@
 import React from "react";
-import { ThemeDecoration } from "/Users/etiennepogoda/Downloads/FocusLightCommerce/shared/schema";
+import { ThemeDecoration } from "../../../../shared/schema";
 import OctoberDecoration from "./halloween/october";
 import JulyDecoration from "./summer/july";
 import DecemberDecoration from "./winter/december";
