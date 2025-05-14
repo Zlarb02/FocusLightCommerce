@@ -71,7 +71,7 @@ export const AprilDecoration: React.FC = () => {
 
       {/* Texte à l'envers */}
       <div className="absolute bottom-20 left-20 transform rotate-180">
-        <p className="text-lg font-bold text-purple-600">¡ʇuɐuɹnoʇɹnoquǝʌ</p>
+        <p className="text-lg font-bold text-purple-600">Bienvenue !</p>
       </div>
     </div>
   );

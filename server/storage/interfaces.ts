@@ -74,4 +74,15 @@ export interface IStorage {
   getMediaById(id: number): Promise<Media | null>;
   createMedia(media: Omit<Media, "id" | "createdAt">): Promise<Media>;
   deleteMedia(id: number): Promise<boolean>;
+
+  // Versions
+  getAllVersions(): Promise<any[]>;
+  getActiveVersion(): Promise<any>;
+  createVersion(versionData: any): Promise<any>;
+  updateVersion(versionData: any): Promise<any>;
+  setShopMode(mode: string): Promise<void>;
+  setThemeDecoration(decoration: string): Promise<void>;
+
+  // Initialisation de la base de données
+  initDatabase(): Promise<void>;
 }
