@@ -81,14 +81,14 @@ const mediaUploadSchema = z.object({
     .refine(
       (files) => {
         for (let i = 0; i < files.length; i++) {
-          if (files[i].size > 10 * 1024 * 1024) {
+          if (files[i].size > 30 * 1024 * 1024) {
             return false;
           }
         }
         return true;
       },
       {
-        message: "Chaque fichier ne doit pas dépasser 10 MB",
+        message: "Chaque fichier ne doit pas dépasser 30 MB",
       }
     ),
 });
@@ -119,6 +119,18 @@ export default function Medias() {
     error,
   } = useQuery<Media[]>({
     queryKey: ["/api/medias"],
+    enabled: true,
+  });
+
+  // Hook pour récupérer l'utilisation du stockage
+  const { data: storageData, isLoading: isStorageLoading } = useQuery<{
+    used: number;
+    usedFormatted: string;
+    total: number;
+    totalFormatted: string;
+    percentage: number;
+  }>({
+    queryKey: ["/api/medias/storage-usage"],
     enabled: true,
   });
 
@@ -163,13 +175,34 @@ export default function Medias() {
       handleCloseUploadDialog();
     },
     onError: (error: any) => {
-      toast({
-        title: "Erreur",
-        description:
-          error?.message ||
-          "Une erreur est survenue lors de l'upload d'un ou plusieurs fichiers.",
-        variant: "destructive",
-      });
+      const errorMessage =
+        error?.message ||
+        "Une erreur est survenue lors de l'upload d'un ou plusieurs fichiers.";
+
+      // Gérer le cas de l'espace insuffisant
+      if (error?.status === 413) {
+        if (error?.data?.message?.includes("espace de stockage insuffisant")) {
+          toast({
+            title: "Espace insuffisant",
+            description:
+              "L'espace de stockage est limité à 1 GB et est actuellement insuffisant pour cet upload.",
+            variant: "destructive",
+          });
+        } else {
+          toast({
+            title: "Fichier trop volumineux",
+            description: "Le fichier dépasse la limite de 30 MB.",
+            variant: "destructive",
+          });
+        }
+      } else {
+        toast({
+          title: "Erreur",
+          description: errorMessage,
+          variant: "destructive",
+        });
+      }
+
       console.error("Erreur d'upload:", error);
     },
   });
@@ -201,6 +234,26 @@ export default function Medias() {
 
   const onSubmitUpload = (data: MediaUploadValues) => {
     if (data.files && data.files.length > 0) {
+      // Vérifier l'espace disponible
+      if (storageData) {
+        let totalFileSize = 0;
+        for (let i = 0; i < data.files.length; i++) {
+          totalFileSize += data.files[i].size;
+        }
+
+        // Si l'upload va dépasser la limite de 1 GB
+        if (storageData.used + totalFileSize > storageData.total) {
+          toast({
+            title: "Espace insuffisant",
+            description: `L'espace restant (${formatBytes(
+              storageData.total - storageData.used
+            )}) est insuffisant pour uploader ${formatBytes(totalFileSize)}.`,
+            variant: "destructive",
+          });
+          return;
+        }
+      }
+
       for (let i = 0; i < data.files.length; i++) {
         const formData = new FormData();
         formData.append("file", data.files[i]);
@@ -288,14 +341,35 @@ export default function Medias() {
   return (
     <DashboardLayout title="Gestion des médias">
       <div className="flex items-center justify-between mb-6">
-        <div className="relative w-64">
-          <Input
-            placeholder="Rechercher un fichier..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
-          />
-          <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+        <div className="flex items-center">
+          <div className="relative w-64">
+            <Input
+              placeholder="Rechercher un fichier..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10"
+            />
+            <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+          </div>
+          {!isStorageLoading && storageData && (
+            <div className="ml-4 flex items-center text-sm text-gray-500">
+              <span>
+                {storageData.usedFormatted} / {storageData.totalFormatted}
+              </span>
+              <div className="w-32 h-2 bg-gray-200 rounded-full ml-2">
+                <div
+                  className={`h-2 rounded-full ${
+                    storageData.percentage > 90
+                      ? "bg-red-500"
+                      : storageData.percentage > 70
+                      ? "bg-orange-500"
+                      : "bg-green-500"
+                  }`}
+                  style={{ width: `${storageData.percentage}%` }}
+                />
+              </div>
+            </div>
+          )}
         </div>
         <Button onClick={() => setIsUploadDialogOpen(true)}>
           <Plus className="h-4 w-4 mr-2" /> Ajouter un média

@@ -29,12 +29,12 @@ const defaultFetchOptions: RequestInit = {
 };
 
 // Fonction pour faire des requêtes API
-export async function apiRequest(
+export async function apiRequest<T = any>(
   method: string,
   endpoint: string,
   data?: unknown,
   options?: { formData: boolean }
-): Promise<any> {
+): Promise<T> {
   const baseUrl = getApiBaseUrl();
   const url = `${baseUrl}${endpoint}`;
 
@@ -64,7 +64,7 @@ export async function apiRequest(
 
   // Pour les réponses 204 No Content
   if (response.status === 204) {
-    return null;
+    return null as unknown as T;
   }
 
   return response.json();

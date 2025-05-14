@@ -68,7 +68,7 @@ const upload = multer({
   storage,
   fileFilter,
   limits: {
-    fileSize: 10 * 1024 * 1024, // Limite de 10MB
+    fileSize: 30 * 1024 * 1024, // Limite de 30MB
   },
 });
 
@@ -159,6 +159,28 @@ router.delete("/:id", isAdmin, async (req: Request, res: Response) => {
   }
 });
 
+// Récupérer l'espace total utilisé par les médias
+router.get("/storage-usage", async (req: Request, res: Response) => {
+  try {
+    const allMedia = await dataStorage.getAllMedias();
+    const totalBytes = allMedia.reduce((acc, media) => acc + media.size, 0);
+    const maxStorage = 1 * 1024 * 1024 * 1024; // 1 GB
+
+    res.json({
+      used: totalBytes,
+      usedFormatted: formatBytes(totalBytes),
+      total: maxStorage,
+      totalFormatted: "1 GB",
+      percentage: Math.round((totalBytes / maxStorage) * 100),
+    });
+  } catch (error) {
+    console.error("Erreur lors du calcul de l'espace utilisé:", error);
+    res
+      .status(500)
+      .json({ message: "Erreur lors du calcul de l'espace utilisé" });
+  }
+});
+
 // Fonction utilitaire pour déterminer le type de fichier
 function determineFileType(mimetype: string): string {
   if (mimetype.startsWith("image/")) {
@@ -168,6 +190,16 @@ function determineFileType(mimetype: string): string {
   } else {
     return "other";
   }
+}
+
+// Fonction utilitaire pour formater les tailles de fichiers
+function formatBytes(bytes: number, decimals: number = 2) {
+  if (bytes === 0) return "0 Bytes";
+  const k = 1024;
+  const dm = decimals < 0 ? 0 : decimals;
+  const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
 }
 
 export default router;

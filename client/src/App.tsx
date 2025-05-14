@@ -9,6 +9,7 @@ import { CartProvider } from "@/hooks/useCart";
 import { CheckoutProvider } from "@/hooks/useCheckout";
 import { useEffect, useState } from "react";
 import Shop from "@/pages/Shop";
+import useVersions from "@/hooks/useVersions";
 
 // Pages de gestion
 import GestionLogin from "./pages/gestion/Login";
@@ -18,6 +19,7 @@ import Commandes from "./pages/gestion/Commandes";
 import Contenu from "./pages/gestion/Contenu";
 import Parametres from "./pages/gestion/Parametres";
 import Medias from "./pages/gestion/Medias";
+import Versions from "./pages/gestion/Versions";
 
 // Type pour l'événement personnalisé de changement de route
 interface RouteChangeEvent extends CustomEvent {
@@ -26,20 +28,12 @@ interface RouteChangeEvent extends CustomEvent {
   };
 }
 
-function getShopMode(): "general" | "focus" {
-  if (typeof window !== "undefined") {
-    return (
-      (localStorage.getItem("shopMode") as "general" | "focus") || "general"
-    );
-  }
-  return "general";
-}
-
 function Router() {
   // Suivre si on vient de la landing page pour ajouter un bouton de retour si nécessaire
   const [comingFromLanding, setComingFromLanding] = useState(false);
-  // Ajout d'un état pour forcer le re-render lors du changement de mode boutique
-  const [shopMode, setShopMode] = useState(getShopMode());
+  // Utiliser le hook pour le mode boutique
+  const { activeVersion } = useVersions();
+  const shopMode = activeVersion?.shopMode || "focus";
 
   useEffect(() => {
     // Vérifier si on est sur /shop, ce qui signifie qu'on vient probablement de la landing
@@ -55,18 +49,11 @@ function Router() {
 
     window.addEventListener("routeChange", handleRouteChange as EventListener);
 
-    // Écoute le changement du mode boutique (ex: via Parametres)
-    const onStorage = (e: StorageEvent) => {
-      if (e.key === "shopMode") setShopMode(getShopMode());
-    };
-    window.addEventListener("storage", onStorage);
-
     return () => {
       window.removeEventListener(
         "routeChange",
         handleRouteChange as EventListener
       );
-      window.removeEventListener("storage", onStorage);
     };
   }, []);
 
@@ -124,6 +111,7 @@ function Router() {
         <Route path="/gestion/medias" component={Medias} />
         <Route path="/gestion/contenu" component={Contenu} />
         <Route path="/gestion/parametres" component={Parametres} />
+        <Route path="/gestion/versions" component={Versions} />
 
         {/* Route / est gérée par la landing dans index.html */}
         {/* Fallback pour les routes non gérées */}

@@ -1,5 +1,5 @@
 import DashboardLayout from "./DashboardLayout";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import {
@@ -43,24 +43,6 @@ import {
   Globe,
   User,
 } from "lucide-react";
-
-// Ajout d'un paramètre pour le mode boutique (généraliste ou focus)
-const shopModeKey = "shopMode";
-
-function getShopMode(): "general" | "focus" {
-  if (typeof window !== "undefined") {
-    return (
-      (localStorage.getItem(shopModeKey) as "general" | "focus") || "general"
-    );
-  }
-  return "general";
-}
-
-function setShopMode(mode: "general" | "focus") {
-  if (typeof window !== "undefined") {
-    localStorage.setItem(shopModeKey, mode);
-  }
-}
 
 const generalSettingsSchema = z.object({
   siteName: z.string().min(1, "Le nom du site est requis"),
@@ -111,9 +93,7 @@ export default function Parametres() {
   const { toast } = useToast();
   const [selectedTab, setSelectedTab] = useState("general");
 
-  const generalSettingsForm = useForm<
-    GeneralSettingsFormValues & { shopMode: "general" | "focus" }
-  >({
+  const generalSettingsForm = useForm<GeneralSettingsFormValues>({
     resolver: zodResolver(generalSettingsSchema),
     defaultValues: {
       siteName: "Alto Lille",
@@ -121,7 +101,6 @@ export default function Parametres() {
         "Lampes d'appoint FOCUS.01 éco-responsables aux lignes épurées",
       contactEmail: "altolille@gmail.com",
       contactPhone: "+33 782 086 690",
-      shopMode: getShopMode(),
     },
   });
 
@@ -158,12 +137,21 @@ export default function Parametres() {
     },
   });
 
-  const onSubmitGeneralSettings = (data: GeneralSettingsFormValues) => {
-    // Dans un environnement réel, envoyez ces données à l'API
-    toast({
-      title: "Paramètres généraux mis à jour",
-      description: "Les paramètres généraux ont été mis à jour avec succès.",
-    });
+  const onSubmitGeneralSettings = async (data: GeneralSettingsFormValues) => {
+    try {
+      // Dans un environnement réel, envoyez ces données à l'API
+      toast({
+        title: "Paramètres généraux mis à jour",
+        description: "Les paramètres généraux ont été mis à jour avec succès.",
+      });
+    } catch (error) {
+      toast({
+        title: "Erreur",
+        description:
+          "Une erreur est survenue lors de la mise à jour des paramètres.",
+        variant: "destructive",
+      });
+    }
   };
 
   const onSubmitPaymentSettings = (data: PaymentSettingsFormValues) => {
@@ -278,40 +266,6 @@ export default function Parametres() {
                           <Input {...field} />
                         </FormControl>
                         <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={generalSettingsForm.control}
-                    name="shopMode"
-                    render={({ field }) => (
-                      <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 mt-4 mb-4">
-                        <div className="space-y-0.5">
-                          <FormLabel className="text-base">
-                            Mode de la boutique
-                          </FormLabel>
-                          <FormDescription>
-                            Permutez entre la boutique généraliste (tous
-                            produits) et la boutique Focus (lampes Focus.01
-                            uniquement).
-                          </FormDescription>
-                        </div>
-                        <FormControl>
-                          <Switch
-                            checked={field.value === "focus"}
-                            onCheckedChange={(checked) => {
-                              const mode = checked ? "focus" : "general";
-                              field.onChange(mode);
-                              setShopMode(mode);
-                            }}
-                            id="shop-mode-switch"
-                          />
-                        </FormControl>
-                        <span className="ml-4 font-semibold">
-                          {field.value === "focus"
-                            ? "Boutique Focus"
-                            : "Boutique Généraliste"}
-                        </span>
                       </FormItem>
                     )}
                   />

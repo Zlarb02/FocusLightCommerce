@@ -6,10 +6,18 @@ import { useCart } from "@/hooks/useCart";
 import { ShoppingBag, Menu, X } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
+import ThemeDecorator from "@/components/decorations/ThemeDecorator";
+import { useQuery } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
+import { ThemeDecoration } from "/Users/etiennepogoda/Downloads/FocusLightCommerce/shared/schema";
 
 interface LayoutProps {
   children: ReactNode;
   showCart?: boolean;
+}
+
+interface ThemeDecorationResponse {
+  themeDecoration: ThemeDecoration;
 }
 
 export function Layout({ children, showCart = true }: LayoutProps) {
@@ -18,15 +26,29 @@ export function Layout({ children, showCart = true }: LayoutProps) {
   const { getTotalItems } = useCart();
   const [location] = useLocation();
 
+  // Récupérer la décoration thématique active
+  const { data: themeData, isPending } = useQuery({
+    queryKey: ["themeDecoration"],
+    queryFn: async () => {
+      const response = await apiRequest<ThemeDecorationResponse>(
+        "GET",
+        "/api/versions/theme-decoration"
+      );
+      return response;
+    },
+  });
+
   // Calculer une seule fois le nombre d'articles
   const cartItemCount = getTotalItems();
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
+      {/* Intégration des décorations thématiques */}
+      {themeData && <ThemeDecorator decoration={themeData.themeDecoration} />}
+
       <header className="sticky top-0 bg-white z-10 border-b border-slate-100">
         <div className="max-w-7xl mx-auto flex items-center justify-between h-20 px-4 sm:px-6 lg:px-8">
           <div className="w-10">
-            {" "}
             {/* Espace réservé à gauche pour équilibrer */}
           </div>
 
@@ -43,7 +65,6 @@ export function Layout({ children, showCart = true }: LayoutProps) {
           </Link>
 
           <div className="w-12 flex justify-end">
-            {" "}
             {/* Espace réservé à droite pour le panier */}
             {showCart && (
               <Button

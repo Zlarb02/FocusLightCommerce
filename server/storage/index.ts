@@ -4,6 +4,7 @@ import { CustomerStorage } from "./customerStorage.js";
 import { OrderStorage } from "./orderStorage.js";
 import { UserStorage } from "./userStorage.js";
 import { MediaStorage } from "./mediaStorage.js";
+import { VersionStorage, SiteVersionData } from "./versionStorage.js";
 import {
   type Product,
   type InsertProduct,
@@ -19,6 +20,8 @@ import {
   type User,
   type InsertUser,
   type Media,
+  type ThemeDecoration,
+  type ShopMode,
 } from "../../shared/schema.js";
 
 // In-memory storage implementation
@@ -28,6 +31,7 @@ export class MemStorage implements IStorage {
   private orderStorage: OrderStorage;
   private userStorage: UserStorage;
   private mediaStorage: MediaStorage;
+  private versionStorage: VersionStorage;
 
   constructor() {
     this.productStorage = new ProductStorage();
@@ -35,6 +39,7 @@ export class MemStorage implements IStorage {
     this.orderStorage = new OrderStorage();
     this.userStorage = new UserStorage();
     this.mediaStorage = new MediaStorage();
+    this.versionStorage = new VersionStorage();
 
     // Initialize with default admin user
     this.userStorage.initializeDefaultAdmin();
@@ -188,6 +193,41 @@ export class MemStorage implements IStorage {
 
   async deleteMedia(id: number): Promise<boolean> {
     return this.mediaStorage.deleteMedia(id);
+  }
+
+  // Versions Implementation
+  async getAllVersions() {
+    return this.versionStorage.getAllVersions();
+  }
+
+  async getVersionById(id: number) {
+    return this.versionStorage.getVersionById(id);
+  }
+
+  async getActiveVersion() {
+    return this.versionStorage.getActiveVersion();
+  }
+
+  async setActiveVersion(id: number) {
+    return this.versionStorage.setActiveVersion(id);
+  }
+
+  async createVersion(
+    versionData: Omit<SiteVersionData, "id" | "createdAt" | "updatedAt">
+  ) {
+    return this.versionStorage.createVersion(versionData);
+  }
+
+  async updateVersion(versionData: Partial<SiteVersionData> & { id: number }) {
+    return this.versionStorage.updateVersion(versionData.id, versionData);
+  }
+
+  async setShopMode(mode: ShopMode) {
+    return this.versionStorage.setShopMode(mode);
+  }
+
+  async setThemeDecoration(decoration: ThemeDecoration) {
+    return this.versionStorage.setThemeDecoration(decoration);
   }
 }
 

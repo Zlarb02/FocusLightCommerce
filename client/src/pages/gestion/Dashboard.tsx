@@ -13,58 +13,18 @@ import {
 import { useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { AuthGuard } from "@/components/AuthGuard";
-import { ProductWithVariations } from "@shared/schema";
+import { ProductWithVariations } from "/Users/etiennepogoda/Downloads/FocusLightCommerce/shared/schema";
 import { useState, useEffect } from "react";
 import { Switch } from "@/components/ui/switch";
-
-// Récupération de la fonction de gestion du mode boutique (Shop vs ShopFocus)
-function getShopMode(): "general" | "focus" {
-  if (typeof window !== "undefined") {
-    return (
-      (localStorage.getItem("shopMode") as "general" | "focus") || "general"
-    );
-  }
-  return "general";
-}
-
-function setShopMode(mode: "general" | "focus") {
-  if (typeof window !== "undefined") {
-    localStorage.setItem("shopMode", mode);
-    // Déclencher un événement de stockage pour informer les autres composants
-    window.dispatchEvent(
-      new StorageEvent("storage", {
-        key: "shopMode",
-        newValue: mode,
-      })
-    );
-  }
-}
+import useVersions from "@/hooks/useVersions";
 
 export default function Dashboard() {
   const [, setLocation] = useLocation();
-  // État pour le mode boutique (général ou focus)
-  const [shopMode, setShopModeState] = useState<"general" | "focus">(
-    getShopMode
-  );
+  // Utiliser le hook pour gérer le mode boutique
+  const { toggleShopMode, isUpdating, activeVersion } = useVersions();
 
-  // Effet pour mettre à jour l'état local quand le mode est changé ailleurs
-  useEffect(() => {
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === "shopMode") {
-        setShopModeState(getShopMode());
-      }
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-    return () => window.removeEventListener("storage", handleStorageChange);
-  }, []);
-
-  // Fonction pour changer le mode boutique
-  const handleShopModeChange = (checked: boolean) => {
-    const newMode = checked ? "focus" : "general";
-    setShopModeState(newMode);
-    setShopMode(newMode);
-  };
+  const shopMode = activeVersion?.shopMode || "focus";
+  const isLoading = isUpdating;
 
   // Récupération des données depuis l'API (dans un environnement réel)
   const { data: products = [] } = useQuery<ProductWithVariations[]>({
@@ -122,8 +82,9 @@ export default function Dashboard() {
                 </span>
                 <Switch
                   checked={shopMode === "focus"}
-                  onCheckedChange={handleShopModeChange}
+                  onCheckedChange={toggleShopMode}
                   id="dashboard-shop-mode-switch"
+                  disabled={isLoading}
                 />
                 <span
                   className={`text-sm ${

@@ -153,6 +153,56 @@ export type InsertOrderItem = z.infer<typeof insertOrderItemSchema>;
 export type User = typeof users.$inferSelect;
 export type InsertUser = z.infer<typeof insertUserSchema>;
 
+// Type pour les décorations thématiques
+export type ThemeDecoration =
+  | "none"
+  | "summer-sale"
+  | "halloween"
+  | "christmas"
+  | "april-fools";
+export type ShopMode = "general" | "focus";
+
+// Settings schema (pour les paramètres généraux du site)
+export const siteSettings = pgTable("site_settings", {
+  id: serial("id").primaryKey(),
+  key: text("key").notNull().unique(),
+  value: text("value").notNull(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const insertSettingsSchema = createInsertSchema(siteSettings).omit({
+  id: true,
+  updatedAt: true,
+});
+
+export type SiteSettingsEntry = typeof siteSettings.$inferSelect;
+export type InsertSiteSettingsEntry = z.infer<typeof insertSettingsSchema>;
+
+// Versions schema (complètement distinct des settings)
+export const siteVersions = pgTable("site_versions", {
+  id: serial("id").primaryKey(),
+  shopMode: text("shop_mode", { enum: ["general", "focus"] })
+    .notNull()
+    .default("focus"),
+  themeDecoration: text("theme_decoration", {
+    enum: ["none", "summer-sale", "halloween", "christmas", "april-fools"],
+  })
+    .notNull()
+    .default("none"),
+  isActive: boolean("is_active").notNull().default(true),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const insertVersionSchema = createInsertSchema(siteVersions).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export type SiteVersion = typeof siteVersions.$inferSelect;
+export type InsertSiteVersion = z.infer<typeof insertVersionSchema>;
+
 // For cart and checkout
 export const checkoutSchema = z.object({
   customer: insertCustomerSchema,
