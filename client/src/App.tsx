@@ -2,12 +2,13 @@ import { Switch, Route } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
-import Home from "@/pages/Shop";
+import Home from "@/pages/ShopFocus";
 import NotFound from "@/pages/not-found";
 import Checkout from "@/pages/checkout";
 import { CartProvider } from "@/hooks/useCart";
 import { CheckoutProvider } from "@/hooks/useCheckout";
 import { useEffect, useState } from "react";
+import Shop from "@/pages/Shop";
 
 // Pages de gestion
 import GestionLogin from "./pages/gestion/Login";
@@ -25,9 +26,20 @@ interface RouteChangeEvent extends CustomEvent {
   };
 }
 
+function getShopMode(): "general" | "focus" {
+  if (typeof window !== "undefined") {
+    return (
+      (localStorage.getItem("shopMode") as "general" | "focus") || "general"
+    );
+  }
+  return "general";
+}
+
 function Router() {
   // Suivre si on vient de la landing page pour ajouter un bouton de retour si nécessaire
   const [comingFromLanding, setComingFromLanding] = useState(false);
+  // Ajout d'un état pour forcer le re-render lors du changement de mode boutique
+  const [shopMode, setShopMode] = useState(getShopMode());
 
   useEffect(() => {
     // Vérifier si on est sur /shop, ce qui signifie qu'on vient probablement de la landing
@@ -43,11 +55,18 @@ function Router() {
 
     window.addEventListener("routeChange", handleRouteChange as EventListener);
 
+    // Écoute le changement du mode boutique (ex: via Parametres)
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === "shopMode") setShopMode(getShopMode());
+    };
+    window.addEventListener("storage", onStorage);
+
     return () => {
       window.removeEventListener(
         "routeChange",
         handleRouteChange as EventListener
       );
+      window.removeEventListener("storage", onStorage);
     };
   }, []);
 
@@ -94,7 +113,7 @@ function Router() {
 
       <Switch>
         {/* Routes principales de l'application */}
-        <Route path="/shop" component={Home} />
+        <Route path="/shop" component={shopMode === "focus" ? Home : Shop} />
         <Route path="/checkout" component={Checkout} />
 
         {/* Routes d'administration */}

@@ -7,14 +7,64 @@ import {
   CheckCircle,
   AlertCircle,
   FileText,
+  SwitchCamera,
+  LayoutDashboard,
 } from "lucide-react";
 import { useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { AuthGuard } from "@/components/AuthGuard";
 import { ProductWithVariations } from "@shared/schema";
+import { useState, useEffect } from "react";
+import { Switch } from "@/components/ui/switch";
+
+// Récupération de la fonction de gestion du mode boutique (Shop vs ShopFocus)
+function getShopMode(): "general" | "focus" {
+  if (typeof window !== "undefined") {
+    return (
+      (localStorage.getItem("shopMode") as "general" | "focus") || "general"
+    );
+  }
+  return "general";
+}
+
+function setShopMode(mode: "general" | "focus") {
+  if (typeof window !== "undefined") {
+    localStorage.setItem("shopMode", mode);
+    // Déclencher un événement de stockage pour informer les autres composants
+    window.dispatchEvent(
+      new StorageEvent("storage", {
+        key: "shopMode",
+        newValue: mode,
+      })
+    );
+  }
+}
 
 export default function Dashboard() {
   const [, setLocation] = useLocation();
+  // État pour le mode boutique (général ou focus)
+  const [shopMode, setShopModeState] = useState<"general" | "focus">(
+    getShopMode
+  );
+
+  // Effet pour mettre à jour l'état local quand le mode est changé ailleurs
+  useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === "shopMode") {
+        setShopModeState(getShopMode());
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
+
+  // Fonction pour changer le mode boutique
+  const handleShopModeChange = (checked: boolean) => {
+    const newMode = checked ? "focus" : "general";
+    setShopModeState(newMode);
+    setShopMode(newMode);
+  };
 
   // Récupération des données depuis l'API (dans un environnement réel)
   const { data: products = [] } = useQuery<ProductWithVariations[]>({
@@ -40,6 +90,53 @@ export default function Dashboard() {
   return (
     <AuthGuard>
       <DashboardLayout title="Tableau de bord">
+        {/* Switch du mode boutique */}
+        <Card className="mb-8">
+          <CardHeader className="pb-2">
+            <CardTitle className="flex items-center gap-2 text-base font-medium">
+              <LayoutDashboard className="h-5 w-5 text-primary" /> Mode de
+              boutique
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="font-medium">
+                  {shopMode === "focus"
+                    ? "Boutique Focus"
+                    : "Boutique Généraliste"}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  {shopMode === "focus"
+                    ? "Affiche uniquement les lampes Focus.01"
+                    : "Affiche tous les produits disponibles"}
+                </p>
+              </div>
+              <div className="flex items-center gap-3">
+                <span
+                  className={`text-sm ${
+                    shopMode !== "focus" ? "font-semibold" : ""
+                  }`}
+                >
+                  Généraliste
+                </span>
+                <Switch
+                  checked={shopMode === "focus"}
+                  onCheckedChange={handleShopModeChange}
+                  id="dashboard-shop-mode-switch"
+                />
+                <span
+                  className={`text-sm ${
+                    shopMode === "focus" ? "font-semibold" : ""
+                  }`}
+                >
+                  Focus
+                </span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Statistiques générales */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <Card>
