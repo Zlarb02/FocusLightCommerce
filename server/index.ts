@@ -4,7 +4,7 @@ import { log, setupCors } from "./vite.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
-import { storage, initializeStorage } from "./storage/index.js";
+import { storage } from "./storage/index.js";
 import mime from "mime";
 
 const app = express();
@@ -91,9 +91,6 @@ async function importExistingUploads() {
 }
 
 (async () => {
-  // Initialisation du stockage en fonction de l'environnement
-  await initializeStorage();
-
   await importExistingUploads();
   const server = await registerRoutes(app);
 
