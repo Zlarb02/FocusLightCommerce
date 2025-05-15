@@ -1,4 +1,3 @@
-# Étape 1 : Build du backend TypeScript
 FROM node:18-alpine AS builder
 
 WORKDIR /app
@@ -22,6 +21,9 @@ RUN cd server && npm run build
 # Étape 2 : Image finale légère
 FROM node:18-alpine
 
+# Installer postgresql-client pour pg_isready
+RUN apk add --no-cache postgresql-client
+
 WORKDIR /app
 
 # Copier les package.json pour l'installation des dépendances de production
@@ -36,11 +38,13 @@ RUN cd server && npm install --omit=dev
 COPY --from=builder /app/server/dist ./server/dist
 COPY --from=builder /app/shared ./shared
 COPY --from=builder /app/server/uploads ./uploads
+COPY server/docker-entrypoint.sh ./docker-entrypoint.sh
+RUN chmod +x ./docker-entrypoint.sh
 
 # Définir la variable d'environnement pour le port
 ENV PORT=5005
 EXPOSE 5005
 
-# Lancer l'application compilée
-CMD ["node", "server/dist/server/index.js"]
+# Utiliser le script d'entrée pour démarrer l'application
+ENTRYPOINT ["./docker-entrypoint.sh"]
 

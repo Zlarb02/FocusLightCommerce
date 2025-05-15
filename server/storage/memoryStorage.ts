@@ -14,37 +14,42 @@ import {
   type User,
   type InsertUser,
   type Media,
+  type ThemeDecoration,
+  type ShopMode,
 } from "../../shared/schema.js";
 
-import { PgProductStorage } from "./pgProductStorage.js";
-import { PgCustomerStorage } from "./pgCustomerStorage.js";
-import { PgOrderStorage } from "./pgOrderStorage.js";
-import { PgUserStorage } from "./pgUserStorage.js";
-import { PgMediaStorage } from "./pgMediaStorage.js";
-import { PgVersionStorage } from "./pgVersionStorage.js";
+import { ProductStorage } from "./productStorage.js";
+import { CustomerStorage } from "./customerStorage.js";
+import { OrderStorage } from "./orderStorage.js";
+import { UserStorage } from "./userStorage.js";
+import { MediaStorage } from "./mediaStorage.js";
+import { VersionStorage, SiteVersionData } from "./versionStorage.js";
 
 /**
- * Implémentation du stockage PostgreSQL, utilisant les classes spécifiques
- * Cette classe est principalement utilisée en production et pour les tests avec PostgreSQL
+ * Implémentation du stockage en mémoire, utilisant les classes spécifiques
+ * Cette classe est principalement utilisée pour le développement et les tests
  */
-export class PgStorage implements IStorage {
-  private productStorage: PgProductStorage;
-  private customerStorage: PgCustomerStorage;
-  private orderStorage: PgOrderStorage;
-  private userStorage: PgUserStorage;
-  private mediaStorage: PgMediaStorage;
-  private versionStorage: PgVersionStorage;
+export class MemoryStorage implements IStorage {
+  private productStorage: ProductStorage;
+  private customerStorage: CustomerStorage;
+  private orderStorage: OrderStorage;
+  private userStorage: UserStorage;
+  private mediaStorage: MediaStorage;
+  private versionStorage: VersionStorage;
 
   constructor() {
-    this.productStorage = new PgProductStorage();
-    this.customerStorage = new PgCustomerStorage();
-    this.orderStorage = new PgOrderStorage();
-    this.userStorage = new PgUserStorage();
-    this.mediaStorage = new PgMediaStorage();
-    this.versionStorage = new PgVersionStorage();
+    this.productStorage = new ProductStorage();
+    this.customerStorage = new CustomerStorage();
+    this.orderStorage = new OrderStorage();
+    this.userStorage = new UserStorage();
+    this.mediaStorage = new MediaStorage();
+    this.versionStorage = new VersionStorage();
 
-    // Initialiser l'utilisateur admin par défaut si nécessaire
+    // Initialiser avec l'utilisateur admin par défaut
     this.userStorage.initializeDefaultAdmin();
+
+    // Initialiser avec les produits (les 4 variantes de lampe)
+    this.productStorage.initializeProducts();
   }
 
   // Produits
@@ -108,7 +113,7 @@ export class PgStorage implements IStorage {
     return this.productStorage.deleteProductVariation(id);
   }
 
-  // Customers
+  // Clients
   async getCustomerById(id: number): Promise<Customer | undefined> {
     return this.customerStorage.getCustomerById(id);
   }
@@ -128,7 +133,7 @@ export class PgStorage implements IStorage {
     return this.customerStorage.updateCustomer(id, customer);
   }
 
-  // Orders
+  // Commandes
   async getAllOrders(): Promise<Order[]> {
     return this.orderStorage.getAllOrders();
   }
@@ -152,7 +157,7 @@ export class PgStorage implements IStorage {
     return this.orderStorage.updateOrderStatus(id, status);
   }
 
-  // Order Items
+  // Éléments de commande
   async getOrderItemsByOrderId(orderId: number): Promise<OrderItem[]> {
     return this.orderStorage.getOrderItemsByOrderId(orderId);
   }
@@ -161,7 +166,7 @@ export class PgStorage implements IStorage {
     return this.orderStorage.createOrderItem(item);
   }
 
-  // Admin Users
+  // Utilisateurs admin
   async getUserByUsername(username: string): Promise<User | undefined> {
     return this.userStorage.getUserByUsername(username);
   }
@@ -177,7 +182,7 @@ export class PgStorage implements IStorage {
     return this.userStorage.verifyUser(username, password);
   }
 
-  // Media
+  // Médias
   async getAllMedias(): Promise<Media[]> {
     return this.mediaStorage.getAllMedias();
   }
@@ -194,28 +199,38 @@ export class PgStorage implements IStorage {
     return this.mediaStorage.deleteMedia(id);
   }
 
-  // Fonctions de version du site
-  async getCurrentTheme(): Promise<string> {
-    return this.versionStorage.getCurrentTheme();
+  // Versions (fonctionnalités optionnelles)
+  async getAllVersions() {
+    return this.versionStorage.getAllVersions();
   }
 
-  async getCurrentDecorations(): Promise<Record<string, any>> {
-    return this.versionStorage.getCurrentDecorations();
+  async getVersionById(id: number) {
+    return this.versionStorage.getVersionById(id);
   }
 
-  async getCurrentShopMode(): Promise<string> {
-    return this.versionStorage.getCurrentShopMode();
+  async getActiveVersion() {
+    return this.versionStorage.getActiveVersion();
   }
 
-  async updateTheme(theme: string): Promise<void> {
-    return this.versionStorage.updateTheme(theme);
+  async setActiveVersion(id: number) {
+    return this.versionStorage.setActiveVersion(id);
   }
 
-  async updateDecorations(decorations: Record<string, any>): Promise<void> {
-    return this.versionStorage.updateDecorations(decorations);
+  async createVersion(
+    versionData: Omit<SiteVersionData, "id" | "createdAt" | "updatedAt">
+  ) {
+    return this.versionStorage.createVersion(versionData);
   }
 
-  async updateShopMode(mode: string): Promise<void> {
-    return this.versionStorage.updateShopMode(mode);
+  async updateVersion(versionData: Partial<SiteVersionData> & { id: number }) {
+    return this.versionStorage.updateVersion(versionData.id, versionData);
+  }
+
+  async setShopMode(mode: ShopMode) {
+    return this.versionStorage.setShopMode(mode);
+  }
+
+  async setThemeDecoration(decoration: ThemeDecoration) {
+    return this.versionStorage.setThemeDecoration(decoration);
   }
 }

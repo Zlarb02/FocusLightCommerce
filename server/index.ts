@@ -4,7 +4,7 @@ import { log, setupCors } from "./vite.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
-import { storage } from "./storage/index.js";
+import { storage, getStorage } from "./storage/index.js";
 import mime from "mime";
 
 const app = express();
