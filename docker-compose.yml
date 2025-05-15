@@ -1,45 +1,62 @@
-version: "3.8"
+networks:
+  web:
+    name: traefik
+    external: true
 
 services:
-  backend:
-    build:
-      context: ./server
-      dockerfile: Dockerfile
-    container_name: focuslight-backend
+  alto-back:
+    image: etiennepogo/focuslight-backend:latest
+    container_name: alto-backend
     restart: unless-stopped
-    ports:
-      - "${BACKEND_PORT:-5005}:5005"
     environment:
-      - NODE_ENV=${NODE_ENV:-production}
-      - DB_CONNECTION_STRING=${DB_CONNECTION_STRING}
-      - SESSION_SECRET=${SESSION_SECRET:-focus-lamp-secret}
+      - NODE_ENV=production
+      - DB_CONNECTION_STRING=postgresql://${DB_USER}:${DB_PASSWORD}@db:5432/${DB_NAME}
+      - DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD}@db:5432/${DB_NAME}
+      - SESSION_SECRET=${SESSION_SECRET}
+      - FRONTEND_URL=https://alto-lille.fr
+      - PORT=5005
+      # ⇡ Redis :
+      - REDIS_URL=redis://redis:6379 # nom du conteneur = host DNS
       - ADMIN_PASSWORD=${ADMIN_PASSWORD}
-    depends_on:
-      - db
+    expose:
+      - "5005"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.alto.rule=Host(`api-focus.pogodev.com`)"
+      - "traefik.http.routers.alto.entrypoints=websecure"
+      - "traefik.http.routers.alto.tls.certresolver=le"
+      - "traefik.http.services.alto.loadbalancer.server.port=5005"
+      - "traefik.docker.network=traefik"
     networks:
-      - focuslight-network
-    volumes:
-      - ./uploads:/app/uploads
+      - web
+      - default
+    volumes: #PERSISTANCE DES FICHIERS ENTRE LES MAJS
+      - uploads-data:/app/uploads #necessite script de remplissage (car ça écrase les fichiers venant du repo)
 
   db:
     image: postgres:15-alpine
-    container_name: focuslight-db
+    container_name: alto-db
     restart: unless-stopped
     environment:
-      - POSTGRES_USER=${DB_USER:-focuslight}
-      - POSTGRES_PASSWORD=${DB_PASSWORD:-password}
-      - POSTGRES_DB=${DB_NAME:-focuslight}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
     volumes:
       - postgres-data:/var/lib/postgresql/data
-      - ./db/dumps:/dumps
-    ports:
-      - "${DB_PORT:-5432}:5432"
-    networks:
-      - focuslight-network
 
-networks:
-  focuslight-network:
-    driver: bridge
+  # ⇡ NOUVEAU SERVICE REDIS
+  redis:
+    image: redis:7-alpine # suffisamment léger pour prod
+    container_name: alto-redis
+    restart: unless-stopped
+    command: ["redis-server", "--save", "60", "1", "--loglevel", "warning"]
+    volumes:
+      - redis-data:/data # persistance AOF/RDB
+    # pas besoin de ports publiés : seul le backend s’y connecte
+    networks:
+      - default # même réseau interne que le backend
 
 volumes:
   postgres-data:
+  redis-data:
+  uploads-data:
