@@ -341,4 +341,12 @@ export class PgVersionStorage {
   async updateShopMode(mode: string): Promise<void> {
     await this.setShopMode(mode as ShopMode);
   }
+
+  /**
+   * Alias pour setActiveVersion qui permet de rendre une version active
+   * Cette méthode est requise par l'interface IStorage
+   */
+  async activateVersion(id: number): Promise<SiteVersion | undefined> {
+    return this.setActiveVersion(id);
+  }
 }

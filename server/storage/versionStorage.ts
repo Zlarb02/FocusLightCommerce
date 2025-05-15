@@ -1,7 +1,14 @@
-// filepath: /Users/etiennepogoda/Downloads/FocusLightCommerce/server/storage/versionStorage.ts
 import { ThemeDecoration, ShopMode } from "../../shared/schema.js";
 
-// Interface pour les versions du site
+/**
+ * Interface pour les versions du site en mémoire.
+ * Cette interface est distincte de SiteVersion dans schema.ts car:
+ * 1. Elle garantit que updatedAt est toujours une Date (jamais null)
+ * 2. Elle utilise des objets Date natifs au lieu de chaînes de caractères
+ *
+ * Note: Dans pgVersionStorage.ts, on utilise directement le type SiteVersion défini dans schema.ts
+ * car cette implémentation est conçue pour fonctionner avec les objets Date/null de PostgreSQL.
+ */
 export interface SiteVersionData {
   id: number;
   shopMode: ShopMode;
@@ -282,6 +289,78 @@ export class VersionStorage {
 
     this.versions.delete(id);
     return true;
+  }
+
+  /**
+   * Récupère le thème actuel (alias de getThemeDecoration)
+   */
+  async getCurrentTheme(): Promise<string> {
+    return this.getThemeDecoration();
+  }
+
+  /**
+   * Récupère les décorations actuelles
+   */
+  async getCurrentDecorations(): Promise<Record<string, any>> {
+    const activeVersion = await this.getActiveVersion();
+    const decoration = activeVersion?.themeDecoration || "none";
+
+    // Selon le type de décoration, on pourrait retourner différentes configurations
+    switch (decoration) {
+      case "summer-sale":
+        return {
+          banner: true,
+          colors: ["#FFD700", "#FF6347"],
+          promotion: "20%",
+        };
+      case "halloween":
+        return {
+          banner: true,
+          colors: ["#FF6347", "#000000"],
+          specialEffects: true,
+        };
+      case "christmas":
+        return {
+          banner: true,
+          colors: ["#006400", "#FF0000", "#FFFFFF"],
+          snowEffect: true,
+        };
+      case "april-fools":
+        return { banner: true, colors: ["#FF00FF", "#00FFFF"], funMode: true };
+      default:
+        return {};
+    }
+  }
+
+  /**
+   * Récupère le mode boutique actuel (alias de getShopMode)
+   */
+  async getCurrentShopMode(): Promise<string> {
+    return this.getShopMode();
+  }
+
+  /**
+   * Met à jour le thème (alias de setThemeDecoration)
+   */
+  async updateTheme(theme: string): Promise<void> {
+    await this.setThemeDecoration(theme as ThemeDecoration);
+  }
+
+  /**
+   * Met à jour les décorations
+   */
+  async updateDecorations(decorations: Record<string, any>): Promise<void> {
+    // Extraire la décoration de l'objet decorations si disponible
+    if (decorations.decoration) {
+      await this.setThemeDecoration(decorations.decoration as ThemeDecoration);
+    }
+  }
+
+  /**
+   * Met à jour le mode boutique (alias de setShopMode)
+   */
+  async updateShopMode(mode: string): Promise<void> {
+    await this.setShopMode(mode as ShopMode);
   }
 }
 

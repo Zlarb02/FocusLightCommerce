@@ -130,4 +130,26 @@ router.put("/theme-decoration", isAdmin, async (req, res) => {
   }
 });
 
+// Activer une version spécifique (requiert authentification admin)
+router.put("/activate/:id", isAdmin, async (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    if (isNaN(id)) {
+      res.status(400).json({ message: "ID de version invalide" });
+      return;
+    }
+
+    const activatedVersion = await storage.activateVersion(id);
+    if (!activatedVersion) {
+      res.status(404).json({ message: "Version non trouvée" });
+      return;
+    }
+
+    res.json(activatedVersion);
+  } catch (error) {
+    console.error("Erreur lors de l'activation de la version:", error);
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+});
+
 export default router;

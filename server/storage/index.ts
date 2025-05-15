@@ -1,7 +1,5 @@
-// filepath: /Users/etiennepogoda/Downloads/FocusLightCommerce/server/storage/index.ts
 import { IStorage } from "./interfaces.js";
 import { PgStorage } from "./pgStorage.js";
-// import { MemoryStorage } from "./memoryStorage.js"; // Commenté - disponible en réserve si nécessaire
 import { testDatabaseConnection } from "./db.js";
 
 /**

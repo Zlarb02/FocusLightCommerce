@@ -259,3 +259,11 @@ async function initializeDefaultData() {
 
 // Exécuter les migrations
 runMigrations();
+
+// EN PROD
+// # Se connecter au conteneur
+// docker exec -it alto-backend /bin/sh
+
+// # Exécuter le script de migration manuellement
+// cd /app
+// node server/dist/server/migrate.js

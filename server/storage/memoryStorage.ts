@@ -212,6 +212,11 @@ export class MemoryStorage implements IStorage {
     return this.versionStorage.getActiveVersion();
   }
 
+  async activateVersion(id: number) {
+    return this.versionStorage.setActiveVersion(id);
+  }
+
+  // Alias pour compatibilité avec l'ancienne API
   async setActiveVersion(id: number) {
     return this.versionStorage.setActiveVersion(id);
   }
@@ -232,5 +237,62 @@ export class MemoryStorage implements IStorage {
 
   async setThemeDecoration(decoration: ThemeDecoration) {
     return this.versionStorage.setThemeDecoration(decoration);
+  }
+
+  // Nouvelles méthodes requises par l'interface
+  async getCurrentTheme(): Promise<string> {
+    const activeVersion = await this.getActiveVersion();
+    return activeVersion?.themeDecoration || "none";
+  }
+
+  async getCurrentDecorations(): Promise<Record<string, any>> {
+    const activeVersion = await this.getActiveVersion();
+    const decoration = activeVersion?.themeDecoration || "none";
+
+    // Mêmes valeurs par défaut que dans pgVersionStorage
+    switch (decoration) {
+      case "summer-sale":
+        return {
+          banner: true,
+          colors: ["#FFD700", "#FF6347"],
+          promotion: "20%",
+        };
+      case "halloween":
+        return {
+          banner: true,
+          colors: ["#FF6347", "#000000"],
+          specialEffects: true,
+        };
+      case "christmas":
+        return {
+          banner: true,
+          colors: ["#006400", "#FF0000", "#FFFFFF"],
+          snowEffect: true,
+        };
+      case "april-fools":
+        return { banner: true, colors: ["#FF00FF", "#00FFFF"], funMode: true };
+      default:
+        return {};
+    }
+  }
+
+  async getCurrentShopMode(): Promise<string> {
+    const activeVersion = await this.getActiveVersion();
+    return activeVersion?.shopMode || "focus";
+  }
+
+  async updateTheme(theme: string): Promise<void> {
+    await this.setThemeDecoration(theme as ThemeDecoration);
+  }
+
+  async updateDecorations(decorations: Record<string, any>): Promise<void> {
+    // Si 'decoration' est une propriété de l'objet, utiliser cette valeur
+    if (decorations.decoration) {
+      await this.setThemeDecoration(decorations.decoration as ThemeDecoration);
+    }
+  }
+
+  async updateShopMode(mode: string): Promise<void> {
+    await this.setShopMode(mode as ShopMode);
   }
 }

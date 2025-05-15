@@ -13,78 +13,42 @@ const __dirname = path.dirname(__filename);
 // Données initiales pour les produits
 const initialProducts = [
   {
-    name: "Lampe FocusLight Classic",
+    name: "FOCUS.01",
     description:
-      "Notre lampe classique avec design minimaliste et éclairage LED efficace",
-    price: 99.99,
-  },
-  {
-    name: "Lampe FocusLight Pro",
-    description:
-      "Version avancée avec réglage d'intensité et températures de couleur variables",
-    price: 149.99,
-  },
-  {
-    name: "Lampe FocusLight Compact",
-    description: "Version compacte parfaite pour les petits espaces et voyages",
-    price: 79.99,
+      "Lampe d'appoint imaginée et fabriquée par Anatole Collet. Réaliser en PLA écoresponsable et en chêne écogéré, livré avec une ampoule LED de 60W E14 et un câble avec interrupteur de 1m50.",
+    price: 70.0,
   },
 ];
 
 // Données initiales pour les variations de produits
 const initialProductVariations = [
-  // Variations pour FocusLight Classic
+  // Variations pour FOCUS.01
   {
     productId: 1,
     variationType: "color",
     variationValue: "Blanc",
-    stock: 25,
+    stock: 10,
     imageUrl: "/uploads/blanche.png",
-  },
-  {
-    productId: 1,
-    variationType: "color",
-    variationValue: "Rouge",
-    stock: 15,
-    imageUrl: "/uploads/rouge.png",
   },
   {
     productId: 1,
     variationType: "color",
     variationValue: "Bleu",
-    stock: 20,
+    stock: 10,
     imageUrl: "/uploads/bleue.png",
   },
-
-  // Variations pour FocusLight Pro
   {
-    productId: 2,
+    productId: 1,
     variationType: "color",
-    variationValue: "Blanc",
-    stock: 20,
-    imageUrl: "/uploads/blanche.png",
+    variationValue: "Rouge",
+    stock: 10,
+    imageUrl: "/uploads/rouge.png",
   },
   {
-    productId: 2,
-    variationType: "color",
-    variationValue: "Noir",
-    stock: 18,
-    imageUrl: "/uploads/orange.png", // Remplacer par une image noire si disponible
-  },
-
-  // Variations pour FocusLight Compact
-  {
-    productId: 3,
-    variationType: "color",
-    variationValue: "Blanc",
-    stock: 30,
-    imageUrl: "/uploads/blanche.png",
-  },
-  {
-    productId: 3,
+    productId: 1,
     variationType: "color",
     variationValue: "Orange",
-    stock: 12,
+    stock: 10,
     imageUrl: "/uploads/orange.png",
   },
 ];
