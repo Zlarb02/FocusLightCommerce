@@ -22,54 +22,54 @@ if (!fs.existsSync(themeFile)) {
   fs.writeFileSync(themeFile, JSON.stringify(defaultTheme, null, 2));
 }
 
-export default defineConfig({
-  plugins: [
-    react(),
-    runtimeErrorOverlay(),
-    themePlugin(),
-    ...(process.env.NODE_ENV !== "production" &&
+export default defineConfig(async () => {
+  // Dynamiquement importer le plugin cartographer si nécessaire
+  const devPlugins = [];
+  if (
+    process.env.NODE_ENV !== "production" &&
     process.env.REPL_ID !== undefined
-      ? [
-          await import("@replit/vite-plugin-cartographer").then((m) =>
-            m.cartographer()
-          ),
-        ]
-      : []),
-  ],
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "src"),
-      "@shared": path.resolve(__dirname, "..", "shared"),
-      "@assets": path.resolve(__dirname, "..", "attached_assets"),
-    },
-  },
-  server: {
-    proxy: {
-      "/uploads": {
-        target:
-          process.env.NODE_ENV === "production"
-            ? "https://api-focus.pogodev.com"
-            : "http://localhost:5000",
-        changeOrigin: true,
-        secure: process.env.NODE_ENV === "production",
-      },
-      "/api": {
-        target:
-          process.env.NODE_ENV === "production"
-            ? "https://api-focus.pogodev.com"
-            : "http://localhost:5000",
-        changeOrigin: true,
-        secure: process.env.NODE_ENV === "production",
+  ) {
+    const cartographerModule = await import("@replit/vite-plugin-cartographer");
+    devPlugins.push(cartographerModule.cartographer());
+  }
+
+  return {
+    plugins: [react(), runtimeErrorOverlay(), themePlugin(), ...devPlugins],
+    resolve: {
+      alias: {
+        "@": path.resolve(__dirname, "src"),
+        "@shared": path.resolve(__dirname, "..", "shared"),
+        "@assets": path.resolve(__dirname, "..", "attached_assets"),
       },
     },
-  },
-  build: {
-    outDir: path.resolve(__dirname, "dist"),
-    emptyOutDir: true,
-    sourcemap: process.env.NODE_ENV !== "production",
-  },
-  base: "/",
-  define: {
-    "process.env": {},
-  },
+    server: {
+      proxy: {
+        "/uploads": {
+          target:
+            process.env.NODE_ENV === "production"
+              ? "https://api-focus.pogodev.com"
+              : "http://localhost:5000",
+          changeOrigin: true,
+          secure: process.env.NODE_ENV === "production",
+        },
+        "/api": {
+          target:
+            process.env.NODE_ENV === "production"
+              ? "https://api-focus.pogodev.com"
+              : "http://localhost:5000",
+          changeOrigin: true,
+          secure: process.env.NODE_ENV === "production",
+        },
+      },
+    },
+    build: {
+      outDir: path.resolve(__dirname, "dist"),
+      emptyOutDir: true,
+      sourcemap: process.env.NODE_ENV !== "production",
+    },
+    base: "/",
+    define: {
+      "process.env": {},
+    },
+  };
 });

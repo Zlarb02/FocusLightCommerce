@@ -798,44 +798,50 @@
         clip = 4,
         act;
       const loader = new GLTFLoader();
-      for (const url of CFG.urls) {
-        try {
-          await new Promise((res, rej) =>
-            loader.load(
-              url,
-              (g) => {
-                scene.add(g.scene);
-                g.scene.traverse(
-                  (o) =>
-                    o.material?.isMeshStandardMaterial &&
-                    (o.material.envMapIntensity = 1.1)
-                );
-                ({ radius: R, center } = new THREE.Box3()
-                  .setFromObject(g.scene)
-                  .getBoundingSphere(new THREE.Sphere()));
-                r0 = R * 1.9;
-                r1 = R * 7;
-                y0 = center.y;
-                y1 = center.y - R * 0.05;
-                rIntro = R * 2;
-                yIntro = center.y + R * 0.8;
-                if (g.animations[0]) {
-                  mixer = new THREE.AnimationMixer(g.scene);
-                  act = mixer.clipAction(g.animations[0]);
-                  act.setLoop(THREE.LoopOnce, 0);
-                  act.clampWhenFinished = true;
-                  act.play();
-                  clip = g.animations[0].duration;
-                }
-                res();
-              },
-              undefined,
-              rej
-            )
-          );
-          break;
-        } catch {}
-      }
+      
+      // Encapsulation dans une IIFE async pour éviter le await au niveau supérieur
+      (async function loadModel() {
+        for (const url of CFG.urls) {
+          try {
+            await new Promise((res, rej) =>
+              loader.load(
+                url,
+                (g) => {
+                  scene.add(g.scene);
+                  g.scene.traverse(
+                    (o) =>
+                      o.material?.isMeshStandardMaterial &&
+                      (o.material.envMapIntensity = 1.1)
+                  );
+                  ({ radius: R, center } = new THREE.Box3()
+                    .setFromObject(g.scene)
+                    .getBoundingSphere(new THREE.Sphere()));
+                  r0 = R * 1.9;
+                  r1 = R * 7;
+                  y0 = center.y;
+                  y1 = center.y - R * 0.05;
+                  rIntro = R * 2;
+                  yIntro = center.y + R * 0.8;
+                  if (g.animations[0]) {
+                    mixer = new THREE.AnimationMixer(g.scene);
+                    act = mixer.clipAction(g.animations[0]);
+                    act.setLoop(THREE.LoopOnce, 0);
+                    act.clampWhenFinished = true;
+                    act.play();
+                    clip = g.animations[0].duration;
+                  }
+                  res();
+                },
+                undefined,
+                rej
+              )
+            );
+            break;
+          } catch {}
+        }
+        // Démarrer l'animation après le chargement du modèle
+        anim();
+      })();
 
       /* ===== INTERACTION ===== */
       let prog = 0;
@@ -1000,9 +1006,6 @@
         }
         renderer.render(scene, camera);
       }
-
-      // Démarrer l'animation
-      anim();
 
       /* ===== NAVIGATION ===== */
       document.getElementById("cta").addEventListener("click", function () {
