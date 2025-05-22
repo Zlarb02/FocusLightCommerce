@@ -206,8 +206,6 @@
         aspect-ratio: 3/4;
         background-size: cover;
         background-position: center;
-        border: 8px solid var(--polaroid-border);
-        box-shadow: 0 4px 10px var(--polaroid-shadow);
         z-index: 1;
         opacity: 0;
         transition: opacity 0.4s, transform 0.1s ease-out; /* Ajout de transition pour transform */
@@ -336,9 +334,9 @@
       }
 
       .p2 {
-        bottom: -2%;
+        bottom: -6%;
         left: 3%;
-        --rotation: 10deg;
+        --rotation: 8deg;
       }
       .p2 .polaroid-inner {
         transform: rotate(10deg);
@@ -349,7 +347,7 @@
 
       .p3 {
         top: 20%;
-        right: -5%;
+        right: -2%;
         --rotation: 5deg;
       }
       .p3 .polaroid-inner {
@@ -361,8 +359,8 @@
 
       .p4 {
         left: 2%;
-        top: 40%;
-        --rotation: -6deg;
+        top: 36%;
+        --rotation: -4deg;
       }
       .p4 .polaroid-inner {
         transform: rotate(-6deg);
@@ -372,20 +370,20 @@
       }
 
       .p5 {
-        right: -5%;
+        right: -1%;
         bottom: -4%;
-        --rotation: 12deg;
+        --rotation: -12deg;
       }
       .p5 .polaroid-inner {
-        transform: rotate(12deg);
+        transform: rotate(-12deg);
       }
       .p5:hover .polaroid-inner {
-        transform: rotate(12deg) rotateY(180deg);
+        transform: rotate(-12deg) rotateY(180deg);
       }
 
       .p6 {
         top: 10%;
-        right: 10%;
+        right: 13%;
         --rotation: 7deg;
         z-index: 0; /* Z-index inférieur à celui de p3 */
       }
@@ -511,16 +509,6 @@
       }
 
       /* Animation d'entrée pour les polaroids */
-      @keyframes fadeInPolaroid {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
 
       /* Effet de clic */
       .polaroid:active .polaroid-inner {
@@ -798,7 +786,7 @@
         clip = 4,
         act;
       const loader = new GLTFLoader();
-      
+
       // Encapsulation dans une IIFE async pour éviter le await au niveau supérieur
       (async function loadModel() {
         for (const url of CFG.urls) {
@@ -1355,8 +1343,11 @@
           const inner = polaroid.querySelector(".polaroid-inner");
           const isFlipped = inner.style.transform.includes("rotateY(180deg)");
 
-          if (isFlipped && link) {
-            // Si déjà retourné et qu'on clique, naviguer vers le lien
+          // Vérifier si on a cliqué sur le dos de la carte (polaroid-back)
+          const clickedOnBack = e.target.closest(".polaroid-back");
+
+          if ((isFlipped || clickedOnBack) && link) {
+            // Si déjà retourné ou clic sur le dos, naviguer vers le lien
             window.location.href = link;
           }
         });
