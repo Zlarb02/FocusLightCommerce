@@ -7,9 +7,17 @@ import NotFound from "@/pages/not-found";
 import Checkout from "@/pages/checkout";
 import { CartProvider } from "@/hooks/useCart";
 import { CheckoutProvider } from "@/hooks/useCheckout";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense, lazy } from "react";
 import Shop from "@/pages/Shop";
 import useVersions from "@/hooks/useVersions";
+
+// Importation des pages des polaroids en utilisant lazy pour le chargement à la demande
+const SeaCle = lazy(() => import("@/pages/SeaCle"));
+const BraderieDeLArt = lazy(() => import("@/pages/BraderieDeLArt"));
+const Waterfall = lazy(() => import("@/pages/Waterfall"));
+const LowtechVynil = lazy(() => import("@/pages/LowtechVynil"));
+const ChaussuresCustom = lazy(() => import("@/pages/ChaussuresCustom"));
+const QuiSuisJe = lazy(() => import("@/pages/QuiSuisJe"));
 
 // Pages de gestion
 import GestionLogin from "./pages/gestion/Login";
@@ -60,7 +68,7 @@ function Router() {
   // Fonction pour retourner à la landing page de façon sécurisée
   const backToLanding = () => {
     // Utiliser l'API History pour la navigation
-    history.pushState({}, "", "/");
+    window.history.pushState({}, "", "/");
 
     // Récupérer les éléments de façon sécurisée avant manipulation
     const landingContainer = document.getElementById("landing-container");
@@ -69,6 +77,12 @@ function Router() {
     if (landingContainer && rootElement) {
       landingContainer.style.display = "block";
       rootElement.style.display = "none";
+
+      // Émettre un événement personnalisé pour réinitialiser l'animation Three.js
+      window.dispatchEvent(new CustomEvent("returnToLanding"));
+
+      // Réinitialiser la position de défilement
+      window.scrollTo(0, 0);
     }
   };
 
@@ -102,6 +116,38 @@ function Router() {
         {/* Routes principales de l'application */}
         <Route path="/shop" component={shopMode === "focus" ? Home : Shop} />
         <Route path="/checkout" component={Checkout} />
+
+        {/* Routes des polaroids */}
+        <Route path="/sea-cle">
+          <Suspense fallback={<div className="loading">Chargement...</div>}>
+            <SeaCle />
+          </Suspense>
+        </Route>
+        <Route path="/braderie-de-l-art">
+          <Suspense fallback={<div className="loading">Chargement...</div>}>
+            <BraderieDeLArt />
+          </Suspense>
+        </Route>
+        <Route path="/waterfall">
+          <Suspense fallback={<div className="loading">Chargement...</div>}>
+            <Waterfall />
+          </Suspense>
+        </Route>
+        <Route path="/lowtech-vynil">
+          <Suspense fallback={<div className="loading">Chargement...</div>}>
+            <LowtechVynil />
+          </Suspense>
+        </Route>
+        <Route path="/chaussures-custom">
+          <Suspense fallback={<div className="loading">Chargement...</div>}>
+            <ChaussuresCustom />
+          </Suspense>
+        </Route>
+        <Route path="/qui-suis-je">
+          <Suspense fallback={<div className="loading">Chargement...</div>}>
+            <QuiSuisJe />
+          </Suspense>
+        </Route>
 
         {/* Routes d'administration */}
         <Route path="/gestion" component={GestionLogin} />

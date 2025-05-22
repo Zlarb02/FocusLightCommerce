@@ -1,0 +1,299 @@
+<!--
+  Desk‑Light Cinematic Shot (Three.js) – v4.0 (concise + paramétrable)
+  --------------------------------------------------------------------
+  • Tout est regroupé dans un objet CONFIG (durées, couleurs, urls…) → 1 seul
+    endroit pour ajuster.
+  • Helpers fonctionnels (lerp, clamp) pour aérer les calculs.
+  • Code ES2025 moderne : const/let, arrow fn, destructuring, passive scroll.
+  • ~35 % plus court que v3.5 tout en gardant la même logique.
+-->
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Desk‑Light Cinematic</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html,
+      body {
+        height: 100%;
+        background: #fff;
+        font-family: system-ui, sans-serif;
+        color: #111;
+      }
+      #webgl {
+        position: fixed;
+        inset: 0;
+      }
+      #scrollArea {
+        height: 400vh;
+      }
+      .caption {
+        position: fixed;
+        max-width: 35vw;
+        font-size: clamp(14px, 2.5vw, 22px);
+        line-height: 1.25;
+        font-weight: 500;
+        opacity: 0;
+        transition: opacity 0.4s;
+        pointer-events: none;
+      }
+      .tl {
+        top: 6%;
+        left: 6%;
+      }
+      .tr {
+        top: 6%;
+        right: 6%;
+      }
+      .ml {
+        top: 55%;
+        left: 6%;
+      }
+      .mr {
+        top: 45%;
+        right: 6%;
+      }
+      .br {
+        bottom: 10%;
+        right: 6%;
+      }
+      .bl {
+        bottom: 4%;
+        left: 6%;
+      }
+      #cta {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: clamp(32px, 6vw, 72px);
+        font-weight: 700;
+        opacity: 0;
+        transition: opacity 0.6s;
+      }
+    </style>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.157.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.157.0/examples/jsm/"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <canvas id="webgl"></canvas>
+    <div id="scrollArea"></div>
+    <p class="caption ml" id="cap0">PLA éco‑responsable</p>
+    <p class="caption tr" id="cap1">Montage ultra simple</p>
+    <p class="caption mr" id="cap2">Chêne écogéré</p>
+    <p class="caption br" id="cap3">Conçu & fabriqué par Alto Lille (FR)</p>
+    <p class="caption tl" id="cap4">LED 60 W E14 incluse</p>
+    <p class="caption bl" id="cap5">Et son emballage éco‑responsable</p>
+    <div id="cta">Visiter la boutique</div>
+
+    <script type="module">
+      import * as THREE from "three";
+      import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+      import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+
+      /* ===== CONFIG ===== */
+      const CFG = {
+        urls: [
+          "https://raw.githubusercontent.com/Zlarb02/test-landing/main/src/assets/focus.glb",
+          "./focus.glb",
+        ],
+        intro: 0.08,
+        rotEnd: 0.75,
+        timeScale: 1.2,
+        legend: { seg: 0.12, fade: 0.04 },
+        travelAmp:
+          matchMedia("(prefers-reduced-motion: reduce)").matches ||
+          innerWidth < 600
+            ? 0.25
+            : 0.6,
+        colours: { bg: "#fff", txt: "#111", key: "#ffffff", rim: "#66ccff" },
+      };
+      /* helpers */
+      const L = (a, b, t) => a + (b - a) * t,
+        C = (v) => Math.max(0, Math.min(v, 1));
+
+      /* ===== RENDERER & SCENE ===== */
+      const renderer = new THREE.WebGLRenderer({
+        canvas: webgl,
+        antialias: CFG.travelAmp < 0.3,
+      });
+      renderer.setSize(innerWidth, innerHeight);
+      renderer.setPixelRatio(devicePixelRatio * 0.9);
+      renderer.setClearColor(CFG.colours.bg, 1);
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.1;
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(
+        45,
+        innerWidth / innerHeight,
+        0.1,
+        1000
+      );
+      scene.environment = new THREE.PMREMGenerator(renderer).fromScene(
+        new RoomEnvironment(renderer)
+      ).texture;
+      scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+      [
+        ["key", 6, 10, 10],
+        ["rim", -6, 7, -10],
+      ].forEach(([k, x, y, z]) => {
+        const s = new THREE.SpotLight(
+          CFG.colours[k],
+          1.2,
+          0,
+          Math.PI / 8,
+          0.25
+        );
+        s.position.set(x, y, z);
+        scene.add(s);
+      });
+
+      /* ===== LOAD GLB ===== */
+      let center = new THREE.Vector3(),
+        R = 1,
+        r0,
+        r1,
+        y0,
+        y1,
+        rIntro,
+        yIntro,
+        mixer,
+        clip = 4,
+        act;
+      const loader = new GLTFLoader();
+      for (const url of CFG.urls) {
+        try {
+          await new Promise((res, rej) =>
+            loader.load(
+              url,
+              (g) => {
+                scene.add(g.scene);
+                g.scene.traverse(
+                  (o) =>
+                    o.material?.isMeshStandardMaterial &&
+                    (o.material.envMapIntensity = 1.1)
+                );
+                ({ radius: R, center } = new THREE.Box3()
+                  .setFromObject(g.scene)
+                  .getBoundingSphere(new THREE.Sphere()));
+                r0 = R * 1.4;
+                r1 = R * 1.5;
+                y0 = center.y + R * 2;
+                y1 = center.y - R * 0.05;
+                rIntro = R * 1.3;
+                yIntro = center.y + R * 0.8;
+                if (g.animations[0]) {
+                  mixer = new THREE.AnimationMixer(g.scene);
+                  act = mixer.clipAction(g.animations[0]);
+                  act.setLoop(THREE.LoopOnce, 0);
+                  act.clampWhenFinished = true;
+                  act.play();
+                  clip = g.animations[0].duration;
+                }
+                res();
+              },
+              undefined,
+              rej
+            )
+          );
+          break;
+        } catch {}
+      }
+
+      /* ===== INTERACTION ===== */
+      let prog = 0;
+      addEventListener(
+        "scroll",
+        (e) => {
+          const m = document.body.scrollHeight - innerHeight;
+          prog = C(scrollY / m);
+        },
+        { passive: true }
+      );
+      addEventListener("resize", () => {
+        renderer.setSize(innerWidth, innerHeight);
+        camera.aspect = innerWidth / innerHeight;
+        camera.updateProjectionMatrix();
+      });
+
+      /* captions */
+      const caps = [cap0, cap1, cap2, cap3, cap4, cap5];
+      const showCaps = (t) =>
+        caps.forEach((el, i) => {
+          const a = i * CFG.legend.seg,
+            b = a + CFG.legend.seg;
+          let o = 0;
+          if (t >= a - CFG.legend.fade && t <= b + CFG.legend.fade)
+            o =
+              t < a
+                ? (t - (a - CFG.legend.fade)) / CFG.legend.fade
+                : t > b
+                ? 1 - (t - b) / CFG.legend.fade
+                : 1;
+          el.style.opacity = o;
+        });
+
+      /* ===== LOOP ===== */
+      const OFFSET = Math.PI;
+      (function anim() {
+        requestAnimationFrame(anim);
+        if (!R) return;
+        if (prog < CFG.intro) {
+          const k = prog / CFG.intro;
+          const r = L(rIntro, r0, k),
+            y = L(yIntro, y0, k);
+          camera.position.set(
+            center.x + Math.cos(OFFSET) * r,
+            y,
+            center.z + Math.sin(OFFSET) * r
+          );
+          camera.lookAt(center);
+          caps.forEach((e) => (e.style.opacity = 0));
+          cta.style.opacity = 0;
+          if (act) {
+            act.time = clip - k * (clip - Math.min(5.2, clip));
+            mixer.update(0);
+          }
+        } else {
+          const t = (prog - CFG.intro) / (1 - CFG.intro),
+            rot = C(t / CFG.rotEnd),
+            ang = OFFSET - rot * Math.PI * 2;
+          const r = L(r0, r1, t);
+          let y = L(y0, y1, t);
+          const { travelAmp: a } = CFG;
+          y +=
+            t <= 0.3
+              ? a * R * C((t - 0.15) / 0.15)
+              : t < 0.55
+              ? a * R * C((0.55 - t) / 0.25)
+              : 0;
+          camera.position.set(
+            center.x + Math.cos(ang) * r,
+            y,
+            center.z + Math.sin(ang) * r
+          );
+          camera.lookAt(center.x, center.y - R * 0.15, center.z);
+          showCaps(t);
+          cta.style.opacity = t > 0.95 ? C((t - 0.95) / 0.05) : 0;
+          act &&
+            ((act.time = Math.min(t * CFG.timeScale, 1) * clip),
+            mixer.update(0));
+        }
+        renderer.render(scene, camera);
+      })();
+    </script>
+  </body>
+</html>
