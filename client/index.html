@@ -27,6 +27,24 @@
         --toggle-bg: #f0f0f0;
         --toggle-bg-active: #2196f3;
         --toggle-knob: #fff;
+
+        /* Polices principales */
+        --font-primary: "Noto Sans", system-ui, sans-serif;
+        --font-heading: "Jost", system-ui, sans-serif;
+        --font-accent: "League Spartan", system-ui, sans-serif;
+
+        /* Variantes fonctionnelles par usage */
+        --font-body: var(--font-primary);
+        --font-titles: var(--font-heading);
+        --font-buttons: var(--font-accent);
+        --font-nav: var(--font-accent);
+
+        /* Graisses typographiques */
+        --fw-light: 300;
+        --fw-regular: 400;
+        --fw-medium: 500;
+        --fw-semibold: 600;
+        --fw-bold: 700;
       }
 
       .dark-mode {
@@ -51,7 +69,7 @@
       body {
         height: 100%;
         background: var(--bg-color);
-        font-family: "Noto Sans", system-ui, sans-serif;
+        font-family: var(--font-body);
         color: var(--text-color);
         transition: background 0.3s, color 0.3s;
       }
@@ -71,19 +89,19 @@
         max-width: 35vw;
         font-size: clamp(18px, 3.5vw, 36px);
         line-height: 1.25;
-        font-weight: 500;
+        font-weight: var(--fw-medium);
         opacity: 0;
         transition: opacity 0.4s, color 0.3s;
         pointer-events: none;
-        font-family: "Noto Sans", sans-serif;
+        font-family: var(--font-body);
         color: var(--text-color);
       }
       .tl {
-        top: 6%;
+        top: 15%;
         left: 6%;
       }
       .tr {
-        top: 6%;
+        top: 15%;
         right: 6%;
       }
       .ml {
@@ -95,11 +113,11 @@
         right: 6%;
       }
       .br {
-        bottom: 10%;
+        bottom: 13%;
         right: 6%;
       }
       .bl {
-        bottom: 4%;
+        bottom: 13%;
         left: 6%;
       }
       #cta {
@@ -108,9 +126,9 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        font-family: "League Spartan", sans-serif;
+        font-family: var(--font-accent);
         font-size: clamp(32px, 6vw, 72px);
-        font-weight: 700;
+        font-weight: var(--fw-bold);
         opacity: 0;
         transition: opacity 0.6s;
         cursor: pointer;
@@ -128,6 +146,8 @@
         padding: clamp(0.5rem, 1vw, 1rem);
         z-index: 10;
         pointer-events: none;
+        font-family: var(--font-body);
+        font-weight: var(--fw-regular);
       }
 
       /* Style pour les toggles en haut à droite */
@@ -150,7 +170,8 @@
         font-size: 14px;
         margin-right: 10px;
         color: var(--text-color);
-        font-weight: 500;
+        font-weight: var(--fw-medium);
+        font-family: var(--font-nav);
         user-select: none;
       }
 
@@ -227,9 +248,9 @@
         left: 0;
         right: 0;
         text-align: center;
-        font-family: "League Spartan", sans-serif;
+        font-family: var(--font-titles);
         font-size: clamp(32px, 5vw, 58px);
-        font-weight: 700;
+        font-weight: var(--fw-bold);
         color: var(--text-color);
         opacity: 0;
         transition: opacity 0.6s, color 0.3s;
@@ -243,7 +264,7 @@
         left: 50%;
         transform: translateX(-50%);
         text-align: center;
-        font-family: "Noto Sans", system-ui, sans-serif;
+        font-family: var(--font-body);
         opacity: 0;
         transition: opacity 0.6s, background-color 0.3s, box-shadow 0.3s;
         z-index: 15;
@@ -313,13 +334,15 @@
 
       .polaroid-title {
         font-size: clamp(14px, 1.8vw, 20px);
-        font-weight: 600;
+        font-weight: var(--fw-semibold);
         margin-bottom: 10px;
+        font-family: var(--font-titles);
       }
 
       .polaroid-description {
         font-size: clamp(12px, 1.4vw, 16px);
-        font-weight: 300;
+        font-weight: var(--fw-light);
+        font-family: var(--font-body);
       }
       .p1 {
         top: -6%;
@@ -708,12 +731,24 @@
         slideRight: {
           start: 0.6, // Moment où le déplacement commence (correspond au début de la disparition du texte "emballage éco-responsable")
           end: 0.9, // Moment où le déplacement est complet
-          amount: 25, // Pourcentage de déplacement vers la droite
+          // Pourcentage de déplacement vers la droite adapté à la taille de l'écran
+          amount: calculateSlideAmount(),
         },
       };
       /* helpers */
       const L = (a, b, t) => a + (b - a) * t,
         C = (v) => Math.max(0, Math.min(v, 1));
+
+      // Fonction pour calculer la valeur optimale de slideRight.amount en fonction de la taille de l'écran
+      function calculateSlideAmount() {
+        if (innerWidth <= 600) {
+          return 30; // 40% pour les mobiles (petits écrans)
+        } else if (innerWidth > 1500) {
+          return 20; // 20% pour les grands écrans
+        } else {
+          return 25; // 25% pour les écrans moyens (par défaut)
+        }
+      }
 
       /* ===== RENDERER & SCENE ===== */
       // Déterminer si nous sommes sur un grand écran (largeur > 1440px)
@@ -863,6 +898,31 @@
           renderer.shadowMap.type = newIsLargeScreen
             ? THREE.PCFSoftShadowMap
             : THREE.BasicShadowMap;
+        }
+
+        // Mettre à jour la valeur de slideRight.amount en fonction de la nouvelle taille d'écran
+        CFG.slideRight.amount = calculateSlideAmount();
+
+        // Si on est dans la phase où le déplacement est appliqué, recalculer la position immédiatement
+        if (prog >= CFG.intro) {
+          const t = (prog - CFG.intro) / (1 - CFG.intro);
+          if (t >= CFG.slideRight.start) {
+            if (t <= CFG.slideRight.end) {
+              // Recalculer le pourcentage de progression du déplacement
+              const slideProgress = C(
+                (t - CFG.slideRight.start) /
+                  (CFG.slideRight.end - CFG.slideRight.start)
+              );
+              document.getElementById("webgl").style.marginLeft = `${
+                slideProgress * CFG.slideRight.amount
+              }%`;
+            } else {
+              // Si on est après la fin du déplacement, appliquer la valeur complète
+              document.getElementById(
+                "webgl"
+              ).style.marginLeft = `${CFG.slideRight.amount}%`;
+            }
+          }
         }
       });
 
@@ -1343,11 +1403,8 @@
           const inner = polaroid.querySelector(".polaroid-inner");
           const isFlipped = inner.style.transform.includes("rotateY(180deg)");
 
-          // Vérifier si on a cliqué sur le dos de la carte (polaroid-back)
-          const clickedOnBack = e.target.closest(".polaroid-back");
-
-          if ((isFlipped || clickedOnBack) && link) {
-            // Si déjà retourné ou clic sur le dos, naviguer vers le lien
+          if (isFlipped && link) {
+            // Si déjà retourné et qu'on clique, naviguer vers le lien
             window.location.href = link;
           }
         });
