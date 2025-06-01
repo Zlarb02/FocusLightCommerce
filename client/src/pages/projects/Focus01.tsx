@@ -1,12 +1,13 @@
-import PolaroidPage from "./PolaroidPage";
+import ProjectPageUnified from "@/components/ProjectPageUnified";
 
 export default function Focus01() {
   return (
-    <PolaroidPage
+    <ProjectPageUnified
       title="Focus.01"
       subtitle="Lampe de bureau"
       imagePath="/images/focus-01.jpg"
       date="2024/2025"
+      currentProject="Focus01"
       description={
         <>
           <p>

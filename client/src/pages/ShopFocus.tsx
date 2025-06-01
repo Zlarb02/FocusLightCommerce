@@ -5,6 +5,14 @@ import { LampColorSelector } from "@/components/LampColorSelector";
 import { ProductVariation, ProductWithVariations } from "@shared/schema";
 import { ProductCard } from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
+import { AnimatedAddToCartButton } from "@/components/AnimatedAddToCartButton";
+import { ToastContainer } from "@/components/EnhancedToast";
+import { ColorTransition } from "@/components/ColorTransition";
+import {
+  ProductAddedIndicator,
+  useProductAddedIndicators,
+} from "@/components/ProductAddedIndicator";
+import { useEnhancedToast } from "@/hooks/useEnhancedToast";
 import { Leaf, Lightbulb, ShoppingBag, Trees } from "lucide-react";
 import { formatPrice, getColorInfo } from "@/lib/utils";
 import { useCart } from "@/hooks/useCart";
@@ -65,6 +73,8 @@ export default function ShopFocus() {
     useState<ProductVariation | null>(null);
   const { addItem } = useCart();
   const { toast } = useToast();
+  const { addToast, toasts, removeToast } = useEnhancedToast();
+  const { showIndicator, isProductAdded } = useProductAddedIndicators();
 
   useEffect(() => {
     if (products.length > 0 && !selectedProduct) {
@@ -98,9 +108,18 @@ export default function ShopFocus() {
 
       addItem(productWithVariation);
 
-      toast({
-        title: "Produit ajouté au panier",
-        description: `${selectedProduct.name} (${selectedVariation.variationValue}) a été ajouté au panier`,
+      // Afficher l'indicateur sur le produit
+      showIndicator(selectedVariation.id.toString());
+
+      // Toast amélioré avec image du produit
+      addToast({
+        title: "Produit ajouté au panier !",
+        description: `${selectedProduct.name} coloris ${selectedVariation.variationValue}`,
+        type: "cart",
+        duration: 5000,
+        productImage: selectedVariation.imageUrl,
+        productName: `${selectedProduct.name} - ${selectedVariation.variationValue}`,
+        quantity: 1,
       });
     }
   };
@@ -152,17 +171,13 @@ export default function ShopFocus() {
                 </div>
               </div>
               <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                <Button
-                  size="lg"
+                <AnimatedAddToCartButton
                   onClick={handleAddToCart}
                   disabled={!selectedProduct}
-                  className="bg-[var(--color-button)] hover:bg-[var(--color-button-hover)] rounded-none transition-all hover:translate-y-[-2px] shadow-none hover:shadow-md"
-                  style={{ fontFamily: "var(--font-buttons)" }}
-                >
-                  <ShoppingBag className="mr-2 h-4 w-4" />
-                  Acheter -{" "}
-                  {selectedProduct ? formatPrice(selectedProduct.price) : ""}
-                </Button>
+                  price={
+                    selectedProduct ? formatPrice(selectedProduct.price) : ""
+                  }
+                />
                 <Button
                   variant="outline"
                   size="lg"
@@ -171,7 +186,7 @@ export default function ShopFocus() {
                       .getElementById("product-details")
                       ?.scrollIntoView({ behavior: "smooth" })
                   }
-                  className="rounded-none border-[var(--color-text)] text-[var(--color-text)] hover:bg-[var(--color-text)] hover:text-white transition-all hover:translate-y-[-2px]"
+                  className="rounded-none border-foreground text-foreground hover:bg-foreground hover:text-background transition-all hover:translate-y-[-2px]"
                   style={{ fontFamily: "var(--font-buttons)" }}
                 >
                   Voir les détails
@@ -186,11 +201,23 @@ export default function ShopFocus() {
             <div className="order-1 md:order-2 relative flex justify-center items-center">
               {selectedProduct && selectedVariation && (
                 <div className="relative w-full max-w-md h-[400px] flex items-center justify-center">
-                  <img
-                    src={selectedVariation.imageUrl}
-                    alt={`Lampe FOCUS.01 coloris ${selectedVariation.variationValue}`}
-                    className="w-full max-w-[70%] mx-auto object-contain transition-all duration-700 animate scale-in z-1"
+                  <ColorTransition
+                    colorKey={selectedVariation.variationValue}
+                    className="w-full h-full flex items-center justify-center"
+                  >
+                    <img
+                      src={selectedVariation.imageUrl}
+                      alt={`Lampe FOCUS.01 coloris ${selectedVariation.variationValue}`}
+                      className="w-full max-w-[70%] mx-auto object-contain z-1"
+                    />
+                  </ColorTransition>
+
+                  {/* Indicateur produit ajouté */}
+                  <ProductAddedIndicator
+                    productId={selectedVariation.id.toString()}
+                    show={isProductAdded(selectedVariation.id.toString())}
                   />
+
                   <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full">
                     <LampColorSelector
                       variations={heroVariations}
@@ -713,6 +740,9 @@ export default function ShopFocus() {
 
         <Separator className="my-12" />
       </div>
+
+      {/* Container pour les toasts améliorés */}
+      <ToastContainer toasts={toasts} onClose={removeToast} />
     </Layout>
   );
 }

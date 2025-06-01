@@ -1,12 +1,13 @@
-import PolaroidPage from "./PolaroidPage";
+import ProjectPageUnified from "@/components/ProjectPageUnified";
 
 export default function SeaCle() {
   return (
-    <PolaroidPage
+    <ProjectPageUnified
       title="Sea-clé"
       subtitle="Ramasseur de déchets plastiques"
       imagePath="/images/sea-cle.jpg"
       date="2024"
+      currentProject="SeaCle"
       description={
         <>
           <p>

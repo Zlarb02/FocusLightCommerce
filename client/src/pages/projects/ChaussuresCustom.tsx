@@ -1,12 +1,13 @@
-import PolaroidPage from "./PolaroidPage";
+import ProjectPageUnified from "@/components/ProjectPageUnified";
 
 export default function ChaussuresCustom() {
   return (
-    <PolaroidPage
+    <ProjectPageUnified
       title="Chaussures Custom"
       subtitle="Créer des chaussures uniques à partir d'une chaussure basique"
       imagePath="/images/chaussures-custom.jpg"
       date="Depuis 2020"
+      currentProject="ChaussuresCustom"
       description={
         <>
           <p>

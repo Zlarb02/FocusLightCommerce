@@ -175,7 +175,37 @@ export default function DashboardLayout({
           <h1 className="text-2xl font-semibold text-gray-900 mb-6">{title}</h1>
           {children}
         </div>
+
+        {/* Footer Admin */}
+        <footer className="border-t border-gray-200 bg-gray-50 py-4 px-4 md:px-8">
+          <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-3">
+            <p className="text-gray-500 text-xs text-center md:text-left">
+              &copy; 2023 Alto Lille - Interface d'administration
+            </p>
+            <div className="flex items-center justify-center md:justify-end gap-4">
+              {/* Badge EcoIndex */}
+              <div id="ecoindex-badge"></div>
+              {/* Mention pogodev.com */}
+              <a
+                href="https://pogodev.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-gray-600 text-xs transition-colors"
+                title="Site développé par PoGoDev"
+              >
+                Développé par PoGoDev
+              </a>
+            </div>
+          </div>
+        </footer>
       </main>
+
+      {/* Script EcoIndex */}
+      <script
+        type="text/javascript"
+        src="https://www.ecoindex.fr/badge/"
+        defer
+      ></script>
     </>
   );
 }

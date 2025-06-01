@@ -12,13 +12,15 @@ import Shop from "@/pages/Shop";
 import useVersions from "@/hooks/useVersions";
 
 // Importation des pages des polaroids en utilisant lazy pour le chargement à la demande
-const SeaCle = lazy(() => import("@/pages/SeaCle"));
-const BraderieDeLArt = lazy(() => import("@/pages/BraderieDeLArt"));
-const Waterfall = lazy(() => import("@/pages/Waterfall"));
-const LowtechVynil = lazy(() => import("@/pages/LowtechVynil"));
-const ChaussuresCustom = lazy(() => import("@/pages/ChaussuresCustom"));
-const Focus01 = lazy(() => import("@/pages/Focus01"));
-const QuiSuisJe = lazy(() => import("@/pages/QuiSuisJe"));
+const SeaCle = lazy(() => import("@/pages/projects/SeaCle"));
+const BraderieDeLArt = lazy(() => import("@/pages/projects/BraderieDeLArt"));
+const Waterfall = lazy(() => import("@/pages/projects/Waterfall"));
+const LowtechVynil = lazy(() => import("@/pages/projects/LowtechVynil"));
+const ChaussuresCustom = lazy(
+  () => import("@/pages/projects/ChaussuresCustom")
+);
+const Focus01 = lazy(() => import("@/pages/projects/Focus01"));
+const QuiSuisJe = lazy(() => import("@/pages/projects/QuiSuisJe"));
 
 // Pages de gestion
 import GestionLogin from "./pages/gestion/Login";
@@ -149,7 +151,7 @@ function Router() {
             <Focus01 />
           </Suspense>
         </Route>
-        <Route path="/qui-suis-je">
+        <Route path="/anatolle-collet">
           <Suspense fallback={<div className="loading">Chargement...</div>}>
             <QuiSuisJe />
           </Suspense>

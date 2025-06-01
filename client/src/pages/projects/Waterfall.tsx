@@ -1,12 +1,13 @@
-import PolaroidPage from "./PolaroidPage";
+import ProjectPageUnified from "@/components/ProjectPageUnified";
 
 export default function Waterfall() {
   return (
-    <PolaroidPage
+    <ProjectPageUnified
       title="Waterfall"
       subtitle="Applique murale"
       imagePath="/images/waterfall.jpg"
       date="2023"
+      currentProject="Waterfall"
       description={
         <>
           <p>

@@ -2,6 +2,7 @@ import { ReactNode, useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { CartOverlay } from "@/components/CartOverlay";
+import { AnimatedCartIcon } from "@/components/AnimatedCartIcon";
 import { useCart } from "@/hooks/useCart";
 import { ShoppingBag, Menu, X } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -25,6 +26,27 @@ export function Layout({ children, showCart = true }: LayoutProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const { getTotalItems } = useCart();
   const [location] = useLocation();
+
+  // Fonction pour retourner à la landing page de façon sécurisée
+  const backToLanding = () => {
+    // Utiliser l'API History pour la navigation
+    window.history.pushState({}, "", "/");
+
+    // Récupérer les éléments de façon sécurisée avant manipulation
+    const landingContainer = document.getElementById("landing-container");
+    const rootElement = document.getElementById("root");
+
+    if (landingContainer && rootElement) {
+      landingContainer.style.display = "block";
+      rootElement.style.display = "none";
+
+      // Émettre un événement personnalisé pour réinitialiser l'animation Three.js
+      window.dispatchEvent(new CustomEvent("returnToLanding"));
+
+      // Réinitialiser la position de défilement
+      window.scrollTo(0, 0);
+    }
+  };
 
   // Récupérer la décoration thématique active
   const { data: themeData, isPending } = useQuery({
@@ -53,17 +75,17 @@ export function Layout({ children, showCart = true }: LayoutProps) {
           </div>
 
           {/* Titre centré */}
-          <Link to="/" className="scale-125">
+          <button onClick={backToLanding} className="scale-125">
             <span
               className="text-[var(--color-text)] transition-colors hover:text-primary flex-1 text-center font-accent text-xl sm:text-2xl md:text-3xl"
               style={{ fontFamily: "var(--font-titles)" }}
             >
               Alto Lille
             </span>
-          </Link>
+          </button>
 
           <div className="w-12 flex justify-end">
-            {/* Espace réservé à droite pour le panier */}
+            {/* Icône panier animée */}
             {showCart && (
               <Button
                 variant="ghost"
@@ -74,15 +96,12 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                   cartItemCount !== 1 ? "s" : ""
                 }`}
               >
-                <ShoppingBag className="" aria-hidden="true" />
-                {cartItemCount > 0 && (
-                  <span
-                    className="absolute -top-2 -right-2 bg-[var(--color-button)] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold"
-                    aria-hidden="true"
-                  >
-                    {cartItemCount}
-                  </span>
-                )}
+                <AnimatedCartIcon
+                  itemCount={cartItemCount}
+                  onCartUpdate={() => {
+                    // Optionnel: ajouter un son ou autre feedback
+                  }}
+                />
               </Button>
             )}
           </div>
@@ -92,16 +111,18 @@ export function Layout({ children, showCart = true }: LayoutProps) {
         {menuOpen && (
           <div className="md:hidden border-t border-slate-100 animate-in slide-in-from-top duration-200">
             <nav className="flex flex-col py-4 px-4 space-y-4 bg-white">
-              <Link
-                to="/"
-                className={`text-base font-medium ${
+              <button
+                onClick={() => {
+                  backToLanding();
+                  setMenuOpen(false);
+                }}
+                className={`text-base font-medium text-left ${
                   location === "/" ? "text-primary" : "text-[var(--color-text)]"
                 }`}
-                onClick={() => setMenuOpen(false)}
                 style={{ fontFamily: "var(--font-nav)" }}
               >
                 Accueil
-              </Link>
+              </button>
               <a
                 href="#product-details"
                 className="text-base font-medium text-[var(--color-text)]"
@@ -283,9 +304,25 @@ export function Layout({ children, showCart = true }: LayoutProps) {
 
           <div className="border-t border-slate-200 mt-10 pt-8">
             <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
-              <p className="text-gray-500 text-xs order-2 md:order-1 text-center md:text-left">
-                &copy; 2023 Alto Lille. Tous droits réservés.
-              </p>
+              <div className="flex flex-col items-center md:items-start gap-3 order-2 md:order-1">
+                <p className="text-gray-500 text-xs text-center md:text-left">
+                  &copy; 2023 Alto Lille. Tous droits réservés.
+                </p>
+                <div className="flex items-center gap-4">
+                  {/* Badge EcoIndex */}
+                  <div id="ecoindex-badge"></div>
+                  {/* Mention pogodev.com */}
+                  <a
+                    href="https://pogodev.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-400 hover:text-gray-600 text-xs transition-colors"
+                    title="Site développé par PoGoDev"
+                  >
+                    Développé par PoGoDev
+                  </a>
+                </div>
+              </div>
 
               <div className="flex flex-wrap justify-center md:justify-end gap-5 order-1 md:order-2 mb-4 md:mb-0">
                 <a
@@ -314,6 +351,13 @@ export function Layout({ children, showCart = true }: LayoutProps) {
 
       {/* Cart overlay */}
       <CartOverlay open={cartOpen} onClose={() => setCartOpen(false)} />
+
+      {/* Script EcoIndex */}
+      <script
+        type="text/javascript"
+        src="https://www.ecoindex.fr/badge/"
+        defer
+      ></script>
     </div>
   );
 }

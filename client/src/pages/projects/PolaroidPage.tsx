@@ -96,13 +96,12 @@ export default function PolaroidPage({
     }
   };
 
-  // Navigation vers le shop avec wouter pour une navigation fluide
+  // Navigation vers le shop
   const navigateToShop = () => {
-    window.history.pushState({}, "", "/shop");
-    window.dispatchEvent(new PopStateEvent("popstate"));
+    window.location.href = "/shop";
   };
 
-  // Navigation vers un projet spécifique avec wouter pour une navigation fluide
+  // Navigation vers un projet spécifique
   const navigateToProject = (projectName: string) => {
     // Mapping des noms de projets vers leurs URLs
     const projectUrls: { [key: string]: string } = {
@@ -116,9 +115,7 @@ export default function PolaroidPage({
 
     const url = projectUrls[projectName];
     if (url) {
-      // Utilisation de wouter pour navigation SPA fluide
-      window.history.pushState({}, "", url);
-      window.dispatchEvent(new PopStateEvent("popstate"));
+      window.location.href = url;
     }
   };
 
@@ -343,6 +340,13 @@ export default function PolaroidPage({
           </div>
         </div>
       </div>
+
+      {/* Script EcoIndex */}
+      <script
+        type="text/javascript"
+        src="https://www.ecoindex.fr/badge/"
+        defer
+      ></script>
     </Layout>
   );
 }

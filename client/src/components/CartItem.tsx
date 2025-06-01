@@ -37,7 +37,7 @@ export function CartItem({ item }: CartItemProps) {
   return (
     <div className="flex gap-4 border-b pb-4 mb-4">
       <img
-        src={`images/${product.imageUrl}`}
+        src={product.imageUrl}
         alt={`FOCUS.01 ${product.variationValue}`}
         className="w-20 h-20 object-contain"
       />

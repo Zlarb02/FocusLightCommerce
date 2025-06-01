@@ -1,12 +1,13 @@
-import PolaroidPage from "./PolaroidPage";
+import ProjectPageUnified from "@/components/ProjectPageUnified";
 
 export default function LowtechVynil() {
   return (
-    <PolaroidPage
+    <ProjectPageUnified
       title="Without speaker"
       subtitle="Lecteur vinyle Low tech"
       imagePath="/images/lowtech-vynil.jpg"
       date="2022"
+      currentProject="LowtechVynil"
       description={
         <>
           <p>

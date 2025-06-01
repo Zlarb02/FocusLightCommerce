@@ -1,12 +1,13 @@
-import PolaroidPage from "./PolaroidPage";
+import ProjectPageUnified from "@/components/ProjectPageUnified";
 
 export default function BraderieDeLArt() {
   return (
-    <PolaroidPage
+    <ProjectPageUnified
       title="Braderie de l'Art"
       subtitle="Week-end de création collective"
       imagePath="/images/braderie-de-l-art.png"
       date="Novembre 2023"
+      currentProject="BraderieDeLArt"
       description={
         <>
           <p>
