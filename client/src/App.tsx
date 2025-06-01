@@ -17,6 +17,7 @@ const BraderieDeLArt = lazy(() => import("@/pages/BraderieDeLArt"));
 const Waterfall = lazy(() => import("@/pages/Waterfall"));
 const LowtechVynil = lazy(() => import("@/pages/LowtechVynil"));
 const ChaussuresCustom = lazy(() => import("@/pages/ChaussuresCustom"));
+const Focus01 = lazy(() => import("@/pages/Focus01"));
 const QuiSuisJe = lazy(() => import("@/pages/QuiSuisJe"));
 
 // Pages de gestion
@@ -141,6 +142,11 @@ function Router() {
         <Route path="/chaussures-custom">
           <Suspense fallback={<div className="loading">Chargement...</div>}>
             <ChaussuresCustom />
+          </Suspense>
+        </Route>
+        <Route path="/focus-01">
+          <Suspense fallback={<div className="loading">Chargement...</div>}>
+            <Focus01 />
           </Suspense>
         </Route>
         <Route path="/qui-suis-je">

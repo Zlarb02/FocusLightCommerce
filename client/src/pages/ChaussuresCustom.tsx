@@ -4,24 +4,23 @@ export default function ChaussuresCustom() {
   return (
     <PolaroidPage
       title="Chaussures Custom"
-      subtitle="L'art à vos pieds"
+      subtitle="Créer des chaussures uniques à partir d'une chaussure basique"
       imagePath="/images/chaussures-custom.jpg"
-      date="Été 2023"
+      date="Depuis 2020"
       description={
         <>
           <p>
-            Le projet "Chaussures Custom" est né d'une passion pour l'art
-            accessible et portable. À l'intersection entre la mode et
-            l'expression artistique, ces créations transforment des chaussures
-            ordinaires en pièces uniques, véritables œuvres d'art ambulantes.
+            Le projet "Chaussures Custom" est un projet extra-scolaire qui
+            consiste à créer des chaussures uniques à partir d'une chaussure
+            basique à la demande des clients. J'effectue un travail de peinture
+            et de rajout ou suppression d'empiècements.
           </p>
           <p>
-            Chaque paire est personnalisée à la main, avec une attention
-            particulière portée aux détails. Les motifs s'inspirent de thèmes
-            variés — abstraits, urbains, naturels — adaptés aux goûts et à la
-            personnalité de chaque client. Plus qu'un simple accessoire, ces
-            chaussures deviennent un moyen d'expression personnelle et un
-            support artistique innovant.
+            Chaque paire devient ainsi une pièce unique, véritables œuvres d'art
+            ambulantes qui permettent à chacun d'exprimer sa personnalité à
+            travers ses pas. Plus qu'un simple accessoire, ces chaussures
+            deviennent un moyen d'expression personnelle et un support
+            artistique innovant.
           </p>
         </>
       }
@@ -60,8 +59,14 @@ export default function ChaussuresCustom() {
               className="text-xl font-semibold mb-4"
               style={{ fontFamily: "var(--font-titles)" }}
             >
-              Le processus de customisation
+              Technique de customisation
             </h3>
+            <p className="text-gray-700 mb-4">
+              Ma technique consiste en un travail minutieux de peinture et de
+              modification des empiècements. Chaque chaussure de base est
+              transformée selon les désirs du client, créant une pièce
+              totalement personnalisée qui reflète sa personnalité.
+            </p>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
               <div>
                 <div className="bg-gray-200 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3">
@@ -78,16 +83,16 @@ export default function ChaussuresCustom() {
                 </div>
                 <h4 className="font-medium mb-2">Design</h4>
                 <p className="text-sm text-gray-600">
-                  Création du motif personnalisé
+                  Création du motif personnalisé et choix des empiècements
                 </p>
               </div>
               <div>
                 <div className="bg-gray-200 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3">
                   <span className="font-bold">3</span>
                 </div>
-                <h4 className="font-medium mb-2">Réalisation</h4>
+                <h4 className="font-medium mb-2">Transformation</h4>
                 <p className="text-sm text-gray-600">
-                  Application minutieuse des couleurs et motifs
+                  Peinture et modification des empiècements
                 </p>
               </div>
               <div>
@@ -110,9 +115,9 @@ export default function ChaussuresCustom() {
               Envie d'une paire unique ?
             </h3>
             <p className="mb-6">
-              Les commandes personnalisées sont actuellement ouvertes pour des
-              chaussures custom. Chaque projet est une collaboration unique
-              entre l'artiste et le client.
+              Les commandes personnalisées sont ouvertes depuis 2020. Chaque
+              projet est une collaboration unique entre l'artiste et le client
+              pour créer LA paire qui vous ressemble.
             </p>
             <div className="inline-block border border-white px-5 py-3">
               Contact : custom@focuslight.fr

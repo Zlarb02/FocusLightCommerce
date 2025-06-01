@@ -4,49 +4,89 @@ export default function BraderieDeLArt() {
   return (
     <PolaroidPage
       title="Braderie de l'Art"
-      subtitle="Exposition éphémère et créative"
+      subtitle="Week-end de création collective"
       imagePath="/images/braderie-de-l-art.png"
-      date="Novembre 2024"
+      date="Novembre 2023"
       description={
         <>
           <p>
-            La Braderie de l'Art représente un moment emblématique pour les
-            artistes et artisans de la région. Ce rendez-vous annuel est
-            l'occasion de présenter des créations uniques et de partager avec le
-            public une vision artistique contemporaine.
+            La Braderie de l'Art de Roubaix est un événement unique qui
+            transforme l'art en expérience collective. Durant ce week-end de
+            création, les artistes doivent créer à partir de la matériauthèque
+            mise à disposition, donnant naissance à des œuvres inattendues et
+            spontanées.
           </p>
           <p>
-            Ce polaroid capture l'essence même de cet événement : l'atmosphère
-            effervescente, les œuvres aux styles variés et le dialogue qui
-            s'établit entre créateurs et visiteurs. C'est un témoignage visuel
-            de cette célébration de la création sous toutes ses formes.
+            Pour cette édition 2023, j'ai conçu un meuble pour chaîne Hi-Fi
+            construit autour du mouvement que procure le pied de chaise. Cette
+            création illustre parfaitement l'esprit de l'événement : transformer
+            l'ordinaire en extraordinaire par un regard créatif nouveau.
           </p>
         </>
       }
       additionalContent={
-        <div className="bg-gray-50 p-6 rounded-lg">
-          <h3
-            className="text-xl font-semibold mb-4"
-            style={{ fontFamily: "var(--font-titles)" }}
-          >
-            À propos de la Braderie de l'Art
-          </h3>
-          <p className="text-gray-700 mb-4">
-            Événement incontournable du Nord de la France, la Braderie de l'Art
-            réunit chaque année des dizaines d'artistes autour d'un concept
-            original : créer des œuvres en temps réel à partir de matériaux
-            récupérés, le tout dans une ambiance festive et conviviale.
-          </p>
-          <p className="text-gray-700">
-            La photographie présentée ici capte l'un des stands emblématiques de
-            l'édition 2024, où les objets du quotidien se transforment en œuvres
-            d'art sous le regard curieux des visiteurs.
-          </p>
+        <div className="space-y-8">
+          <div className="bg-gray-50 p-6 rounded-lg">
+            <h3
+              className="text-xl font-semibold mb-4"
+              style={{ fontFamily: "var(--font-titles)" }}
+            >
+              Le défi créatif
+            </h3>
+            <p className="text-gray-700 mb-4">
+              L'essence de la Braderie de l'Art réside dans sa contrainte
+              temporelle et matérielle. En quelques heures seulement, les
+              participants doivent concevoir et réaliser une œuvre à partir des
+              matériaux disponibles sur place. Cette approche force l'innovation
+              et pousse à repenser l'usage habituel des objets.
+            </p>
+            <p className="text-gray-700">
+              Mon meuble Hi-Fi transforme un simple pied de chaise en élément
+              fonctionnel et esthétique, créant un mouvement visuel qui dialogue
+              avec la musique qu'il supporte.
+            </p>
+          </div>
 
-          <div className="mt-6 flex justify-center">
-            <div className="inline-block bg-white px-4 py-2 text-sm border border-gray-200">
-              Prochain événement : Novembre 2025 - Roubaix
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+              <h3
+                className="text-xl font-semibold mb-3"
+                style={{ fontFamily: "var(--font-titles)" }}
+              >
+                Processus de création
+              </h3>
+              <ul className="space-y-2 text-gray-700">
+                <li>• Exploration de la matériauthèque</li>
+                <li>• Identification du potentiel du pied de chaise</li>
+                <li>• Conception autour du mouvement</li>
+                <li>• Assemblage et finalisation</li>
+              </ul>
             </div>
+            <div>
+              <h3
+                className="text-xl font-semibold mb-3"
+                style={{ fontFamily: "var(--font-titles)" }}
+              >
+                Philosophie du projet
+              </h3>
+              <p className="text-gray-700">
+                Ce projet illustre ma démarche de réinterprétation des objets du
+                quotidien. Le mouvement devient ici métaphore de la musique,
+                créant un dialogue entre forme et fonction.
+              </p>
+            </div>
+          </div>
+
+          <div className="text-center bg-gray-100 p-6 rounded-lg">
+            <h3
+              className="text-lg font-semibold mb-2"
+              style={{ fontFamily: "var(--font-titles)" }}
+            >
+              Braderie de l'Art - Roubaix
+            </h3>
+            <p className="text-gray-600 text-sm">
+              Événement extra-scolaire | Novembre 2023
+            </p>
           </div>
         </div>
       }

@@ -53,15 +53,13 @@ export function Layout({ children, showCart = true }: LayoutProps) {
           </div>
 
           {/* Titre centré */}
-          <Link href="/" className="scale-125">
-            <a className="text-[var(--color-text)] transition-colors hover:text-primary flex-1 text-center">
-              <span
-                className="font-accent text-xl sm:text-2xl md:text-3xl"
-                style={{ fontFamily: "var(--font-titles)" }}
-              >
-                Alto Lille
-              </span>
-            </a>
+          <Link to="/" className="scale-125">
+            <span
+              className="text-[var(--color-text)] transition-colors hover:text-primary flex-1 text-center font-accent text-xl sm:text-2xl md:text-3xl"
+              style={{ fontFamily: "var(--font-titles)" }}
+            >
+              Alto Lille
+            </span>
           </Link>
 
           <div className="w-12 flex justify-end">
@@ -94,18 +92,15 @@ export function Layout({ children, showCart = true }: LayoutProps) {
         {menuOpen && (
           <div className="md:hidden border-t border-slate-100 animate-in slide-in-from-top duration-200">
             <nav className="flex flex-col py-4 px-4 space-y-4 bg-white">
-              <Link href="/">
-                <a
-                  className={`text-base font-medium ${
-                    location === "/"
-                      ? "text-primary"
-                      : "text-[var(--color-text)]"
-                  }`}
-                  onClick={() => setMenuOpen(false)}
-                  style={{ fontFamily: "var(--font-nav)" }}
-                >
-                  Accueil
-                </a>
+              <Link
+                to="/"
+                className={`text-base font-medium ${
+                  location === "/" ? "text-primary" : "text-[var(--color-text)]"
+                }`}
+                onClick={() => setMenuOpen(false)}
+                style={{ fontFamily: "var(--font-nav)" }}
+              >
+                Accueil
               </Link>
               <a
                 href="#product-details"

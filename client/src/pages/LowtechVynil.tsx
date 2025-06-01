@@ -3,24 +3,23 @@ import PolaroidPage from "./PolaroidPage";
 export default function LowtechVynil() {
   return (
     <PolaroidPage
-      title="Lowtech Vynil"
-      subtitle="Nostalgie analogique dans un monde numérique"
+      title="Without speaker"
+      subtitle="Lecteur vinyle Low tech"
       imagePath="/images/lowtech-vynil.jpg"
-      date="Automne 2023"
+      date="2022"
       description={
         <>
           <p>
-            "Lowtech Vynil" est un projet qui célèbre la beauté des technologies
-            analogiques dans notre monde ultra-connecté. Cette œuvre est un
-            hommage au disque vinyle, symbole de la pureté sonore et de
-            l'authenticité artistique.
+            Without speaker est un lecteur vinyle et une enceinte qui permettent
+            d'utiliser le moins d'énergie possible. Le son est créé grâce à la
+            vibration du diamant sur le vinyle, cette vibration s'accentue dans
+            la caisse de résonance pour créer le son.
           </p>
           <p>
-            À travers cette création, j'explore le contraste entre
-            l'imperfection chaleureuse des médias analogiques et la perfection
-            froide du numérique. Le grain, les craquements, la texture tangible
-            – tous ces éléments qui ont été sacrifiés sur l'autel de la
-            commodité digitale sont ici revalorisés et célébrés.
+            Ce projet explore les principes de la low-tech appliqués à l'audio,
+            privilégiant la simplicité mécanique à la complexité électronique.
+            Une approche minimaliste qui révèle la beauté pure du son
+            analogique.
           </p>
         </>
       }
@@ -31,20 +30,18 @@ export default function LowtechVynil() {
               className="text-xl font-semibold mb-4"
               style={{ fontFamily: "var(--font-titles)" }}
             >
-              La philosophie Lowtech
+              Fonctionnement
             </h3>
             <p className="mb-4">
-              Le mouvement lowtech prône un retour à des technologies plus
-              simples, plus durables et plus réparables. Dans un contexte
-              d'obsolescence programmée et de consommation effrénée, cette
-              approche nous invite à reconsidérer notre rapport aux objets et à
-              privilégier qualité et longévité plutôt que nouveauté éphémère.
+              Le principe est d'une simplicité remarquable : la lecture du
+              vinyle génère des vibrations mécaniques qui sont amplifiées
+              naturellement par la caisse de résonance, sans aucun composant
+              électronique.
             </p>
             <p>
-              À travers le vinyle, médium qui a survécu à l'ère numérique et
-              connaît aujourd'hui une renaissance, je questionne notre rapport à
-              la matérialité et à la durabilité dans l'art et dans nos vies
-              quotidiennes.
+              Cette approche low-tech redonne ses lettres de noblesse à l'écoute
+              contemplative, loin de la surstimulation sonore de notre époque.
+              Un retour aux sources de l'expérience musicale.
             </p>
           </div>
 
@@ -54,33 +51,39 @@ export default function LowtechVynil() {
                 className="text-xl font-semibold mb-3"
                 style={{ fontFamily: "var(--font-titles)" }}
               >
-                Processus créatif
+                Philosophie low-tech
               </h3>
+              <p className="text-gray-700 mb-3">
+                Without speaker s'inscrit dans une démarche de sobriété
+                technologique. Face à la complexification constante de nos
+                objets du quotidien, ce projet propose un retour à l'essentiel.
+              </p>
               <p className="text-gray-700">
-                Pour ce projet, j'ai collecté d'anciens vinyles dans les
-                brocantes locales, cherchant spécifiquement ceux qui portaient
-                les marques du temps. Chaque rayure, chaque trace d'usure
-                raconte une histoire – celle d'une musique aimée, écoutée et
-                réécoutée.
-              </p>
-              <p className="text-gray-700 mt-3">
-                Ces disques ont ensuite été transformés en utilisant diverses
-                techniques mixtes, préservant leur essence tout en leur donnant
-                une nouvelle vie artistique. La circularité du vinyle devient
-                ainsi métaphore du cycle créatif : transformation, renaissance,
-                réinterprétation.
+                La beauté réside dans la simplicité du mécanisme : aucune
+                électronique, aucune amplification artificielle, juste la pure
+                mécanique au service de la musique.
               </p>
             </div>
-            <div className="bg-white p-4 shadow-lg">
-              <img
-                src="/images/lowtech-vynil-process.jpg"
-                alt="Processus de création Lowtech Vynil"
-                className="w-full h-auto"
-              />
-              <p className="mt-2 text-sm text-gray-500 italic text-center">
-                Étapes de transformation d'un vinyle de collection
-              </p>
+            <div className="bg-gray-50 p-6 rounded-lg">
+              <h4 className="font-semibold mb-3">Scénario d'usage</h4>
+              <ol className="space-y-2 text-gray-700">
+                <li>1. Mise en place du vinyle</li>
+                <li>2. Activation via bouton on/off</li>
+                <li>3. Écoute amplifiée naturellement</li>
+              </ol>
             </div>
+          </div>
+
+          <div className="text-center bg-blue-50 p-6 rounded-lg">
+            <h3
+              className="text-lg font-semibold mb-2"
+              style={{ fontFamily: "var(--font-titles)" }}
+            >
+              Without speaker - 2022
+            </h3>
+            <p className="text-gray-600 text-sm">
+              Lecteur vinyle low-tech | Amplification naturelle
+            </p>
           </div>
         </div>
       }
