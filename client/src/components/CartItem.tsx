@@ -35,7 +35,7 @@ export function CartItem({ item }: CartItemProps) {
   const itemPrice = product.price || product.basePrice;
 
   return (
-    <div className="flex gap-4 border-b pb-4 mb-4">
+    <div className="flex gap-4 border-b border-gray-200 dark:border-gray-600 pb-4 mb-4">
       <img
         src={product.imageUrl}
         alt={`FOCUS.01 ${product.variationValue}`}
@@ -43,20 +43,22 @@ export function CartItem({ item }: CartItemProps) {
       />
       <div className="flex-grow">
         <div className="flex justify-between">
-          <h4 className="font-medium">{product.productName}</h4>
+          <h4 className="font-medium text-gray-900 dark:text-gray-100">
+            {product.productName}
+          </h4>
           <button
             onClick={handleRemove}
-            className="text-red-500 text-sm hover:text-red-700"
+            className="text-red-500 dark:text-red-400 text-sm hover:text-red-700 dark:hover:text-red-300"
             aria-label="Supprimer du panier"
           >
             <Trash2 className="h-4 w-4" />
           </button>
         </div>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-muted-foreground dark:text-gray-400">
           {product.variationType}: {product.variationValue}
         </p>
         <div className="flex justify-between items-center mt-2">
-          <div className="flex items-center border rounded">
+          <div className="flex items-center border border-gray-200 dark:border-gray-600 rounded">
             <Button
               variant="ghost"
               size="sm"

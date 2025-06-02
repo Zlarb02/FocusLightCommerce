@@ -49,8 +49,8 @@ export function ProductCard({ product, variation }: ProductCardProps) {
   const displayPrice = variation.price || product.price;
 
   return (
-    <Card className="h-full overflow-hidden hover:shadow-md transition relative">
-      <div className="relative p-4 h-52 flex items-center justify-center bg-gray-50">
+    <Card className="h-full overflow-hidden hover:shadow-lg dark:hover:shadow-xl transition-all duration-300 relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600">
+      <div className="relative p-4 h-52 flex items-center justify-center bg-gray-50 dark:bg-gray-900/50 rounded-t-lg">
         <img
           src={variation.imageUrl}
           alt={`${product.name} - ${variation.variationValue}`}
@@ -60,18 +60,18 @@ export function ProductCard({ product, variation }: ProductCardProps) {
         {/* Indicateur produit ajouté - ne s'affiche que si la variation est dans le panier */}
         <ProductAddedIndicator productId={variation.id.toString()} />
       </div>
-      <CardContent className="pt-6">
-        <h3 className="font-heading font-bold text-lg mb-2">
+      <CardContent className="pt-6 bg-white dark:bg-gray-800">
+        <h3 className="font-heading font-bold text-lg mb-2 text-gray-900 dark:text-gray-100">
           {product.name} - {variation.variationValue}
         </h3>
-        <p className="text-muted-foreground mb-4">
+        <p className="text-gray-600 dark:text-gray-400 mb-4 text-sm leading-relaxed">
           Élégance intemporelle qui s'intègre à tous les intérieurs
         </p>
-        <div className="font-bold text-xl mb-4">
+        <div className="font-bold text-xl mb-4 text-blue-600 dark:text-blue-400">
           {formatPrice(displayPrice)}
         </div>
       </CardContent>
-      <CardFooter className="flex justify-between items-center pt-0">
+      <CardFooter className="flex justify-between items-center pt-0 bg-white dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700">
         <CartQuantityControl
           product={product}
           variation={variation}

@@ -2,6 +2,7 @@ import { ReactNode, useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Home, ShoppingBag, Menu, X } from "lucide-react";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 interface ProjectLayoutUnifiedProps {
   children: ReactNode;
@@ -58,15 +59,15 @@ export default function ProjectLayoutUnified({
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white dark:bg-gray-900">
       {/* Header sobre et épuré */}
-      <header className="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 z-50">
+      <header className="fixed top-0 left-0 right-0 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 z-50">
         <div className="flex items-center justify-between h-16 px-4">
           {/* Menu burger à gauche */}
           <div>
             <button
               onClick={() => setMenuOpen(true)}
-              className="p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors"
+              className="p-2 rounded-md text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
               aria-label="Ouvrir le menu"
             >
               <Menu className="h-5 w-5" />
@@ -77,7 +78,7 @@ export default function ProjectLayoutUnified({
           <div className="flex-1 flex justify-center">
             <button
               onClick={backToLanding}
-              className="text-xl font-bold text-gray-900 hover:text-gray-700 transition-colors"
+              className="text-xl font-bold text-gray-900 dark:text-gray-100 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
               style={{ fontFamily: "var(--font-titles)" }}
             >
               Alto Lille
@@ -86,10 +87,11 @@ export default function ProjectLayoutUnified({
 
           {/* Actions droite */}
           <div className="flex items-center space-x-2">
+            <ThemeToggle variant="minimal" size="sm" showLabel={false} />
             <Button
               variant="ghost"
               size="sm"
-              className="text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+              className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800"
               onClick={() => {
                 // Émettre l'événement routeChange pour indiquer qu'on vient de la landing
                 window.dispatchEvent(
@@ -117,18 +119,18 @@ export default function ProjectLayoutUnified({
           />
 
           {/* Menu sidebar sobre et épuré */}
-          <div className="fixed top-0 left-0 bottom-0 w-80 bg-white z-50 transform transition-transform duration-300 overflow-y-auto shadow-lg border-r border-gray-200">
+          <div className="fixed top-0 left-0 bottom-0 w-80 bg-white dark:bg-gray-900 z-50 transform transition-transform duration-300 overflow-y-auto shadow-lg border-r border-gray-200 dark:border-gray-700">
             {/* Header du menu épuré */}
-            <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200">
+            <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200 dark:border-gray-700">
               <h2
-                className="text-lg font-semibold text-gray-900"
+                className="text-lg font-semibold text-gray-900 dark:text-gray-100"
                 style={{ fontFamily: "var(--font-titles)" }}
               >
                 Navigation
               </h2>
               <button
                 onClick={() => setMenuOpen(false)}
-                className="p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+                className="p-2 rounded-md text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                 aria-label="Fermer le menu"
               >
                 <X className="h-5 w-5" />
@@ -144,7 +146,7 @@ export default function ProjectLayoutUnified({
                     backToLanding();
                     setMenuOpen(false);
                   }}
-                  className="w-full flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-md transition-colors"
+                  className="w-full flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors"
                   style={{ fontFamily: "var(--font-nav)" }}
                 >
                   <Home className="h-4 w-4 mr-3" />
@@ -161,7 +163,7 @@ export default function ProjectLayoutUnified({
                     setLocation("/shop");
                     setMenuOpen(false);
                   }}
-                  className="w-full flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-md transition-colors"
+                  className="w-full flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors"
                   style={{ fontFamily: "var(--font-nav)" }}
                 >
                   <ShoppingBag className="h-4 w-4 mr-3" />
@@ -169,11 +171,11 @@ export default function ProjectLayoutUnified({
                 </button>
               </div>
 
-              <div className="border-t border-gray-200 mb-6" />
+              <div className="border-t border-gray-200 dark:border-gray-700 mb-6" />
 
               {/* Projets */}
               <div className="mb-6">
-                <h3 className="px-3 text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">
+                <h3 className="px-3 text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">
                   Projets
                 </h3>
                 <div className="space-y-1">
@@ -184,8 +186,8 @@ export default function ProjectLayoutUnified({
                     }}
                     className={`w-full flex items-center px-3 py-2.5 text-base font-medium rounded-md transition-colors ${
                       currentProject === "Focus01"
-                        ? "bg-gray-100 text-gray-900"
-                        : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+                        ? "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                        : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100"
                     }`}
                     style={{ fontFamily: "var(--font-nav)" }}
                   >
@@ -199,8 +201,8 @@ export default function ProjectLayoutUnified({
                     }}
                     className={`w-full flex items-center px-3 py-2.5 text-base font-medium rounded-md transition-colors ${
                       currentProject === "SeaCle"
-                        ? "bg-gray-100 text-gray-900"
-                        : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+                        ? "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                        : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100"
                     }`}
                     style={{ fontFamily: "var(--font-nav)" }}
                   >
@@ -214,8 +216,8 @@ export default function ProjectLayoutUnified({
                     }}
                     className={`w-full flex items-center px-3 py-2.5 text-base font-medium rounded-md transition-colors ${
                       currentProject === "LowtechVynil"
-                        ? "bg-gray-100 text-gray-900"
-                        : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+                        ? "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                        : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100"
                     }`}
                     style={{ fontFamily: "var(--font-nav)" }}
                   >
@@ -229,8 +231,8 @@ export default function ProjectLayoutUnified({
                     }}
                     className={`w-full flex items-center px-3 py-2.5 text-base font-medium rounded-md transition-colors ${
                       currentProject === "BraderieDeLArt"
-                        ? "bg-gray-100 text-gray-900"
-                        : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+                        ? "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                        : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100"
                     }`}
                     style={{ fontFamily: "var(--font-nav)" }}
                   >
@@ -244,8 +246,8 @@ export default function ProjectLayoutUnified({
                     }}
                     className={`w-full flex items-center px-3 py-2.5 text-base font-medium rounded-md transition-colors ${
                       currentProject === "Waterfall"
-                        ? "bg-gray-100 text-gray-900"
-                        : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+                        ? "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                        : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100"
                     }`}
                     style={{ fontFamily: "var(--font-nav)" }}
                   >
@@ -259,8 +261,8 @@ export default function ProjectLayoutUnified({
                     }}
                     className={`w-full flex items-center px-3 py-2.5 text-base font-medium rounded-md transition-colors ${
                       currentProject === "ChaussuresCustom"
-                        ? "bg-gray-100 text-gray-900"
-                        : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+                        ? "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                        : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100"
                     }`}
                     style={{ fontFamily: "var(--font-nav)" }}
                   >
@@ -269,11 +271,11 @@ export default function ProjectLayoutUnified({
                 </div>
               </div>
 
-              <div className="border-t border-gray-200 mb-6" />
+              <div className="border-t border-gray-200 dark:border-gray-700 mb-6" />
 
               {/* À propos */}
               <div>
-                <h3 className="px-3 text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">
+                <h3 className="px-3 text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">
                   À propos
                 </h3>
                 <button
@@ -283,8 +285,8 @@ export default function ProjectLayoutUnified({
                   }}
                   className={`w-full flex items-center px-3 py-2.5 text-base font-medium rounded-md transition-colors ${
                     currentProject === "QuiSuisJe"
-                      ? "bg-gray-100 text-gray-900"
-                      : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+                      ? "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                      : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100"
                   }`}
                   style={{ fontFamily: "var(--font-nav)" }}
                 >
@@ -294,9 +296,9 @@ export default function ProjectLayoutUnified({
             </nav>
 
             {/* Footer sobre et épuré */}
-            <div className="mt-auto border-t border-gray-200 bg-gray-50 px-6 py-4">
+            <div className="mt-auto border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-6 py-4">
               <div className="space-y-3">
-                <p className="text-xs text-gray-500 text-center">
+                <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
                   © 2025 Alto Lille
                 </p>
 
@@ -323,7 +325,7 @@ export default function ProjectLayoutUnified({
                     href="https://pogodev.com"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs text-gray-500 hover:text-gray-700 transition-colors"
+                    className="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
                     title="Site développé par Etienne Pogoda"
                   >
                     Développé par Etienne Pogoda
@@ -344,27 +346,27 @@ export default function ProjectLayoutUnified({
         </div>
       </main>
 
-      <footer className="bg-white border-t border-slate-200 pt-12 pb-8">
+      <footer className="bg-white dark:bg-gray-900 border-t border-slate-200 dark:border-gray-700 pt-12 pb-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Brand & Social */}
             <div>
               <div className="flex items-center mb-5">
                 <span
-                  className="text-xl sm:text-2xl font-medium text-[var(--color-text)]"
+                  className="text-xl sm:text-2xl font-medium text-gray-900 dark:text-gray-100"
                   style={{ fontFamily: "var(--font-titles)" }}
                 >
                   Alto Lille
                 </span>
               </div>
-              <p className="text-gray-600 mb-5 text-sm leading-relaxed">
+              <p className="text-gray-600 dark:text-gray-400 mb-5 text-sm leading-relaxed">
                 Illuminez votre intérieur avec notre concept de lampe écologique
                 et design, fabriquée en France.
               </p>
               <div className="flex space-x-4">
                 <a
                   href="#"
-                  className="text-gray-500 hover:text-[var(--color-text)] transition p-1"
+                  className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition p-1"
                   aria-label="Instagram"
                 >
                   <svg
@@ -379,9 +381,9 @@ export default function ProjectLayoutUnified({
             </div>
 
             {/* Contact */}
-            <div className="sm:col-span-1 lg:col-span-2">
+            <div>
               <h4
-                className="font-medium text-base mb-5 text-[var(--color-text)]"
+                className="font-medium text-base mb-5 text-gray-900 dark:text-gray-100"
                 style={{ fontFamily: "var(--font-titles)" }}
               >
                 Contact
@@ -389,7 +391,7 @@ export default function ProjectLayoutUnified({
               <ul className="space-y-3">
                 <li className="flex items-start">
                   <svg
-                    className="h-5 w-5 text-gray-500 mt-0.5 mr-3 flex-shrink-0"
+                    className="h-5 w-5 text-gray-500 dark:text-gray-400 mt-0.5 mr-3 flex-shrink-0"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -403,14 +405,14 @@ export default function ProjectLayoutUnified({
                   </svg>
                   <a
                     href="mailto:altolille@gmail.com"
-                    className="text-gray-600 hover:text-[var(--color-text)] transition text-sm leading-relaxed"
+                    className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition text-sm leading-relaxed"
                   >
                     altolille@gmail.com
                   </a>
                 </li>
                 <li className="flex items-start">
                   <svg
-                    className="h-5 w-5 text-gray-500 mt-0.5 mr-3 flex-shrink-0"
+                    className="h-5 w-5 text-gray-500 dark:text-gray-400 mt-0.5 mr-3 flex-shrink-0"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -422,13 +424,13 @@ export default function ProjectLayoutUnified({
                       d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
                     />
                   </svg>
-                  <span className="text-gray-600 text-sm leading-relaxed">
+                  <span className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
                     +33 782 086 690
                   </span>
                 </li>
                 <li className="flex items-start">
                   <svg
-                    className="h-5 w-5 text-gray-500 mt-0.5 mr-3 flex-shrink-0"
+                    className="h-5 w-5 text-gray-500 dark:text-gray-400 mt-0.5 mr-3 flex-shrink-0"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -446,7 +448,7 @@ export default function ProjectLayoutUnified({
                       d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                     />
                   </svg>
-                  <span className="text-gray-600 text-sm leading-relaxed">
+                  <span className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
                     95 rue Pierre Ledent
                     <br />
                     Montreuil-sur-Mer 62170

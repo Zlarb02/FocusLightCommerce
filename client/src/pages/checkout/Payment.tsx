@@ -21,13 +21,19 @@ import { useToast } from "@/hooks/use-toast";
 import { formatPrice } from "@/lib/utils";
 
 const paymentSchema = z.object({
-  cardNumber: z.string()
+  cardNumber: z
+    .string()
     .min(16, "Le numéro de carte doit comporter au moins 16 chiffres")
     .max(19, "Le numéro de carte ne doit pas dépasser 19 caractères")
     .regex(/^\d[\d\s-]*$/, "Le numéro de carte n'est pas valide"),
-  expiryDate: z.string()
-    .regex(/^(0[1-9]|1[0-2])\/\d{2}$/, "La date d'expiration doit être au format MM/AA"),
-  cvv: z.string()
+  expiryDate: z
+    .string()
+    .regex(
+      /^(0[1-9]|1[0-2])\/\d{2}$/,
+      "La date d'expiration doit être au format MM/AA"
+    ),
+  cvv: z
+    .string()
     .min(3, "Le CVV doit comporter au moins 3 chiffres")
     .max(4, "Le CVV ne doit pas dépasser 4 chiffres")
     .regex(/^\d+$/, "Le CVV doit contenir uniquement des chiffres"),
@@ -73,27 +79,28 @@ export function Payment({ onNext, onBack }: PaymentProps) {
       // Format data for checkout API
       const checkoutData = {
         customer,
-        items: items.map(item => ({
+        items: items.map((item) => ({
           productId: item.product.id,
           quantity: item.quantity,
-          price: item.product.price
+          price: item.product.price,
         })),
-        totalAmount: getTotalPrice()
+        totalAmount: getTotalPrice(),
       };
 
       const response = await apiRequest("POST", "/api/checkout", checkoutData);
       const orderResult = await response.json();
-      
+
       // Clear the cart after successful order
       clearCart();
-      
+
       // Move to confirmation page with order details
       onNext(orderResult.orderId, orderResult.orderNumber);
     } catch (error) {
       console.error("Checkout error:", error);
       toast({
         title: "Erreur de paiement",
-        description: "Une erreur est survenue lors du traitement du paiement. Veuillez réessayer.",
+        description:
+          "Une erreur est survenue lors du traitement du paiement. Veuillez réessayer.",
         variant: "destructive",
       });
     } finally {
@@ -105,15 +112,17 @@ export function Payment({ onNext, onBack }: PaymentProps) {
 
   return (
     <div>
-      <h2 className="font-heading font-bold text-2xl mb-6">Paiement sécurisé</h2>
-      
-      <Alert className="mb-6 bg-green-50 border-green-200">
-        <Shield className="h-4 w-4 text-green-600" />
-        <AlertDescription className="text-sm">
+      <h2 className="font-heading font-bold text-2xl mb-6 text-gray-900 dark:text-gray-100">
+        Paiement sécurisé
+      </h2>
+
+      <Alert className="mb-6 bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800">
+        <Shield className="h-4 w-4 text-green-600 dark:text-green-400" />
+        <AlertDescription className="text-sm text-green-800 dark:text-green-200">
           Toutes vos informations de paiement sont cryptées et sécurisées.
         </AlertDescription>
       </Alert>
-      
+
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
@@ -124,23 +133,37 @@ export function Payment({ onNext, onBack }: PaymentProps) {
                 <FormLabel>Numéro de carte</FormLabel>
                 <FormControl>
                   <div className="relative">
-                    <Input 
+                    <Input
                       placeholder="1234 5678 9012 3456"
-                      {...field} 
+                      {...field}
                       onChange={(e) => {
                         // Format card number with spaces
                         const value = e.target.value.replace(/\s/g, "");
-                        const formattedValue = value.replace(/(\d{4})/g, "$1 ").trim();
+                        const formattedValue = value
+                          .replace(/(\d{4})/g, "$1 ")
+                          .trim();
                         field.onChange(formattedValue);
                       }}
                     />
                     <div className="absolute right-3 top-3 flex gap-2">
-                      <svg className="w-6 h-6 text-blue-800" viewBox="0 0 24 24" fill="currentColor">
+                      <svg
+                        className="w-6 h-6 text-blue-800"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                      >
                         <path d="M7.5 11.5h9v1h-9zM7.5 8.5h9v1h-9zM16 4H8a4 4 0 0 0-4 4v8a4 4 0 0 0 4 4h8a4 4 0 0 0 4-4V8a4 4 0 0 0-4-4z" />
                       </svg>
-                      <svg className="w-6 h-6 text-red-600" viewBox="0 0 24 24" fill="currentColor">
+                      <svg
+                        className="w-6 h-6 text-red-600"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                      >
                         <path d="M12 15.5a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8.5 11.5a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" />
-                        <path fillRule="evenodd" clipRule="evenodd" d="M11.5 7a.5.5 0 0 1 1 0v1a.5.5 0 0 1-1 0V7z" />
+                        <path
+                          fillRule="evenodd"
+                          clipRule="evenodd"
+                          d="M11.5 7a.5.5 0 0 1 1 0v1a.5.5 0 0 1-1 0V7z"
+                        />
                         <path d="M8 4a4 4 0 0 0-4 4v8a4 4 0 0 0 4 4h8a4 4 0 0 0 4-4V8a4 4 0 0 0-4-4H8z" />
                       </svg>
                     </div>
@@ -150,7 +173,7 @@ export function Payment({ onNext, onBack }: PaymentProps) {
               </FormItem>
             )}
           />
-          
+
           <div className="grid grid-cols-2 gap-4">
             <FormField
               control={form.control}
@@ -159,7 +182,7 @@ export function Payment({ onNext, onBack }: PaymentProps) {
                 <FormItem>
                   <FormLabel>Date d'expiration</FormLabel>
                   <FormControl>
-                    <Input 
+                    <Input
                       placeholder="MM/AA"
                       {...field}
                       onChange={(e) => {
@@ -168,7 +191,9 @@ export function Payment({ onNext, onBack }: PaymentProps) {
                         if (value.length <= 2) {
                           field.onChange(value);
                         } else {
-                          field.onChange(`${value.slice(0, 2)}/${value.slice(2, 4)}`);
+                          field.onChange(
+                            `${value.slice(0, 2)}/${value.slice(2, 4)}`
+                          );
                         }
                       }}
                       maxLength={5}
@@ -185,7 +210,7 @@ export function Payment({ onNext, onBack }: PaymentProps) {
                 <FormItem>
                   <FormLabel>CVV</FormLabel>
                   <FormControl>
-                    <Input 
+                    <Input
                       placeholder="123"
                       {...field}
                       onChange={(e) => {
@@ -200,7 +225,7 @@ export function Payment({ onNext, onBack }: PaymentProps) {
               )}
             />
           </div>
-          
+
           <FormField
             control={form.control}
             name="cardName"
@@ -214,22 +239,24 @@ export function Payment({ onNext, onBack }: PaymentProps) {
               </FormItem>
             )}
           />
-          
-          <div className="border-t border-gray-200 pt-4">
-            <div className="flex justify-between mb-2">
+
+          <div className="border-t border-gray-200 dark:border-gray-600 pt-4">
+            <div className="flex justify-between mb-2 text-gray-700 dark:text-gray-300">
               <span>Sous-total</span>
               <span>{formatPrice(totalPrice)}</span>
             </div>
-            <div className="flex justify-between mb-2">
+            <div className="flex justify-between mb-2 text-gray-700 dark:text-gray-300">
               <span>Livraison</span>
-              <span className="text-green-600">Gratuite</span>
+              <span className="text-green-600 dark:text-green-400">
+                Gratuite
+              </span>
             </div>
-            <div className="flex justify-between font-bold text-lg">
+            <div className="flex justify-between font-bold text-lg text-gray-900 dark:text-gray-100">
               <span>Total</span>
               <span>{formatPrice(totalPrice)}</span>
             </div>
           </div>
-          
+
           <div className="pt-4 flex gap-4">
             <Button
               type="button"
@@ -240,12 +267,10 @@ export function Payment({ onNext, onBack }: PaymentProps) {
             >
               Retour
             </Button>
-            <Button 
-              type="submit" 
-              className="w-2/3"
-              disabled={isProcessing}
-            >
-              {isProcessing ? "Traitement en cours..." : `Payer ${formatPrice(totalPrice)}`}
+            <Button type="submit" className="w-2/3" disabled={isProcessing}>
+              {isProcessing
+                ? "Traitement en cours..."
+                : `Payer ${formatPrice(totalPrice)}`}
             </Button>
           </div>
         </form>

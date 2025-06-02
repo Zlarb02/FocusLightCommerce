@@ -25,21 +25,21 @@ export default function Waterfall() {
       }
       additionalContent={
         <div className="space-y-12">
-          <div className="bg-blue-50 p-6 rounded-lg">
+          <div className="bg-blue-50 dark:bg-gray-800 p-6 rounded-lg">
             <h3
-              className="text-xl font-semibold mb-3"
+              className="text-xl font-semibold mb-3 text-gray-900 dark:text-gray-100"
               style={{ fontFamily: "var(--font-titles)" }}
             >
               Matériaux et expérimentations
             </h3>
-            <p className="text-gray-700 mb-4">
+            <p className="text-gray-700 dark:text-gray-300 mb-4">
               J'ai utilisé de la laine que j'ai teintée à plusieurs reprises
               pour obtenir un dégradé de bleu nuancé. J'ai ensuite monté un
               métier à tisser directement sur l'armature pour tisser la laine en
               place. La base est réalisée en feutre bleu et blanc pour compléter
               l'ensemble.
             </p>
-            <p className="text-gray-700">
+            <p className="text-gray-700 dark:text-gray-300">
               Cette approche artisanale permet de créer des effets de profondeur
               et de mouvement qui évoquent naturellement le flux des cascades
               islandaises, donnant vie à la matière.
@@ -49,12 +49,12 @@ export default function Waterfall() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
               <h3
-                className="text-xl font-semibold mb-3"
+                className="text-xl font-semibold mb-3 text-gray-900 dark:text-gray-100"
                 style={{ fontFamily: "var(--font-titles)" }}
               >
                 Conception modulaire
               </h3>
-              <p className="text-gray-700">
+              <p className="text-gray-700 dark:text-gray-300">
                 L'applique a été conçue avec des assemblages simples pour
                 faciliter le transport international vers l'Islande. Cette
                 contrainte pratique a donné naissance à un design modulaire
@@ -63,12 +63,12 @@ export default function Waterfall() {
             </div>
             <div>
               <h3
-                className="text-xl font-semibold mb-3"
+                className="text-xl font-semibold mb-3 text-gray-900 dark:text-gray-100"
                 style={{ fontFamily: "var(--font-titles)" }}
               >
                 Déclinaison
               </h3>
-              <p className="text-gray-700">
+              <p className="text-gray-700 dark:text-gray-300">
                 J'ai adapté la technique du feutre en laine cardée pour réaliser
                 un lampadaire sur commande d'une cliente souhaitant un éclairage
                 de lecture. J'ai donc conçu un pied en béton pour assurer la
@@ -77,16 +77,14 @@ export default function Waterfall() {
             </div>
           </div>
 
-          <div className="text-center bg-gray-100 p-6 rounded-lg">
+          <div className="text-center bg-gray-100 dark:bg-gray-800 p-6 rounded-lg">
             <h3
-              className="text-lg font-semibold mb-2"
+              className="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100"
               style={{ fontFamily: "var(--font-titles)" }}
             >
-              Spécifications techniques
+              Détails du projet
             </h3>
-            <p className="text-gray-600 text-sm">
-              Dimensions : 50 x 25 x 15 x 45 x 8 x 35 x 20 x 2.2 x 3.5 cm
-              <br />
+            <p className="text-gray-600 dark:text-gray-300 text-sm">
               Designer : Collet Anatole
               <br />
               Date : 21/12/2023

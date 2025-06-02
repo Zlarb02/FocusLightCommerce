@@ -11,6 +11,7 @@ import ThemeDecorator from "@/components/decorations/ThemeDecorator";
 import { useQuery } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { ThemeDecoration } from "../../../shared/schema";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 interface LayoutProps {
   children: ReactNode;
@@ -64,11 +65,11 @@ export function Layout({ children, showCart = true }: LayoutProps) {
   const cartItemCount = getTotalItems();
 
   return (
-    <div className="flex flex-col min-h-screen bg-white">
+    <div className="flex flex-col min-h-screen bg-white dark:bg-gray-900">
       {/* Intégration des décorations thématiques */}
       {themeData && <ThemeDecorator decoration={themeData.themeDecoration} />}
 
-      <header className="fixed top-0 left-0 right-0 bg-white z-50 border-b border-gray-200 shadow-sm">
+      <header className="fixed top-0 left-0 right-0 bg-white dark:bg-gray-900 z-50 border-b border-gray-200 dark:border-gray-700 shadow-sm">
         <div className="flex items-center justify-between h-16 px-4">
           {/* Menu burger à gauche */}
           <div>
@@ -85,15 +86,16 @@ export function Layout({ children, showCart = true }: LayoutProps) {
           <div className="flex-1 flex justify-center">
             <button
               onClick={backToLanding}
-              className="text-xl font-bold text-gray-900 hover:text-gray-700 transition-colors"
+              className="text-xl font-bold text-gray-900 dark:text-gray-100 hover:text-gray-700 dark:text-gray-200 dark:hover:text-gray-300 transition-colors"
               style={{ fontFamily: "var(--font-titles)" }}
             >
               Alto Lille
             </button>
           </div>
 
-          {/* Icône panier à droite */}
-          <div className="flex items-center">
+          {/* Icône panier et toggle thème à droite */}
+          <div className="flex items-center gap-2">
+            <ThemeToggle variant="minimal" size="sm" showLabel={false} />
             {showCart && (
               <Button
                 variant="ghost"
@@ -126,18 +128,18 @@ export function Layout({ children, showCart = true }: LayoutProps) {
           />
 
           {/* Menu sidebar sobre et épuré */}
-          <div className="fixed top-0 left-0 bottom-0 w-80 bg-white z-50 transform transition-transform duration-300 overflow-y-auto shadow-lg border-r border-gray-200">
+          <div className="fixed top-0 left-0 bottom-0 w-80 bg-white dark:bg-gray-900 z-50 transform transition-transform duration-300 overflow-y-auto shadow-lg border-r border-gray-200 dark:border-gray-700">
             {/* Header du menu épuré */}
-            <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200">
+            <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200 dark:border-gray-700">
               <h2
-                className="text-lg font-semibold text-gray-900"
+                className="text-lg font-semibold text-gray-900 dark:text-gray-100"
                 style={{ fontFamily: "var(--font-titles)" }}
               >
                 Navigation
               </h2>
               <button
                 onClick={() => setMenuOpen(false)}
-                className="p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+                className="p-2 rounded-md text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:text-gray-200 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                 aria-label="Fermer le menu"
               >
                 <X className="h-5 w-5" />
@@ -153,7 +155,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                     backToLanding();
                     setMenuOpen(false);
                   }}
-                  className="w-full flex items-center px-3 py-3 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-md transition-colors"
+                  className="w-full flex items-center px-3 py-3 text-base font-medium text-gray-700 dark:text-gray-200 dark:text-gray-200 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors"
                   style={{ fontFamily: "var(--font-nav)" }}
                 >
                   <svg
@@ -173,11 +175,11 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                 </button>
               </div>
 
-              <div className="border-t border-gray-200 mb-6" />
+              <div className="border-t border-gray-200 dark:border-gray-700 mb-6" />
 
               {/* Projets */}
               <div className="mb-6">
-                <h3 className="px-3 text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">
+                <h3 className="px-3 text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">
                   Projets
                 </h3>
                 <div className="space-y-1">
@@ -186,7 +188,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                       setLocation("/focus-01");
                       setMenuOpen(false);
                     }}
-                    className="w-full flex items-center px-3 py-2.5 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 rounded-md transition-colors"
+                    className="w-full flex items-center px-3 py-2.5 text-base font-medium text-gray-700 dark:text-gray-200 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 rounded-md transition-colors"
                     style={{ fontFamily: "var(--font-nav)" }}
                   >
                     <span>Focus.01</span>
@@ -197,7 +199,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                       setLocation("/sea-cle");
                       setMenuOpen(false);
                     }}
-                    className="w-full flex items-center px-3 py-2.5 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 rounded-md transition-colors"
+                    className="w-full flex items-center px-3 py-2.5 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 rounded-md transition-colors"
                     style={{ fontFamily: "var(--font-nav)" }}
                   >
                     <span>Sea-clé</span>
@@ -208,7 +210,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                       setLocation("/lowtech-vynil");
                       setMenuOpen(false);
                     }}
-                    className="w-full flex items-center px-3 py-2.5 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 rounded-md transition-colors"
+                    className="w-full flex items-center px-3 py-2.5 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 rounded-md transition-colors"
                     style={{ fontFamily: "var(--font-nav)" }}
                   >
                     <span>Without speaker</span>
@@ -219,7 +221,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                       setLocation("/braderie-de-l-art");
                       setMenuOpen(false);
                     }}
-                    className="w-full flex items-center px-3 py-2.5 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 rounded-md transition-colors"
+                    className="w-full flex items-center px-3 py-2.5 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 rounded-md transition-colors"
                     style={{ fontFamily: "var(--font-nav)" }}
                   >
                     <span>Braderie de l'Art</span>
@@ -230,7 +232,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                       setLocation("/waterfall");
                       setMenuOpen(false);
                     }}
-                    className="w-full flex items-center px-3 py-2.5 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 rounded-md transition-colors"
+                    className="w-full flex items-center px-3 py-2.5 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 rounded-md transition-colors"
                     style={{ fontFamily: "var(--font-nav)" }}
                   >
                     <span>Waterfall</span>
@@ -241,7 +243,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                       setLocation("/chaussures-custom");
                       setMenuOpen(false);
                     }}
-                    className="w-full flex items-center px-3 py-2.5 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 rounded-md transition-colors"
+                    className="w-full flex items-center px-3 py-2.5 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 rounded-md transition-colors"
                     style={{ fontFamily: "var(--font-nav)" }}
                   >
                     <span>Chaussures Custom</span>
@@ -249,11 +251,23 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                 </div>
               </div>
 
-              <div className="border-t border-gray-200 mb-6" />
+              <div className="border-t border-gray-200 dark:border-gray-700 mb-6" />
+
+              {/* Paramètres */}
+              <div className="mb-6">
+                <h3 className="px-3 text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">
+                  Paramètres
+                </h3>
+                <div className="px-3 py-2">
+                  <ThemeToggle size="md" />
+                </div>
+              </div>
+
+              <div className="border-t border-gray-200 dark:border-gray-700 mb-6" />
 
               {/* À propos */}
               <div>
-                <h3 className="px-3 text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">
+                <h3 className="px-3 text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">
                   À propos
                 </h3>
                 <button
@@ -261,7 +275,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                     setLocation("/anatolle-collet");
                     setMenuOpen(false);
                   }}
-                  className="w-full flex items-center px-3 py-2.5 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 rounded-md transition-colors"
+                  className="w-full flex items-center px-3 py-2.5 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 rounded-md transition-colors"
                   style={{ fontFamily: "var(--font-nav)" }}
                 >
                   <span>Qui suis-je</span>
@@ -270,13 +284,13 @@ export function Layout({ children, showCart = true }: LayoutProps) {
             </nav>
 
             {/* Footer sobre et épuré */}
-            <div className="mt-auto border-t border-gray-200 bg-gray-50 px-6 py-4">
+            <div className="mt-auto border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-6 py-4">
               <div className="space-y-3">
-                <p className="text-xs text-gray-500 text-center">
+                <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
                   © 2025 Alto Lille
                 </p>
 
-                {/* Badge EcoIndex */}
+                {/* Badge EcoIndex - adaptatif au thème */}
                 <div className="flex justify-center">
                   <a
                     href="https://bff.ecoindex.fr/redirect/?url=https://www.alto-lille.fr"
@@ -288,7 +302,12 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                     <img
                       src="https://bff.ecoindex.fr/badge/?theme=light&url=https://www.alto-lille.fr"
                       alt="Badge EcoIndex"
-                      className="h-6"
+                      className="h-6 dark:hidden"
+                    />
+                    <img
+                      src="https://bff.ecoindex.fr/badge/?theme=dark&url=https://www.alto-lille.fr"
+                      alt="Badge EcoIndex"
+                      className="h-6 hidden dark:block"
                     />
                   </a>
                 </div>
@@ -299,7 +318,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                     href="https://pogodev.com"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs text-gray-500 hover:text-gray-700 transition-colors"
+                    className="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
                     title="Site développé par Etienne Pogoda"
                   >
                     Développé par Etienne Pogoda
@@ -314,29 +333,31 @@ export function Layout({ children, showCart = true }: LayoutProps) {
       {/* Spacer pour compenser le header fixe */}
       <div className="h-16" />
 
-      <main className="flex-1">{children}</main>
+      <main className="flex-1 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+        {children}
+      </main>
 
-      <footer className="bg-white border-t border-slate-200 pt-12 pb-8">
+      <footer className="bg-white dark:bg-gray-900 border-t border-slate-200 dark:border-gray-700 pt-12 pb-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Brand & Social */}
             <div>
               <div className="flex items-center mb-5">
                 <span
-                  className="text-xl sm:text-2xl font-medium text-[var(--color-text)]"
+                  className="text-xl sm:text-2xl font-medium text-gray-900 dark:text-gray-100"
                   style={{ fontFamily: "var(--font-titles)" }}
                 >
                   Alto Lille
                 </span>
               </div>
-              <p className="text-gray-600 mb-5 text-sm leading-relaxed">
+              <p className="text-gray-600 dark:text-gray-400 mb-5 text-sm leading-relaxed">
                 Illuminez votre intérieur avec notre concept de lampe écologique
                 et design, fabriquée en France.
               </p>
               <div className="flex space-x-4">
                 <a
                   href="#"
-                  className="text-gray-500 hover:text-[var(--color-text)] transition p-1"
+                  className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition p-1"
                   aria-label="Instagram"
                 >
                   <svg
@@ -353,7 +374,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
             {/* Contact */}
             <div className="sm:col-span-1 lg:col-span-2">
               <h4
-                className="font-medium text-base mb-5 text-[var(--color-text)]"
+                className="font-medium text-base mb-5 text-gray-900 dark:text-gray-100"
                 style={{ fontFamily: "var(--font-titles)" }}
               >
                 Contact
@@ -361,7 +382,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
               <ul className="space-y-3">
                 <li className="flex items-start">
                   <svg
-                    className="h-5 w-5 text-gray-500 mt-0.5 mr-3 flex-shrink-0"
+                    className="h-5 w-5 text-gray-500 dark:text-gray-400 mt-0.5 mr-3 flex-shrink-0"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -375,14 +396,14 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                   </svg>
                   <a
                     href="mailto:altolille@gmail.com"
-                    className="text-gray-600 hover:text-[var(--color-text)] transition text-sm leading-relaxed"
+                    className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition text-sm leading-relaxed"
                   >
                     altolille@gmail.com
                   </a>
                 </li>
                 <li className="flex items-start">
                   <svg
-                    className="h-5 w-5 text-gray-500 mt-0.5 mr-3 flex-shrink-0"
+                    className="h-5 w-5 text-gray-500 dark:text-gray-400 mt-0.5 mr-3 flex-shrink-0"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -394,13 +415,13 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                       d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
                     />
                   </svg>
-                  <span className="text-gray-600 text-sm leading-relaxed">
+                  <span className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
                     +33 782 086 690
                   </span>
                 </li>
                 <li className="flex items-start">
                   <svg
-                    className="h-5 w-5 text-gray-500 mt-0.5 mr-3 flex-shrink-0"
+                    className="h-5 w-5 text-gray-500 dark:text-gray-400 mt-0.5 mr-3 flex-shrink-0"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -418,7 +439,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                       d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                     />
                   </svg>
-                  <span className="text-gray-600 text-sm leading-relaxed">
+                  <span className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
                     95 rue Pierre Ledent
                     <br />
                     Montreuil-sur-Mer 62170
@@ -430,7 +451,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
             {/* Services */}
             <div>
               <h4
-                className="font-medium text-base mb-5 text-[var(--color-text)]"
+                className="font-medium text-base mb-5 text-gray-900 dark:text-gray-100"
                 style={{ fontFamily: "var(--font-titles)" }}
               >
                 Services
@@ -439,7 +460,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                 <li>
                   <Link
                     href="/livraison"
-                    className="text-gray-600 hover:text-[var(--color-text)] transition text-sm inline-block"
+                    className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition text-sm inline-block"
                   >
                     Livraison
                   </Link>
@@ -447,7 +468,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                 <li>
                   <Link
                     href="/retours"
-                    className="text-gray-600 hover:text-[var(--color-text)] transition text-sm inline-block"
+                    className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition text-sm inline-block"
                   >
                     Retours
                   </Link>
@@ -455,7 +476,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                 <li>
                   <Link
                     href="/garantie"
-                    className="text-gray-600 hover:text-[var(--color-text)] transition text-sm inline-block"
+                    className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition text-sm inline-block"
                   >
                     Garantie
                   </Link>
@@ -463,7 +484,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                 <li>
                   <Link
                     href="/faq"
-                    className="text-gray-600 hover:text-[var(--color-text)] transition text-sm inline-block"
+                    className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition text-sm inline-block"
                   >
                     FAQ
                   </Link>
@@ -472,14 +493,14 @@ export function Layout({ children, showCart = true }: LayoutProps) {
             </div>
           </div>
 
-          <div className="border-t border-slate-200 mt-10 pt-8">
+          <div className="border-t border-slate-200 dark:border-gray-700 mt-10 pt-8">
             <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
               <div className="flex flex-col items-center md:items-start gap-3 order-2 md:order-1">
-                <p className="text-gray-500 text-xs text-center md:text-left">
+                <p className="text-gray-500 dark:text-gray-400 text-xs text-center md:text-left">
                   &copy; 2023 Alto Lille. Tous droits réservés.
                 </p>
                 <div className="flex items-center gap-4">
-                  {/* Badge EcoIndex */}
+                  {/* Badge EcoIndex - adaptatif au thème */}
                   <a
                     href="https://bff.ecoindex.fr/redirect/?url=https://www.alto-lille.fr"
                     target="_blank"
@@ -489,7 +510,12 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                     <img
                       src="https://bff.ecoindex.fr/badge/?theme=light&url=https://www.alto-lille.fr"
                       alt="Ecoindex Badge"
-                      className="h-5"
+                      className="h-5 dark:hidden"
+                    />
+                    <img
+                      src="https://bff.ecoindex.fr/badge/?theme=dark&url=https://www.alto-lille.fr"
+                      alt="Ecoindex Badge"
+                      className="h-5 hidden dark:block"
                     />
                   </a>
                   {/* Mention pogodev.com */}
@@ -497,7 +523,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                     href="https://pogodev.com"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-gray-400 hover:text-gray-600 text-xs transition-colors"
+                    className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 text-xs transition-colors"
                     title="Site développé par Etienne Pogoda"
                   >
                     Développé par Etienne Pogoda
@@ -508,19 +534,19 @@ export function Layout({ children, showCart = true }: LayoutProps) {
               <div className="flex flex-wrap justify-center md:justify-end gap-5 order-1 md:order-2 mb-4 md:mb-0">
                 <Link
                   href="/mentions-legales"
-                  className="text-gray-500 hover:text-[var(--color-text)] text-xs transition"
+                  className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 text-xs transition"
                 >
                   Mentions légales
                 </Link>
                 <Link
                   href="/politique-confidentialite"
-                  className="text-gray-500 hover:text-[var(--color-text)] text-xs transition"
+                  className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 text-xs transition"
                 >
                   Politique de confidentialité
                 </Link>
                 <Link
                   href="/cgv"
-                  className="text-gray-500 hover:text-[var(--color-text)] text-xs transition"
+                  className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 text-xs transition"
                 >
                   CGV
                 </Link>

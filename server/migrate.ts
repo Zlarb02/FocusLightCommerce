@@ -219,15 +219,15 @@ async function initializeDefaultData() {
       if (lampProductResult.rowCount && lampProductResult.rowCount > 0) {
         const productId = lampProductResult.rows[0].id;
 
-        // Ajouter les variations de couleur
+        // Ajouter les variations de couleur avec les nouvelles URLs
         await db.execute(
           sql`INSERT INTO product_variations 
               (product_id, variation_type, variation_value, stock, image_url)
               VALUES 
-              (${productId}, 'color', 'Blanc', 10, '/uploads/blanche.png'),
-              (${productId}, 'color', 'Bleu', 10, '/uploads/bleue.png'),
-              (${productId}, 'color', 'Rouge', 10, '/uploads/rouge.png'),
-              (${productId}, 'color', 'Orange', 10, '/uploads/orange.png')`
+              (${productId}, 'color', 'Blanc', 10, 'https://www.alto-lille.fr/uploads/fbf9e3c1-9afe-446f-9e3d-5966f078b4c0.png'),
+              (${productId}, 'color', 'Bleu', 10, 'https://www.alto-lille.fr/uploads/6b611585-bb6c-411c-85bf-342fe95950c6.png'),
+              (${productId}, 'color', 'Rouge', 10, 'https://www.alto-lille.fr/uploads/1f1cdf28-f233-4191-9c1a-f9d7e12b709f.png'),
+              (${productId}, 'color', 'Orange', 10, 'https://www.alto-lille.fr/uploads/a8e085a1-8bc5-4c90-a738-151c7ce4d8d0.png')`
         );
 
         console.log("✅ Produits initialisés avec succès");

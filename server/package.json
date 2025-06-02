@@ -10,7 +10,8 @@
     "dev": "NODE_OPTIONS='--import tsx' node --experimental-specifier-resolution=node index.ts",
     "init-db": "NODE_OPTIONS='--import tsx' node --experimental-specifier-resolution=node init-db.ts",
     "migrate": "NODE_OPTIONS='--import tsx' node --experimental-specifier-resolution=node migrate.ts",
-    "migrate:prod": "node dist/migrate.js"
+    "migrate:prod": "node dist/migrate.js",
+    "migrate:images": "NODE_OPTIONS='--import tsx' node --experimental-specifier-resolution=node scripts/migrate-images.ts"
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.10.4",

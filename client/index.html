@@ -60,6 +60,12 @@
         --toggle-knob: #f8f8f8;
       }
 
+      /* S'assurer que html et body ont le bon fond en mode sombre */
+      html.dark,
+      html.dark body {
+        background-color: #000000 !important;
+      }
+
       * {
         box-sizing: border-box;
         margin: 0;
@@ -2253,7 +2259,7 @@
 
       <button
         class="polaroid p4"
-        data-link="/without-speaker"
+        data-link="/lowtech-vynil"
         role="button"
         tabindex="0"
         aria-label="Cliquez pour découvrir Without Speaker - Création innovante. Utilisez Enter ou Espace pour interagir."
@@ -2835,6 +2841,7 @@
       // Appliquer le thème initial
       if (savedTheme === "dark" || (!savedTheme && prefersDarkMode)) {
         document.body.classList.add("dark-mode");
+        document.documentElement.classList.add("dark");
         themeToggle.checked = true;
         themeLabel.textContent = "Sombre";
         // Mettre à jour la couleur du renderer si déjà défini
@@ -2849,16 +2856,59 @@
       themeToggle.addEventListener("change", function () {
         if (this.checked) {
           document.body.classList.add("dark-mode");
+          document.documentElement.classList.add("dark");
           localStorage.setItem("theme", "dark");
           themeLabel.textContent = "Sombre";
           // Mettre à jour la couleur de fond du renderer pour le mode sombre
           renderer.setClearColor("#000000", 1);
         } else {
           document.body.classList.remove("dark-mode");
+          document.documentElement.classList.remove("dark");
           localStorage.setItem("theme", "light");
           themeLabel.textContent = "Clair";
           // Mettre à jour la couleur de fond du renderer pour le mode clair
           renderer.setClearColor(CFG.colours.bg, 1);
+        }
+
+        // Émettre un événement personnalisé pour l'application React
+        window.dispatchEvent(
+          new CustomEvent("themeChange", {
+            detail: { theme: this.checked ? "dark" : "light" },
+          })
+        );
+      });
+
+      // Écouter les changements de thème venant de l'application React
+      window.addEventListener("themeChange", function (event) {
+        const newTheme = event.detail.theme;
+
+        // Éviter la boucle infinie en vérifiant si l'événement vient de React
+        if (event.target !== window || !event.detail.fromReact) {
+          return;
+        }
+
+        if (newTheme === "dark") {
+          document.body.classList.add("dark-mode");
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("theme", "dark");
+          themeToggle.checked = true;
+          themeLabel.textContent = "Sombre";
+
+          // Mettre à jour la couleur de fond du renderer pour le mode sombre
+          if (typeof renderer !== "undefined") {
+            renderer.setClearColor("#000000", 1);
+          }
+        } else if (newTheme === "light") {
+          document.body.classList.remove("dark-mode");
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("theme", "light");
+          themeToggle.checked = false;
+          themeLabel.textContent = "Clair";
+
+          // Mettre à jour la couleur de fond du renderer pour le mode clair
+          if (typeof renderer !== "undefined") {
+            renderer.setClearColor(CFG.colours.bg, 1);
+          }
         }
       });
 

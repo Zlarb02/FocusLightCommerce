@@ -10,6 +10,7 @@ import { CheckoutProvider } from "@/hooks/useCheckout";
 import { useEffect, useState, Suspense, lazy } from "react";
 import Shop from "@/pages/Shop";
 import useVersions from "@/hooks/useVersions";
+import { ThemeProvider } from "@/contexts/ThemeContext";
 
 // Importation des pages des polaroids en utilisant lazy pour le chargement à la demande
 const SeaCle = lazy(() => import("@/pages/projects/SeaCle"));
@@ -201,12 +202,14 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <CartProvider>
-        <CheckoutProvider>
-          <Router />
-          <Toaster />
-        </CheckoutProvider>
-      </CartProvider>
+      <ThemeProvider>
+        <CartProvider>
+          <CheckoutProvider>
+            <Router />
+            <Toaster />
+          </CheckoutProvider>
+        </CartProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }

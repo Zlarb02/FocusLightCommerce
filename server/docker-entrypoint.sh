@@ -25,6 +25,10 @@ echo "✅ PostgreSQL est prêt!"
 echo "🔄 Exécution des migrations..."
 node server/dist/server/migrate.js
 
+# Exécuter la migration des images (nouveau)
+echo "🖼️  Exécution de la migration des images..."
+node server/dist/server/scripts/migrate-images.js
+
 # Démarrer l'application
 echo "🚀 Démarrage de l'application..."
 exec node server/dist/server/index.js

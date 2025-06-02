@@ -8,6 +8,10 @@ import {
   type InsertProductVariation,
   type ProductWithVariations,
 } from "../../shared/schema.js";
+import {
+  transformProductWithVariations,
+  transformProductVariation,
+} from "../utils/imageMapper.js";
 
 /**
  * Gestion des produits et leurs variations dans PostgreSQL
@@ -36,7 +40,7 @@ export class PgProductStorage {
     );
 
     return rawProducts.rows.map((row) => {
-      return {
+      const product = {
         id: Number(row.id),
         name: String(row.name),
         description: String(row.description),
@@ -58,6 +62,9 @@ export class PgProductStorage {
               }))
             : [],
       };
+
+      // Appliquer la transformation des URLs d'images
+      return transformProductWithVariations(product);
     });
   }
 
@@ -89,13 +96,16 @@ export class PgProductStorage {
       imageUrl: String(row.image_url),
     }));
 
-    return {
+    const productWithVariations = {
       id: Number(product.id),
       name: String(product.name),
       description: String(product.description),
       price: Number(product.price),
       variations,
     };
+
+    // Appliquer la transformation des URLs d'images
+    return transformProductWithVariations(productWithVariations);
   }
 
   /**
@@ -125,7 +135,7 @@ export class PgProductStorage {
     );
 
     return result.rows.map((row) => {
-      return {
+      const product = {
         id: Number(row.id),
         name: String(row.name),
         description: String(row.description),
@@ -147,6 +157,9 @@ export class PgProductStorage {
               }))
             : [],
       };
+
+      // Appliquer la transformation des URLs d'images
+      return transformProductWithVariations(product);
     });
   }
 
@@ -165,7 +178,7 @@ export class PgProductStorage {
     }
 
     const row = result.rows[0];
-    return {
+    const variation = {
       id: Number(row.id),
       productId: Number(row.product_id),
       variationType: String(row.variation_type),
@@ -174,6 +187,9 @@ export class PgProductStorage {
       stock: Number(row.stock),
       imageUrl: String(row.image_url),
     };
+
+    // Appliquer la transformation des URLs d'images
+    return transformProductVariation(variation);
   }
 
   /**
@@ -216,7 +232,7 @@ export class PgProductStorage {
     );
 
     const row = result.rows[0];
-    return {
+    const createdVariation = {
       id: Number(row.id),
       productId: Number(row.product_id),
       variationType: String(row.variation_type),
@@ -225,6 +241,9 @@ export class PgProductStorage {
       stock: Number(row.stock),
       imageUrl: String(row.image_url),
     };
+
+    // Appliquer la transformation des URLs d'images
+    return transformProductVariation(createdVariation);
   }
 
   /**
@@ -337,7 +356,7 @@ export class PgProductStorage {
     }
 
     const row = result.rows[0];
-    return {
+    const updatedVariation = {
       id: Number(row.id),
       productId: Number(row.product_id),
       variationType: String(row.variation_type),
@@ -346,6 +365,9 @@ export class PgProductStorage {
       stock: Number(row.stock),
       imageUrl: String(row.image_url),
     };
+
+    // Appliquer la transformation des URLs d'images
+    return transformProductVariation(updatedVariation);
   }
 
   /**
@@ -367,7 +389,7 @@ export class PgProductStorage {
     }
 
     const row = result.rows[0];
-    return {
+    const updatedVariation = {
       id: Number(row.id),
       productId: Number(row.product_id),
       variationType: String(row.variation_type),
@@ -376,6 +398,9 @@ export class PgProductStorage {
       stock: Number(row.stock),
       imageUrl: String(row.image_url),
     };
+
+    // Appliquer la transformation des URLs d'images
+    return transformProductVariation(updatedVariation);
   }
 
   /**

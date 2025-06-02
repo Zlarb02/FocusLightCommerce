@@ -14,6 +14,7 @@ import {
   MapPin,
   CreditCard,
   Package,
+  ArrowLeft,
 } from "lucide-react";
 import { formatPrice } from "@/lib/utils";
 
@@ -69,28 +70,37 @@ export default function CheckoutNew() {
 
   return (
     <Layout showCart={false}>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         {/* Header épuré */}
-        <div className="bg-white border-b border-gray-200">
+        <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
           <div className="container mx-auto px-4 py-6">
             <div className="flex items-center justify-between">
               <h1
-                className="text-2xl font-bold text-gray-900"
+                className="text-2xl font-bold text-gray-900 dark:text-gray-100"
                 style={{ fontFamily: "var(--font-titles)" }}
               >
                 Finaliser ma commande
               </h1>
-              {step < 4 && (
-                <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <ShoppingBag className="w-4 h-4" />
-                  <span>
-                    {items.length} article{items.length !== 1 ? "s" : ""}
-                  </span>
-                  <span className="font-medium">
-                    {formatPrice(getTotalPrice())}
-                  </span>
-                </div>
-              )}
+              <div className="flex items-center gap-4">
+                {step < 4 && (
+                  <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                    <ShoppingBag className="w-4 h-4" />
+                    <span>
+                      {items.length} article{items.length !== 1 ? "s" : ""}
+                    </span>
+                    <span className="font-medium">
+                      {formatPrice(getTotalPrice())}
+                    </span>
+                  </div>
+                )}
+                <button
+                  onClick={() => navigate("/shop")}
+                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  Retour au shop
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -98,7 +108,7 @@ export default function CheckoutNew() {
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-4xl mx-auto">
             {/* Progress Steps - Design moderne */}
-            <div className="mb-8 bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+            <div className="mb-8 bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
               <div className="flex items-center justify-between">
                 {steps.map((stepItem, index) => {
                   const Icon = stepItem.icon;
@@ -114,8 +124,8 @@ export default function CheckoutNew() {
                             isCompleted
                               ? "bg-green-500 text-white"
                               : isActive
-                              ? "bg-primary text-white"
-                              : "bg-gray-200 text-gray-500"
+                              ? "bg-blue-600 dark:bg-blue-500 text-white"
+                              : "bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400"
                           )}
                         >
                           {isCompleted ? (
@@ -128,8 +138,8 @@ export default function CheckoutNew() {
                           className={cn(
                             "text-sm font-medium transition-colors",
                             isActive || isCompleted
-                              ? "text-gray-900"
-                              : "text-gray-500"
+                              ? "text-gray-900 dark:text-gray-100"
+                              : "text-gray-500 dark:text-gray-400"
                           )}
                         >
                           {stepItem.title}
@@ -140,7 +150,9 @@ export default function CheckoutNew() {
                         <div
                           className={cn(
                             "flex-1 h-0.5 mx-4 transition-colors",
-                            stepItem.completed ? "bg-green-500" : "bg-gray-200"
+                            stepItem.completed
+                              ? "bg-green-500"
+                              : "bg-gray-200 dark:bg-gray-700"
                           )}
                         />
                       )}
@@ -154,7 +166,7 @@ export default function CheckoutNew() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {/* Formulaire principal */}
               <div className="lg:col-span-2">
-                <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
                   {renderStepContent()}
                 </div>
               </div>
@@ -162,15 +174,15 @@ export default function CheckoutNew() {
               {/* Récapitulatif de commande */}
               {step < 4 && (
                 <div className="lg:col-span-1">
-                  <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 sticky top-6">
-                    <h3 className="font-semibold text-lg mb-4">
+                  <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 sticky top-6">
+                    <h3 className="font-semibold text-lg mb-4 text-gray-900 dark:text-gray-100">
                       Récapitulatif
                     </h3>
 
                     <div className="space-y-4">
                       {items.map((item, index) => (
                         <div key={index} className="flex gap-3">
-                          <div className="w-16 h-16 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
+                          <div className="w-16 h-16 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700 flex-shrink-0">
                             <img
                               src={item.product.imageUrl}
                               alt={`${item.product.productName} ${item.product.variationValue}`}
@@ -178,18 +190,18 @@ export default function CheckoutNew() {
                             />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <h4 className="font-medium text-sm truncate">
+                            <h4 className="font-medium text-sm truncate text-gray-900 dark:text-gray-100">
                               {item.product.productName}
                             </h4>
-                            <p className="text-xs text-gray-500">
+                            <p className="text-xs text-gray-500 dark:text-gray-400">
                               {item.product.variationType}:{" "}
                               {item.product.variationValue}
                             </p>
                             <div className="flex items-center justify-between mt-1">
-                              <span className="text-xs text-gray-500">
+                              <span className="text-xs text-gray-500 dark:text-gray-400">
                                 Qté: {item.quantity}
                               </span>
-                              <span className="text-sm font-medium">
+                              <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
                                 {formatPrice(
                                   (item.product.price ||
                                     item.product.basePrice) * item.quantity
@@ -201,38 +213,38 @@ export default function CheckoutNew() {
                       ))}
                     </div>
 
-                    <div className="border-t border-gray-200 mt-6 pt-4 space-y-2">
-                      <div className="flex justify-between text-sm">
+                    <div className="border-t border-gray-200 dark:border-gray-600 mt-6 pt-4 space-y-2">
+                      <div className="flex justify-between text-sm text-gray-700 dark:text-gray-300">
                         <span>Sous-total</span>
                         <span>{formatPrice(getTotalPrice())}</span>
                       </div>
-                      <div className="flex justify-between text-sm">
+                      <div className="flex justify-between text-sm text-gray-700 dark:text-gray-300">
                         <span>Livraison</span>
-                        <span className="text-green-600 font-medium">
+                        <span className="text-green-600 dark:text-green-400 font-medium">
                           Gratuite
                         </span>
                       </div>
-                      <div className="flex justify-between font-bold text-lg pt-2 border-t">
+                      <div className="flex justify-between font-bold text-lg pt-2 border-t border-gray-200 dark:border-gray-600 text-gray-900 dark:text-gray-100">
                         <span>Total</span>
                         <span>{formatPrice(getTotalPrice())}</span>
                       </div>
                     </div>
 
                     {/* Badges de confiance */}
-                    <div className="mt-6 pt-4 border-t border-gray-200">
-                      <div className="flex items-center gap-2 text-xs text-gray-500 mb-2">
+                    <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-600">
+                      <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mb-2">
                         <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
                           <Check className="w-2 h-2 text-white" />
                         </div>
                         <span>Paiement sécurisé</span>
                       </div>
-                      <div className="flex items-center gap-2 text-xs text-gray-500 mb-2">
+                      <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mb-2">
                         <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
                           <Check className="w-2 h-2 text-white" />
                         </div>
                         <span>Livraison gratuite</span>
                       </div>
-                      <div className="flex items-center gap-2 text-xs text-gray-500">
+                      <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
                         <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
                           <Check className="w-2 h-2 text-white" />
                         </div>

@@ -28,21 +28,21 @@ export default function BraderieDeLArt() {
       }
       additionalContent={
         <div className="space-y-8">
-          <div className="bg-gray-50 p-6 rounded-lg">
+          <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg">
             <h3
-              className="text-xl font-semibold mb-4"
+              className="text-xl font-semibold mb-4 dark:text-gray-100"
               style={{ fontFamily: "var(--font-titles)" }}
             >
               Le défi créatif
             </h3>
-            <p className="text-gray-700 mb-4">
+            <p className="text-gray-700 dark:text-gray-300 mb-4">
               L'essence de la Braderie de l'Art réside dans sa contrainte
               temporelle et matérielle. En quelques heures seulement, les
               participants doivent concevoir et réaliser une œuvre à partir des
               matériaux disponibles sur place. Cette approche force l'innovation
               et pousse à repenser l'usage habituel des objets.
             </p>
-            <p className="text-gray-700">
+            <p className="text-gray-700 dark:text-gray-300">
               Mon meuble hi-fi transforme un simple pied de chaise en élément
               fonctionnel et esthétique, créant un mouvement visuel qui dialogue
               harmonieusement avec la musique qu'il supporte.
@@ -52,12 +52,12 @@ export default function BraderieDeLArt() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
               <h3
-                className="text-xl font-semibold mb-3"
+                className="text-xl font-semibold mb-3 dark:text-gray-100"
                 style={{ fontFamily: "var(--font-titles)" }}
               >
                 Processus de création
               </h3>
-              <ul className="space-y-2 text-gray-700">
+              <ul className="space-y-2 text-gray-700 dark:text-gray-300">
                 <li>• Exploration de la matériauthèque</li>
                 <li>• Identification du potentiel du pied de chaise</li>
                 <li>• Conception autour du mouvement</li>
@@ -66,12 +66,12 @@ export default function BraderieDeLArt() {
             </div>
             <div>
               <h3
-                className="text-xl font-semibold mb-3"
+                className="text-xl font-semibold mb-3 dark:text-gray-100"
                 style={{ fontFamily: "var(--font-titles)" }}
               >
                 Philosophie du projet
               </h3>
-              <p className="text-gray-700">
+              <p className="text-gray-700 dark:text-gray-300">
                 Ce projet illustre ma démarche de réinterprétation des objets du
                 quotidien. Le mouvement devient ici métaphore de la musique,
                 créant un dialogue entre forme et fonction.

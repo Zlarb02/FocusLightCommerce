@@ -129,16 +129,18 @@ export function CartOverlay({ open, onClose }: CartOverlayProps) {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.2 }}
-                className="flex justify-between mb-4"
+                className="flex justify-between mb-4 text-gray-700 dark:text-gray-300"
               >
                 <span>Livraison</span>
-                <span className="text-green-600">Gratuite</span>
+                <span className="text-green-600 dark:text-green-400">
+                  Gratuite
+                </span>
               </motion.div>
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.3 }}
-                className="flex justify-between mb-6 text-lg font-bold"
+                className="flex justify-between mb-6 text-lg font-bold text-gray-900 dark:text-gray-100"
               >
                 <span>Total</span>
                 <span>{formatPrice(getTotalPrice())}</span>

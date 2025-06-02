@@ -33,13 +33,14 @@ export class ProductStorage {
       price: 70.0,
     });
 
-    // Ajouter les variations de couleur
+    // Ajouter les variations de couleur avec les nouvelles URLs
     await this.createProductVariation({
       productId: lampProduct.id,
       variationType: "color",
       variationValue: "Blanc",
       stock: 10,
-      imageUrl: "https://www.alto-lille.fr/images/blanche.png",
+      imageUrl:
+        "https://www.alto-lille.fr/uploads/fbf9e3c1-9afe-446f-9e3d-5966f078b4c0.png",
     });
 
     await this.createProductVariation({
@@ -47,7 +48,8 @@ export class ProductStorage {
       variationType: "color",
       variationValue: "Bleu",
       stock: 10,
-      imageUrl: "https://www.alto-lille.fr/images/bleue.png",
+      imageUrl:
+        "https://www.alto-lille.fr/uploads/6b611585-bb6c-411c-85bf-342fe95950c6.png",
     });
 
     await this.createProductVariation({
@@ -55,7 +57,8 @@ export class ProductStorage {
       variationType: "color",
       variationValue: "Rouge",
       stock: 10,
-      imageUrl: "https://www.alto-lille.fr/images/rouge.png",
+      imageUrl:
+        "https://www.alto-lille.fr/uploads/1f1cdf28-f233-4191-9c1a-f9d7e12b709f.png",
     });
 
     await this.createProductVariation({
@@ -63,7 +66,8 @@ export class ProductStorage {
       variationType: "color",
       variationValue: "Orange",
       stock: 10,
-      imageUrl: "https://www.alto-lille.fr/images/orange.png",
+      imageUrl:
+        "https://www.alto-lille.fr/uploads/a8e085a1-8bc5-4c90-a738-151c7ce4d8d0.png",
     });
   }
 

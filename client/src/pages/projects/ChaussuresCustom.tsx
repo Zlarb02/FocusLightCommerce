@@ -31,16 +31,16 @@ export default function ChaussuresCustom() {
             {[1, 2, 3].map((i) => (
               <div
                 key={i}
-                className="bg-white p-3 shadow-md hover:shadow-xl transition-shadow duration-300"
+                className="bg-white dark:bg-gray-800 p-3 shadow-md hover:shadow-xl transition-shadow duration-300 rounded-lg border border-gray-200 dark:border-gray-700"
               >
                 <img
                   src={`/images/custom-shoe-${i}.jpg`}
                   alt={`Chaussure customisée ${i}`}
-                  className="w-full h-auto object-cover aspect-square"
+                  className="w-full h-auto object-cover aspect-square rounded"
                 />
                 <div className="mt-3 p-2">
                   <h4
-                    className="font-medium text-center"
+                    className="font-medium text-center text-gray-900 dark:text-gray-100"
                     style={{ fontFamily: "var(--font-titles)" }}
                   >
                     Modèle{" "}
@@ -55,14 +55,14 @@ export default function ChaussuresCustom() {
             ))}
           </div>
 
-          <div className="bg-gray-50 p-6 rounded-lg">
+          <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
             <h3
-              className="text-xl font-semibold mb-4"
+              className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100"
               style={{ fontFamily: "var(--font-titles)" }}
             >
               Technique de customisation
             </h3>
-            <p className="text-gray-700 mb-4">
+            <p className="text-gray-700 dark:text-gray-300 mb-4">
               Ma technique consiste en un travail minutieux de peinture et de
               modification des empiècements. Chaque chaussure de base est
               transformée selon les désirs du client, créant une pièce
@@ -70,45 +70,61 @@ export default function ChaussuresCustom() {
             </p>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
               <div>
-                <div className="bg-gray-200 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3">
-                  <span className="font-bold">1</span>
+                <div className="bg-gray-200 dark:bg-gray-700 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3">
+                  <span className="font-bold text-gray-900 dark:text-gray-100">
+                    1
+                  </span>
                 </div>
-                <h4 className="font-medium mb-2">Consultation</h4>
-                <p className="text-sm text-gray-600">
+                <h4 className="font-medium mb-2 text-gray-900 dark:text-gray-100">
+                  Consultation
+                </h4>
+                <p className="text-sm text-gray-600 dark:text-gray-300">
                   Échange sur les préférences et le style souhaité
                 </p>
               </div>
               <div>
-                <div className="bg-gray-200 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3">
-                  <span className="font-bold">2</span>
+                <div className="bg-gray-200 dark:bg-gray-700 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3">
+                  <span className="font-bold text-gray-900 dark:text-gray-100">
+                    2
+                  </span>
                 </div>
-                <h4 className="font-medium mb-2">Design</h4>
-                <p className="text-sm text-gray-600">
+                <h4 className="font-medium mb-2 text-gray-900 dark:text-gray-100">
+                  Design
+                </h4>
+                <p className="text-sm text-gray-600 dark:text-gray-300">
                   Création du motif personnalisé et choix des empiècements
                 </p>
               </div>
               <div>
-                <div className="bg-gray-200 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3">
-                  <span className="font-bold">3</span>
+                <div className="bg-gray-200 dark:bg-gray-700 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3">
+                  <span className="font-bold text-gray-900 dark:text-gray-100">
+                    3
+                  </span>
                 </div>
-                <h4 className="font-medium mb-2">Transformation</h4>
-                <p className="text-sm text-gray-600">
+                <h4 className="font-medium mb-2 text-gray-900 dark:text-gray-100">
+                  Transformation
+                </h4>
+                <p className="text-sm text-gray-600 dark:text-gray-300">
                   Peinture et modification des empiècements
                 </p>
               </div>
               <div>
-                <div className="bg-gray-200 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3">
-                  <span className="font-bold">4</span>
+                <div className="bg-gray-200 dark:bg-gray-700 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3">
+                  <span className="font-bold text-gray-900 dark:text-gray-100">
+                    4
+                  </span>
                 </div>
-                <h4 className="font-medium mb-2">Finition</h4>
-                <p className="text-sm text-gray-600">
+                <h4 className="font-medium mb-2 text-gray-900 dark:text-gray-100">
+                  Finition
+                </h4>
+                <p className="text-sm text-gray-600 dark:text-gray-300">
                   Traitement protecteur pour une durabilité optimale
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="bg-black text-white p-8 rounded-lg text-center">
+          <div className="bg-black dark:bg-gray-900 text-white dark:text-gray-100 p-8 rounded-lg text-center border border-gray-800 dark:border-gray-600">
             <h3
               className="text-xl font-semibold mb-3"
               style={{ fontFamily: "var(--font-titles)" }}
@@ -120,7 +136,7 @@ export default function ChaussuresCustom() {
               projet est une collaboration unique entre l'artiste et le client
               pour créer LA paire qui vous ressemble.
             </p>
-            <div className="inline-block border border-white px-5 py-3">
+            <div className="inline-block border border-white dark:border-gray-300 px-5 py-3 rounded">
               Contact : custom@focuslight.fr
             </div>
           </div>

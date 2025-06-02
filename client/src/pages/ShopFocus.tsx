@@ -238,12 +238,12 @@ export default function ShopFocus() {
 
         {/* Product Availability Notice - Style minimaliste avec optimisations mobile */}
         <section className="py-6 md:py-8 animate fade-in-up delay-2">
-          <div className="bg-white border border-gray-200 p-4 md:p-8 mx-4 md:mx-0">
+          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-4 md:p-8 mx-4 md:mx-0">
             <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-6">
-              <div className="bg-primary/5 p-3 md:p-4 mx-auto md:mx-0">
+              <div className="bg-primary/5 dark:bg-blue-400/10 p-3 md:p-4 mx-auto md:mx-0">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 md:h-6 md:w-6 text-[var(--color-text)]"
+                  className="h-5 w-5 md:h-6 md:w-6 text-[var(--color-text)] dark:text-blue-400"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -258,19 +258,19 @@ export default function ShopFocus() {
               </div>
               <div className="text-center md:text-left">
                 <h3
-                  className="text-base md:text-lg font-medium mb-2 md:mb-3"
+                  className="text-base md:text-lg font-medium mb-2 md:mb-3 dark:text-gray-100"
                   style={{ fontFamily: "var(--font-titles)" }}
                 >
                   Collection en cours de développement
                 </h3>
-                <p className="text-gray-600 leading-relaxed text-sm md:text-base">
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-sm md:text-base">
                   Actuellement, la lampe FOCUS.01 est notre seul produit
                   disponible à la vente. Pour toute demande concernant d'autres
                   créations ou services d'Alto, n'hésitez pas à nous contacter
                   via{" "}
                   <a
                     href="mailto:altolille@gmail.com"
-                    className="text-primary underline decoration-dotted underline-offset-4 hover:decoration-solid mobile-tap-highlight"
+                    className="text-primary dark:text-blue-400 underline decoration-dotted underline-offset-4 hover:decoration-solid mobile-tap-highlight"
                   >
                     altolille@gmail.com
                   </a>{" "}
@@ -286,50 +286,50 @@ export default function ShopFocus() {
         <section id="product-details" className="py-20 animate fade-in">
           <div className="container mx-auto max-w-5xl">
             <h2
-              className="font-heading text-3xl md:text-4xl mb-16 text-center"
+              className="font-heading text-3xl md:text-4xl mb-16 text-center dark:text-gray-100"
               style={{ fontFamily: "var(--font-titles)" }}
             >
               Conception & Détails
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
-              <div className="p-6 bg-white border border-gray-100 animate fade-in-right delay-1">
-                <div className="w-12 h-12 bg-primary/5 flex items-center justify-center mb-4">
-                  <Leaf className="text-[var(--color-text)] h-6 w-6" />
+              <div className="p-6 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 animate fade-in-right delay-1">
+                <div className="w-12 h-12 bg-primary/5 dark:bg-blue-400/10 flex items-center justify-center mb-4">
+                  <Leaf className="text-[var(--color-text)] dark:text-blue-400 h-6 w-6" />
                 </div>
                 <h3
-                  className="font-heading text-xl mb-3"
+                  className="font-heading text-xl mb-3 dark:text-gray-100"
                   style={{ fontFamily: "var(--font-titles)" }}
                 >
                   Matériaux Durables
                 </h3>
-                <p className="text-gray-600">
+                <p className="text-gray-600 dark:text-gray-300">
                   Structure en PLA 100% biodégradable associée à du chêne
                   provenant de forêts gérées durablement.
                 </p>
               </div>
 
-              <div className="p-6 bg-white border border-gray-100 animate fade-in-up delay-2">
-                <div className="w-12 h-12 bg-primary/5 flex items-center justify-center mb-4">
-                  <Lightbulb className="text-[var(--color-text)] h-6 w-6" />
+              <div className="p-6 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 animate fade-in-up delay-2">
+                <div className="w-12 h-12 bg-primary/5 dark:bg-blue-400/10 flex items-center justify-center mb-4">
+                  <Lightbulb className="text-[var(--color-text)] dark:text-blue-400 h-6 w-6" />
                 </div>
                 <h3
-                  className="font-heading text-xl mb-3"
+                  className="font-heading text-xl mb-3 dark:text-gray-100"
                   style={{ fontFamily: "var(--font-titles)" }}
                 >
                   Éclairage Optimal
                 </h3>
-                <p className="text-gray-600">
+                <p className="text-gray-600 dark:text-gray-300">
                   Livrée avec une ampoule LED 60W E14 pour un éclairage
                   chaleureux et économe en énergie.
                 </p>
               </div>
 
-              <div className="p-6 bg-white border border-gray-100 animate fade-in-left delay-3">
-                <div className="w-12 h-12 bg-primary/5 flex items-center justify-center mb-4">
+              <div className="p-6 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 animate fade-in-left delay-3">
+                <div className="w-12 h-12 bg-primary/5 dark:bg-blue-400/10 flex items-center justify-center mb-4">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="text-[var(--color-text)] h-6 w-6"
+                    className="text-[var(--color-text)] dark:text-blue-400 h-6 w-6"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
@@ -342,12 +342,12 @@ export default function ShopFocus() {
                   </svg>
                 </div>
                 <h3
-                  className="font-heading text-xl mb-3"
+                  className="font-heading text-xl mb-3 dark:text-gray-100"
                   style={{ fontFamily: "var(--font-titles)" }}
                 >
                   Fabrication Artisanale
                 </h3>
-                <p className="text-gray-600">
+                <p className="text-gray-600 dark:text-gray-300">
                   Chaque lampe est conçue et assemblée à la main par Anatole
                   Collet dans son atelier français.
                 </p>
@@ -366,14 +366,14 @@ export default function ShopFocus() {
               </div>
               <div className="md:w-1/2 animate fade-in-left delay-4">
                 <h3
-                  className="font-heading text-2xl mb-6"
+                  className="font-heading text-2xl mb-6 dark:text-gray-100"
                   style={{ fontFamily: "var(--font-titles)" }}
                 >
                   Caractéristiques Techniques
                 </h3>
                 <ul className="space-y-6 mb-8">
                   <li className="flex items-start">
-                    <span className="bg-primary/5 text-[var(--color-text)] p-1 mr-4 mt-1">
+                    <span className="bg-primary/5 dark:bg-blue-400/10 text-[var(--color-text)] dark:text-blue-400 p-1 mr-4 mt-1">
                       <svg
                         className="h-3 w-3"
                         viewBox="0 0 24 24"
@@ -387,14 +387,16 @@ export default function ShopFocus() {
                       </svg>
                     </span>
                     <div>
-                      <span className="font-medium block mb-1">Dimensions</span>
-                      <p className="text-gray-600">
+                      <span className="font-medium block mb-1 dark:text-gray-100">
+                        Dimensions
+                      </span>
+                      <p className="text-gray-600 dark:text-gray-300">
                         Hauteur: 30cm, Largeur: 12cm, Profondeur: 15cm
                       </p>
                     </div>
                   </li>
                   <li className="flex items-start">
-                    <span className="bg-primary/5 text-[var(--color-text)] p-1 mr-4 mt-1">
+                    <span className="bg-primary/5 dark:bg-blue-400/10 text-[var(--color-text)] dark:text-blue-400 p-1 mr-4 mt-1">
                       <svg
                         className="h-3 w-3"
                         viewBox="0 0 24 24"
@@ -408,15 +410,17 @@ export default function ShopFocus() {
                       </svg>
                     </span>
                     <div>
-                      <span className="font-medium block mb-1">Matériaux</span>
-                      <p className="text-gray-600">
+                      <span className="font-medium block mb-1 dark:text-gray-100">
+                        Matériaux
+                      </span>
+                      <p className="text-gray-600 dark:text-gray-300">
                         Corps en PLA éco-responsable, base et tige en chêne
                         massif écogéré
                       </p>
                     </div>
                   </li>
                   <li className="flex items-start">
-                    <span className="bg-primary/5 text-[var(--color-text)] p-1 mr-4 mt-1">
+                    <span className="bg-primary/5 dark:bg-blue-400/10 text-[var(--color-text)] dark:text-blue-400 p-1 mr-4 mt-1">
                       <svg
                         className="h-3 w-3"
                         viewBox="0 0 24 24"
@@ -430,15 +434,17 @@ export default function ShopFocus() {
                       </svg>
                     </span>
                     <div>
-                      <span className="font-medium block mb-1">Éclairage</span>
-                      <p className="text-gray-600">
+                      <span className="font-medium block mb-1 dark:text-gray-100">
+                        Éclairage
+                      </span>
+                      <p className="text-gray-600 dark:text-gray-300">
                         Ampoule LED 60W E14 incluse, câble avec interrupteur de
                         1m50
                       </p>
                     </div>
                   </li>
                   <li className="flex items-start">
-                    <span className="bg-primary/5 text-[var(--color-text)] p-1 mr-4 mt-1">
+                    <span className="bg-primary/5 dark:bg-blue-400/10 text-[var(--color-text)] dark:text-blue-400 p-1 mr-4 mt-1">
                       <svg
                         className="h-3 w-3"
                         viewBox="0 0 24 24"
@@ -452,20 +458,20 @@ export default function ShopFocus() {
                       </svg>
                     </span>
                     <div>
-                      <span className="font-medium block mb-1">
+                      <span className="font-medium block mb-1 dark:text-gray-100">
                         Orientation
                       </span>
-                      <p className="text-gray-600">
+                      <p className="text-gray-600 dark:text-gray-300">
                         Tête orientable pour un éclairage directionnel et
                         ajustable
                       </p>
                     </div>
                   </li>
                 </ul>
-                <div className="flex flex-col sm:flex-row gap-6 pt-4 border-t border-gray-100">
+                <div className="flex flex-col sm:flex-row gap-6 pt-4 border-t border-gray-100 dark:border-gray-700">
                   <div className="flex items-center">
                     <svg
-                      className="text-green-600 mr-2 h-5 w-5"
+                      className="text-green-600 dark:text-green-400 mr-2 h-5 w-5"
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"
@@ -476,11 +482,11 @@ export default function ShopFocus() {
                       <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
                       <path d="M13.73 21a2 2 0 0 1-3.46 0" />
                     </svg>
-                    <span>Garantie 2 ans</span>
+                    <span className="dark:text-gray-300">Garantie 2 ans</span>
                   </div>
                   <div className="flex items-center">
                     <svg
-                      className="text-orange-600 mr-2 h-5 w-5"
+                      className="text-orange-600 dark:text-orange-400 mr-2 h-5 w-5"
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"
@@ -492,7 +498,9 @@ export default function ShopFocus() {
                       <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
                       <line x1="12" y1="22.08" x2="12" y2="12" />
                     </svg>
-                    <span>Emballage éco-responsable</span>
+                    <span className="dark:text-gray-300">
+                      Emballage éco-responsable
+                    </span>
                   </div>
                 </div>
               </div>

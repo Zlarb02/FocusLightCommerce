@@ -29,17 +29,17 @@ export default function Focus01() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
               <h3
-                className="text-xl font-semibold mb-3"
+                className="text-xl font-semibold mb-3 dark:text-gray-100"
                 style={{ fontFamily: "var(--font-titles)" }}
               >
                 Concept et recherches
               </h3>
-              <p className="text-gray-700 mb-4">
+              <p className="text-gray-700 dark:text-gray-300 mb-4">
                 J'ai souhaité créer une lampe au design épuré avec une
                 utilisation intuitive. Toutes les pièces s'emboîtent
                 parfaitement grâce à un système d'assemblage sans outils.
               </p>
-              <p className="text-gray-700">
+              <p className="text-gray-700 dark:text-gray-300">
                 Les couleurs contrastées permettent de maintenir l'intérêt
                 visuel même lorsque la lampe est éteinte, faisant d'elle un
                 véritable objet de décoration.
@@ -47,17 +47,17 @@ export default function Focus01() {
             </div>
             <div>
               <h3
-                className="text-xl font-semibold mb-3"
+                className="text-xl font-semibold mb-3 dark:text-gray-100"
                 style={{ fontFamily: "var(--font-titles)" }}
               >
                 Caractéristiques
               </h3>
-              <p className="text-gray-700 mb-4">
+              <p className="text-gray-700 dark:text-gray-300 mb-4">
                 La Focus.01 est livrée en kit pour optimiser l'emballage et
                 réduire l'impact environnemental. Une notice illustrée
                 accompagne le produit pour un montage rapide et accessible.
               </p>
-              <p className="text-gray-700">
+              <p className="text-gray-700 dark:text-gray-300">
                 L'assemblage ne nécessite ni colle ni vis, rendant le montage
                 possible même pour un enfant, dans un esprit de simplicité et de
                 durabilité.
@@ -65,19 +65,19 @@ export default function Focus01() {
             </div>
           </div>
 
-          <div className="bg-blue-50 p-6 rounded-lg">
+          <div className="bg-blue-50 dark:bg-blue-900/30 p-6 rounded-lg">
             <h3
-              className="text-xl font-semibold mb-4"
+              className="text-xl font-semibold mb-4 dark:text-gray-100"
               style={{ fontFamily: "var(--font-titles)" }}
             >
               Public cible et positionnement
             </h3>
-            <p className="text-gray-700 mb-4">
+            <p className="text-gray-700 dark:text-gray-300 mb-4">
               La Focus.01 est proposée à 60€ frais de port inclus, positionnée
               comme une solution d'éclairage design accessible et
               éco-responsable.
             </p>
-            <p className="text-gray-700">
+            <p className="text-gray-700 dark:text-gray-300">
               Elle s'adresse à toute personne souhaitant offrir un cadeau
               original ou renouveler sa décoration d'intérieur sans
               investissement majeur. La lampe apporte une touche de modernité
@@ -86,14 +86,14 @@ export default function Focus01() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="bg-gray-50 p-6 rounded-lg">
+            <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg">
               <h3
-                className="text-lg font-semibold mb-3"
+                className="text-lg font-semibold mb-3 dark:text-gray-100"
                 style={{ fontFamily: "var(--font-titles)" }}
               >
                 Spécifications techniques
               </h3>
-              <ul className="space-y-1 text-gray-700 text-sm">
+              <ul className="space-y-1 text-gray-700 dark:text-gray-300 text-sm">
                 <li>• Matières : PLA, chêne massif, LED</li>
                 <li>• Douille E14, câble textile</li>
                 <li>• Interrupteur intégré</li>
@@ -101,14 +101,14 @@ export default function Focus01() {
                 <li>• 4 coloris disponibles</li>
               </ul>
             </div>
-            <div className="bg-gray-50 p-6 rounded-lg">
+            <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg">
               <h3
-                className="text-lg font-semibold mb-3"
+                className="text-lg font-semibold mb-3 dark:text-gray-100"
                 style={{ fontFamily: "var(--font-titles)" }}
               >
                 Développement futur
               </h3>
-              <p className="text-gray-700 text-sm">
+              <p className="text-gray-700 dark:text-gray-300 text-sm">
                 Pour mon second produit, j'ai développé une liseuse qui
                 s'inscrit dans la continuité esthétique de la Focus.01. J'ai
                 conservé le même abat-jour pour créer une cohérence visuelle et
@@ -118,14 +118,14 @@ export default function Focus01() {
             </div>
           </div>
 
-          <div className="text-center bg-gray-100 p-6 rounded-lg">
+          <div className="text-center bg-gray-100 dark:bg-gray-800 p-6 rounded-lg">
             <h3
-              className="text-lg font-semibold mb-2"
+              className="text-lg font-semibold mb-2 dark:text-gray-100"
               style={{ fontFamily: "var(--font-titles)" }}
             >
               Alto lille - Focus.01
             </h3>
-            <p className="text-gray-600 text-sm">
+            <p className="text-gray-600 dark:text-gray-400 text-sm">
               Premier produit de la marque Alto | Disponible à 60€ frais de port
               inclus
             </p>
