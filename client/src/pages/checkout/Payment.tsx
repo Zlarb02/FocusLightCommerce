@@ -111,12 +111,12 @@ export function Payment({ onNext, onBack }: PaymentProps) {
   const totalPrice = getTotalPrice();
 
   return (
-    <div>
-      <h2 className="font-heading font-bold text-2xl mb-6 text-gray-900 dark:text-gray-100">
+    <div className="space-y-6">
+      <h2 className="font-heading font-bold text-xl md:text-2xl mb-4 md:mb-6 text-gray-900 dark:text-gray-100">
         Paiement sécurisé
       </h2>
 
-      <Alert className="mb-6 bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800">
+      <Alert className="mb-4 md:mb-6 bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800">
         <Shield className="h-4 w-4 text-green-600 dark:text-green-400" />
         <AlertDescription className="text-sm text-green-800 dark:text-green-200">
           Toutes vos informations de paiement sont cryptées et sécurisées.
@@ -124,17 +124,23 @@ export function Payment({ onNext, onBack }: PaymentProps) {
       </Alert>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-4 md:space-y-6"
+        >
           <FormField
             control={form.control}
             name="cardNumber"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Numéro de carte</FormLabel>
+                <FormLabel className="text-sm md:text-base">
+                  Numéro de carte
+                </FormLabel>
                 <FormControl>
                   <div className="relative">
                     <Input
                       placeholder="1234 5678 9012 3456"
+                      className="h-11 md:h-auto pr-20"
                       {...field}
                       onChange={(e) => {
                         // Format card number with spaces
@@ -145,16 +151,16 @@ export function Payment({ onNext, onBack }: PaymentProps) {
                         field.onChange(formattedValue);
                       }}
                     />
-                    <div className="absolute right-3 top-3 flex gap-2">
+                    <div className="absolute right-3 top-1/2 transform -translate-y-1/2 flex gap-1">
                       <svg
-                        className="w-6 h-6 text-blue-800"
+                        className="w-5 h-5 md:w-6 md:h-6 text-blue-800"
                         viewBox="0 0 24 24"
                         fill="currentColor"
                       >
                         <path d="M7.5 11.5h9v1h-9zM7.5 8.5h9v1h-9zM16 4H8a4 4 0 0 0-4 4v8a4 4 0 0 0 4 4h8a4 4 0 0 0 4-4V8a4 4 0 0 0-4-4z" />
                       </svg>
                       <svg
-                        className="w-6 h-6 text-red-600"
+                        className="w-5 h-5 md:w-6 md:h-6 text-red-600"
                         viewBox="0 0 24 24"
                         fill="currentColor"
                       >
@@ -174,16 +180,19 @@ export function Payment({ onNext, onBack }: PaymentProps) {
             )}
           />
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <FormField
               control={form.control}
               name="expiryDate"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Date d'expiration</FormLabel>
+                  <FormLabel className="text-sm md:text-base">
+                    Date d'expiration
+                  </FormLabel>
                   <FormControl>
                     <Input
                       placeholder="MM/AA"
+                      className="h-11 md:h-auto"
                       {...field}
                       onChange={(e) => {
                         // Format expiry date with /
@@ -208,10 +217,11 @@ export function Payment({ onNext, onBack }: PaymentProps) {
               name="cvv"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>CVV</FormLabel>
+                  <FormLabel className="text-sm md:text-base">CVV</FormLabel>
                   <FormControl>
                     <Input
                       placeholder="123"
+                      className="h-11 md:h-auto"
                       {...field}
                       onChange={(e) => {
                         const value = e.target.value.replace(/\D/g, "");
@@ -231,43 +241,49 @@ export function Payment({ onNext, onBack }: PaymentProps) {
             name="cardName"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Nom sur la carte</FormLabel>
+                <FormLabel className="text-sm md:text-base">
+                  Nom sur la carte
+                </FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input {...field} className="h-11 md:h-auto" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
 
-          <div className="border-t border-gray-200 dark:border-gray-600 pt-4">
-            <div className="flex justify-between mb-2 text-gray-700 dark:text-gray-300">
+          <div className="border-t border-gray-200 dark:border-gray-600 pt-4 space-y-2">
+            <div className="flex justify-between text-sm md:text-base text-gray-700 dark:text-gray-300">
               <span>Sous-total</span>
               <span>{formatPrice(totalPrice)}</span>
             </div>
-            <div className="flex justify-between mb-2 text-gray-700 dark:text-gray-300">
+            <div className="flex justify-between text-sm md:text-base text-gray-700 dark:text-gray-300">
               <span>Livraison</span>
               <span className="text-green-600 dark:text-green-400">
                 Gratuite
               </span>
             </div>
-            <div className="flex justify-between font-bold text-lg text-gray-900 dark:text-gray-100">
+            <div className="flex justify-between font-bold text-base md:text-lg text-gray-900 dark:text-gray-100 pt-2 border-t border-gray-100 dark:border-gray-700">
               <span>Total</span>
               <span>{formatPrice(totalPrice)}</span>
             </div>
           </div>
 
-          <div className="pt-4 flex gap-4">
+          <div className="pt-4 md:pt-6 flex flex-col sm:flex-row gap-3 sm:gap-4">
             <Button
               type="button"
               variant="outline"
-              className="w-1/3"
+              className="w-full sm:w-1/3 h-12 md:h-auto text-base md:text-sm order-2 sm:order-1"
               onClick={onBack}
               disabled={isProcessing}
             >
               Retour
             </Button>
-            <Button type="submit" className="w-2/3" disabled={isProcessing}>
+            <Button
+              type="submit"
+              className="w-full sm:w-2/3 h-12 md:h-auto text-base md:text-sm order-1 sm:order-2"
+              disabled={isProcessing}
+            >
               {isProcessing
                 ? "Traitement en cours..."
                 : `Payer ${formatPrice(totalPrice)}`}

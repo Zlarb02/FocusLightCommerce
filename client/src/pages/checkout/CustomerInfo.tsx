@@ -48,22 +48,25 @@ export function CustomerInfo({ onNext }: CustomerInfoProps) {
   };
 
   return (
-    <div>
-      <h2 className="font-heading font-bold text-2xl mb-6 text-gray-900 dark:text-gray-100">
+    <div className="space-y-6">
+      <h2 className="font-heading font-bold text-xl md:text-2xl mb-4 md:mb-6 text-gray-900 dark:text-gray-100">
         Vos informations
       </h2>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-4 md:space-y-6"
+        >
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <FormField
               control={form.control}
               name="firstName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Prénom</FormLabel>
+                  <FormLabel className="text-sm md:text-base">Prénom</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} className="h-11 md:h-auto" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -74,9 +77,9 @@ export function CustomerInfo({ onNext }: CustomerInfoProps) {
               name="lastName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nom</FormLabel>
+                  <FormLabel className="text-sm md:text-base">Nom</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} className="h-11 md:h-auto" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -89,9 +92,9 @@ export function CustomerInfo({ onNext }: CustomerInfoProps) {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel className="text-sm md:text-base">Email</FormLabel>
                 <FormControl>
-                  <Input type="email" {...field} />
+                  <Input type="email" {...field} className="h-11 md:h-auto" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -103,17 +106,22 @@ export function CustomerInfo({ onNext }: CustomerInfoProps) {
             name="phone"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Téléphone</FormLabel>
+                <FormLabel className="text-sm md:text-base">
+                  Téléphone
+                </FormLabel>
                 <FormControl>
-                  <Input type="tel" {...field} />
+                  <Input type="tel" {...field} className="h-11 md:h-auto" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
 
-          <div className="pt-4">
-            <Button type="submit" className="w-full">
+          <div className="pt-4 md:pt-6">
+            <Button
+              type="submit"
+              className="w-full h-12 md:h-auto text-base md:text-sm"
+            >
               Continuer
             </Button>
           </div>

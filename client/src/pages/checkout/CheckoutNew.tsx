@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Layout } from "@/components/Layout";
 import { useLocation } from "wouter";
 import { CustomerInfo } from "./CustomerInfo";
@@ -73,15 +73,15 @@ export default function CheckoutNew() {
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         {/* Header épuré */}
         <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-          <div className="container mx-auto px-4 py-6">
-            <div className="flex items-center justify-between">
+          <div className="container mx-auto px-4 py-4 md:py-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <h1
-                className="text-2xl font-bold text-gray-900 dark:text-gray-100"
+                className="text-xl md:text-2xl font-bold text-gray-900 dark:text-gray-100"
                 style={{ fontFamily: "var(--font-titles)" }}
               >
                 Finaliser ma commande
               </h1>
-              <div className="flex items-center gap-4">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
                 {step < 4 && (
                   <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                     <ShoppingBag className="w-4 h-4" />
@@ -95,21 +95,22 @@ export default function CheckoutNew() {
                 )}
                 <button
                   onClick={() => navigate("/shop")}
-                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
+                  className="flex items-center gap-2 px-3 sm:px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors whitespace-nowrap"
                 >
                   <ArrowLeft className="w-4 h-4" />
-                  Retour au shop
+                  <span>Shop</span>
                 </button>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto px-4 py-4 md:py-8">
           <div className="max-w-4xl mx-auto">
-            {/* Progress Steps - Design moderne */}
-            <div className="mb-8 bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-              <div className="flex items-center justify-between">
+            {/* Progress Steps - Design moderne responsive */}
+            <div className="mb-8 bg-white dark:bg-gray-800 rounded-lg p-4 md:p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+              {/* Version desktop */}
+              <div className="hidden md:flex items-center justify-between">
                 {steps.map((stepItem, index) => {
                   const Icon = stepItem.icon;
                   const isActive = step === stepItem.number;
@@ -160,13 +161,63 @@ export default function CheckoutNew() {
                   );
                 })}
               </div>
+
+              {/* Version mobile */}
+              <div className="md:hidden">
+                {/* Étape actuelle */}
+                <div className="flex items-center justify-center mb-4">
+                  <div
+                    className={cn(
+                      "w-12 h-12 rounded-full flex items-center justify-center mr-3 transition-all duration-200",
+                      steps[step - 1].completed
+                        ? "bg-green-500 text-white"
+                        : "bg-blue-600 dark:bg-blue-500 text-white"
+                    )}
+                  >
+                    {steps[step - 1].completed ? (
+                      <Check className="w-6 h-6" />
+                    ) : (
+                      React.createElement(steps[step - 1].icon, {
+                        className: "w-6 h-6",
+                      })
+                    )}
+                  </div>
+                  <div>
+                    <div className="text-sm text-gray-500 dark:text-gray-400">
+                      Étape {step} sur {steps.length}
+                    </div>
+                    <div className="text-lg font-medium text-gray-900 dark:text-gray-100">
+                      {steps[step - 1].title}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Barre de progression */}
+                <div className="flex justify-center">
+                  <div className="flex space-x-2">
+                    {steps.map((_, index) => (
+                      <div
+                        key={index}
+                        className={cn(
+                          "h-2 rounded-full transition-all duration-300",
+                          index < step
+                            ? "bg-green-500 w-8"
+                            : index === step - 1
+                            ? "bg-blue-600 dark:bg-blue-500 w-8"
+                            : "bg-gray-200 dark:bg-gray-700 w-4"
+                        )}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* Contenu principal */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8">
               {/* Formulaire principal */}
               <div className="lg:col-span-2">
-                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 md:p-6">
                   {renderStepContent()}
                 </div>
               </div>
@@ -174,7 +225,7 @@ export default function CheckoutNew() {
               {/* Récapitulatif de commande */}
               {step < 4 && (
                 <div className="lg:col-span-1">
-                  <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 sticky top-6">
+                  <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 md:p-6 lg:sticky lg:top-6">
                     <h3 className="font-semibold text-lg mb-4 text-gray-900 dark:text-gray-100">
                       Récapitulatif
                     </h3>

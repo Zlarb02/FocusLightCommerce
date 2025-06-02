@@ -86,36 +86,41 @@ export function Shipping({ onNext, onBack }: ShippingProps) {
   };
 
   return (
-    <div>
-      <h2 className="font-heading font-bold text-2xl mb-6">
+    <div className="space-y-6">
+      <h2 className="font-heading font-bold text-xl md:text-2xl mb-4 md:mb-6">
         Adresse de livraison
       </h2>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-4 md:space-y-6"
+        >
           <FormField
             control={form.control}
             name="address"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Adresse</FormLabel>
+                <FormLabel className="text-sm md:text-base">Adresse</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input {...field} className="h-11 md:h-auto" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <FormField
               control={form.control}
               name="postalCode"
               render={({ field }) => (
-                <FormItem className="md:col-span-1">
-                  <FormLabel>Code postal</FormLabel>
+                <FormItem className="sm:col-span-1">
+                  <FormLabel className="text-sm md:text-base">
+                    Code postal
+                  </FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} className="h-11 md:h-auto" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -125,10 +130,10 @@ export function Shipping({ onNext, onBack }: ShippingProps) {
               control={form.control}
               name="city"
               render={({ field }) => (
-                <FormItem className="md:col-span-2">
-                  <FormLabel>Ville</FormLabel>
+                <FormItem className="sm:col-span-2">
+                  <FormLabel className="text-sm md:text-base">Ville</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} className="h-11 md:h-auto" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -141,13 +146,13 @@ export function Shipping({ onNext, onBack }: ShippingProps) {
             name="country"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Pays</FormLabel>
+                <FormLabel className="text-sm md:text-base">Pays</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                 >
                   <FormControl>
-                    <SelectTrigger>
+                    <SelectTrigger className="h-11 md:h-auto">
                       <SelectValue placeholder="Sélectionner un pays" />
                     </SelectTrigger>
                   </FormControl>
@@ -163,16 +168,19 @@ export function Shipping({ onNext, onBack }: ShippingProps) {
             )}
           />
 
-          <div className="pt-4 flex gap-4">
+          <div className="pt-4 md:pt-6 flex flex-col sm:flex-row gap-3 sm:gap-4">
             <Button
               type="button"
               variant="outline"
-              className="w-1/3"
+              className="w-full sm:w-1/3 h-12 md:h-auto text-base md:text-sm order-2 sm:order-1"
               onClick={onBack}
             >
               Retour
             </Button>
-            <Button type="submit" className="w-2/3">
+            <Button
+              type="submit"
+              className="w-full sm:w-2/3 h-12 md:h-auto text-base md:text-sm order-1 sm:order-2"
+            >
               Continuer
             </Button>
           </div>

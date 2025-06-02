@@ -53,54 +53,91 @@ export default function Checkout() {
 
   return (
     <Layout showCart={false}>
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-2 sm:px-4 py-4 md:py-8">
         {/* Checkout steps navigation */}
-        <div className="max-w-3xl mx-auto mb-8">
-          <div className="flex justify-between">
-            <div className="flex flex-col items-center">
-              <div className={cn(
-                "w-8 h-8 rounded-full flex items-center justify-center mb-2 font-medium",
-                step >= 1 ? "bg-primary text-primary-foreground" : "bg-gray-200 text-muted-foreground"
-              )}>
-                1
+        <div className="max-w-4xl mx-auto mb-6 md:mb-8">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-2 sm:p-4 md:p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+            <div className="flex items-center justify-between overflow-x-auto scrollbar-thin scrollbar-thumb-gray-200 dark:scrollbar-thumb-gray-700 max-w-full">
+              <div className="flex items-center min-w-0 flex-1">
+                <div className="flex flex-col items-center flex-shrink-0 min-w-[80px]">
+                  <div
+                    className={cn(
+                      "w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center mb-2 font-medium text-xs md:text-sm",
+                      step >= 1
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-gray-200 text-muted-foreground"
+                    )}
+                  >
+                    1
+                  </div>
+                  <span className="text-xs md:text-sm text-center font-medium">
+                    Info
+                  </span>
+                </div>
+                <div className="flex-1 h-0.5 bg-gray-200 dark:bg-gray-600 mx-2 md:mx-4 relative top-[-8px]"></div>
               </div>
-              <span className="text-sm">Informations</span>
-            </div>
-            <div className="flex-grow border-t border-gray-300 relative top-4 mx-2"></div>
-            <div className="flex flex-col items-center">
-              <div className={cn(
-                "w-8 h-8 rounded-full flex items-center justify-center mb-2 font-medium",
-                step >= 2 ? "bg-primary text-primary-foreground" : "bg-gray-200 text-muted-foreground"
-              )}>
-                2
+
+              <div className="flex items-center min-w-0 flex-1">
+                <div className="flex flex-col items-center flex-shrink-0 min-w-[80px]">
+                  <div
+                    className={cn(
+                      "w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center mb-2 font-medium text-xs md:text-sm",
+                      step >= 2
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-gray-200 text-muted-foreground"
+                    )}
+                  >
+                    2
+                  </div>
+                  <span className="text-xs md:text-sm text-center font-medium">
+                    Livraison
+                  </span>
+                </div>
+                <div className="flex-1 h-0.5 bg-gray-200 dark:bg-gray-600 mx-2 md:mx-4 relative top-[-8px]"></div>
               </div>
-              <span className="text-sm">Livraison</span>
-            </div>
-            <div className="flex-grow border-t border-gray-300 relative top-4 mx-2"></div>
-            <div className="flex flex-col items-center">
-              <div className={cn(
-                "w-8 h-8 rounded-full flex items-center justify-center mb-2 font-medium",
-                step >= 3 ? "bg-primary text-primary-foreground" : "bg-gray-200 text-muted-foreground"
-              )}>
-                3
+
+              <div className="flex items-center min-w-0 flex-1">
+                <div className="flex flex-col items-center flex-shrink-0 min-w-[80px]">
+                  <div
+                    className={cn(
+                      "w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center mb-2 font-medium text-xs md:text-sm",
+                      step >= 3
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-gray-200 text-muted-foreground"
+                    )}
+                  >
+                    3
+                  </div>
+                  <span className="text-xs md:text-sm text-center font-medium">
+                    Paiement
+                  </span>
+                </div>
+                <div className="flex-1 h-0.5 bg-gray-200 dark:bg-gray-600 mx-2 md:mx-4 relative top-[-8px]"></div>
               </div>
-              <span className="text-sm">Paiement</span>
-            </div>
-            <div className="flex-grow border-t border-gray-300 relative top-4 mx-2"></div>
-            <div className="flex flex-col items-center">
-              <div className={cn(
-                "w-8 h-8 rounded-full flex items-center justify-center mb-2 font-medium",
-                step >= 4 ? "bg-primary text-primary-foreground" : "bg-gray-200 text-muted-foreground"
-              )}>
-                4
+
+              <div className="flex items-center min-w-0">
+                <div className="flex flex-col items-center flex-shrink-0 min-w-[80px]">
+                  <div
+                    className={cn(
+                      "w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center mb-2 font-medium text-xs md:text-sm",
+                      step >= 4
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-gray-200 text-muted-foreground"
+                    )}
+                  >
+                    4
+                  </div>
+                  <span className="text-xs md:text-sm text-center font-medium">
+                    Confirmation
+                  </span>
+                </div>
               </div>
-              <span className="text-sm">Confirmation</span>
             </div>
           </div>
         </div>
 
         {/* Step content */}
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-4xl mx-auto px-2 md:px-0">
           {renderStepContent()}
         </div>
       </div>
