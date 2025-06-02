@@ -55,7 +55,10 @@ export function CartItem({ item }: CartItemProps) {
           </button>
         </div>
         <p className="text-sm text-muted-foreground dark:text-gray-400">
-          {product.variationType}: {product.variationValue}
+          {product.variationType === "color"
+            ? "Couleur"
+            : product.variationType}
+          : {product.variationValue}
         </p>
         <div className="flex justify-between items-center mt-2">
           <div className="flex items-center border border-gray-200 dark:border-gray-600 rounded">

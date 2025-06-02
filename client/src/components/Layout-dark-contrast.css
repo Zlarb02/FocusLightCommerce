@@ -1,0 +1,68 @@
+/* Améliorations du contraste pour le Layout en mode sombre */
+
+/* Liens du menu burger en mode sombre */
+.dark .text-gray-700,
+.dark .text-gray-600 {
+  color: #ffffff !important;
+  font-weight: 500;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+/* Création unique ou personnalisée */
+.dark div h3:has(+ p:contains("création unique")) + p {
+  color: #ffffff !important;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+/* Survol des liens du menu burger */
+.dark button:hover,
+.dark a:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: #4a9eff !important;
+}
+
+/* Titres des sections du menu */
+.dark .text-gray-500 {
+  color: #c0c0c0 !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+/* Liens du footer */
+.dark footer .text-gray-600,
+.dark footer .text-gray-400,
+.dark footer .text-gray-500 {
+  color: #e0e0e0 !important;
+  font-weight: 500;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+/* Liens du footer au survol */
+.dark footer a:hover {
+  color: #4a9eff !important;
+  text-decoration: underline;
+}
+
+/* Contact au téléphone */
+.dark .text-gray-400 {
+  color: #ffffff !important;
+}
+
+/* Mode haute-contraste pour l'accessibilité */
+@media (prefers-contrast: high) {
+  .dark .text-gray-700,
+  .dark .text-gray-600,
+  .dark .text-gray-500,
+  .dark .text-gray-400 {
+    color: white !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9) !important;
+    font-weight: bold !important;
+  }
+
+  .dark a,
+  .dark button {
+    border: 2px solid white !important;
+    padding: 0.25rem 0.5rem !important;
+    background-color: #333333 !important;
+  }
+}

@@ -1,0 +1,117 @@
+/* Amélioration du contraste pour le mode sombre de ShopFocus */
+
+/* Description du produit (Lampe d'appoint éco-responsable) */
+.dark .text-gray-600 {
+  color: #f0f0f0 !important;
+}
+
+/* Options de couleurs (Choisissez parmi nos quatre coloris distinctifs...) */
+.dark p.text-gray-600 {
+  color: #f0f0f0 !important;
+  font-weight: 500;
+}
+
+/* Informations de contact (Besoin d'aide ? +33 782 086 690) */
+.dark p.text-gray-600 a {
+  color: #7cb3ff !important;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.dark .text-gray-600 a:hover {
+  color: #a0cbff !important;
+}
+
+/* Numéro de téléphone et autres infos de contact */
+.dark p.text-gray-600 {
+  color: #ffffff !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Création unique ou personnalisée */
+.dark .border.border-gray-200 p.text-gray-600 {
+  color: #ffffff !important;
+  font-weight: 500;
+}
+
+/* Liens du footer (Livraison, Retours, Garantie, FAQ) */
+.dark footer a,
+.dark .text-gray-300 a {
+  color: #ffffff !important;
+  font-weight: 500;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+  text-decoration: underline;
+}
+
+.dark footer a:hover,
+.dark .text-gray-300 a:hover {
+  color: #4a9eff !important;
+}
+
+/* Menu burger */
+.dark .fixed .bg-white {
+  background-color: #1e1e1e !important;
+  border-color: #333333 !important;
+}
+
+.dark .fixed button,
+.dark .fixed a {
+  color: #ffffff !important;
+}
+
+.dark .fixed button:hover,
+.dark .fixed a:hover {
+  background-color: #333333 !important;
+  color: #4a9eff !important;
+}
+
+/* Autres textes en mode sombre pour assurer une excellente lisibilité */
+.dark .text-gray-300 {
+  color: #ffffff !important;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+/* Améliorations de contraste pour les éléments interactifs */
+.dark button.text-gray-600,
+.dark button.text-gray-700 {
+  color: #ffffff !important;
+}
+
+.dark button:hover {
+  background-color: #333333 !important;
+}
+
+/* Tous les liens du menu burger et du footer */
+.dark nav a,
+.dark footer a {
+  color: #ffffff !important;
+  font-weight: 500;
+}
+
+.dark nav a:hover,
+.dark footer a:hover {
+  color: #4a9eff !important;
+  text-decoration: underline;
+}
+
+/* Mode haute-contraste pour l'accessibilité */
+@media (prefers-contrast: high) {
+  .dark p,
+  .dark span,
+  .dark h1,
+  .dark h2,
+  .dark h3,
+  .dark a,
+  .dark button {
+    color: white !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9) !important;
+    font-weight: bold !important;
+  }
+
+  .dark a,
+  .dark button {
+    border: 2px solid white !important;
+    padding: 0.25rem 0.5rem !important;
+    background-color: #333333 !important;
+  }
+}

@@ -1489,40 +1489,54 @@
       }
 
       .dark-mode .polaroid-back {
-        background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
-        border: none; /* Pas de bordure pour un rendu moderne et épuré */
-        box-shadow: none; /* Pas d'ombre pour un rendu épuré */
+        background: linear-gradient(135deg, #252525 0%, #111111 100%);
+        border: 1px solid rgba(255, 255, 255, 0.15); /* Légère bordure pour améliorer la visibilité */
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5); /* Légère ombre pour un meilleur contraste avec le fond */
       }
 
       /* Texte plus lisible sur fond sombre */
       .dark-mode .polaroid-back .polaroid-title {
         color: #ffffff;
+        font-weight: var(--fw-bold);
         text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+        letter-spacing: 0.03em;
       }
 
       .dark-mode .polaroid-back .polaroid-description {
-        color: #cccccc;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+        color: #ffffff; /* Augmenté de #f0f0f0 à #ffffff pour un contraste maximal */
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+        font-weight: var(
+          --fw-medium
+        ); /* Augmentation du poids de la police pour plus de lisibilité */
       }
 
       /* Bouton d'action amélioré en mode sombre */
       .dark-mode .polaroid-back .polaroid-action {
-        background: linear-gradient(135deg, #2a2a2a 0%, #1a1a2a 100%);
+        background: linear-gradient(
+          135deg,
+          #4a4a4a 0%,
+          #3a3a3a 100%
+        ); /* Fond plus clair pour meilleur contraste */
         color: #ffffff;
-        border: 1px solid rgba(255, 255, 255, 0.1); /* Bordure visible en mode sombre */
-        box-shadow: none; /* Suppression de l'ombre non pivotée */
+        border: 2px solid rgba(255, 255, 255, 0.7); /* Bordure plus visible avec opacité augmentée */
+        font-weight: var(
+          --fw-bold
+        ); /* Augmenté à bold pour meilleure lisibilité */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3),
+          0 0 0 1px rgba(255, 255, 255, 0.1); /* Ajout d'un contour lumineux */
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+        letter-spacing: 0.05em; /* Espacement légèrement augmenté pour plus de lisibilité */
       }
 
       .dark-mode .polaroid-back .polaroid-action:hover {
-        background: linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 100%);
+        background: linear-gradient(135deg, #4a4a4a 0%, #3a3a3a 100%);
         border-color: rgba(
           255,
           255,
           255,
-          0.2
-        ); /* Bordure plus visible au survol */
-        box-shadow: none; /* Suppression de l'ombre non pivotée */
+          0.7
+        ); /* Bordure beaucoup plus visible au survol */
+        box-shadow: 0 2px 8px rgba(255, 255, 255, 0.2); /* Légère lueur pour améliorer la visibilité */
         transform: translateY(-2px);
       }
 
@@ -1651,7 +1665,21 @@
       /* Amélioration du footer en mode sombre */
       .dark-mode footer {
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
-        color: #888888;
+        color: #cccccc; /* Augmenté de #888888 à #cccccc pour meilleur contraste */
+      }
+
+      /* Amélioration des liens du footer en mode sombre */
+      .dark-mode footer a {
+        color: #ffffff;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+        font-weight: var(--fw-medium);
+        text-decoration: underline;
+        transition: all 0.2s ease;
+      }
+
+      .dark-mode footer a:hover {
+        color: #4a9eff;
+        text-decoration: none;
       }
 
       /* Animation d'entrée améliorée pour le mode sombre */
@@ -1663,16 +1691,19 @@
       @media (prefers-contrast: high) {
         .dark-mode .polaroid-back .polaroid-title {
           color: #ffffff;
+          font-weight: 700;
         }
 
         .dark-mode .polaroid-back .polaroid-description {
-          color: #e0e0e0;
+          color: #ffffff;
+          font-weight: 600;
         }
 
         .dark-mode .polaroid-back .polaroid-action {
-          background: #333333;
+          background: #4a4a4a;
           color: #ffffff;
-          border: none; /* Suppression de la bordure clignotante */
+          border: 3px solid #ffffff; /* Bordure très contrastée pour le mode haute-contraste */
+          font-weight: bold;
         }
 
         /* ===== FIN DES AMÉLIORATIONS MODE SOMBRE ===== */
@@ -1695,9 +1726,10 @@
           pointer-events: auto;
           position: relative;
           z-index: 999;
-          background: rgba(0, 0, 0, 0.8);
+          background: rgba(0, 0, 0, 0.9);
           color: white;
-          border: 2px solid white !important;
+          border: 2px solid rgba(255, 255, 255, 0.8) !important;
+          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
 
           /* Taille optimale pour tous les appareils */
           font-size: 11px !important;
@@ -1716,6 +1748,10 @@
           /* Style visible et contrasté sur tous appareils */
           border-radius: 4px !important;
           cursor: pointer !important;
+          background-color: rgba(0, 0, 0, 0.8) !important;
+          color: white !important;
+          border: 1px solid rgba(255, 255, 255, 0.6) !important;
+          font-weight: var(--fw-semibold) !important;
 
           /* Transition douce pour effet de survol desktop */
           transition: all 0.2s ease !important;

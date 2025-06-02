@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { AnimatedAddToCartButton } from "@/components/AnimatedAddToCartButton";
 import { ToastContainer } from "@/components/EnhancedToast";
 import { ColorTransition } from "@/components/ColorTransition";
+import "./ShopFocus-dark-contrast.css";
 import {
   ProductAddedIndicator,
   useProductAddedIndicators,
@@ -152,7 +153,7 @@ export default function ShopFocus() {
               >
                 FOCUS.01
               </h1>
-              <p className="mb-6 md:mb-8 text-gray-600 max-w-md text-base md:text-lg leading-relaxed text-center md:text-left mx-auto md:mx-0">
+              <p className="mb-6 md:mb-8 text-gray-600 max-w-md text-base md:text-lg leading-relaxed text-center md:text-left mx-auto md:mx-0 dark:text-white dark:font-medium">
                 Lampe d'appoint éco-responsable aux lignes épurées, conçue par
                 Anatole Collet
               </p>
@@ -516,7 +517,7 @@ export default function ShopFocus() {
           >
             Les Coloris
           </h2>
-          <p className="text-gray-600 text-center max-w-2xl mx-auto mb-16">
+          <p className="text-gray-600 text-center max-w-2xl mx-auto mb-16 dark:text-white dark:font-medium">
             Choisissez parmi nos quatre coloris distinctifs, chacun apportant
             une ambiance unique à votre espace.
           </p>
@@ -555,20 +556,21 @@ export default function ShopFocus() {
             Ce qu'en disent nos clients
           </h2>
 
-          {/* Widget Trustpilot */}
+          {/* Widget Trustpilot Démo */}
           <div className="flex justify-center mb-20">
             <div
               className="trustpilot-widget"
               data-locale="fr-FR"
               data-template-id="5419b6a8b0d04a076446a9ad"
-              data-businessunit-id="YOUR_BUSINESS_UNIT_ID"
+              data-businessunit-id="46d6a890-c93c-4dee-9c45-5ccd4b33cdde"
               data-style-height="240px"
               data-style-width="100%"
               data-theme="light"
-              data-min-review-count="0"
+              data-min-review-count="1"
+              data-stars="1,2,3,4,5"
             >
               <a
-                href="https://fr.trustpilot.com/review/altolille.com"
+                href="https://fr.trustpilot.com/review/trustpilot.com"
                 target="_blank"
                 rel="noopener"
               >
@@ -584,7 +586,7 @@ export default function ShopFocus() {
                   a=d.createElement(s);a.async=1;a.src=r;a.type='text/java'+s;
                   b=d.getElementsByTagName(s)[0];b.parentNode.insertBefore(a,b)})
                   (window,document,'script','https://widget.trustpilot.com/bootstrap/v5.js','tp');
-                  tp('register', 'YOUR_BUSINESS_UNIT_ID');
+                  tp('register', '46d6a890-c93c-4dee-9c45-5ccd4b33cdde');
                 `,
               }}
             />
@@ -681,16 +683,18 @@ export default function ShopFocus() {
                   >
                     Contactez-nous
                   </h3>
-                  <p className="text-gray-600">
+                  <p className="text-gray-600 dark:text-white dark:font-medium">
                     Besoin d'aide ?{" "}
                     <a
                       href="mailto:altolille@gmail.com"
-                      className="text-primary hover:underline"
+                      className="text-primary hover:underline dark:text-blue-400"
                     >
                       altolille@gmail.com
                     </a>
                   </p>
-                  <p className="text-gray-600">+33 782 086 690</p>
+                  <p className="text-gray-600 dark:text-white dark:font-semibold">
+                    +33 782 086 690
+                  </p>
                 </div>
               </div>
             </div>
@@ -719,7 +723,7 @@ export default function ShopFocus() {
                   >
                     Projets sur mesure
                   </h3>
-                  <p className="text-gray-600">
+                  <p className="text-gray-600 dark:text-white dark:font-medium">
                     Vous cherchez une création unique ou personnalisée?
                   </p>
                   <p className="mt-2">

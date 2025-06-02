@@ -152,7 +152,11 @@ export function CartOverlay({ open, onClose }: CartOverlayProps) {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <Button onClick={handleCheckout} className="w-full py-6">
+                <Button
+                  onClick={handleCheckout}
+                  className="w-full py-6 dark:!bg-slate-800 dark:!text-white dark:hover:!bg-slate-700"
+                  variant="default"
+                >
                   Procéder au paiement
                 </Button>
               </motion.div>
