@@ -22,34 +22,34 @@ const initialProducts = [
 
 // Données initiales pour les variations de produits
 const initialProductVariations = [
-  // Variations pour FOCUS.01
+  // Variations pour FOCUS.01 - Nouvelles URLs avec transparence
   {
     productId: 1,
     variationType: "color",
     variationValue: "Blanc",
     stock: 10,
-    imageUrl: "/uploads/blanche.png",
+    imageUrl: "https://www.alto-lille.fr/uploads/fbf9e3c1-9afe-446f-9e3d-5966f078b4c0.png",
   },
   {
     productId: 1,
     variationType: "color",
     variationValue: "Bleu",
     stock: 10,
-    imageUrl: "/uploads/bleue.png",
+    imageUrl: "https://www.alto-lille.fr/uploads/6b611585-bb6c-411c-85bf-342fe95950c6.png",
   },
   {
     productId: 1,
     variationType: "color",
     variationValue: "Rouge",
     stock: 10,
-    imageUrl: "/uploads/rouge.png",
+    imageUrl: "https://www.alto-lille.fr/uploads/1f1cdf28-f233-4191-9c1a-f9d7e12b709f.png",
   },
   {
     productId: 1,
     variationType: "color",
     variationValue: "Orange",
     stock: 10,
-    imageUrl: "/uploads/orange.png",
+    imageUrl: "https://www.alto-lille.fr/uploads/a8e085a1-8bc5-4c90-a738-151c7ce4d8d0.png",
   },
 ];
 

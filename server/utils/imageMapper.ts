@@ -14,7 +14,7 @@ export const IMAGE_URL_MAPPING: Record<string, string> = {
   "/uploads/orange.png":
     "https://www.alto-lille.fr/uploads/a8e085a1-8bc5-4c90-a738-151c7ce4d8d0.png",
 
-  // Anciennes URLs alto-lille.fr vers nouvelles URLs
+  // Anciennes URLs alto-lille.fr/images/ vers nouvelles URLs
   "https://www.alto-lille.fr/images/blanche.png":
     "https://www.alto-lille.fr/uploads/fbf9e3c1-9afe-446f-9e3d-5966f078b4c0.png",
   "https://www.alto-lille.fr/images/bleue.png":
@@ -22,6 +22,26 @@ export const IMAGE_URL_MAPPING: Record<string, string> = {
   "https://www.alto-lille.fr/images/rouge.png":
     "https://www.alto-lille.fr/uploads/1f1cdf28-f233-4191-9c1a-f9d7e12b709f.png",
   "https://www.alto-lille.fr/images/orange.png":
+    "https://www.alto-lille.fr/uploads/a8e085a1-8bc5-4c90-a738-151c7ce4d8d0.png",
+
+  // Anciennes URLs alto-lille.fr/uploads/ vers nouvelles URLs (au cas où)
+  "https://www.alto-lille.fr/uploads/blanche.png":
+    "https://www.alto-lille.fr/uploads/fbf9e3c1-9afe-446f-9e3d-5966f078b4c0.png",
+  "https://www.alto-lille.fr/uploads/bleue.png":
+    "https://www.alto-lille.fr/uploads/6b611585-bb6c-411c-85bf-342fe95950c6.png",
+  "https://www.alto-lille.fr/uploads/rouge.png":
+    "https://www.alto-lille.fr/uploads/1f1cdf28-f233-4191-9c1a-f9d7e12b709f.png",
+  "https://www.alto-lille.fr/uploads/orange.png":
+    "https://www.alto-lille.fr/uploads/a8e085a1-8bc5-4c90-a738-151c7ce4d8d0.png",
+
+  // URLs relatives (au cas où)
+  "blanche.png":
+    "https://www.alto-lille.fr/uploads/fbf9e3c1-9afe-446f-9e3d-5966f078b4c0.png",
+  "bleue.png":
+    "https://www.alto-lille.fr/uploads/6b611585-bb6c-411c-85bf-342fe95950c6.png",
+  "rouge.png":
+    "https://www.alto-lille.fr/uploads/1f1cdf28-f233-4191-9c1a-f9d7e12b709f.png",
+  "orange.png":
     "https://www.alto-lille.fr/uploads/a8e085a1-8bc5-4c90-a738-151c7ce4d8d0.png",
 };
 

@@ -25,9 +25,18 @@ echo "✅ PostgreSQL est prêt!"
 echo "🔄 Exécution des migrations..."
 node server/dist/server/migrate.js
 
-# Exécuter la migration des images (nouveau)
-echo "🖼️  Exécution de la migration des images..."
-node server/dist/server/scripts/migrate-images.js
+# Initialiser la base de données avec les bonnes URLs d'images
+echo "🗄️  Initialisation de la base de données..."
+node server/dist/server/init-db.js
+
+# Mettre à jour les URLs d'images (simple et efficace)
+echo "🖼️  Mise à jour des URLs d'images..."
+if node server/dist/server/update-image-urls.js; then
+    echo "✅ URLs d'images mises à jour avec succès"
+else
+    echo "❌ Erreur lors de la mise à jour des URLs d'images"
+    echo "⚠️  Le serveur va démarrer quand même"
+fi
 
 # Démarrer l'application
 echo "🚀 Démarrage de l'application..."
