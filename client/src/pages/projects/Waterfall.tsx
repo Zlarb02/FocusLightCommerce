@@ -11,14 +11,15 @@ export default function Waterfall() {
       description={
         <>
           <p>
-            Projet de lampe conçu pour exposer à la Design Week de Reykjavik.
-            J'ai mixé la cascade pour évoquer le paysage islandais ainsi que des
-            assemblages simples pour la transporter facilement.
+            Projet d'applique murale conçu spécialement pour l'exposition à la
+            Design Week de Reykjavik. J'ai puisé l'inspiration dans les cascades
+            islandaises pour créer cette pièce unique, en intégrant des
+            assemblages modulaires facilitant le transport international.
           </p>
           <p>
             Cette applique murale capture l'essence de la nature islandaise à
-            travers un jeu de textures et de matériaux qui évoquent la fluidité
-            de l'eau et la rugosité des paysages nordiques.
+            travers un jeu subtil de textures et de matériaux qui évoquent la
+            fluidité de l'eau et la force brute des paysages nordiques.
           </p>
         </>
       }
@@ -32,15 +33,16 @@ export default function Waterfall() {
               Matériaux et expérimentations
             </h3>
             <p className="text-gray-700 mb-4">
-              J'ai utilisé de la laine que j'ai teinte plusieurs fois pour
-              obtenir un dégradé de bleu. J'ai ensuite monté un métier à tisser
-              sur l'armature pour tisser la laine. Pour la base j'ai utilisé du
-              feutre bleu et blanc.
+              J'ai utilisé de la laine que j'ai teintée à plusieurs reprises
+              pour obtenir un dégradé de bleu nuancé. J'ai ensuite monté un
+              métier à tisser directement sur l'armature pour tisser la laine en
+              place. La base est réalisée en feutre bleu et blanc pour compléter
+              l'ensemble.
             </p>
             <p className="text-gray-700">
-              Cette technique artisanale permet de créer des effets de
-              profondeur et de mouvement qui évoquent naturellement les cascades
-              islandaises.
+              Cette approche artisanale permet de créer des effets de profondeur
+              et de mouvement qui évoquent naturellement le flux des cascades
+              islandaises, donnant vie à la matière.
             </p>
           </div>
 
@@ -67,10 +69,10 @@ export default function Waterfall() {
                 Déclinaison
               </h3>
               <p className="text-gray-700">
-                J'ai dérivé la technique de feutrer la laine cardée pour
-                réaliser un lampadaire à la demande d'une cliente pour pouvoir
-                lire le soir. J'ai donc fait un pied en béton pour que le tout
-                soit stable grâce au poids.
+                J'ai adapté la technique du feutre en laine cardée pour réaliser
+                un lampadaire sur commande d'une cliente souhaitant un éclairage
+                de lecture. J'ai donc conçu un pied en béton pour assurer la
+                stabilité de l'ensemble grâce à son poids.
               </p>
             </div>
           </div>

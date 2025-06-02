@@ -142,41 +142,42 @@ export default function ShopFocus() {
     <Layout>
       {/* Desktop margin wrapper */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Hero Section - Épuré et minimaliste */}
-        <section className="py-12 md:py-20 lg:py-24 animate fade-in-up">
-          <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center">
-            <div className="order-2 md:order-1 z-10">
+        {/* Hero Section - Épuré et minimaliste avec optimisations mobile */}
+        <section className="py-8 md:py-20 lg:py-24 animate fade-in-up">
+          <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
+            <div className="order-2 md:order-1 z-10 px-4 md:px-0">
               <h1
-                className="font-heading text-4xl md:text-6xl mb-6 tracking-tight"
+                className="font-heading text-3xl md:text-6xl mb-4 md:mb-6 tracking-tight text-center md:text-left"
                 style={{ fontFamily: "var(--font-titles)" }}
               >
                 FOCUS.01
               </h1>
-              <p className="mb-8 text-gray-600 max-w-md text-lg leading-relaxed">
+              <p className="mb-6 md:mb-8 text-gray-600 max-w-md text-base md:text-lg leading-relaxed text-center md:text-left mx-auto md:mx-0">
                 Lampe d'appoint éco-responsable aux lignes épurées, conçue par
                 Anatole Collet
               </p>
-              <div className="flex flex-wrap gap-6 mb-8">
-                <div className="flex items-center text-sm">
-                  <Leaf className="text-green-500 mr-2 h-4 w-4" />
+              <div className="flex flex-wrap gap-4 md:gap-6 mb-6 md:mb-8 justify-center md:justify-start">
+                <div className="flex items-center text-xs md:text-sm">
+                  <Leaf className="text-green-500 mr-2 h-3 w-3 md:h-4 md:w-4" />
                   <span>PLA éco-responsable</span>
                 </div>
-                <div className="flex items-center text-sm">
-                  <Trees className="text-amber-700 mr-2 h-4 w-4" />
+                <div className="flex items-center text-xs md:text-sm">
+                  <Trees className="text-amber-700 mr-2 h-3 w-3 md:h-4 md:w-4" />
                   <span>Chêne écogéré</span>
                 </div>
-                <div className="flex items-center text-sm">
-                  <Lightbulb className="text-yellow-400 mr-2 h-4 w-4" />
+                <div className="flex items-center text-xs md:text-sm">
+                  <Lightbulb className="text-yellow-400 mr-2 h-3 w-3 md:h-4 md:w-4" />
                   <span>LED 60W E14 incluse</span>
                 </div>
               </div>
-              <div className="flex flex-col sm:flex-row gap-4 mb-8">
+              <div className="flex flex-col gap-3 md:gap-4 mb-6 md:mb-8 px-4 md:px-0">
                 <AnimatedAddToCartButton
                   onClick={handleAddToCart}
                   disabled={!selectedProduct}
                   price={
                     selectedProduct ? formatPrice(selectedProduct.price) : ""
                   }
+                  className="w-full md:w-auto mobile-tap-highlight"
                 />
                 <Button
                   variant="outline"
@@ -186,21 +187,21 @@ export default function ShopFocus() {
                       .getElementById("product-details")
                       ?.scrollIntoView({ behavior: "smooth" })
                   }
-                  className="rounded-none border-foreground text-foreground hover:bg-foreground hover:text-background transition-all hover:translate-y-[-2px]"
+                  className="w-full md:w-auto rounded-none border-foreground text-foreground hover:bg-foreground hover:text-background transition-all hover:translate-y-[-2px] mobile-tap-highlight"
                   style={{ fontFamily: "var(--font-buttons)" }}
                 >
                   Voir les détails
                 </Button>
               </div>
-              <div className="flex items-center text-gray-500 text-sm">
+              <div className="flex items-center justify-center md:justify-start text-gray-500 text-xs md:text-sm">
                 <span className="inline-block border-l-2 border-gray-300 pl-3">
                   Livraison offerte en France métropolitaine
                 </span>
               </div>
             </div>
-            <div className="order-1 md:order-2 relative flex justify-center items-center">
+            <div className="order-1 md:order-2 relative flex justify-center items-center px-4 md:px-0">
               {selectedProduct && selectedVariation && (
-                <div className="relative w-full max-w-md h-[400px] flex items-center justify-center">
+                <div className="relative w-full max-w-sm md:max-w-md h-[300px] md:h-[400px] flex items-center justify-center mobile-optimized">
                   <ColorTransition
                     colorKey={selectedVariation.variationValue}
                     className="w-full h-full flex items-center justify-center"
@@ -208,22 +209,25 @@ export default function ShopFocus() {
                     <img
                       src={selectedVariation.imageUrl}
                       alt={`Lampe FOCUS.01 coloris ${selectedVariation.variationValue}`}
-                      className="w-full max-w-[70%] mx-auto object-contain z-1"
+                      className="w-full max-w-[70%] mx-auto object-contain z-1 mobile-optimized"
+                      loading="eager"
                     />
                   </ColorTransition>
 
-                  {/* Indicateur produit ajouté */}
+                  {/* Indicateur produit ajouté - Optimisé pour mobile */}
                   <ProductAddedIndicator
                     productId={selectedVariation.id.toString()}
                     show={isProductAdded(selectedVariation.id.toString())}
                   />
 
-                  <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full">
+                  {/* Sélecteur de couleur - Repositionné pour mobile */}
+                  <div className="absolute bottom-0 left-0 right-0 pb-4 md:pb-0">
                     <LampColorSelector
                       variations={heroVariations}
                       productName={selectedProduct.name}
                       onVariationSelect={handleVariationSelect}
                       selectedVariationId={selectedVariation?.id}
+                      className="mobile-tap-highlight"
                     />
                   </div>
                 </div>
@@ -232,14 +236,14 @@ export default function ShopFocus() {
           </div>
         </section>
 
-        {/* Product Availability Notice - Style minimaliste avec bordure fine */}
-        <section className="py-8 animate fade-in-up delay-2">
-          <div className="bg-white border border-gray-200 p-8">
-            <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
-              <div className="bg-primary/5 p-4">
+        {/* Product Availability Notice - Style minimaliste avec optimisations mobile */}
+        <section className="py-6 md:py-8 animate fade-in-up delay-2">
+          <div className="bg-white border border-gray-200 p-4 md:p-8 mx-4 md:mx-0">
+            <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-6">
+              <div className="bg-primary/5 p-3 md:p-4 mx-auto md:mx-0">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6 text-[var(--color-text)]"
+                  className="h-5 w-5 md:h-6 md:w-6 text-[var(--color-text)]"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -252,21 +256,21 @@ export default function ShopFocus() {
                   />
                 </svg>
               </div>
-              <div>
+              <div className="text-center md:text-left">
                 <h3
-                  className="text-lg font-medium mb-3"
+                  className="text-base md:text-lg font-medium mb-2 md:mb-3"
                   style={{ fontFamily: "var(--font-titles)" }}
                 >
                   Collection en cours de développement
                 </h3>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-gray-600 leading-relaxed text-sm md:text-base">
                   Actuellement, la lampe FOCUS.01 est notre seul produit
                   disponible à la vente. Pour toute demande concernant d'autres
                   créations ou services d'Alto, n'hésitez pas à nous contacter
                   via{" "}
                   <a
                     href="mailto:altolille@gmail.com"
-                    className="text-primary underline decoration-dotted underline-offset-4 hover:decoration-solid"
+                    className="text-primary underline decoration-dotted underline-offset-4 hover:decoration-solid mobile-tap-highlight"
                   >
                     altolille@gmail.com
                   </a>{" "}

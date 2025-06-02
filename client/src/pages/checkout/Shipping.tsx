@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -8,23 +9,58 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useCheckout } from "@/hooks/useCheckout";
 import { Customer } from "@shared/schema";
+import { MondialRelayWidget } from "@/components/MondialRelayWidget";
+import { Truck, Home, MapPin } from "lucide-react";
 
-const shippingSchema = z.object({
-  address: z.string().min(1, "L'adresse est requise"),
-  postalCode: z.string().min(5, "Le code postal doit comporter au moins 5 caractères"),
-  city: z.string().min(1, "La ville est requise"),
-  country: z.string().min(1, "Le pays est requis"),
-  saveAddress: z.boolean().optional(),
-});
+const shippingSchema = z
+  .object({
+    deliveryMethod: z.enum(["home", "relay"]),
+    address: z.string().optional(),
+    postalCode: z.string().optional(),
+    city: z.string().optional(),
+    country: z.string().optional(),
+    relayPointId: z.string().optional(),
+  })
+  .refine(
+    (data) => {
+      if (data.deliveryMethod === "home") {
+        return data.address && data.postalCode && data.city && data.country;
+      }
+      if (data.deliveryMethod === "relay") {
+        return data.relayPointId;
+      }
+      return false;
+    },
+    {
+      message: "Veuillez remplir toutes les informations de livraison",
+    }
+  );
 
 type ShippingFormValues = z.infer<typeof shippingSchema>;
+
+interface RelayPoint {
+  id: string;
+  name: string;
+  address: string;
+  city: string;
+  postalCode: string;
+  distance: number;
+  openingHours: string;
+}
 
 interface ShippingProps {
   onNext: () => void;
@@ -41,20 +77,20 @@ export function Shipping({ onNext, onBack }: ShippingProps) {
       postalCode: customer?.postalCode || "",
       city: customer?.city || "",
       country: customer?.country || "FR",
-      saveAddress: false,
     },
   });
 
   const onSubmit = (data: ShippingFormValues) => {
-    const { saveAddress, ...shippingData } = data;
-    updateCustomer(shippingData as Partial<Customer>);
+    updateCustomer(data as Partial<Customer>);
     onNext();
   };
 
   return (
     <div>
-      <h2 className="font-heading font-bold text-2xl mb-6">Adresse de livraison</h2>
-      
+      <h2 className="font-heading font-bold text-2xl mb-6">
+        Adresse de livraison
+      </h2>
+
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
@@ -70,7 +106,7 @@ export function Shipping({ onNext, onBack }: ShippingProps) {
               </FormItem>
             )}
           />
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <FormField
               control={form.control}
@@ -99,7 +135,7 @@ export function Shipping({ onNext, onBack }: ShippingProps) {
               )}
             />
           </div>
-          
+
           <FormField
             control={form.control}
             name="country"
@@ -126,27 +162,7 @@ export function Shipping({ onNext, onBack }: ShippingProps) {
               </FormItem>
             )}
           />
-          
-          <FormField
-            control={form.control}
-            name="saveAddress"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-start space-x-3 space-y-0 mt-2">
-                <FormControl>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                </FormControl>
-                <div className="space-y-1 leading-none">
-                  <FormLabel>
-                    Sauvegarder cette adresse pour mes prochains achats
-                  </FormLabel>
-                </div>
-              </FormItem>
-            )}
-          />
-          
+
           <div className="pt-4 flex gap-4">
             <Button
               type="button"

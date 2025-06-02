@@ -35,14 +35,14 @@ export default function SeaCle() {
                 Contexte d'usage
               </h3>
               <p className="text-gray-700 mb-4">
-                La charrette suit les ramasseurs sur toute la plage. Les déchets
-                sont ramassés et entassés dans des sacs poubelles puis récoltés
-                dans une charrette.
+                La charrette accompagne les bénévoles sur toute l'étendue de la
+                plage. Les déchets sont collectés et stockés dans des sacs, puis
+                rassemblés dans la charrette pour optimiser le transport.
               </p>
               <p className="text-gray-700">
-                L'objet remplace les outils traditionnels de ramassage de
-                l'association, permettant aux bénévoles de ne plus se baisser
-                constamment et de s'économiser physiquement.
+                Cet outil remplace les équipements traditionnels de ramassage,
+                permettant aux bénévoles d'éviter les flexions répétées et de
+                préserver leur dos lors des longues sessions de nettoyage.
               </p>
             </div>
             <div>
@@ -53,14 +53,14 @@ export default function SeaCle() {
                 Innovation technique
               </h3>
               <p className="text-gray-700 mb-4">
-                Après de nombreux tests avec un prototype au 1/5ème, j'ai
-                développé un filtre simple mais efficace couvrant une large
-                surface.
+                Après de nombreux tests réalisés avec un prototype à l'échelle
+                1/5e, j'ai mis au point un système de filtrage simple mais
+                remarquablement efficace, couvrant une surface étendue.
               </p>
               <p className="text-gray-700">
-                Tout le processus, du tri des déchets à l'injection plastique,
-                est réalisé chez PLASTICEM, garantissant une fabrication locale
-                et responsable.
+                L'ensemble du processus, du tri sélectif des déchets à
+                l'injection plastique finale, est maîtrisé par PLASTICEM,
+                garantissant ainsi une fabrication locale et éco-responsable.
               </p>
             </div>
           </div>

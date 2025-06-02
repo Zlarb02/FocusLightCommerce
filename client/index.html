@@ -2174,23 +2174,23 @@
         data-link="/sea-cle"
         role="button"
         tabindex="0"
-        aria-label="Cliquez pour découvrir Sea Cle - L'histoire derrière cette création unique. Utilisez Enter ou Espace pour interagir."
+        aria-label="Cliquez pour découvrir Sea-clé - Ramasseur de déchets plastiques. Utilisez Enter ou Espace pour interagir."
         aria-expanded="false"
         aria-describedby="polaroid-help"
-        data-title="Sea Cle"
-        data-description="Découvrez l'histoire derrière cette création unique"
+        data-title="Sea-clé"
+        data-description="Ramasseur de déchets plastiques"
       >
         <div class="polaroid-inner">
           <div
             class="polaroid-front"
             style="background-image: url('/images/sea-cle.jpg')"
             role="img"
-            aria-label="Image de Sea Cle"
+            aria-label="Image de Sea-clé"
           ></div>
           <div class="polaroid-back">
-            <div class="polaroid-title">Sea Cle</div>
+            <div class="polaroid-title">Sea-clé</div>
             <div class="polaroid-description">
-              Découvrez l'histoire derrière cette création unique
+              Ramasseur de déchets plastiques
             </div>
             <div class="polaroid-action">Cliquez pour explorer →</div>
           </div>
@@ -2202,11 +2202,11 @@
         data-link="/braderie-de-l-art"
         role="button"
         tabindex="0"
-        aria-label="Cliquez pour découvrir Braderie de l'Art - Une exposition emblématique. Utilisez Enter ou Espace pour interagir."
+        aria-label="Cliquez pour découvrir Braderie de l'Art - Week-end de création collective. Utilisez Enter ou Espace pour interagir."
         aria-expanded="false"
         aria-describedby="polaroid-help"
         data-title="Braderie de l'Art"
-        data-description="Une exposition emblématique"
+        data-description="Week-end de création collective"
       >
         <div class="polaroid-inner">
           <div
@@ -2217,7 +2217,9 @@
           ></div>
           <div class="polaroid-back">
             <div class="polaroid-title">Braderie de l'Art</div>
-            <div class="polaroid-description">Une exposition emblématique</div>
+            <div class="polaroid-description">
+              Week-end de création collective
+            </div>
             <div class="polaroid-action">Cliquez pour explorer →</div>
           </div>
         </div>
@@ -2228,11 +2230,11 @@
         data-link="/waterfall"
         role="button"
         tabindex="0"
-        aria-label="Cliquez pour découvrir Waterfall - L'eau comme source d'inspiration. Utilisez Enter ou Espace pour interagir."
+        aria-label="Cliquez pour découvrir Waterfall - Applique murale. Utilisez Enter ou Espace pour interagir."
         aria-expanded="false"
         aria-describedby="polaroid-help"
         data-title="Waterfall"
-        data-description="L'eau comme source d'inspiration"
+        data-description="Applique murale"
       >
         <div class="polaroid-inner">
           <div
@@ -2243,9 +2245,7 @@
           ></div>
           <div class="polaroid-back">
             <div class="polaroid-title">Waterfall</div>
-            <div class="polaroid-description">
-              L'eau comme source d'inspiration
-            </div>
+            <div class="polaroid-description">Applique murale</div>
             <div class="polaroid-action">Cliquez pour explorer →</div>
           </div>
         </div>
@@ -2253,13 +2253,13 @@
 
       <button
         class="polaroid p4"
-        data-link="/lowtech-vynil"
+        data-link="/without-speaker"
         role="button"
         tabindex="0"
-        aria-label="Cliquez pour découvrir Lowtech Vynil - Création innovante. Utilisez Enter ou Espace pour interagir."
+        aria-label="Cliquez pour découvrir Without Speaker - Création innovante. Utilisez Enter ou Espace pour interagir."
         aria-expanded="false"
         aria-describedby="polaroid-help"
-        data-title="Lowtech Vynil"
+        data-title="Without Speaker"
         data-description="Création innovante"
       >
         <div class="polaroid-inner">
@@ -2267,10 +2267,10 @@
             class="polaroid-front"
             style="background-image: url('/images/lowtech-vynil.jpg')"
             role="img"
-            aria-label="Image de Lowtech Vynil"
+            aria-label="Image de Without Speaker"
           ></div>
           <div class="polaroid-back">
-            <div class="polaroid-title">Lowtech Vynil</div>
+            <div class="polaroid-title">Without Speaker</div>
             <div class="polaroid-description">Création innovante</div>
             <div class="polaroid-action">Cliquez pour explorer →</div>
           </div>
@@ -2340,8 +2340,55 @@
         Appuyez à nouveau pour visiter la page dédiée.
       </div>
 
-      <footer class="animate fade-in-up delay-8">
-        © 2025 Alto Lille - Tous droits réservés
+      <footer
+        class="animate fade-in-up delay-8"
+        style="
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 8px;
+          padding: 16px;
+        "
+      >
+        <p
+          style="
+            margin: 0;
+            font-size: clamp(0.7rem, 1vw, 0.8rem);
+            color: var(--text-light);
+          "
+        >
+          © 2025 Alto Lille - Tous droits réservés
+        </p>
+        <div style="display: flex; align-items: center; gap: 12px">
+          <!-- Badge EcoIndex -->
+          <a
+            href="https://bff.ecoindex.fr/redirect/?url=https://www.alto-lille.fr"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Voir le score EcoIndex du site"
+          >
+            <img
+              src="https://bff.ecoindex.fr/badge/?theme=light&url=https://www.alto-lille.fr"
+              alt="Ecoindex Badge"
+              style="height: 20px"
+            />
+          </a>
+          <!-- Mention développeur -->
+          <a
+            href="https://pogodev.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            style="
+              color: var(--text-light);
+              text-decoration: none;
+              font-size: 0.7rem;
+              transition: color 0.3s;
+            "
+            title="Site développé par Etienne Pogoda"
+          >
+            Développé par Etienne Pogoda
+          </a>
+        </div>
       </footer>
     </div>
 

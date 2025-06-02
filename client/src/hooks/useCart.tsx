@@ -29,19 +29,19 @@ interface CartProviderProps {
 }
 
 export function CartProvider({ children }: CartProviderProps) {
-  const [items, setItems] = useState<CartItem[]>([]);
-
-  // Load cart from localStorage on initial render
-  useEffect(() => {
-    try {
-      const savedCart = localStorage.getItem("cart");
-      if (savedCart) {
-        setItems(JSON.parse(savedCart));
-      }
-    } catch (error) {
-      console.error("Error loading cart from localStorage:", error);
+  // Initialiser le panier depuis localStorage si disponible
+  const [items, setItems] = useState<CartItem[]>(() => {
+    if (typeof window === "undefined") {
+      return [];
     }
-  }, []);
+    try {
+      const saved = window.localStorage.getItem("cart");
+      return saved ? (JSON.parse(saved) as CartItem[]) : [];
+    } catch (error) {
+      console.error("Error reading cart from localStorage:", error);
+      return [];
+    }
+  });
 
   // Save cart to localStorage whenever it changes
   useEffect(() => {

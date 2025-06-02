@@ -4,7 +4,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import Home from "@/pages/ShopFocus";
 import NotFound from "@/pages/not-found";
-import Checkout from "@/pages/checkout";
+import CheckoutNew from "@/pages/checkout/CheckoutNew";
 import { CartProvider } from "@/hooks/useCart";
 import { CheckoutProvider } from "@/hooks/useCheckout";
 import { useEffect, useState, Suspense, lazy } from "react";
@@ -31,6 +31,15 @@ import Contenu from "./pages/gestion/Contenu";
 import Parametres from "./pages/gestion/Parametres";
 import Medias from "./pages/gestion/Medias";
 import Versions from "./pages/gestion/Versions";
+
+// Pages légales et services
+import MentionsLegales from "./pages/legal/MentionsLegales";
+import PolitiqueConfidentialite from "./pages/legal/PolitiqueConfidentialite";
+import CGV from "./pages/legal/CGV";
+import Livraison from "./pages/service/Livraison";
+import Retours from "./pages/service/Retours";
+import Garantie from "./pages/service/Garantie";
+import FAQ from "./pages/service/FAQ";
 
 // Type pour l'événement personnalisé de changement de route
 interface RouteChangeEvent extends CustomEvent {
@@ -118,7 +127,7 @@ function Router() {
       <Switch>
         {/* Routes principales de l'application */}
         <Route path="/shop" component={shopMode === "focus" ? Home : Shop} />
-        <Route path="/checkout" component={Checkout} />
+        <Route path="/checkout" component={CheckoutNew} />
 
         {/* Routes des polaroids */}
         <Route path="/sea-cle">
@@ -166,6 +175,20 @@ function Router() {
         <Route path="/gestion/contenu" component={Contenu} />
         <Route path="/gestion/parametres" component={Parametres} />
         <Route path="/gestion/versions" component={Versions} />
+
+        {/* Pages légales */}
+        <Route path="/mentions-legales" component={MentionsLegales} />
+        <Route
+          path="/politique-confidentialite"
+          component={PolitiqueConfidentialite}
+        />
+        <Route path="/cgv" component={CGV} />
+
+        {/* Pages de service */}
+        <Route path="/livraison" component={Livraison} />
+        <Route path="/retours" component={Retours} />
+        <Route path="/garantie" component={Garantie} />
+        <Route path="/faq" component={FAQ} />
 
         {/* Route / est gérée par la landing dans index.html */}
         {/* Fallback pour les routes non gérées */}

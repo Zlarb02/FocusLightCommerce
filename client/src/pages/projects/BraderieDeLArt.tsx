@@ -18,10 +18,11 @@ export default function BraderieDeLArt() {
             spontanées.
           </p>
           <p>
-            Pour cette édition 2023, j'ai conçu un meuble pour chaîne Hi-Fi
-            construit autour du mouvement que procure le pied de chaise. Cette
-            création illustre parfaitement l'esprit de l'événement : transformer
-            l'ordinaire en extraordinaire par un regard créatif nouveau.
+            Pour cette édition 2023, j'ai conçu un meuble pour chaîne hi-fi
+            construit autour du mouvement dynamique qu'offre un pied de chaise
+            détourné. Cette création illustre parfaitement l'esprit de
+            l'événement : transformer l'ordinaire en extraordinaire par un
+            regard créatif renouvelé.
           </p>
         </>
       }
@@ -42,9 +43,9 @@ export default function BraderieDeLArt() {
               et pousse à repenser l'usage habituel des objets.
             </p>
             <p className="text-gray-700">
-              Mon meuble Hi-Fi transforme un simple pied de chaise en élément
+              Mon meuble hi-fi transforme un simple pied de chaise en élément
               fonctionnel et esthétique, créant un mouvement visuel qui dialogue
-              avec la musique qu'il supporte.
+              harmonieusement avec la musique qu'il supporte.
             </p>
           </div>
 

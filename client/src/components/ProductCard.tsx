@@ -6,6 +6,8 @@ import { useState } from "react";
 import { useCart } from "@/hooks/useCart";
 import { useToast } from "@/hooks/use-toast";
 import { Check, Plus } from "lucide-react";
+import { CartQuantityControl } from "@/components/CartQuantityControl";
+import { ProductAddedIndicator } from "@/components/ProductAddedIndicator";
 
 interface ProductCardProps {
   product: ProductWithVariations;
@@ -13,9 +15,12 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, variation }: ProductCardProps) {
-  const { addItem } = useCart();
+  const { addItem, items } = useCart();
   const { toast } = useToast();
   const [isAdding, setIsAdding] = useState(false);
+
+  // Vérifier si cette variation est dans le panier
+  const isInCart = items.some((item) => item.product.id === variation.id);
 
   const handleAddToCart = () => {
     setIsAdding(true);
@@ -44,13 +49,16 @@ export function ProductCard({ product, variation }: ProductCardProps) {
   const displayPrice = variation.price || product.price;
 
   return (
-    <Card className="h-full overflow-hidden hover:shadow-md transition">
+    <Card className="h-full overflow-hidden hover:shadow-md transition relative">
       <div className="relative p-4 h-52 flex items-center justify-center bg-gray-50">
         <img
           src={variation.imageUrl}
           alt={`${product.name} - ${variation.variationValue}`}
           className="max-h-full object-contain transition-transform hover:scale-105"
         />
+
+        {/* Indicateur produit ajouté - ne s'affiche que si la variation est dans le panier */}
+        <ProductAddedIndicator productId={variation.id.toString()} />
       </div>
       <CardContent className="pt-6">
         <h3 className="font-heading font-bold text-lg mb-2">
@@ -64,18 +72,11 @@ export function ProductCard({ product, variation }: ProductCardProps) {
         </div>
       </CardContent>
       <CardFooter className="flex justify-between items-center pt-0">
-        <Button
-          onClick={handleAddToCart}
-          className="gap-2 w-full"
-          disabled={isAdding || variation.stock <= 0}
-        >
-          {isAdding ? (
-            <Check className="h-4 w-4" />
-          ) : (
-            <Plus className="h-4 w-4" />
-          )}
-          Ajouter au panier
-        </Button>
+        <CartQuantityControl
+          product={product}
+          variation={variation}
+          className="w-full"
+        />
       </CardFooter>
     </Card>
   );

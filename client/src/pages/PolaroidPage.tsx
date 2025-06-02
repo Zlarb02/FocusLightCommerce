@@ -177,16 +177,27 @@ export default function PolaroidPage({
               <p className="text-xs text-gray-400">© 2025 Alto lille</p>
               <div className="flex items-center justify-center gap-3">
                 {/* Badge EcoIndex */}
-                <div id="ecoindex-badge"></div>
+                <a
+                  href="https://bff.ecoindex.fr/redirect/?url=https://www.alto-lille.fr"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="Voir le score EcoIndex du site"
+                >
+                  <img
+                    src="https://bff.ecoindex.fr/badge/?theme=light&url=https://www.alto-lille.fr"
+                    alt="Ecoindex Badge"
+                    className="h-5"
+                  />
+                </a>
                 {/* Mention pogodev.com */}
                 <a
                   href="https://pogodev.com"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-gray-400 hover:text-gray-600 text-xs transition-colors"
-                  title="Site développé par PoGoDev"
+                  title="Site développé par Etienne Pogoda"
                 >
-                  Développé par PoGoDev
+                  Développé par Etienne Pogoda
                 </a>
               </div>
             </div>

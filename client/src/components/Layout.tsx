@@ -25,7 +25,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
   const [cartOpen, setCartOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const { getTotalItems } = useCart();
-  const [location] = useLocation();
+  const [location, setLocation] = useLocation();
 
   // Fonction pour retourner à la landing page de façon sécurisée
   const backToLanding = () => {
@@ -68,29 +68,37 @@ export function Layout({ children, showCart = true }: LayoutProps) {
       {/* Intégration des décorations thématiques */}
       {themeData && <ThemeDecorator decoration={themeData.themeDecoration} />}
 
-      <header className="sticky top-0 bg-white z-10 border-b border-slate-100">
-        <div className="max-w-7xl mx-auto flex items-center justify-between h-20 px-4 sm:px-6 lg:px-8">
-          <div className="w-10">
-            {/* Espace réservé à gauche pour équilibrer */}
+      <header className="fixed top-0 left-0 right-0 bg-white z-50 border-b border-gray-200 shadow-sm">
+        <div className="flex items-center justify-between h-16 px-4">
+          {/* Menu burger à gauche */}
+          <div>
+            <button
+              onClick={() => setMenuOpen(true)}
+              className="p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-colors"
+              aria-label="Ouvrir le menu"
+            >
+              <Menu className="h-5 w-5" />
+            </button>
           </div>
 
-          {/* Titre centré */}
-          <button onClick={backToLanding} className="scale-125">
-            <span
-              className="text-[var(--color-text)] transition-colors hover:text-primary flex-1 text-center font-accent text-xl sm:text-2xl md:text-3xl"
+          {/* Logo/Titre centré */}
+          <div className="flex-1 flex justify-center">
+            <button
+              onClick={backToLanding}
+              className="text-xl font-bold text-gray-900 hover:text-gray-700 transition-colors"
               style={{ fontFamily: "var(--font-titles)" }}
             >
               Alto Lille
-            </span>
-          </button>
+            </button>
+          </div>
 
-          <div className="w-12 flex justify-end">
-            {/* Icône panier animée */}
+          {/* Icône panier à droite */}
+          <div className="flex items-center">
             {showCart && (
               <Button
                 variant="ghost"
                 size="icon"
-                className="relative hover:bg-transparent scale-125"
+                className="relative hover:bg-transparent"
                 onClick={() => setCartOpen(true)}
                 aria-label={`Voir panier - ${cartItemCount} article${
                   cartItemCount !== 1 ? "s" : ""
@@ -106,43 +114,205 @@ export function Layout({ children, showCart = true }: LayoutProps) {
             )}
           </div>
         </div>
-
-        {/* Mobile Menu */}
-        {menuOpen && (
-          <div className="md:hidden border-t border-slate-100 animate-in slide-in-from-top duration-200">
-            <nav className="flex flex-col py-4 px-4 space-y-4 bg-white">
-              <button
-                onClick={() => {
-                  backToLanding();
-                  setMenuOpen(false);
-                }}
-                className={`text-base font-medium text-left ${
-                  location === "/" ? "text-primary" : "text-[var(--color-text)]"
-                }`}
-                style={{ fontFamily: "var(--font-nav)" }}
-              >
-                Accueil
-              </button>
-              <a
-                href="#product-details"
-                className="text-base font-medium text-[var(--color-text)]"
-                onClick={() => setMenuOpen(false)}
-                style={{ fontFamily: "var(--font-nav)" }}
-              >
-                Produit
-              </a>
-              <a
-                href="#contact"
-                className="text-base font-medium text-[var(--color-text)]"
-                onClick={() => setMenuOpen(false)}
-                style={{ fontFamily: "var(--font-nav)" }}
-              >
-                Contact
-              </a>
-            </nav>
-          </div>
-        )}
       </header>
+
+      {/* Menu mobile overlay */}
+      {menuOpen && (
+        <>
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 bg-black bg-opacity-50 z-40"
+            onClick={() => setMenuOpen(false)}
+          />
+
+          {/* Menu sidebar sobre et épuré */}
+          <div className="fixed top-0 left-0 bottom-0 w-80 bg-white z-50 transform transition-transform duration-300 overflow-y-auto shadow-lg border-r border-gray-200">
+            {/* Header du menu épuré */}
+            <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200">
+              <h2
+                className="text-lg font-semibold text-gray-900"
+                style={{ fontFamily: "var(--font-titles)" }}
+              >
+                Navigation
+              </h2>
+              <button
+                onClick={() => setMenuOpen(false)}
+                className="p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+                aria-label="Fermer le menu"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            {/* Navigation sobre et épurée */}
+            <nav className="flex flex-col p-6">
+              {/* Actions principales */}
+              <div className="space-y-2 mb-6">
+                <button
+                  onClick={() => {
+                    backToLanding();
+                    setMenuOpen(false);
+                  }}
+                  className="w-full flex items-center px-3 py-3 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-md transition-colors"
+                  style={{ fontFamily: "var(--font-nav)" }}
+                >
+                  <svg
+                    className="h-4 w-4 mr-3"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                    />
+                  </svg>
+                  <span>Accueil</span>
+                </button>
+              </div>
+
+              <div className="border-t border-gray-200 mb-6" />
+
+              {/* Projets */}
+              <div className="mb-6">
+                <h3 className="px-3 text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">
+                  Projets
+                </h3>
+                <div className="space-y-1">
+                  <button
+                    onClick={() => {
+                      setLocation("/focus-01");
+                      setMenuOpen(false);
+                    }}
+                    className="w-full flex items-center px-3 py-2.5 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 rounded-md transition-colors"
+                    style={{ fontFamily: "var(--font-nav)" }}
+                  >
+                    <span>Focus.01</span>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setLocation("/sea-cle");
+                      setMenuOpen(false);
+                    }}
+                    className="w-full flex items-center px-3 py-2.5 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 rounded-md transition-colors"
+                    style={{ fontFamily: "var(--font-nav)" }}
+                  >
+                    <span>Sea-clé</span>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setLocation("/lowtech-vynil");
+                      setMenuOpen(false);
+                    }}
+                    className="w-full flex items-center px-3 py-2.5 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 rounded-md transition-colors"
+                    style={{ fontFamily: "var(--font-nav)" }}
+                  >
+                    <span>Without speaker</span>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setLocation("/braderie-de-l-art");
+                      setMenuOpen(false);
+                    }}
+                    className="w-full flex items-center px-3 py-2.5 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 rounded-md transition-colors"
+                    style={{ fontFamily: "var(--font-nav)" }}
+                  >
+                    <span>Braderie de l'Art</span>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setLocation("/waterfall");
+                      setMenuOpen(false);
+                    }}
+                    className="w-full flex items-center px-3 py-2.5 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 rounded-md transition-colors"
+                    style={{ fontFamily: "var(--font-nav)" }}
+                  >
+                    <span>Waterfall</span>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setLocation("/chaussures-custom");
+                      setMenuOpen(false);
+                    }}
+                    className="w-full flex items-center px-3 py-2.5 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 rounded-md transition-colors"
+                    style={{ fontFamily: "var(--font-nav)" }}
+                  >
+                    <span>Chaussures Custom</span>
+                  </button>
+                </div>
+              </div>
+
+              <div className="border-t border-gray-200 mb-6" />
+
+              {/* À propos */}
+              <div>
+                <h3 className="px-3 text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">
+                  À propos
+                </h3>
+                <button
+                  onClick={() => {
+                    setLocation("/anatolle-collet");
+                    setMenuOpen(false);
+                  }}
+                  className="w-full flex items-center px-3 py-2.5 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 rounded-md transition-colors"
+                  style={{ fontFamily: "var(--font-nav)" }}
+                >
+                  <span>Qui suis-je</span>
+                </button>
+              </div>
+            </nav>
+
+            {/* Footer sobre et épuré */}
+            <div className="mt-auto border-t border-gray-200 bg-gray-50 px-6 py-4">
+              <div className="space-y-3">
+                <p className="text-xs text-gray-500 text-center">
+                  © 2025 Alto Lille
+                </p>
+
+                {/* Badge EcoIndex */}
+                <div className="flex justify-center">
+                  <a
+                    href="https://bff.ecoindex.fr/redirect/?url=https://www.alto-lille.fr"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title="Voir le score EcoIndex du site"
+                    className="inline-block hover:opacity-80 transition-opacity"
+                  >
+                    <img
+                      src="https://bff.ecoindex.fr/badge/?theme=light&url=https://www.alto-lille.fr"
+                      alt="Badge EcoIndex"
+                      className="h-6"
+                    />
+                  </a>
+                </div>
+
+                {/* Mention développeur */}
+                <div className="text-center">
+                  <a
+                    href="https://pogodev.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-gray-500 hover:text-gray-700 transition-colors"
+                    title="Site développé par Etienne Pogoda"
+                  >
+                    Développé par Etienne Pogoda
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* Spacer pour compenser le header fixe */}
+      <div className="h-16" />
 
       <main className="flex-1">{children}</main>
 
@@ -267,36 +437,36 @@ export function Layout({ children, showCart = true }: LayoutProps) {
               </h4>
               <ul className="grid grid-cols-1 gap-2">
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    href="/livraison"
                     className="text-gray-600 hover:text-[var(--color-text)] transition text-sm inline-block"
                   >
                     Livraison
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    href="/retours"
                     className="text-gray-600 hover:text-[var(--color-text)] transition text-sm inline-block"
                   >
                     Retours
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    href="/garantie"
                     className="text-gray-600 hover:text-[var(--color-text)] transition text-sm inline-block"
                   >
                     Garantie
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    href="/faq"
                     className="text-gray-600 hover:text-[var(--color-text)] transition text-sm inline-block"
                   >
                     FAQ
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -310,39 +480,50 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                 </p>
                 <div className="flex items-center gap-4">
                   {/* Badge EcoIndex */}
-                  <div id="ecoindex-badge"></div>
+                  <a
+                    href="https://bff.ecoindex.fr/redirect/?url=https://www.alto-lille.fr"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title="Voir le score EcoIndex du site"
+                  >
+                    <img
+                      src="https://bff.ecoindex.fr/badge/?theme=light&url=https://www.alto-lille.fr"
+                      alt="Ecoindex Badge"
+                      className="h-5"
+                    />
+                  </a>
                   {/* Mention pogodev.com */}
                   <a
                     href="https://pogodev.com"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-gray-400 hover:text-gray-600 text-xs transition-colors"
-                    title="Site développé par PoGoDev"
+                    title="Site développé par Etienne Pogoda"
                   >
-                    Développé par PoGoDev
+                    Développé par Etienne Pogoda
                   </a>
                 </div>
               </div>
 
               <div className="flex flex-wrap justify-center md:justify-end gap-5 order-1 md:order-2 mb-4 md:mb-0">
-                <a
-                  href="#"
+                <Link
+                  href="/mentions-legales"
                   className="text-gray-500 hover:text-[var(--color-text)] text-xs transition"
                 >
                   Mentions légales
-                </a>
-                <a
-                  href="#"
+                </Link>
+                <Link
+                  href="/politique-confidentialite"
                   className="text-gray-500 hover:text-[var(--color-text)] text-xs transition"
                 >
                   Politique de confidentialité
-                </a>
-                <a
-                  href="#"
+                </Link>
+                <Link
+                  href="/cgv"
                   className="text-gray-500 hover:text-[var(--color-text)] text-xs transition"
                 >
                   CGV
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -351,13 +532,6 @@ export function Layout({ children, showCart = true }: LayoutProps) {
 
       {/* Cart overlay */}
       <CartOverlay open={cartOpen} onClose={() => setCartOpen(false)} />
-
-      {/* Script EcoIndex */}
-      <script
-        type="text/javascript"
-        src="https://www.ecoindex.fr/badge/"
-        defer
-      ></script>
     </div>
   );
 }

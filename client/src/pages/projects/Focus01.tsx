@@ -11,15 +11,16 @@ export default function Focus01() {
       description={
         <>
           <p>
-            J'ai réalisé ce projet pour lancer ma marque : Alto. C'est mon 1er
-            projet réalisé en totale indépendance grâce à une imprimante 3D. Je
-            réalise aussi le packaging ainsi que la communication.
+            J'ai conçu ce projet pour lancer ma marque : Alto. C'est mon premier
+            produit réalisé en totale autonomie grâce à l'impression 3D. Je me
+            charge également du packaging et de la communication, créant ainsi
+            une approche globale du design de produit.
           </p>
           <p>
-            Ceci est le premier produit de mon entreprise : Alto lille. Je
-            distribue mes produits dans des dépôts ventes de décorations
-            d'intérieur ainsi que sur un site internet. (En cours de
-            développement)
+            La Focus.01 représente le premier produit de mon entreprise Alto
+            Lille. Je distribue mes créations dans des dépôts-ventes spécialisés
+            en décoration d'intérieur ainsi que sur notre site internet en cours
+            de développement.
           </p>
         </>
       }
@@ -31,15 +32,17 @@ export default function Focus01() {
                 className="text-xl font-semibold mb-3"
                 style={{ fontFamily: "var(--font-titles)" }}
               >
-                Recherches
+                Concept et recherches
               </h3>
               <p className="text-gray-700 mb-4">
-                J'ai voulu créer une lampe au style épuré avec une utilisation
-                simple. Toutes les pièces s'emboîtent et sont faciles à monter.
+                J'ai souhaité créer une lampe au design épuré avec une
+                utilisation intuitive. Toutes les pièces s'emboîtent
+                parfaitement grâce à un système d'assemblage sans outils.
               </p>
               <p className="text-gray-700">
-                Les couleurs très contrastées permettent de garder un objet qui
-                concentre l'intérêt quand elle est off.
+                Les couleurs contrastées permettent de maintenir l'intérêt
+                visuel même lorsque la lampe est éteinte, faisant d'elle un
+                véritable objet de décoration.
               </p>
             </div>
             <div>
@@ -50,12 +53,14 @@ export default function Focus01() {
                 Caractéristiques
               </h3>
               <p className="text-gray-700 mb-4">
-                La Focus.01 est envoyée en kit pour un emballage réduit. Une
-                notice est fournie pour un montage rapide et simple.
+                La Focus.01 est livrée en kit pour optimiser l'emballage et
+                réduire l'impact environnemental. Une notice illustrée
+                accompagne le produit pour un montage rapide et accessible.
               </p>
               <p className="text-gray-700">
-                Il n'y a ni colle ni vis pour la monter donc même un enfant peut
-                la monter.
+                L'assemblage ne nécessite ni colle ni vis, rendant le montage
+                possible même pour un enfant, dans un esprit de simplicité et de
+                durabilité.
               </p>
             </div>
           </div>
@@ -65,16 +70,18 @@ export default function Focus01() {
               className="text-xl font-semibold mb-4"
               style={{ fontFamily: "var(--font-titles)" }}
             >
-              Cibles
+              Public cible et positionnement
             </h3>
             <p className="text-gray-700 mb-4">
-              Focus.01 est une petite lampe. Je la propose à 60€ avec l'envoi.
+              La Focus.01 est proposée à 60€ frais de port inclus, positionnée
+              comme une solution d'éclairage design accessible et
+              éco-responsable.
             </p>
             <p className="text-gray-700">
-              C'est destiné à toute personne voulant faire un cadeau ou à ceux
-              qui veulent changer leurs décorations d'intérieur sans tout
-              remanier. La lampe apporte une petite touche de renouveau
-              abordable.
+              Elle s'adresse à toute personne souhaitant offrir un cadeau
+              original ou renouveler sa décoration d'intérieur sans
+              investissement majeur. La lampe apporte une touche de modernité
+              abordable à n'importe quel espace de vie.
             </p>
           </div>
 
@@ -102,10 +109,11 @@ export default function Focus01() {
                 Développement futur
               </h3>
               <p className="text-gray-700 text-sm">
-                Pour mon 2ème produit j'ai développé une liseuse qui est
-                cohérente avec le premier produit. J'ai donc gardé le même
-                abat-jour, cela permet aussi de faciliter la production.
-                D'autres produits sont en cours de développement.
+                Pour mon second produit, j'ai développé une liseuse qui
+                s'inscrit dans la continuité esthétique de la Focus.01. J'ai
+                conservé le même abat-jour pour créer une cohérence visuelle et
+                optimiser la production. D'autres créations sont actuellement en
+                cours de développement pour enrichir la gamme Alto.
               </p>
             </div>
           </div>
@@ -118,7 +126,8 @@ export default function Focus01() {
               Alto lille - Focus.01
             </h3>
             <p className="text-gray-600 text-sm">
-              Premier produit de la marque Alto | Disponible à 60€ avec envoi
+              Premier produit de la marque Alto | Disponible à 60€ frais de port
+              inclus
             </p>
           </div>
         </div>

@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { ShoppingBag, Check, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface AnimatedAddToCartButtonProps {
   onClick: () => void;
@@ -23,6 +24,7 @@ export function AnimatedAddToCartButton({
 }: AnimatedAddToCartButtonProps) {
   const [isAdding, setIsAdding] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
+  const isMobile = useIsMobile();
 
   const handleClick = async () => {
     if (disabled || isAdding) return;
@@ -44,8 +46,8 @@ export function AnimatedAddToCartButton({
 
   return (
     <motion.div
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
+      whileHover={!isMobile ? { scale: 1.02 } : undefined}
+      whileTap={{ scale: 0.96 }}
       className="relative"
     >
       <Button
@@ -53,7 +55,8 @@ export function AnimatedAddToCartButton({
         onClick={handleClick}
         disabled={disabled || isAdding}
         className={cn(
-          "bg-primary text-primary-foreground hover:bg-primary/90 rounded-none transition-all duration-300 relative overflow-hidden shadow-none hover:shadow-md transform hover:translate-y-[-2px]",
+          "bg-primary text-primary-foreground hover:bg-primary/90 rounded-none transition-all duration-300 relative overflow-hidden shadow-none hover:shadow-md transform hover:translate-y-[-2px] mobile-tap-highlight",
+          isMobile && "active:scale-95 active:bg-primary/80",
           isAdded && "bg-green-600 hover:bg-green-600",
           className
         )}

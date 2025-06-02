@@ -187,3 +187,40 @@
   letter-spacing: var(--ls-wide);
   text-transform: uppercase;
 }
+
+/* Styles pour améliorer l'expérience mobile */
+@layer utilities {
+  /* Masquer la scrollbar tout en gardant la fonctionnalité de scroll */
+  .scrollbar-hide {
+    -ms-overflow-style: none; /* IE et Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none; /* Chrome, Safari et Opera */
+  }
+
+  /* Améliorer les interactions tactiles */
+  .touch-manipulation {
+    touch-action: manipulation;
+  }
+
+  .touch-pan-x {
+    touch-action: pan-x;
+  }
+
+  /* Améliorer le feedback visuel sur mobile */
+  .mobile-tap-highlight {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  /* Optimisations pour les performances d'animation sur mobile */
+  .mobile-optimized {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+}
