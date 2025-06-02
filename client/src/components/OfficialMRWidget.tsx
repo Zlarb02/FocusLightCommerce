@@ -31,7 +31,7 @@ export function OfficialMRWidget({
           resolve();
           return;
         }
-        
+
         const script = document.createElement("script");
         script.src = src;
         script.async = true;
@@ -44,7 +44,7 @@ export function OfficialMRWidget({
     const loadCSS = (href: string): void => {
       const existingLink = document.querySelector(`link[href="${href}"]`);
       if (existingLink) return;
-      
+
       const link = document.createElement("link");
       link.rel = "stylesheet";
       link.href = href;
@@ -54,20 +54,24 @@ export function OfficialMRWidget({
     const initWidget = async () => {
       try {
         // Charger les dépendances en mode démo/test
-        await loadScript("//ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js");
+        await loadScript(
+          "//ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"
+        );
         await loadScript("//unpkg.com/leaflet/dist/leaflet.js");
         loadCSS("//unpkg.com/leaflet/dist/leaflet.css");
-        await loadScript("https://widget.mondialrelay.com/parcelshop-picker/jquery.plugin.mondialrelay.parcelshoppicker.min.js");
+        await loadScript(
+          "https://widget.mondialrelay.com/parcelshop-picker/jquery.plugin.mondialrelay.parcelshoppicker.min.js"
+        );
 
         // Attendre un peu pour que jQuery soit disponible
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise((resolve) => setTimeout(resolve, 100));
 
         if (window.$ && containerRef.current && hiddenInputRef.current) {
           const $ = window.$;
-          
+
           // Nettoyer le conteneur
           $(containerRef.current).empty();
-          
+
           // Initialiser le widget avec un Brand de test
           $(containerRef.current).MR_ParcelShopPicker({
             Target: hiddenInputRef.current,
@@ -80,33 +84,39 @@ export function OfficialMRWidget({
             ShowOpeningHours: true,
             ShowDistance: true,
             OrderBy: "Distance",
-            CallBack: function(data: any) {
+            CallBack: function (data: any) {
               // Convertir les données du callback vers notre format
               if (data && data.ID) {
                 const relayPoint = {
                   id: data.ID,
                   name: data.LgAdr1 || data.Nom || `Point Relais ${data.ID}`,
-                  address: `${data.LgAdr3 || ''} ${data.LgAdr4 || ''}`.trim() || data.LgAdr1 || '',
-                  city: data.Ville || '',
+                  address:
+                    `${data.LgAdr3 || ""} ${data.LgAdr4 || ""}`.trim() ||
+                    data.LgAdr1 ||
+                    "",
+                  city: data.Ville || "",
                   postalCode: data.CP || postalCode,
                   distance: parseFloat(data.Distance) || 0,
-                  openingHours: data.Horaires_Lundi || '',
+                  openingHours: data.Horaires_Lundi || "",
                   // Ajouter des propriétés supplémentaires si disponibles
                   latitude: data.Latitude || 0,
                   longitude: data.Longitude || 0,
-                  phone: data.Tel || '',
-                  email: data.Mail || ''
+                  phone: data.Tel || "",
+                  email: data.Mail || "",
                 };
-                
+
                 console.log("Point relais sélectionné:", relayPoint);
                 onSelect(relayPoint);
               }
-            }
+            },
           });
         }
       } catch (error) {
-        console.error("Erreur lors du chargement du widget Mondial Relay:", error);
-        
+        console.error(
+          "Erreur lors du chargement du widget Mondial Relay:",
+          error
+        );
+
         // Afficher un message d'erreur informatif
         if (containerRef.current) {
           containerRef.current.innerHTML = `
@@ -146,10 +156,10 @@ export function OfficialMRWidget({
   return (
     <div className="w-full">
       <div ref={containerRef} className="w-full h-[400px] min-h-[400px]" />
-      <input 
-        ref={hiddenInputRef} 
-        type="hidden" 
-        id="Retour_Widget" 
+      <input
+        ref={hiddenInputRef}
+        type="hidden"
+        id="Retour_Widget"
         className="sr-only"
       />
     </div>
