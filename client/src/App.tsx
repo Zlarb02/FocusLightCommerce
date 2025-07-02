@@ -13,16 +13,9 @@ import useVersions from "@/hooks/useVersions";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 
-// Importation des pages des polaroids en utilisant lazy pour le chargement à la demande
-const SeaCle = lazy(() => import("@/pages/projects/SeaCle"));
-const BraderieDeLArt = lazy(() => import("@/pages/projects/BraderieDeLArt"));
-const Waterfall = lazy(() => import("@/pages/projects/Waterfall"));
-const LowtechVynil = lazy(() => import("@/pages/projects/LowtechVynil"));
-const ChaussuresCustom = lazy(
-  () => import("@/pages/projects/ChaussuresCustom")
-);
-const Focus01 = lazy(() => import("@/pages/projects/Focus01"));
-const QuiSuisJe = lazy(() => import("@/pages/projects/QuiSuisJe"));
+// Pages de projets autonomes
+const DesignEnAction = lazy(() => import("@/pages/DesignEnAction"));
+const CreationsSurMesure = lazy(() => import("@/pages/CreationsSurMesure"));
 
 // Pages de gestion
 import GestionLogin from "./pages/gestion/Login";
@@ -107,40 +100,15 @@ function Router() {
         <Route path="/shop" component={shopMode === "focus" ? Home : Shop} />
         <Route path="/checkout" component={CheckoutNew} />
 
-        {/* Routes des polaroids */}
-        <Route path="/sea-cle">
+        {/* Routes des projets */}
+        <Route path="/design-en-action">
           <Suspense fallback={<div className="loading">Chargement...</div>}>
-            <SeaCle />
+            <DesignEnAction />
           </Suspense>
         </Route>
-        <Route path="/braderie-de-l-art">
+        <Route path="/creations-sur-mesure">
           <Suspense fallback={<div className="loading">Chargement...</div>}>
-            <BraderieDeLArt />
-          </Suspense>
-        </Route>
-        <Route path="/waterfall">
-          <Suspense fallback={<div className="loading">Chargement...</div>}>
-            <Waterfall />
-          </Suspense>
-        </Route>
-        <Route path="/lowtech-vynil">
-          <Suspense fallback={<div className="loading">Chargement...</div>}>
-            <LowtechVynil />
-          </Suspense>
-        </Route>
-        <Route path="/chaussures-custom">
-          <Suspense fallback={<div className="loading">Chargement...</div>}>
-            <ChaussuresCustom />
-          </Suspense>
-        </Route>
-        <Route path="/focus-01">
-          <Suspense fallback={<div className="loading">Chargement...</div>}>
-            <Focus01 />
-          </Suspense>
-        </Route>
-        <Route path="/anatolle-collet">
-          <Suspense fallback={<div className="loading">Chargement...</div>}>
-            <QuiSuisJe />
+            <CreationsSurMesure />
           </Suspense>
         </Route>
 

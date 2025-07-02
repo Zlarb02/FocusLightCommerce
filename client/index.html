@@ -105,8 +105,8 @@
         --bg-color: #fff;
         --text-color: #111;
         --text-light: #777777;
-        --scroll-indicator-bg: rgba(255, 255, 255, 0.75);
-        --scroll-indicator-shadow: rgba(0, 0, 0, 0.1);
+        --scroll-indicator-bg: linear-gradient(135deg, #2563eb 0%, #d97706 100%);
+        --scroll-indicator-shadow: rgba(37, 99, 235, 0.3);
         --toggle-bg: #f0f0f0;
         --toggle-bg-active: #2196f3;
         --toggle-knob: #fff;
@@ -134,8 +134,8 @@
         --bg-color: #000000;
         --text-color: #f5f5f5;
         --text-light: #b0b0b0;
-        --scroll-indicator-bg: rgba(30, 30, 30, 0.85);
-        --scroll-indicator-shadow: rgba(0, 0, 0, 0.6);
+        --scroll-indicator-bg: linear-gradient(135deg, #3b82f6 0%, #f59e0b 100%);
+        --scroll-indicator-shadow: rgba(59, 130, 246, 0.4);
         --toggle-bg: #2a2a2a;
         --toggle-bg-active: #4a9eff;
         --toggle-knob: #f8f8f8;
@@ -363,43 +363,67 @@
         transform: scale(1.2);
       }
 
-      /* Menu burger - Style Layout.tsx */
+      /* Menu burger - Style minimaliste identique à Layout.tsx */
       .mobile-menu-burger {
         position: fixed;
         top: 20px;
         left: 20px;
-        z-index: 100;
+        z-index: 30;
         padding: 12px;
+        background: transparent !important;
+        border: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        width: auto !important;
+        height: auto !important;
         cursor: pointer;
-        background: transparent;
-        border: none;
-        border-radius: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        color: #6b7280;
         transition: all 0.3s ease-out;
-        color: var(--text-color);
+        display: block;
       }
 
       .mobile-menu-burger:hover {
-        transform: scale(1.1);
+        color: #111827;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        transform: none !important;
       }
 
-      /* Icône burger minimaliste avec animation comme dans Layout.tsx */
-      .burger-lines {
+      .dark-mode .mobile-menu-burger {
+        color: #9ca3af;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+      }
+
+      .dark-mode .mobile-menu-burger:hover {
+        color: #f9fafb;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+      }
+
+      /* Icône burger - Structure identique à Layout.tsx */
+      .burger-container {
         position: relative;
         width: 24px;
         height: 20px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        transition: all 0.3s ease-out;
+        transform: scale(1);
+        transition: transform 0.3s ease-out;
+      }
+
+      .mobile-menu-burger:hover .burger-container {
+        transform: scale(1.1);
       }
 
       .burger-line {
         display: block;
         height: 2px;
-        background-color: var(--text-color);
+        background-color: currentColor;
         transform-origin: left;
         transition: all 0.3s ease-out;
       }
@@ -428,11 +452,11 @@
         width: 28px;
       }
 
-      /* Masquer le burger sur desktop */
+      /* Menu burger visible sur tous les écrans */
       @media (min-width: 1024px) {
-        .mobile-menu-burger {
+        /* .mobile-menu-burger {
           display: none;
-        }
+        } */
 
         .focus-slider {
           width: 35vw;
@@ -2212,74 +2236,7 @@
         transform: translateX(-50%) translateY(-100px);
       }
 
-      /* Menu burger moderne - Style app React amélioré */
-      .mobile-menu-burger {
-        position: fixed;
-        top: 16px;
-        left: 16px;
-        z-index: 15;
-        width: 48px;
-        height: 48px;
-        background: rgba(255, 255, 255, 0.95);
-        border: 1px solid rgba(0, 0, 0, 0.08);
-        border-radius: 12px;
-        cursor: pointer;
-        transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        backdrop-filter: blur(20px);
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.1);
-      }
-
-      .mobile-menu-burger:hover {
-        background: rgba(255, 255, 255, 1);
-        transform: translateY(-2px);
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12),
-          0 2px 6px rgba(0, 0, 0, 0.15);
-        border-color: rgba(79, 70, 229, 0.2);
-      }
-
-      .mobile-menu-burger:active {
-        transform: translateY(0);
-        transition: transform 0.1s ease;
-      }
-
-      .burger-icon {
-        width: 20px;
-        height: 20px;
-        stroke: #374151;
-        stroke-width: 2;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-        transition: all 0.3s ease;
-      }
-
-      .mobile-menu-burger:hover .burger-icon {
-        stroke: #4f46e5;
-        transform: scale(1.05);
-      }
-
-      /* Mode sombre pour le burger */
-      .dark-mode .mobile-menu-burger {
-        background: rgba(17, 24, 39, 0.95);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.2);
-      }
-
-      .dark-mode .mobile-menu-burger:hover {
-        background: rgba(17, 24, 39, 1);
-        border-color: rgba(129, 140, 248, 0.3);
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), 0 2px 6px rgba(0, 0, 0, 0.25);
-      }
-
-      .dark-mode .burger-icon {
-        stroke: #e5e7eb;
-      }
-
-      .dark-mode .mobile-menu-burger:hover .burger-icon {
-        stroke: #818cf8;
-      }
+      /* Styles supprimés - utilise la définition principale plus haut */
 
       .desktop-links.fade-out {
         opacity: 0;
@@ -2352,11 +2309,24 @@
         background: rgba(31, 41, 55, 0.8);
       }
 
+      .mobile-menu-brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .mobile-menu-logo {
+        height: 24px;
+        width: auto;
+        object-fit: contain;
+      }
+
       .mobile-menu-title {
         font-size: 18px;
         font-weight: 600;
         color: #111827;
         font-family: var(--font-titles);
+        margin: 0;
       }
 
       .dark-mode .mobile-menu-title {
@@ -2366,13 +2336,13 @@
       .mobile-menu-close {
         width: 36px;
         height: 36px;
-        padding: 0;
+        padding: 8px;
         border-radius: 8px;
         background: transparent;
         border: none;
         cursor: pointer;
         color: #6b7280;
-        transition: all 0.2s ease;
+        transition: all 0.3s ease-out;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -2381,7 +2351,16 @@
       .mobile-menu-close:hover {
         background: rgba(107, 114, 128, 0.1);
         color: #374151;
-        transform: scale(1.05);
+        transform: scale(1.1);
+      }
+
+      .mobile-menu-close svg {
+        transform: rotate(0deg);
+        transition: transform 0.3s ease-out;
+      }
+
+      .mobile-menu-close:hover svg {
+        transform: rotate(90deg);
       }
 
       .dark-mode .mobile-menu-close {
@@ -2548,11 +2527,11 @@
         color: #f9fafb;
       }
 
-      /* Masquer le burger sur desktop */
+      /* Menu burger visible sur tous les écrans */
       @media (min-width: 1024px) {
-        .mobile-menu-burger {
+        /* .mobile-menu-burger {
           display: none;
-        }
+        } */
       }
 
       .mobile-menu-burger.fade-out {
@@ -2639,13 +2618,14 @@
       <!-- Titre placé au-dessus -->
       <h1 id="brand-title">ALTO LILLE</h1>
 
-      <!-- Menu burger moderne pour mobile -->
+      <!-- Menu burger moderne pour mobile - Structure identique à Layout.tsx -->
       <button
-        class="mobile-menu-burger"
+        class="mobile-menu-burger group"
         id="menuBurger"
         aria-label="Ouvrir le menu de navigation"
       >
-        <div class="burger-lines">
+        <!-- Icône burger minimaliste avec animation -->
+        <div class="burger-container">
           <span class="burger-line"></span>
           <span class="burger-line"></span>
           <span class="burger-line"></span>
@@ -2657,7 +2637,14 @@
         <div class="mobile-menu-sidebar" id="menuSidebar">
           <!-- Header du menu -->
           <div class="mobile-menu-header">
-            <h2 class="mobile-menu-title">Menu</h2>
+            <div class="mobile-menu-brand">
+              <img
+                src="/images/logo.png"
+                alt="Alto Lille"
+                class="mobile-menu-logo"
+              />
+              <h2 class="mobile-menu-title">Menu</h2>
+            </div>
             <button class="mobile-menu-close" id="menuClose">
               <svg
                 width="20"
@@ -2757,45 +2744,17 @@
               <div class="mobile-menu-section-title">Projets</div>
               <button
                 class="mobile-menu-item"
-                data-action="focus-01"
+                data-action="design-en-action"
                 style="--delay: 2"
               >
-                <span>Lampe Focus.01</span>
+                <span>Design en action</span>
               </button>
               <button
                 class="mobile-menu-item"
-                data-action="sea-cle"
+                data-action="creations-sur-mesure"
                 style="--delay: 3"
               >
-                <span>Sea Clé</span>
-              </button>
-              <button
-                class="mobile-menu-item"
-                data-action="lowtech-vynil"
-                style="--delay: 4"
-              >
-                <span>Lowtech Vynil</span>
-              </button>
-              <button
-                class="mobile-menu-item"
-                data-action="braderie-de-l-art"
-                style="--delay: 5"
-              >
-                <span>Braderie de l'Art</span>
-              </button>
-              <button
-                class="mobile-menu-item"
-                data-action="waterfall"
-                style="--delay: 6"
-              >
-                <span>Waterfall</span>
-              </button>
-              <button
-                class="mobile-menu-item"
-                data-action="chaussures-custom"
-                style="--delay: 7"
-              >
-                <span>Chaussures Custom</span>
+                <span>Créations à la demande</span>
               </button>
             </div>
 

@@ -147,16 +147,20 @@ export function Layout({ children, showCart = true }: LayoutProps) {
 
           {/* Menu sidebar sobre et épuré */}
           <div className="fixed top-0 left-0 bottom-0 w-80 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl z-50 transform transition-transform duration-500 ease-out overflow-y-auto shadow-2xl border-r border-gray-200/30 dark:border-gray-700/30">
-            {/* Header du menu épuré */}
-            <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200/20 dark:border-gray-700/20">
+            {/* Header du menu épuré - Style identique à index.html */}
+            <div
+              className="flex items-center justify-between px-6 border-b border-gray-200/20 dark:border-gray-700/20 bg-gray-50/80 dark:bg-gray-800/20 backdrop-blur-lg"
+              style={{ height: "64px" }}
+            >
               <div className="flex items-center gap-3">
                 <img
                   src="/images/logo.png"
                   alt="Alto Lille"
-                  className="h-6 w-auto object-contain"
+                  className="w-auto object-contain"
+                  style={{ height: "24px" }}
                 />
                 <h2
-                  className="text-lg font-semibold text-gray-900 dark:text-gray-100"
+                  className="text-lg font-semibold text-gray-900 dark:text-gray-100 m-0"
                   style={{ fontFamily: "var(--font-titles)" }}
                 >
                   {t("nav.menu")}
@@ -171,132 +175,174 @@ export function Layout({ children, showCart = true }: LayoutProps) {
               </button>
             </div>
 
-            {/* Navigation sobre et épurée */}
+            {/* Navigation sobre et épurée - Structure identique à index.html */}
             <nav className="flex flex-col p-6">
-              {/* Actions principales */}
-              <div className="space-y-1 mb-6">
+              {/* Action principale - Accueil */}
+              <div className="mb-6">
                 <button
                   onClick={() => {
                     backToLanding();
                     setMenuOpen(false);
                   }}
-                  className="w-full flex items-center px-4 py-3 text-base font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-50/50 dark:hover:bg-gray-800/30 rounded-lg transition-all duration-300 ease-out group"
-                  style={{ fontFamily: "var(--font-nav)" }}
+                  className="w-full flex items-center px-3 py-3 text-base font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-all duration-200 ease-out group mb-1 hover:translate-x-1"
+                  style={{
+                    fontFamily: "var(--font-nav)",
+                    fontSize: "16px",
+                    fontWeight: "500",
+                  }}
                 >
                   <svg
-                    className="h-4 w-4 mr-3 group-hover:scale-110 transition-transform duration-300"
-                    fill="none"
+                    className="w-4 h-4 mr-3"
                     viewBox="0 0 24 24"
+                    fill="none"
                     stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                    />
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                    <polyline points="9,22 9,12 15,12 15,22" />
                   </svg>
-                  <span className="group-hover:translate-x-1 transition-transform duration-300">
-                    {t("nav.home")}
-                  </span>
+                  <span>{t("nav.home")}</span>
                 </button>
               </div>
 
               <div className="border-t border-gray-200/30 dark:border-gray-700/30 mb-6" />
 
-              {/* Projets */}
+              {/* Section Boutique */}
               <div className="mb-6">
-                <h3 className="px-4 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">
-                  {t("nav.projects")}
-                </h3>
+                <div
+                  className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4 px-3"
+                  style={{
+                    fontSize: "12px",
+                    letterSpacing: "0.05em",
+                    fontWeight: "600",
+                  }}
+                >
+                  Boutique
+                </div>
                 <div className="space-y-1">
                   <button
                     onClick={() => {
-                      setLocation("/focus-01");
+                      setLocation("/shop");
                       setMenuOpen(false);
                     }}
-                    className="w-full flex items-center px-4 py-2.5 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50/50 dark:hover:bg-gray-800/30 hover:text-gray-900 dark:hover:text-gray-100 rounded-lg transition-all duration-300 ease-out group"
-                    style={{ fontFamily: "var(--font-nav)" }}
-                  >
-                    <span className="group-hover:translate-x-1 transition-transform duration-300">
-                      {t("focus.title")}
-                    </span>
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      setLocation("/sea-cle");
-                      setMenuOpen(false);
+                    className="w-full flex items-center px-3 py-3 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100 rounded-lg transition-all duration-200 ease-out group mb-1 hover:translate-x-1"
+                    style={{
+                      fontFamily: "var(--font-nav)",
+                      fontSize: "16px",
+                      fontWeight: "500",
                     }}
-                    className="w-full flex items-center px-4 py-2.5 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50/50 dark:hover:bg-gray-800/30 hover:text-gray-900 dark:hover:text-gray-100 rounded-lg transition-all duration-300 ease-out group"
-                    style={{ fontFamily: "var(--font-nav)" }}
                   >
-                    <span className="group-hover:translate-x-1 transition-transform duration-300">
-                      {t("projects.seacle")}
-                    </span>
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      setLocation("/lowtech-vynil");
-                      setMenuOpen(false);
-                    }}
-                    className="w-full flex items-center px-4 py-2.5 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50/50 dark:hover:bg-gray-800/30 hover:text-gray-900 dark:hover:text-gray-100 rounded-lg transition-all duration-300 ease-out group"
-                    style={{ fontFamily: "var(--font-nav)" }}
-                  >
-                    <span className="group-hover:translate-x-1 transition-transform duration-300">
-                      {t("projects.lowtechvynil")}
-                    </span>
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      setLocation("/braderie-de-l-art");
-                      setMenuOpen(false);
-                    }}
-                    className="w-full flex items-center px-4 py-2.5 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50/50 dark:hover:bg-gray-800/30 hover:text-gray-900 dark:hover:text-gray-100 rounded-lg transition-all duration-300 ease-out group"
-                    style={{ fontFamily: "var(--font-nav)" }}
-                  >
-                    <span className="group-hover:translate-x-1 transition-transform duration-300">
-                      {t("projects.braderie")}
-                    </span>
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      setLocation("/waterfall");
-                      setMenuOpen(false);
-                    }}
-                    className="w-full flex items-center px-4 py-2.5 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50/50 dark:hover:bg-gray-800/30 hover:text-gray-900 dark:hover:text-gray-100 rounded-lg transition-all duration-300 ease-out group"
-                    style={{ fontFamily: "var(--font-nav)" }}
-                  >
-                    <span className="group-hover:translate-x-1 transition-transform duration-300">
-                      {t("projects.waterfall")}
-                    </span>
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      setLocation("/chaussures-custom");
-                      setMenuOpen(false);
-                    }}
-                    className="w-full flex items-center px-4 py-2.5 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50/50 dark:hover:bg-gray-800/30 hover:text-gray-900 dark:hover:text-gray-100 rounded-lg transition-all duration-300 ease-out group"
-                    style={{ fontFamily: "var(--font-nav)" }}
-                  >
-                    <span className="group-hover:translate-x-1 transition-transform duration-300">
-                      {t("projects.chaussures")}
-                    </span>
+                    <svg
+                      className="w-4 h-4 mr-3"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                      <line x1="3" y1="6" x2="21" y2="6" />
+                      <path d="M16 10a4 4 0 0 1-8 0" />
+                    </svg>
+                    <span>Boutique Focus</span>
                   </button>
                 </div>
               </div>
 
               <div className="border-t border-gray-200/30 dark:border-gray-700/30 mb-6" />
 
+              {/* Projets */}
+              <div className="mb-6">
+                <div
+                  className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4 px-3"
+                  style={{
+                    fontSize: "12px",
+                    letterSpacing: "0.05em",
+                    fontWeight: "600",
+                  }}
+                >
+                  {t("nav.projects")}
+                </div>
+                <div className="space-y-1">
+                  <button
+                    onClick={() => {
+                      setLocation("/design-en-action");
+                      setMenuOpen(false);
+                    }}
+                    className="w-full flex items-center px-3 py-3 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100 rounded-lg transition-all duration-200 ease-out group mb-1 hover:translate-x-1"
+                    style={{
+                      fontFamily: "var(--font-nav)",
+                      fontSize: "16px",
+                      fontWeight: "500",
+                    }}
+                  >
+                    <span>Design en action</span>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setLocation("/creations-sur-mesure");
+                      setMenuOpen(false);
+                    }}
+                    className="w-full flex items-center px-3 py-3 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100 rounded-lg transition-all duration-200 ease-out group mb-1 hover:translate-x-1"
+                    style={{
+                      fontFamily: "var(--font-nav)",
+                      fontSize: "16px",
+                      fontWeight: "500",
+                    }}
+                  >
+                    <span>Créations à la demande</span>
+                  </button>
+                </div>
+              </div>
+
+              <div className="border-t border-gray-200/30 dark:border-gray-700/30 mb-6" />
+
+              {/* À propos */}
+              <div className="mb-6">
+                <div
+                  className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4 px-3"
+                  style={{
+                    fontSize: "12px",
+                    letterSpacing: "0.05em",
+                    fontWeight: "600",
+                  }}
+                >
+                  {t("nav.about")}
+                </div>
+                <button
+                  onClick={() => {
+                    setLocation("/anatolle-collet");
+                    setMenuOpen(false);
+                  }}
+                  className="w-full flex items-center px-3 py-3 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100 rounded-lg transition-all duration-200 ease-out group mb-1 hover:translate-x-1"
+                  style={{
+                    fontFamily: "var(--font-nav)",
+                    fontSize: "16px",
+                    fontWeight: "500",
+                  }}
+                >
+                  <span>{t("projects.whoami")}</span>
+                </button>
+              </div>
+
+              <div className="border-t border-gray-200/30 dark:border-gray-700/30 mb-6" />
+
               {/* Paramètres */}
               <div className="mb-6">
-                <h3 className="px-4 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">
+                <div
+                  className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4 px-3"
+                  style={{
+                    fontSize: "12px",
+                    letterSpacing: "0.05em",
+                    fontWeight: "600",
+                  }}
+                >
                   {t("settings.title")}
-                </h3>
+                </div>
                 <div className="px-4 py-3 space-y-4 bg-gray-50/30 dark:bg-gray-800/20 rounded-lg">
                   <LanguageToggle
                     variant="switch"
@@ -307,27 +353,6 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                     <ThemeToggle size="md" />
                   </div>
                 </div>
-              </div>
-
-              <div className="border-t border-gray-200/30 dark:border-gray-700/30 mb-6" />
-
-              {/* À propos */}
-              <div>
-                <h3 className="px-4 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">
-                  {t("nav.about")}
-                </h3>
-                <button
-                  onClick={() => {
-                    setLocation("/anatolle-collet");
-                    setMenuOpen(false);
-                  }}
-                  className="w-full flex items-center px-4 py-2.5 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50/50 dark:hover:bg-gray-800/30 hover:text-gray-900 dark:hover:text-gray-100 rounded-lg transition-all duration-300 ease-out group"
-                  style={{ fontFamily: "var(--font-nav)" }}
-                >
-                  <span className="group-hover:translate-x-1 transition-transform duration-300">
-                    {t("projects.whoami")}
-                  </span>
-                </button>
               </div>
             </nav>
 
