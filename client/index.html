@@ -105,8 +105,6 @@
         --bg-color: #fff;
         --text-color: #111;
         --text-light: #777777;
-        --polaroid-border: #ffffff; /* Couleur opaque pour le verso des polaroids */
-        --polaroid-shadow: rgba(0, 0, 0, 0.15);
         --scroll-indicator-bg: rgba(255, 255, 255, 0.75);
         --scroll-indicator-shadow: rgba(0, 0, 0, 0.1);
         --toggle-bg: #f0f0f0;
@@ -136,8 +134,6 @@
         --bg-color: #000000;
         --text-color: #f5f5f5;
         --text-light: #b0b0b0;
-        --polaroid-border: #000000;
-        --polaroid-shadow: rgba(0, 0, 0, 0.9);
         --scroll-indicator-bg: rgba(30, 30, 30, 0.85);
         --scroll-indicator-shadow: rgba(0, 0, 0, 0.6);
         --toggle-bg: #2a2a2a;
@@ -171,6 +167,8 @@
         position: fixed;
         inset: 0;
         transition: margin-left 0.3s ease-out;
+        opacity: 0; /* Masqué au début */
+        transition: opacity 0.5s ease, margin-left 0.3s ease-out;
       }
       #scrollArea {
         height: 800vh;
@@ -311,16 +309,127 @@
         transform: translateX(26px);
       }
 
-      /* Configuration de l'effet de parallaxe pour les polaroids */
-      .polaroid {
+      /* Style pour le slider Focus - Mobile First */
+      .focus-slider {
         position: absolute;
-        width: 18vw;
+        top: 42%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 85vw;
+        max-width: 320px;
         aspect-ratio: 3/4;
-        background-size: cover;
-        background-position: center;
-        z-index: 1;
-        opacity: 0;
-        transition: opacity 0.4s, transform 0.1s ease-out; /* Ajout de transition pour transform */
+        z-index: 10;
+        border-radius: 0;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      }
+
+      .slider-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+      }
+
+      .slider-track {
+        display: flex;
+        width: 400%; /* 4 images */
+        height: 100%;
+        transition: transform 0.5s ease-in-out;
+      }
+
+      .slider-slide {
+        width: 25%; /* 1/4 de la largeur totale */
+        height: 100%;
+        flex-shrink: 0;
+      }
+
+      .slider-slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        display: block;
+      }
+
+      /* Navigation du slider */
+      .slider-nav {
+        position: absolute;
+        bottom: 16px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 8px;
+        z-index: 2;
+      }
+
+      .slider-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.5);
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .slider-dot.active {
+        background: rgba(255, 255, 255, 1);
+        transform: scale(1.2);
+      }
+
+      /* Menu burger - Mobile seulement - Design moderne */
+      .mobile-menu-burger {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 100;
+        width: 44px;
+        height: 44px;
+        cursor: pointer;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .mobile-menu-burger:hover {
+        background: rgba(255, 255, 255, 0.15);
+        transform: translateY(-1px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+      }
+
+      .dark-mode .mobile-menu-burger {
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .dark-mode .mobile-menu-burger:hover {
+        background: rgba(0, 0, 0, 0.4);
+      }
+
+      .burger-icon {
+        width: 20px;
+        height: 20px;
+        stroke: var(--text-color);
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      /* Masquer le burger sur desktop */
+      @media (min-width: 768px) {
+        .mobile-menu-burger {
+          display: none;
+        }
+
+        .focus-slider {
+          width: 35vw;
+          max-width: 400px;
+        }
       }
 
       /* Masquer l'app React par défaut */
@@ -582,434 +691,86 @@
         transform: translateY(2px);
       }
 
-      /* Style pour les polaroids */
-      .polaroid {
-        position: absolute;
-        width: 18vw;
-        aspect-ratio: 3/4;
-        z-index: 1;
-        opacity: 0;
-        perspective: 1000px;
-        cursor: pointer;
-        border: none;
-        background: transparent;
-        padding: 0;
-        border-radius: 8px;
-        transition: opacity 0.3s ease, z-index 0.3s ease;
-        outline: none;
-        /* Améliorer la performance du parallax */
-        will-change: transform;
-        backface-visibility: hidden;
-        transform-style: preserve-3d;
+      /* Focus et accessibilité pour les images */
+      .product-image:focus,
+      .product-image:focus-visible {
+        outline: 2px solid var(--text-color);
+        outline-offset: 2px;
       }
 
-      /* Désactiver les transitions de transform pour le parallax */
-      .polaroid:not(.flipping) {
-        transition: opacity 0.3s ease, z-index 0.3s ease;
-      }
-
-      /* État de retournement - permettre les transitions sur l'élément inner */
-      .polaroid.flipping {
-        transition: all 0.3s ease;
-      }
-
-      /* Focus visible pour l'accessibilité - complètement supprimé le contour bleu par défaut */
-      .polaroid:focus,
-      .polaroid:focus-visible,
-      .polaroid:focus-within {
-        outline: none !important;
-        box-shadow: none !important;
-        border: none !important;
-      }
-
-      /* Supprimer aussi tous les contours par défaut du navigateur et forcer transparent */
-      .polaroid *:focus,
-      .polaroid *:focus-visible {
-        outline: none !important;
-        border-color: transparent !important;
-      }
-
-      /* Règle globale anti-bleu pour tous les éléments polaroid */
-      .polaroid,
-      .polaroid * {
-        outline-color: transparent !important;
-        border-color: transparent !important;
-      }
-
-      /* Suppression complète de l'indicateur de focus pour éviter les cadres blancs */
-      /* L'accessibilité est maintenue par les attributs ARIA et la navigation au clavier */
-
-      .polaroid-inner {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        transform-style: preserve-3d;
-        border-radius: 4px;
-        border: 12px solid #ffffff !important; /* Bordure blanche propre */
-        background-color: #ffffff; /* Fond blanc pour éviter les espaces transparents */
-        overflow: hidden; /* Clipper le contenu aux bords arrondis */
-        box-sizing: border-box;
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15),
-          0 4px 10px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important; /* Ombre visible sur tous les fonds */
-      }
-
-      /* États d'interaction */
-      .polaroid:hover {
-        transform: translateY(-4px);
-      }
-
-      .polaroid:hover .polaroid-inner {
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2),
-          0 8px 15px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
-      }
-
-      .dark-mode .polaroid:hover .polaroid-inner {
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9),
-          0 10px 25px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.2),
-          inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
-      }
-
-      .polaroid:active {
-        transform: translateY(-1px);
-      }
-
-      /* Animation au survol et focus - DÉSACTIVÉ car géré par JavaScript */
-      /* Ces règles CSS sont remplacées par la logique JavaScript */
-
-      /* État activé/retourné - corriger pour que l'image ne soit pas retournée */
-      .polaroid.flipped .polaroid-inner {
-        transform: rotateY(180deg);
-      }
-
-      /* Styles pour le recto et le verso */
-      .polaroid-front,
-      .polaroid-back {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        border-radius: 4px; /* Coins arrondis cohérents avec .polaroid-inner */
-        overflow: hidden;
-        transition: opacity 0.3s ease,
-          transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      }
-
-      .polaroid-front {
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        opacity: 1;
-        z-index: 2;
-        border: none; /* Pas de bordure ici, elle est sur le conteneur parent */
-        box-sizing: border-box;
-        background-color: #ffffff; /* Fond blanc pour combler les espaces transparents */
-      }
-
-      /* Le verso doit afficher le texte normalement (pas retourné) */
-      .polaroid-back {
-        background: #ffffff; /* Fond blanc opaque */
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        padding: 30px 20px;
-        gap: 12px;
-        border-radius: 4px; /* Même border-radius que .polaroid-inner */
-        opacity: 0;
-        z-index: 1;
-        transform: scaleX(-1);
-        border: none;
-        position: absolute;
-        box-shadow: none;
-        transition: all 0.3s ease;
-      }
-
-      /* Effet de texture subtil - adapté au thème */
-      .polaroid-back::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(
-          135deg,
-          var(--text-color) 0%,
-          transparent 50%,
-          var(--text-color) 100%
-        );
-        opacity: 0.02;
-        border-radius: 4px;
-        pointer-events: none;
-      }
-
-      /* Adaptation en mode sombre */
-      .dark-mode .polaroid-back::before {
-        background: linear-gradient(
-          135deg,
-          var(--polaroid-border) 0%,
-          transparent 50%,
-          var(--polaroid-border) 100%
-        );
-        opacity: 0.05;
-      }
-
-      /* Quand le polaroid est retourné, cacher le front et montrer le back */
-      .polaroid.flipped .polaroid-front {
-        opacity: 0;
-        z-index: 1;
-      }
-
-      .polaroid.flipped .polaroid-back {
-        opacity: 1;
-        z-index: 2;
-      }
-
-      /* Les éléments du verso sont déjà dans la bonne orientation grâce au parent */
-      .polaroid-back .polaroid-title,
-      .polaroid-back .polaroid-description,
-      .polaroid-back .polaroid-action {
-        /* Pas de transformation supplémentaire nécessaire */
-        backface-visibility: visible;
-      }
-
-      /* Assurer l'opacité complète du verso en mode clair */
-      body:not(.dark-mode) .polaroid-back {
-        background: #ffffff !important; /* Fond blanc opaque en mode clair */
-        backdrop-filter: none !important; /* Supprimer le flou qui peut causer de la transparence */
-      }
-
-      /* Supprimer aussi l'effet de texture en mode clair qui peut créer de la transparence */
-      body:not(.dark-mode) .polaroid-back::before {
-        display: none !important;
-      }
-
-      /* Styles spécifiques pour le texte du verso - design cohérent avec le site */
-      .polaroid-back .polaroid-title {
-        font-size: clamp(18px, 2.2vw, 24px);
-        font-weight: var(--fw-semibold);
-        font-family: var(--font-titles);
-        margin: 0;
-        color: var(--text-color);
-        letter-spacing: 0.02em;
-        position: relative;
-        z-index: 2;
-        line-height: 1.2;
-      }
-
-      .polaroid-back .polaroid-description {
-        font-size: clamp(13px, 1.4vw, 16px);
-        font-weight: var(--fw-regular);
-        font-family: var(--font-body);
-        margin: 4px 0 0 0;
-        line-height: 1.4;
-        color: var(--text-light);
-        text-align: center;
-        max-width: 90%;
-        position: relative;
-        z-index: 2;
-      }
-
-      .polaroid-back .polaroid-action {
-        font-size: clamp(9px, 1vw, 11px);
-        font-weight: var(--fw-medium);
-        font-family: var(--font-buttons);
-        color: var(--text-color);
-        margin-top: 12px;
-        padding: 6px 10px;
-        background: linear-gradient(
-          135deg,
-          rgba(255, 255, 255, 0.1) 0%,
-          rgba(255, 255, 255, 0.05) 100%
-        );
-        border-radius: 4px;
-        opacity: 1;
-        transform: translateY(0);
-        box-shadow: none; /* Suppression de l'ombre non pivotée */
-        transition: all 0.3s ease;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        border: 1px solid rgba(255, 255, 255, 0.2); /* Bordure visible */
-        cursor: pointer;
-        position: relative;
-        z-index: 2;
-        backdrop-filter: blur(4px);
-        max-width: calc(100% - 30px);
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-
-      .polaroid-back .polaroid-action:hover {
-        background: linear-gradient(
-          135deg,
-          rgba(255, 255, 255, 0.2) 0%,
-          rgba(255, 255, 255, 0.1) 100%
-        );
-        transform: translateY(-2px);
-        box-shadow: none; /* Suppression de l'ombre non pivotée */
-        border-color: rgba(
-          255,
-          255,
-          255,
-          0.4
-        ); /* Bordure plus visible au survol */
-        letter-spacing: 0.1em;
-      }
-
-      /* Afficher l'action quand le polaroid est retourné - géré par JavaScript */
-      .polaroid.flipped .polaroid-action {
-        opacity: 1;
-        transform: translateY(0);
-      }
-      /* Positionnement des polaroids */
+      /* Positionnement des images de produits - Mobile First avec Parallax */
       .p1 {
-        top: 2%; /* Descendu de -6% à 2% */
-        left: 5%;
-        --rotation: -8deg;
-      }
-      .p1 .polaroid-inner {
-        transform: rotate(-8deg);
-      }
-      .p1.flipped .polaroid-inner {
-        transform: rotate(-8deg) rotateY(180deg);
+        top: 10%;
+        left: 50%;
+        transform: translateX(-50%);
       }
 
       .p2 {
-        bottom: 2%; /* Remonté de -6% à 2% */
-        left: 3%;
-        --rotation: 8deg;
-      }
-      .p2 .polaroid-inner {
-        transform: rotate(10deg);
-      }
-      .p2.flipped .polaroid-inner {
-        transform: rotate(10deg) rotateY(180deg);
+        top: 30%;
+        left: 50%;
+        transform: translateX(-50%);
       }
 
       .p3 {
-        top: 20%;
-        right: -2%;
-        --rotation: 5deg;
-      }
-      .p3 .polaroid-inner {
-        transform: rotate(5deg);
-      }
-      .p3.flipped .polaroid-inner {
-        transform: rotate(5deg) rotateY(180deg);
+        top: 50%;
+        left: 50%;
+        transform: translateX(-50%);
       }
 
       .p4 {
-        left: 2%;
-        top: 36%;
-        --rotation: -4deg;
-      }
-      .p4 .polaroid-inner {
-        transform: rotate(-6deg);
-      }
-      .p4.flipped .polaroid-inner {
-        transform: rotate(-6deg) rotateY(180deg);
+        top: 70%;
+        left: 50%;
+        transform: translateX(-50%);
       }
 
       .p5 {
-        right: -1%;
-        bottom: 2%; /* Remonté de -4% à 2% */
-        --rotation: -12deg;
-      }
-      .p5 .polaroid-inner {
-        transform: rotate(-12deg);
-      }
-      .p5.flipped .polaroid-inner {
-        transform: rotate(-12deg) rotateY(180deg);
-      }
-
-      /* Correction spécifique pour le bouton CTA de p5 */
-      .p5 .polaroid-action {
-        pointer-events: auto !important;
-        z-index: 10 !important;
-        position: relative;
-        touch-action: manipulation;
+        top: 90%;
+        left: 50%;
+        transform: translateX(-50%);
       }
 
       .p6 {
-        top: 10%;
-        right: 13%;
-        --rotation: 7deg;
-        z-index: 0;
-      }
-      .p6 .polaroid-inner {
-        transform: rotate(7deg);
-      }
-      .p6.flipped .polaroid-inner {
-        transform: rotate(7deg) rotateY(180deg);
+        top: 110%;
+        left: 50%;
+        transform: translateX(-50%);
       }
 
-      /* Animations pour l'ancien style - à conserver pour compatibilité */
-
-      /* Amélioration spécifique pour très petits écrans (320-500px) */
-      @media (min-width: 320px) and (max-width: 500px) {
-        #brand-title {
-          top: 4%;
-          font-size: clamp(22px, 6.5vw, 30px);
-          font-weight: var(--fw-bold);
-          letter-spacing: 0.5px;
+      /* Layout Desktop - Grille comme sur la maquette */
+      @media (min-width: 768px) {
+        .p1 {
+          top: 2%;
+          left: 5%;
+          transform: none;
         }
 
-        .polaroid {
-          width: 42vw; /* Augmenté significativement pour meilleure lisibilité */
-          min-width: 140px;
-          max-width: 180px;
-        }
-
-        /* Améliorer la lisibilité du texte sur les polaroids */
-        .polaroid-title {
-          font-size: 16px; /* Augmenté pour très petits écrans */
-          line-height: 1.2;
-          margin-bottom: 8px;
-          font-weight: var(--fw-semibold);
-        }
-
-        .polaroid-description {
-          font-size: 14px; /* Augmenté pour très petits écrans */
-          line-height: 1.3;
-          margin-bottom: 12px;
-        }
-
-        .polaroid-action {
-          font-size: 13px; /* Augmenté pour très petits écrans */
-          padding: 12px 18px;
-          min-height: 44px;
-          font-weight: var(--fw-medium);
-        }
-
-        .polaroid-back {
-          padding: 24px 18px; /* Augmenté pour meilleure lisibilité */
-          gap: 8px;
-        }
-
-        /* Optimiser l'indicateur de scroll pour éviter qu'il cache les polaroids */
-        #scroll-indicator {
-          bottom: 4%;
-          left: 50%;
-          transform: translateX(-50%);
-        }
-
-        .scroll-content {
-          padding: 12px 16px;
-          gap: 0.7rem;
-          border-radius: 18px;
-          min-width: 260px;
-          max-width: 90vw;
-        }
-
-        /* Ajuster les positions des polaroids pour éviter les conflits avec l'indicateur */
         .p2 {
-          bottom: 8%; /* Remonté pour éviter l'indicateur de scroll */
+          bottom: 2%;
+          left: 3%;
+          transform: none;
+        }
+
+        .p3 {
+          top: 20%;
+          right: 2%;
+          transform: none;
+        }
+
+        .p4 {
+          left: 2%;
+          top: 36%;
+          transform: none;
         }
 
         .p5 {
-          bottom: 8%; /* Remonté pour éviter l'indicateur de scroll */
+          right: 1%;
+          bottom: 2%;
+          transform: none;
+        }
+
+        .p6 {
+          top: 10%;
+          right: 13%;
+          transform: none;
         }
       }
 
@@ -1729,7 +1490,7 @@
       .dark-mode .polaroid.flipped .polaroid-back .polaroid-action {
         opacity: 1;
         transform: translateY(0) scale(1);
-        animation: dark-button-glow 3s ease-in-out infinite alternate;
+        animation: dark-button-glow 3s ease-in-out infinite;
       }
 
       /* Animation de lueur subtile pour le bouton en mode sombre - RALENTIE ET RÉDUITE */
@@ -2326,6 +2087,7 @@
           font-size: 11px !important;
           line-height: 1.3 !important;
           margin-bottom: 12px !important;
+
           text-align: center !important;
         }
 
@@ -2358,6 +2120,428 @@
           line-height: 1.2 !important;
           text-align: center !important;
         }
+      }
+
+      /* Liens Desktop - Projets recherche et Produits sur mesure */
+      .desktop-links {
+        position: fixed;
+        z-index: 10;
+        display: none; /* Masqué sur mobile */
+      }
+
+      @media (min-width: 768px) {
+        .desktop-links {
+          display: block;
+        }
+
+        .desktop-link {
+          position: absolute;
+          width: 200px;
+          height: 140px;
+          cursor: pointer;
+          border-radius: 8px;
+          overflow: hidden;
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .desktop-link:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .desktop-link img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        .desktop-link-overlay {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+          color: white;
+          padding: 12px;
+          font-family: var(--font-titles);
+          font-size: 14px;
+          font-weight: var(--fw-medium);
+        }
+
+        .projets-recherche {
+          top: 15%;
+          left: 5%;
+        }
+
+        .produits-mesure {
+          top: 15%;
+          right: 5%;
+        }
+      }
+
+      /* Transitions fluides pour les éléments de l'interface */
+      .focus-slider {
+        transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+
+      /* Classes pour faire disparaître les éléments vers le haut */
+      .focus-slider.fade-out {
+        opacity: 0;
+        transform: translate(-50%, -150%);
+      }
+
+      #brand-title.fade-out {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-100px);
+      }
+
+      /* Menu burger moderne - Style app React amélioré */
+      .mobile-menu-burger {
+        position: fixed;
+        top: 16px;
+        left: 16px;
+        z-index: 15;
+        width: 48px;
+        height: 48px;
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        backdrop-filter: blur(20px);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+
+      .mobile-menu-burger:hover {
+        background: rgba(255, 255, 255, 1);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12),
+          0 2px 6px rgba(0, 0, 0, 0.15);
+        border-color: rgba(79, 70, 229, 0.2);
+      }
+
+      .mobile-menu-burger:active {
+        transform: translateY(0);
+        transition: transform 0.1s ease;
+      }
+
+      .burger-icon {
+        width: 20px;
+        height: 20px;
+        stroke: #374151;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        transition: all 0.3s ease;
+      }
+
+      .mobile-menu-burger:hover .burger-icon {
+        stroke: #4f46e5;
+        transform: scale(1.05);
+      }
+
+      /* Mode sombre pour le burger */
+      .dark-mode .mobile-menu-burger {
+        background: rgba(17, 24, 39, 0.95);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.2);
+      }
+
+      .dark-mode .mobile-menu-burger:hover {
+        background: rgba(17, 24, 39, 1);
+        border-color: rgba(129, 140, 248, 0.3);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), 0 2px 6px rgba(0, 0, 0, 0.25);
+      }
+
+      .dark-mode .burger-icon {
+        stroke: #e5e7eb;
+      }
+
+      .dark-mode .mobile-menu-burger:hover .burger-icon {
+        stroke: #818cf8;
+      }
+
+      .desktop-links.fade-out {
+        opacity: 0;
+        transform: translateY(-50px);
+      }
+
+      .toggle-container.fade-out {
+        opacity: 0;
+        transform: translateY(-50px);
+      }
+
+      /* Menu overlay moderne avec animations améliorées */
+      .mobile-menu-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 40;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(4px);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+
+      .mobile-menu-overlay.active {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      /* Sidebar du menu moderne avec animations fluides */
+      .mobile-menu-sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 320px;
+        max-width: 85vw;
+        background: white;
+        z-index: 50;
+        transform: translateX(-100%);
+        transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        overflow-y: auto;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        border-right: 1px solid rgba(0, 0, 0, 0.08);
+      }
+
+      .mobile-menu-overlay.active .mobile-menu-sidebar {
+        transform: translateX(0);
+      }
+
+      .dark-mode .mobile-menu-sidebar {
+        background: rgb(17, 24, 39);
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      }
+
+      /* Header du menu amélioré */
+      .mobile-menu-header {
+        height: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 24px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        background: rgba(249, 250, 251, 0.8);
+        backdrop-filter: blur(10px);
+      }
+
+      .dark-mode .mobile-menu-header {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(31, 41, 55, 0.8);
+      }
+
+      .mobile-menu-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #111827;
+        font-family: var(--font-titles);
+      }
+
+      .dark-mode .mobile-menu-title {
+        color: #f9fafb;
+      }
+
+      .mobile-menu-close {
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        border-radius: 8px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        color: #6b7280;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .mobile-menu-close:hover {
+        background: rgba(107, 114, 128, 0.1);
+        color: #374151;
+        transform: scale(1.05);
+      }
+
+      .dark-mode .mobile-menu-close {
+        color: #9ca3af;
+      }
+
+      .dark-mode .mobile-menu-close:hover {
+        background: rgba(156, 163, 175, 0.1);
+        color: #e5e7eb;
+      }
+
+      .mobile-menu-nav {
+        padding: 24px;
+      }
+
+      .mobile-menu-section {
+        margin-bottom: 24px;
+      }
+
+      .mobile-menu-section-title {
+        font-size: 12px;
+        font-weight: 600;
+        color: #6b7280;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 16px;
+        padding: 0 12px;
+      }
+
+      .dark-mode .mobile-menu-section-title {
+        color: #9ca3af;
+      }
+
+      .mobile-menu-item {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        font-weight: 500;
+        color: #374151;
+        text-decoration: none;
+        border-radius: 8px;
+        margin-bottom: 4px;
+        transition: all 0.2s ease;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        font-family: var(--font-nav);
+      }
+
+      .mobile-menu-item:hover {
+        background: #f3f4f6;
+        color: #111827;
+      }
+
+      .dark-mode .mobile-menu-item {
+        color: #e5e7eb;
+      }
+
+      .dark-mode .mobile-menu-item:hover {
+        background: #374151;
+        color: #f9fafb;
+      }
+
+      .mobile-menu-item-icon {
+        width: 16px;
+        height: 16px;
+        margin-right: 12px;
+        stroke-width: 2;
+      }
+
+      .mobile-menu-footer {
+        margin-top: auto;
+        border-top: 1px solid #e5e7eb;
+        background: #f9fafb;
+        padding: 16px 24px;
+      }
+
+      .dark-mode .mobile-menu-footer {
+        border-top: 1px solid #374151;
+        background: #1f2937;
+      }
+
+      .mobile-menu-footer-text {
+        font-size: 12px;
+        color: #6b7280;
+        text-align: center;
+        margin-bottom: 12px;
+      }
+
+      .dark-mode .mobile-menu-footer-text {
+        color: #9ca3af;
+      }
+
+      .mobile-menu-ecoindex {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 12px;
+      }
+
+      .mobile-menu-developer {
+        text-align: center;
+      }
+
+      .mobile-menu-developer-link {
+        font-size: 12px;
+        color: #6b7280;
+        text-decoration: none;
+        transition: color 0.2s ease;
+      }
+
+      .mobile-menu-developer-link:hover {
+        color: #374151;
+      }
+
+      .dark-mode .mobile-menu-developer-link {
+        color: #9ca3af;
+      }
+
+      .dark-mode .mobile-menu-developer-link:hover {
+        color: #e5e7eb;
+      }
+
+      /* Séparateurs */
+      .mobile-menu-separator {
+        height: 1px;
+        background: #e5e7eb;
+        margin: 24px 0;
+      }
+
+      .dark-mode .mobile-menu-separator {
+        background: #374151;
+      }
+
+      /* Animation d'entrée améliorée pour les éléments du menu */
+      .mobile-menu-item {
+        animation: slideInLeft 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+          forwards;
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+
+      .mobile-menu-overlay.active .mobile-menu-item {
+        animation-delay: calc(var(--delay, 0) * 0.06s + 0.1s);
+      }
+
+      @keyframes slideInLeft {
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      /* Amélioration de l'hover sur les items */
+      .mobile-menu-item:hover {
+        background: linear-gradient(135deg, #f3f4f6 0%, #f9fafb 100%);
+        color: #111827;
+        transform: translateX(4px);
+      }
+
+      .dark-mode .mobile-menu-item:hover {
+        background: linear-gradient(135deg, #374151 0%, #4b5563 100%);
+        color: #f9fafb;
+      }
+
+      /* Masquer le burger sur desktop */
+      @media (min-width: 768px) {
+        .mobile-menu-burger {
+          display: none;
+        }
+      }
+
+      .mobile-menu-burger.fade-out {
+        opacity: 0;
+        transform: translateY(-50px);
       }
     </style>
     <!-- Chargement de la configuration d'environnement en production -->
@@ -2444,181 +2628,281 @@
         <div class="scroll-glow"></div>
       </div>
 
-      <!-- Titre placé au-dessus des polaroids -->
+      <!-- Titre placé au-dessus -->
       <h1 id="brand-title">ALTO LILLE</h1>
 
-      <!-- Polaroids avec images du site -->
+      <!-- Menu burger moderne pour mobile -->
       <button
-        class="polaroid p1"
-        data-link="/sea-cle"
-        role="button"
-        tabindex="0"
-        aria-label="Cliquez pour découvrir Sea-clé - Ramasseur de déchets plastiques. Utilisez Enter ou Espace pour interagir."
-        aria-expanded="false"
-        aria-describedby="polaroid-help"
-        data-title="Sea-clé"
-        data-description="Ramasseur de déchets plastiques"
+        class="mobile-menu-burger"
+        id="menuBurger"
+        aria-label="Ouvrir le menu de navigation"
       >
-        <div class="polaroid-inner">
-          <div
-            class="polaroid-front"
-            style="background-image: url('/images/sea-cle.jpg')"
-            role="img"
-            aria-label="Image de Sea-clé"
-          ></div>
-          <div class="polaroid-back">
-            <div class="polaroid-title">Sea-clé</div>
-            <div class="polaroid-description">
-              Ramasseur de déchets plastiques
+        <svg
+          class="burger-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+        >
+          <path
+            d="M3 12h18M3 6h18M3 18h18"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+
+      <!-- Menu mobile overlay -->
+      <div class="mobile-menu-overlay" id="menuOverlay">
+        <div class="mobile-menu-sidebar" id="menuSidebar">
+          <!-- Header du menu -->
+          <div class="mobile-menu-header">
+            <h2 class="mobile-menu-title">Menu</h2>
+            <button class="mobile-menu-close" id="menuClose">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+              >
+                <path
+                  d="M18 6L6 18M6 6l12 12"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Navigation -->
+          <nav class="mobile-menu-nav">
+            <!-- Action principale - Accueil -->
+            <div class="mobile-menu-section">
+              <button
+                class="mobile-menu-item"
+                data-action="home"
+                style="--delay: 0"
+              >
+                <svg
+                  class="mobile-menu-item-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <path
+                    d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <polyline
+                    points="9,22 9,12 15,12 15,22"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                <span>Accueil</span>
+              </button>
             </div>
-            <div class="polaroid-action">Cliquez pour explorer →</div>
-          </div>
-        </div>
-      </button>
 
-      <button
-        class="polaroid p2"
-        data-link="/braderie-de-l-art"
-        role="button"
-        tabindex="0"
-        aria-label="Cliquez pour découvrir Braderie de l'Art - Week-end de création collective. Utilisez Enter ou Espace pour interagir."
-        aria-expanded="false"
-        aria-describedby="polaroid-help"
-        data-title="Braderie de l'Art"
-        data-description="Week-end de création collective"
-      >
-        <div class="polaroid-inner">
-          <div
-            class="polaroid-front"
-            style="background-image: url('/images/braderie-de-l-art.png')"
-            role="img"
-            aria-label="Image de Braderie de l'Art"
-          ></div>
-          <div class="polaroid-back">
-            <div class="polaroid-title">Braderie de l'Art</div>
-            <div class="polaroid-description">
-              Week-end de création collective
+            <div class="mobile-menu-separator"></div>
+
+            <!-- Section Boutique -->
+            <div class="mobile-menu-section">
+              <div class="mobile-menu-section-title">Boutique</div>
+              <button
+                class="mobile-menu-item"
+                data-action="shop"
+                style="--delay: 1"
+              >
+                <svg
+                  class="mobile-menu-item-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <path
+                    d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <line
+                    x1="3"
+                    y1="6"
+                    x2="21"
+                    y2="6"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M16 10a4 4 0 0 1-8 0"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                <span>Boutique Focus</span>
+              </button>
             </div>
-            <div class="polaroid-action">Cliquez pour explorer →</div>
-          </div>
-        </div>
-      </button>
 
-      <button
-        class="polaroid p3"
-        data-link="/waterfall"
-        role="button"
-        tabindex="0"
-        aria-label="Cliquez pour découvrir Waterfall - Applique murale. Utilisez Enter ou Espace pour interagir."
-        aria-expanded="false"
-        aria-describedby="polaroid-help"
-        data-title="Waterfall"
-        data-description="Applique murale"
-      >
-        <div class="polaroid-inner">
-          <div
-            class="polaroid-front"
-            style="background-image: url('/images/Waterfall.jpg')"
-            role="img"
-            aria-label="Image de Waterfall"
-          ></div>
-          <div class="polaroid-back">
-            <div class="polaroid-title">Waterfall</div>
-            <div class="polaroid-description">Applique murale</div>
-            <div class="polaroid-action">Cliquez pour explorer →</div>
-          </div>
-        </div>
-      </button>
+            <div class="mobile-menu-separator"></div>
 
-      <button
-        class="polaroid p4"
-        data-link="/lowtech-vynil"
-        role="button"
-        tabindex="0"
-        aria-label="Cliquez pour découvrir Without Speaker - Création innovante. Utilisez Enter ou Espace pour interagir."
-        aria-expanded="false"
-        aria-describedby="polaroid-help"
-        data-title="Without Speaker"
-        data-description="Création innovante"
-      >
-        <div class="polaroid-inner">
-          <div
-            class="polaroid-front"
-            style="background-image: url('/images/lowtech-vynil.jpg')"
-            role="img"
-            aria-label="Image de Without Speaker"
-          ></div>
-          <div class="polaroid-back">
-            <div class="polaroid-title">Without Speaker</div>
-            <div class="polaroid-description">Création innovante</div>
-            <div class="polaroid-action">Cliquez pour explorer →</div>
-          </div>
-        </div>
-      </button>
-
-      <button
-        class="polaroid p5"
-        data-link="/chaussures-custom"
-        role="button"
-        tabindex="0"
-        aria-label="Cliquez pour découvrir Chaussures Custom - L'artisanat rencontre le style personnel. Utilisez Enter ou Espace pour interagir."
-        aria-expanded="false"
-        aria-describedby="polaroid-help"
-        data-title="Chaussures Custom"
-        data-description="L'artisanat rencontre le style personnel"
-      >
-        <div class="polaroid-inner">
-          <div
-            class="polaroid-front"
-            style="background-image: url('/images/chaussures-custom.jpg')"
-            role="img"
-            aria-label="Image de Chaussures Custom"
-          ></div>
-          <div class="polaroid-back">
-            <div class="polaroid-title">Chaussures Custom</div>
-            <div class="polaroid-description">
-              L'artisanat rencontre le style personnel
+            <!-- Section Projets -->
+            <div class="mobile-menu-section">
+              <div class="mobile-menu-section-title">Projets</div>
+              <button
+                class="mobile-menu-item"
+                data-action="focus-01"
+                style="--delay: 2"
+              >
+                <span>Lampe Focus.01</span>
+              </button>
+              <button
+                class="mobile-menu-item"
+                data-action="sea-cle"
+                style="--delay: 3"
+              >
+                <span>Sea Clé</span>
+              </button>
+              <button
+                class="mobile-menu-item"
+                data-action="lowtech-vynil"
+                style="--delay: 4"
+              >
+                <span>Lowtech Vynil</span>
+              </button>
+              <button
+                class="mobile-menu-item"
+                data-action="braderie-de-l-art"
+                style="--delay: 5"
+              >
+                <span>Braderie de l'Art</span>
+              </button>
+              <button
+                class="mobile-menu-item"
+                data-action="waterfall"
+                style="--delay: 6"
+              >
+                <span>Waterfall</span>
+              </button>
+              <button
+                class="mobile-menu-item"
+                data-action="chaussures-custom"
+                style="--delay: 7"
+              >
+                <span>Chaussures Custom</span>
+              </button>
             </div>
-            <div class="polaroid-action">Cliquez pour explorer →</div>
+
+            <div class="mobile-menu-separator"></div>
+
+            <!-- Section À propos -->
+            <div class="mobile-menu-section">
+              <div class="mobile-menu-section-title">À propos</div>
+              <button
+                class="mobile-menu-item"
+                data-action="anatolle-collet"
+                style="--delay: 8"
+              >
+                <span>Anatolle Collet</span>
+              </button>
+            </div>
+          </nav>
+
+          <!-- Footer -->
+          <div class="mobile-menu-footer">
+            <p class="mobile-menu-footer-text">© 2025 Alto Lille</p>
+
+            <!-- Badge EcoIndex -->
+            <div class="mobile-menu-ecoindex">
+              <a
+                href="https://bff.ecoindex.fr/redirect/?url=https://www.alto-lille.fr"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Voir le score EcoIndex du site"
+              >
+                <img
+                  src="https://bff.ecoindex.fr/badge/?theme=light&url=https://www.alto-lille.fr"
+                  alt="Badge EcoIndex"
+                  style="height: 24px"
+                  class="ecoindex-light"
+                />
+                <img
+                  src="https://bff.ecoindex.fr/badge/?theme=dark&url=https://www.alto-lille.fr"
+                  alt="Badge EcoIndex"
+                  style="height: 24px; display: none"
+                  class="ecoindex-dark"
+                />
+              </a>
+            </div>
+
+            <!-- Mention développeur -->
+            <div class="mobile-menu-developer">
+              <a
+                href="https://pogodev.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="mobile-menu-developer-link"
+                title="Site développé par Etienne Pogoda"
+              >
+                Développé par Etienne Pogoda
+              </a>
+            </div>
           </div>
         </div>
-      </button>
-
-      <button
-        class="polaroid p6"
-        data-link="/anatolle-collet"
-        role="button"
-        tabindex="0"
-        aria-label="Cliquez pour découvrir qui je suis. Utilisez Enter ou Espace pour interagir."
-        aria-expanded="false"
-        aria-describedby="polaroid-help"
-        data-title="Qui suis-je"
-        data-description="Rencontrer le créateur"
-      >
-        <div class="polaroid-inner">
-          <div
-            class="polaroid-front"
-            style="
-              background-image: url('https://www.alto-lille.fr/uploads/6d140285-f1c2-4a80-bfde-d9848a4c5f92.jpg');
-            "
-            role="img"
-            aria-label="Portrait du créateur d'Alto Lille"
-          ></div>
-          <div class="polaroid-back">
-            <div class="polaroid-title">Qui suis-je</div>
-            <div class="polaroid-description">Rencontrer le créateur</div>
-            <div class="polaroid-action">Cliquez pour explorer →</div>
-          </div>
-        </div>
-      </button>
-
-      <!-- Aide à l'accessibilité (cachée visuellement) -->
-      <div id="polaroid-help" class="sr-only">
-        Utilisez les flèches pour naviguer entre les polaroids. Appuyez sur
-        Enter ou Espace pour retourner un polaroid et découvrir son contenu.
-        Appuyez à nouveau pour visiter la page dédiée.
       </div>
 
+      <!-- Slider Focus avec 4 images -->
+      <div class="focus-slider">
+        <div class="slider-container">
+          <div class="slider-track" id="sliderTrack">
+            <div class="slider-slide">
+              <img src="/images/rouge.png" alt="Lampe Focus.01 Rouge" />
+            </div>
+            <div class="slider-slide">
+              <img src="/images/orange.png" alt="Lampe Focus.01 Orange" />
+            </div>
+            <div class="slider-slide">
+              <img src="/images/bleue.png" alt="Lampe Focus.01 Bleue" />
+            </div>
+            <div class="slider-slide">
+              <img src="/images/blanche.png" alt="Lampe Focus.01 Blanche" />
+            </div>
+          </div>
+          <div class="slider-nav">
+            <div class="slider-dot active" data-slide="0"></div>
+            <div class="slider-dot" data-slide="1"></div>
+            <div class="slider-dot" data-slide="2"></div>
+            <div class="slider-dot" data-slide="3"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Liens Desktop -->
+      <div class="desktop-links">
+        <div
+          class="desktop-link projets-recherche"
+          onclick="navigateToProjects()"
+        >
+          <img src="/images/lowtech-vynil.jpg" alt="Projets recherche" />
+          <div class="desktop-link-overlay">
+            <span>Projets recherche</span>
+          </div>
+        </div>
+        <div class="desktop-link produits-mesure" onclick="navigateToCustom()">
+          <img src="/images/chaussures-custom.jpg" alt="Produits sur mesure" />
+          <div class="desktop-link-overlay">
+            <span>Produits sur mesure</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
       <footer
         class="animate fade-in-up delay-8"
         style="
@@ -2914,15 +3198,15 @@
         });
 
       /* ===== LOOP ===== */
-      const OFFSET = Math.PI * 0.5; // Changé de Math.PI à Math.PI * 0.5 pour une vue plus frontale
+      const OFFSET = Math.PI * 0.5; // Position fixe de la caméra
       // Variables pour contrôler l'animation
       let animationActive = true;
       let animFrameId;
-      let autoRotationAngle = OFFSET;
-      let lastScrollTime = 0; // Initialisé à 0 pour que la rotation démarre immédiatement
-      let hasScrolled = false; // Pour suivre si l'utilisateur a déjà défilé
-      const AUTO_ROTATION_SPEED = 0.005; // Vitesse de rotation automatique
-      const SCROLL_TIMEOUT = 1000; // Temps d'inactivité avant reprise de la rotation auto (en ms)
+      let autoRotationAngle = OFFSET; // Position fixe - pas de rotation
+      let lastScrollTime = 0;
+      let hasScrolled = false;
+      const AUTO_ROTATION_SPEED = 0; // Désactivé - pas de rotation automatique
+      const SCROLL_TIMEOUT = 1000;
 
       // Fonction d'animation
       function anim() {
@@ -2951,20 +3235,24 @@
           camera.lookAt(center);
           caps.forEach((e) => (e.style.opacity = 0));
           cta.style.opacity = 0;
+          // Masquer le webgl en phase d'intro - seulement les photos sont visibles
+          document.getElementById("webgl").style.opacity = 0;
           // Afficher le titre ALTO LILLE dès le début
           document.getElementById("brand-title").style.opacity = 1;
           // Afficher l'indicateur de défilement dans la phase d'intro avec animation
           const scrollIndicatorEl = document.getElementById("scroll-indicator");
           scrollIndicatorEl.classList.add("visible");
-          // Afficher les polaroids
+          // Afficher les images de produits
           document
-            .querySelectorAll(".polaroid")
+            .querySelectorAll(".product-image")
             .forEach((p) => (p.style.opacity = 1));
           if (act) {
             act.time = clip - k * (clip - Math.min(5.2, clip));
             mixer.update(0);
           }
         } else {
+          // Afficher le webgl dès qu'on commence à scroller
+          document.getElementById("webgl").style.opacity = 1;
           const t = (prog - CFG.intro) / (1 - CFG.intro),
             rot = C(t / CFG.rotEnd),
             ang = OFFSET - rot * Math.PI * 2;
@@ -2990,14 +3278,14 @@
           // Masquer l'indicateur de défilement dès que l'utilisateur commence à défiler
           const scrollIndicatorEl = document.getElementById("scroll-indicator");
           scrollIndicatorEl.classList.remove("visible");
-          // Faire disparaître les polaroids avant que "PLA éco-responsable" n'apparaisse
+          // Faire disparaître les images de produits avant que "PLA éco-responsable" n'apparaisse
           // La première légende apparaît à t = 0.04 (CFG.legend.fade)
           const firstCaptionStart = CFG.legend.fade; // 0.04
-          const polaroidOpacity =
+          const imageOpacity =
             t < firstCaptionStart ? 1 - t / firstCaptionStart : 0;
           document
-            .querySelectorAll(".polaroid")
-            .forEach((p) => (p.style.opacity = polaroidOpacity));
+            .querySelectorAll(".product-image")
+            .forEach((p) => (p.style.opacity = imageOpacity));
           cta.style.opacity = t > 0.95 ? C((t - 0.95) / 0.05) : 0;
           act &&
             ((act.time = Math.min(t * CFG.timeScale, 1) * clip),
@@ -3101,6 +3389,37 @@
         animFrameId = requestAnimationFrame(anim);
       });
 
+      // Fonction pour mettre à jour les badges EcoIndex selon le thème
+      function updateEcoIndexBadges() {
+        const isDark = document.body.classList.contains("dark-mode");
+
+        // Badges dans le footer principal
+        const footerBadges = document.querySelectorAll(
+          "footer img[alt*='Ecoindex']"
+        );
+        footerBadges.forEach((badge) => {
+          if (isDark) {
+            badge.src =
+              "https://bff.ecoindex.fr/badge/?theme=dark&url=https://www.alto-lille.fr";
+          } else {
+            badge.src =
+              "https://bff.ecoindex.fr/badge/?theme=light&url=https://www.alto-lille.fr";
+          }
+        });
+
+        // Badges dans le menu mobile
+        const lightBadges = document.querySelectorAll(".ecoindex-light");
+        const darkBadges = document.querySelectorAll(".ecoindex-dark");
+
+        if (isDark) {
+          lightBadges.forEach((badge) => (badge.style.display = "none"));
+          darkBadges.forEach((badge) => (badge.style.display = "inline"));
+        } else {
+          lightBadges.forEach((badge) => (badge.style.display = "inline"));
+          darkBadges.forEach((badge) => (badge.style.display = "none"));
+        }
+      }
+
       // Gestion du thème sombre/clair
       const themeToggle = document.getElementById("theme-toggle");
       const themeLabel = document.getElementById("theme-label");
@@ -3143,6 +3462,9 @@
           renderer.setClearColor(CFG.colours.bg, 1);
         }
 
+        // Mettre à jour les badges EcoIndex
+        updateEcoIndexBadges();
+
         // Émettre un événement personnalisé pour l'application React
         window.dispatchEvent(
           new CustomEvent("themeChange", {
@@ -3183,6 +3505,9 @@
             renderer.setClearColor(CFG.colours.bg, 1);
           }
         }
+
+        // Mettre à jour les badges EcoIndex
+        updateEcoIndexBadges();
       });
 
       // Gestion du changement de langue
@@ -3233,67 +3558,6 @@
         langLabel.textContent = "FR";
       }
 
-      // ===== FONCTIONNALITÉ INTERACTIVE POUR L'INDICATEUR DE DÉFILEMENT =====
-
-      // Ajouter l'interactivité à l'indicateur de défilement
-      const scrollIndicator = document.getElementById("scroll-indicator");
-      const scrollIcon = document.getElementById("scroll-icon");
-
-      if (scrollIndicator && scrollIcon) {
-        // Faire de l'indicateur un élément cliquable
-        scrollIndicator.style.cursor = "pointer";
-        scrollIndicator.style.pointerEvents = "auto";
-
-        // Fonction de scroll fluide vers le début du contenu
-        function smoothScrollToContent() {
-          // Calculer la position de scroll pour commencer l'animation
-          const scrollPosition = window.innerHeight * 0.15; // 15% de la hauteur de l'écran
-
-          window.scrollTo({
-            top: scrollPosition,
-            behavior: "smooth",
-          });
-
-          // Ajouter un effet visuel de clic
-          scrollIcon.style.transform = "scale(0.9)";
-          setTimeout(() => {
-            scrollIcon.style.transform = "scale(1)";
-          }, 150);
-        }
-
-        // Ajouter les événements de clic
-        scrollIndicator.addEventListener("click", smoothScrollToContent);
-        scrollIcon.addEventListener("click", (e) => {
-          e.stopPropagation(); // Éviter la double exécution
-          smoothScrollToContent();
-        });
-
-        // Ajouter le support du clavier pour l'accessibilité
-        scrollIndicator.addEventListener("keydown", (e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            smoothScrollToContent();
-          }
-        });
-
-        // Ajouter un attribut tabindex pour la navigation au clavier
-        scrollIndicator.setAttribute("tabindex", "0");
-        scrollIndicator.setAttribute("role", "button");
-        scrollIndicator.setAttribute(
-          "aria-label",
-          "Défiler vers le bas pour découvrir le produit"
-        );
-
-        // Effet hover amélioré avec JavaScript
-        scrollIndicator.addEventListener("mouseenter", () => {
-          scrollIndicator.style.transform = "translateX(-50%) translateY(-5px)";
-        });
-
-        scrollIndicator.addEventListener("mouseleave", () => {
-          scrollIndicator.style.transform = "translateX(-50%) translateY(0)";
-        });
-      }
-
       // Fonction pour appliquer une langue
       function applyLanguage(lang) {
         const t = translations[lang];
@@ -3333,191 +3597,169 @@
       // Exécuter au chargement initial
       document.addEventListener("DOMContentLoaded", function () {
         handleNavigation();
+        updateEcoIndexBadges(); // Configurer les badges EcoIndex selon le thème initial
       });
 
       // S'assurer que la page est correctement initialisée immédiatement (sans attendre les événements)
       handleNavigation();
 
-      /* ===== EFFET DE PARALLAXE POUR LES POLAROIDS ===== */
-      // Déclarer les variables pour l'effet de parallaxe
-      let mouseX = 0;
-      let mouseY = 0;
-      let targetX = 0;
-      let targetY = 0;
-      let windowHalfX = window.innerWidth / 2;
-      let windowHalfY = window.innerHeight / 2;
-      const polaroids = document.querySelectorAll(".polaroid");
+      /* ===== SLIDER FOCUS & NAVIGATION ===== */
 
-      // Variables pour gérer le délai avant la navigation
-      let navigationTimeout = null;
-      let isFlipping = false;
-      let parallaxEnabled = true;
-
-      // Stocker les positions parallax de chaque polaroid
-      const parallaxPositions = new Map();
-
-      // Définir des facteurs de force différents pour chaque polaroid (plus la valeur est élevée, plus l'effet est prononcé)
-      const parallaxIntensity = [
-        0.12, // p1 - augmenté pour plus de visibilité
-        0.08, // p2
-        0.15, // p3
-        0.1, // p4
-        0.09, // p5
-        0.13, // p6
-      ];
-
-      // Configuration du facteur de lissage (plus la valeur est basse, plus le mouvement est fluide)
-      const smoothFactor = 0.06; // Plus fluide
-
-      // Fonction pour appliquer ou préserver les transformations parallax
-      function applyParallaxTransform(polaroid, moveX, moveY) {
-        // Récupérer la rotation de base du polaroid
-        const rotation =
-          getComputedStyle(polaroid).getPropertyValue("--rotation") || "0deg";
-
-        // Appliquer le parallax ET maintenir la rotation de base
-        const transform = `translate(${moveX}px, ${moveY}px) rotate(${rotation})`;
-        polaroid.style.transform = transform;
-
-        // Stocker la position pour la réutiliser si nécessaire
-        const index = Array.from(polaroids).indexOf(polaroid);
-        parallaxPositions.set(polaroid, {
-          x: moveX,
-          y: moveY,
-          rotation: rotation,
-        });
-      }
-
-      // Fonction pour réappliquer le parallax sur un élément
-      function reapplyParallax(polaroid) {
-        const position = parallaxPositions.get(polaroid);
-        if (position && parallaxEnabled) {
-          const transform = `translate(${position.x}px, ${position.y}px) rotate(${position.rotation})`;
-          polaroid.style.transform = transform;
+      // Fonctions de navigation pour les liens desktop
+      function navigateToProjects() {
+        // Mettre à jour l'URL
+        history.pushState({}, "", "/projects");
+        // Arrêter l'animation Three.js
+        animationActive = false;
+        if (animFrameId) {
+          cancelAnimationFrame(animFrameId);
+          animFrameId = null;
         }
+        // Afficher l'app React et masquer la landing
+        document.getElementById("landing-container").style.display = "none";
+        document.getElementById("root").style.display = "block";
+        // Notifier l'app React du changement
+        window.dispatchEvent(
+          new CustomEvent("routeChange", { detail: { path: "/projects" } })
+        );
       }
 
-      // Vérifier les capacités tactiles dès le début
-      const isTouch = isTouchDevice();
-      parallaxEnabled = !isTouch;
+      function navigateToCustom() {
+        // Mettre à jour l'URL
+        history.pushState({}, "", "/custom");
+        // Arrêter l'animation Three.js
+        animationActive = false;
+        if (animFrameId) {
+          cancelAnimationFrame(animFrameId);
+          animFrameId = null;
+        }
+        // Afficher l'app React et masquer la landing
+        document.getElementById("landing-container").style.display = "none";
+        document.getElementById("root").style.display = "block";
+        // Notifier l'app React du changement
+        window.dispatchEvent(
+          new CustomEvent("routeChange", { detail: { path: "/custom" } })
+        );
+      }
 
-      // Écouter les mouvements de la souris
-      document.addEventListener(
-        "mousemove",
-        function (e) {
-          if (!parallaxEnabled) return;
+      // Gestion du slider Focus
+      let currentSlide = 0;
+      const slides = 4;
 
-          // Calculer la position relative de la souris par rapport au centre de l'écran
-          targetX = e.clientX - windowHalfX;
-          targetY = e.clientY - windowHalfY;
-        },
-        { passive: true }
-      );
+      function showSlide(index) {
+        const track = document.getElementById("sliderTrack");
+        const dots = document.querySelectorAll(".slider-dot");
 
-      // Animation fluide avec requestAnimationFrame
-      function updateParallax() {
-        if (parallaxEnabled && !isTouch) {
-          // Interpolation fluide entre la position actuelle et la position cible
-          mouseX += (targetX - mouseX) * smoothFactor;
-          mouseY += (targetY - mouseY) * smoothFactor;
+        // Mettre à jour la position du slider
+        track.style.transform = `translateX(-${index * 25}%)`;
 
-          // Appliquer l'effet de parallaxe à chaque polaroid avec une intensité différente
-          polaroids.forEach((polaroid, index) => {
-            const computedStyle = window.getComputedStyle(polaroid);
-            const opacity = parseFloat(computedStyle.opacity);
+        // Mettre à jour les dots
+        dots.forEach((dot, i) => {
+          dot.classList.toggle("active", i === index);
+        });
 
-            if (opacity > 0.1 && !polaroid.classList.contains("flipping")) {
-              // N'appliquer l'effet que si le polaroid est visible et n'est pas en train de se retourner
-              const intensity = parallaxIntensity[index] || 0.07;
-              const moveX = mouseX * intensity;
-              const moveY = mouseY * intensity;
+        currentSlide = index;
+      }
 
-              // Appliquer la translation au polaroid lui-même
-              applyParallaxTransform(polaroid, moveX, moveY);
+      function nextSlide() {
+        const nextIndex = (currentSlide + 1) % slides;
+        showSlide(nextIndex);
+      }
+
+      // Auto-play du slider
+      setInterval(nextSlide, 4000); // Change toutes les 4 secondes
+
+      // Ajouter les événements aux dots
+      document.addEventListener("DOMContentLoaded", function () {
+        const dots = document.querySelectorAll(".slider-dot");
+        dots.forEach((dot, index) => {
+          dot.addEventListener("click", () => showSlide(index));
+        });
+
+        // Menu burger moderne pour mobile
+        const menuBurger = document.getElementById("menuBurger");
+        const menuOverlay = document.getElementById("menuOverlay");
+        const menuSidebar = document.getElementById("menuSidebar");
+        const menuClose = document.getElementById("menuClose");
+
+        // Fonction pour ouvrir le menu
+        function openMobileMenu() {
+          menuOverlay.classList.add("active");
+          menuSidebar.classList.add("active");
+          document.body.style.overflow = "hidden"; // Empêcher le scroll
+        }
+
+        // Fonction pour fermer le menu
+        function closeMobileMenu() {
+          menuOverlay.classList.remove("active");
+          menuSidebar.classList.remove("active");
+          document.body.style.overflow = ""; // Restaurer le scroll
+        }
+
+        // Fonction de navigation
+        function navigateFromMenu(path) {
+          closeMobileMenu();
+
+          // Arrêter l'animation Three.js
+          animationActive = false;
+          if (animFrameId) {
+            cancelAnimationFrame(animFrameId);
+            animFrameId = null;
+          }
+
+          // Navigation selon le path
+          if (path === "home") {
+            // Rester sur la landing page - juste fermer le menu
+            return;
+          } else {
+            // Naviguer vers l'app React
+            history.pushState({}, "", `/${path}`);
+            document.getElementById("landing-container").style.display = "none";
+            document.getElementById("root").style.display = "block";
+            window.dispatchEvent(
+              new CustomEvent("routeChange", { detail: { path: `/${path}` } })
+            );
+          }
+        }
+
+        // Event listeners
+        if (menuBurger) {
+          menuBurger.addEventListener("click", openMobileMenu);
+        }
+
+        if (menuClose) {
+          menuClose.addEventListener("click", closeMobileMenu);
+        }
+
+        if (menuOverlay) {
+          menuOverlay.addEventListener("click", function (e) {
+            if (e.target === menuOverlay) {
+              closeMobileMenu();
             }
           });
         }
 
-        // Continuer l'animation
-        requestAnimationFrame(updateParallax);
-      }
+        // Gestion des clics sur les éléments du menu
+        document
+          .querySelectorAll(".mobile-menu-item[data-action]")
+          .forEach((item) => {
+            item.addEventListener("click", function () {
+              const action = this.getAttribute("data-action");
+              navigateFromMenu(action);
+            });
+          });
 
-      // Démarrer l'animation de parallaxe
-      setTimeout(() => {
-        // Initialiser les rotations de base pour tous les polaroids
-        polaroids.forEach((polaroid) => {
-          const rotation =
-            getComputedStyle(polaroid).getPropertyValue("--rotation") || "0deg";
-          if (!polaroid.style.transform || polaroid.style.transform === "") {
-            polaroid.style.transform = `rotate(${rotation})`;
+        // Fermer le menu avec la touche Escape
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape" && menuOverlay.classList.contains("active")) {
+            closeMobileMenu();
           }
         });
-
-        requestAnimationFrame(updateParallax);
-      }, 1000); // Attendre 1 seconde pour laisser la page se charger
-
-      // Mettre à jour les dimensions lors du redimensionnement de la fenêtre
-      window.addEventListener(
-        "resize",
-        function () {
-          windowHalfX = window.innerWidth / 2;
-          windowHalfY = window.innerHeight / 2;
-        },
-        { passive: true }
-      );
-
-      // Fonction pour réinitialiser la position des polaroids quand la souris quitte la fenêtre
-      document.addEventListener("mouseleave", function () {
-        if (parallaxEnabled) {
-          polaroids.forEach((polaroid) => {
-            // Remettre seulement la rotation de base, sans parallax
-            const rotation =
-              getComputedStyle(polaroid).getPropertyValue("--rotation") ||
-              "0deg";
-            polaroid.style.transform = `rotate(${rotation})`;
-            parallaxPositions.delete(polaroid);
-          });
-        }
       });
 
-      // Fonction pour détecter les capacités tactiles réelles (pas la taille d'écran)
-      function isTouchDevice() {
-        // Combinaison de plusieurs méthodes de détection pour plus de précision
-        const hasTouch =
-          "ontouchstart" in window ||
-          navigator.maxTouchPoints > 0 ||
-          navigator.msMaxTouchPoints > 0;
-
-        // Détection via les media queries (plus fiable)
-        const hasCoarsePointer =
-          window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
-        const canHover =
-          window.matchMedia && window.matchMedia("(hover: hover)").matches;
-
-        // Un appareil tactile a généralement un pointer coarse et ne peut pas vraiment hover
-        return hasTouch || (hasCoarsePointer && !canHover);
-      }
-
-      // Fonction pour initialiser les classes CSS basées sur la détection tactile
-      function initTouchClasses() {
-        const body = document.body;
-
-        if (isTouchDevice()) {
-          body.classList.add("touch-device");
-          body.classList.remove("non-touch-device");
-        } else {
-          body.classList.add("non-touch-device");
-          body.classList.remove("touch-device");
-        }
-      }
-
-      // Initialiser immédiatement les classes tactiles
-      initTouchClasses();
-
-      // Fonction de compatibilité pour l'ancien nom (sera progressivement remplacée)
-      function isMobileDevice() {
-        return isTouchDevice();
-      }
+      // Rendre les fonctions de navigation globales pour les onclick
+      window.navigateToProjects = navigateToProjects;
+      window.navigateToCustom = navigateToCustom;
 
       // Fonction pour annoncer les changements aux lecteurs d'écran
       function announceToScreenReader(message) {
@@ -3626,670 +3868,11 @@
         }
       }
 
-      // Ajouter les interactions pour les polaroids
-      polaroids.forEach((polaroid) => {
-        const link = polaroid.getAttribute("data-link");
-        const inner = polaroid.querySelector(".polaroid-inner");
-        const rotation =
-          getComputedStyle(polaroid).getPropertyValue("--rotation") || "0deg";
-
-        // Gestion des événements tactiles pour les appareils mobiles
-        polaroid.addEventListener("touchstart", function (e) {
-          e.preventDefault();
-
-          if (isFlipping) return;
-
-          // Vérifier si on touche le bouton d'action "explore"
-          // Correction spécifique pour p5 : vérifier aussi dans l'élément parent
-          let touchedActionButton =
-            e.target && e.target.closest(".polaroid-action");
-
-          // Correction supplémentaire pour p5 en cas de problème de propagation d'événement
-          if (!touchedActionButton && polaroid.classList.contains("p5")) {
-            const actionButton = polaroid.querySelector(".polaroid-action");
-            if (actionButton && e.target === actionButton) {
-              touchedActionButton = actionButton;
-            }
-          }
-
-          const isFlipped = inner.style.transform.includes("rotateY(180deg)");
-
-          if (isFlipped) {
-            if (touchedActionButton) {
-              // Si on touche le bouton "explore", naviguer vers le lien
-              navigateToLink(polaroid, link);
-            } else {
-              // Si on touche ailleurs sur le polaroid retourné, le fermer
-              isFlipping = true;
-              flipPolaroidBack(polaroid, inner, rotation);
-
-              setTimeout(() => {
-                isFlipping = false;
-              }, 600);
-            }
-          } else {
-            isFlipping = true;
-            flipPolaroid(polaroid, inner, rotation);
-
-            setTimeout(() => {
-              isFlipping = false;
-            }, 600);
-          }
-        });
-
-        // Gestion des clics pour les ordinateurs de bureau et les événements clavier
-        function handlePolaroidActivation(e) {
-          // Vérifier si c'est un événement clavier et si c'est la bonne touche
-          if (e.type === "keydown" && e.key !== "Enter" && e.key !== " ") {
-            return;
-          }
-
-          // Empêcher l'action par défaut pour les touches
-          if (e.type === "keydown") {
-            e.preventDefault();
-          }
-
-          // Si l'appareil est mobile et que c'est un clic, laisser touchstart gérer
-          if (isTouchDevice() && e.type === "click") return;
-
-          if (isFlipping) return;
-
-          // Vérifier si on clique sur le bouton d'action "explore"
-          // Correction spécifique pour p5 : vérifier aussi dans l'élément parent
-          let clickedOnActionButton =
-            e.target && e.target.closest(".polaroid-action");
-
-          // Correction supplémentaire pour p5 en cas de problème de propagation d'événement
-          if (!clickedOnActionButton && polaroid.classList.contains("p5")) {
-            const actionButton = polaroid.querySelector(".polaroid-action");
-            if (
-              actionButton &&
-              (e.target === actionButton || actionButton.contains(e.target))
-            ) {
-              clickedOnActionButton = actionButton;
-            }
-          }
-
-          const isFlipped = inner.style.transform.includes("rotateY(180deg)");
-
-          if (isFlipped) {
-            if (clickedOnActionButton) {
-              // Si on clique sur le bouton "explore", naviguer vers le lien
-              navigateToLink(polaroid, link);
-            } else {
-              // Si on clique ailleurs sur le polaroid retourné, le fermer
-              isFlipping = true;
-              flipPolaroidBack(polaroid, inner, rotation);
-
-              setTimeout(() => {
-                isFlipping = false;
-              }, 600);
-            }
-          } else {
-            // Sur desktop, retourner le polaroid seulement si on clique/appuie sur une touche
-            if (e.type === "click" || e.type === "keydown") {
-              isFlipping = true;
-              flipPolaroid(polaroid, inner, rotation);
-
-              setTimeout(() => {
-                isFlipping = false;
-              }, 600);
-            }
-          }
-        }
-
-        // Ajouter les événements pour clic et clavier
-        polaroid.addEventListener("click", handlePolaroidActivation);
-        polaroid.addEventListener("keydown", handlePolaroidActivation);
-
-        // Gestion des clics ET effet de survol bonus pour desktop
-        polaroid.addEventListener("mouseenter", function () {
-          // Les boutons restent TOUJOURS visibles - juste un effet bonus sur desktop
-          if (!isFlipping && !polaroid.classList.contains("flipped")) {
-            // Effet de survol léger sans retourner complètement
-            inner.style.transform =
-              inner.style.transform.replace("rotateY(180deg)", "") +
-              " rotateY(15deg)";
-
-            // Effet bonus : légère mise en évidence du bouton (mais il reste visible)
-            const action = polaroid.querySelector(".polaroid-action");
-            if (action) {
-              action.style.setProperty("transform", "scale(1.05)", "important");
-              action.style.setProperty(
-                "box-shadow",
-                "0 4px 8px rgba(0,0,0,0.3)",
-                "important"
-              );
-            }
-          }
-        });
-
-        polaroid.addEventListener("mouseleave", function () {
-          // Les boutons restent TOUJOURS visibles - retour à l'état normal
-          if (!polaroid.classList.contains("flipped")) {
-            // Remettre à la position normale
-            inner.style.transform = `rotate(${rotation})`;
-
-            // Retour à l'état normal du bouton (mais il reste visible)
-            const action = polaroid.querySelector(".polaroid-action");
-            if (action) {
-              action.style.setProperty("transform", "scale(1)", "important");
-              action.style.setProperty("box-shadow", "none", "important");
-            }
-          }
-        });
-
-        // Gestion du focus pour l'accessibilité (pas de retournement automatique)
-        polaroid.addEventListener("focus", function () {
-          // Focus complètement supprimé pour éviter les cadres blancs
-          // L'accessibilité est maintenue par les attributs ARIA
-        });
-
-        polaroid.addEventListener("blur", function () {
-          // Focus complètement supprimé pour éviter les cadres blancs
-          // L'accessibilité est maintenue par les attributs ARIA
-        });
-      });
+      // Les polaroids ont été supprimés et remplacés par le focus slider
     </script>
     <script>
-      // Script d'initialisation des polaroids
-      document.addEventListener("DOMContentLoaded", function () {
-        const polaroids = document.querySelectorAll(".polaroid");
-
-        // SOLUTION UNIVERSELLE : Boutons visibles sur TOUS les appareils
-        function ensureActionButtonsVisible() {
-          // Plus de conditions restrictives - application universelle !
-          polaroids.forEach((polaroid) => {
-            const actionButtons = polaroid.querySelectorAll(".polaroid-action");
-
-            actionButtons.forEach((actionButton) => {
-              // FORCER les styles sur TOUS les appareils
-              actionButton.style.setProperty("opacity", "1", "important");
-              actionButton.style.setProperty("display", "block", "important");
-              actionButton.style.setProperty(
-                "visibility",
-                "visible",
-                "important"
-              );
-              actionButton.style.setProperty(
-                "pointer-events",
-                "auto",
-                "important"
-              );
-              actionButton.style.setProperty(
-                "position",
-                "relative",
-                "important"
-              );
-              actionButton.style.setProperty("z-index", "999", "important");
-
-              // Marquer comme forcé universellement
-              actionButton.setAttribute("data-universal-visible", "true");
-            });
-          });
-        }
-
-        // OPTIMISATION SPÉCIALE pour très petits écrans (≤320px)
-        function optimizeForSmallScreens() {
-          if (window.innerWidth <= 320) {
-            // Optimisation des polaroids pour 320px
-            polaroids.forEach((polaroid) => {
-              // Forcer les dimensions réduites
-              polaroid.style.setProperty("width", "140px", "important");
-              polaroid.style.setProperty("height", "180px", "important");
-              polaroid.style.setProperty("margin", "3px", "important");
-
-              const inner = polaroid.querySelector(".polaroid-inner");
-              if (inner) {
-                inner.style.setProperty("width", "136px", "important");
-                inner.style.setProperty("height", "176px", "important");
-              }
-
-              // Optimiser le verso pour le centrage parfait
-              const back = polaroid.querySelector(".polaroid-back");
-              if (back) {
-                back.style.setProperty("display", "flex", "important");
-                back.style.setProperty("flex-direction", "column", "important");
-                back.style.setProperty(
-                  "justify-content",
-                  "center",
-                  "important"
-                );
-                back.style.setProperty("align-items", "center", "important");
-                back.style.setProperty("text-align", "center", "important");
-                back.style.setProperty("padding", "6px", "important");
-                back.style.setProperty("box-sizing", "border-box", "important");
-              }
-
-              // Optimiser les boutons d'action avec centrage parfait
-              const actionButtons =
-                polaroid.querySelectorAll(".polaroid-action");
-              actionButtons.forEach((actionButton) => {
-                actionButton.style.setProperty("font-size", "9px", "important");
-                actionButton.style.setProperty(
-                  "padding",
-                  "5px 8px",
-                  "important"
-                );
-                actionButton.style.setProperty(
-                  "min-height",
-                  "26px",
-                  "important"
-                );
-                actionButton.style.setProperty(
-                  "min-width",
-                  "55px",
-                  "important"
-                );
-                actionButton.style.setProperty(
-                  "max-width",
-                  "115px",
-                  "important"
-                );
-                actionButton.style.setProperty(
-                  "margin",
-                  "4px auto 0 auto",
-                  "important"
-                );
-                actionButton.style.setProperty(
-                  "border-radius",
-                  "3px",
-                  "important"
-                );
-                actionButton.style.setProperty(
-                  "line-height",
-                  "1.2",
-                  "important"
-                );
-                actionButton.style.setProperty("display", "flex", "important");
-                actionButton.style.setProperty(
-                  "align-items",
-                  "center",
-                  "important"
-                );
-                actionButton.style.setProperty(
-                  "justify-content",
-                  "center",
-                  "important"
-                );
-                actionButton.style.setProperty(
-                  "text-align",
-                  "center",
-                  "important"
-                );
-                actionButton.style.setProperty(
-                  "background",
-                  "rgba(0, 0, 0, 0.8)",
-                  "important"
-                );
-                actionButton.style.setProperty("color", "white", "important");
-                actionButton.style.setProperty(
-                  "border",
-                  "1px solid rgba(255, 255, 255, 0.3)",
-                  "important"
-                );
-                actionButton.style.setProperty(
-                  "font-weight",
-                  "500",
-                  "important"
-                );
-                actionButton.style.setProperty(
-                  "letter-spacing",
-                  "0.3px",
-                  "important"
-                );
-              });
-
-              // Optimiser le texte avec centrage parfait
-              const title = polaroid.querySelector(".polaroid-title");
-              if (title) {
-                title.style.setProperty("font-size", "11px", "important");
-                title.style.setProperty("line-height", "1.2", "important");
-                title.style.setProperty("margin-bottom", "3px", "important");
-                title.style.setProperty("max-height", "2.4em", "important");
-                title.style.setProperty("text-align", "center", "important");
-                title.style.setProperty("width", "100%", "important");
-                title.style.setProperty("display", "block", "important");
-              }
-
-              const description = polaroid.querySelector(
-                ".polaroid-description"
-              );
-              if (description) {
-                description.style.setProperty("font-size", "9px", "important");
-                description.style.setProperty(
-                  "line-height",
-                  "1.3",
-                  "important"
-                );
-                description.style.setProperty(
-                  "margin-bottom",
-                  "4px",
-                  "important"
-                );
-                description.style.setProperty(
-                  "max-height",
-                  "2.6em",
-                  "important"
-                );
-                description.style.setProperty(
-                  "text-align",
-                  "center",
-                  "important"
-                );
-                description.style.setProperty("width", "100%", "important");
-                description.style.setProperty("display", "block", "important");
-              }
-            });
-
-            // Optimiser l'encart du bas
-            const scrollContent = document.querySelector(".scroll-content");
-            if (scrollContent) {
-              scrollContent.style.setProperty("width", "280px", "important");
-              scrollContent.style.setProperty(
-                "max-width",
-                "calc(100vw - 20px)",
-                "important"
-              );
-              scrollContent.style.setProperty("padding", "8px", "important");
-              scrollContent.style.setProperty("left", "50%", "important");
-              scrollContent.style.setProperty(
-                "transform",
-                "translateX(-50%)",
-                "important"
-              );
-            }
-
-            const productName = document.querySelector(".product-name");
-            if (productName) {
-              productName.style.setProperty("font-size", "14px", "important");
-            }
-
-            const cta = document.getElementById("cta");
-            if (cta) {
-              cta.style.setProperty("font-size", "10px", "important");
-              cta.style.setProperty("padding", "8px 12px", "important");
-              cta.style.setProperty("max-width", "200px", "important");
-            }
-          }
-        }
-
-        // Fonction de vérification périodique UNIVERSELLE
-        function periodicCheck() {
-          // Plus de conditions - vérification pour TOUS les appareils
-          polaroids.forEach((polaroid) => {
-            const actionButtons = polaroid.querySelectorAll(".polaroid-action");
-
-            actionButtons.forEach((actionButton) => {
-              const currentOpacity =
-                window.getComputedStyle(actionButton).opacity;
-              const currentDisplay =
-                window.getComputedStyle(actionButton).display;
-              const currentVisibility =
-                window.getComputedStyle(actionButton).visibility;
-
-              // Forcer IMMÉDIATEMENT si pas correct sur TOUS les appareils
-              if (
-                parseFloat(currentOpacity) < 1 ||
-                currentDisplay === "none" ||
-                currentVisibility === "hidden"
-              ) {
-                actionButton.style.setProperty("opacity", "1", "important");
-                actionButton.style.setProperty("display", "block", "important");
-                actionButton.style.setProperty(
-                  "visibility",
-                  "visible",
-                  "important"
-                );
-                actionButton.style.setProperty(
-                  "pointer-events",
-                  "auto",
-                  "important"
-                );
-              }
-            });
-          });
-        }
-
-        // Fonction d'observation pour maintenir la visibilité UNIVERSELLE
-        function setupButtonObserver() {
-          // Application pour TOUS les appareils
-          polaroids.forEach((polaroid) => {
-            const actionButtons = polaroid.querySelectorAll(".polaroid-action");
-
-            actionButtons.forEach((actionButton) => {
-              // Observer les changements de style sur tous appareils
-              const observer = new MutationObserver((mutations) => {
-                mutations.forEach((mutation) => {
-                  if (
-                    mutation.type === "attributes" &&
-                    mutation.attributeName === "style"
-                  ) {
-                    const currentOpacity =
-                      window.getComputedStyle(actionButton).opacity;
-                    if (parseFloat(currentOpacity) < 1) {
-                      actionButton.style.setProperty(
-                        "opacity",
-                        "1",
-                        "important"
-                      );
-                    }
-                  }
-                });
-              });
-
-              observer.observe(actionButton, {
-                attributes: true,
-                attributeFilter: ["style", "class"],
-              });
-            });
-          });
-        }
-
-        // EXÉCUTION ULTRA-AGRESSIVE
-        ensureActionButtonsVisible();
-        optimizeForSmallScreens();
-
-        // Re-vérifier plusieurs fois avec des délais différents
-        setTimeout(ensureActionButtonsVisible, 50);
-        setTimeout(optimizeForSmallScreens, 50);
-        setTimeout(ensureActionButtonsVisible, 100);
-        setTimeout(optimizeForSmallScreens, 100);
-        setTimeout(ensureActionButtonsVisible, 250);
-        setTimeout(optimizeForSmallScreens, 250);
-        setTimeout(ensureActionButtonsVisible, 500);
-        setTimeout(optimizeForSmallScreens, 500);
-        setTimeout(ensureActionButtonsVisible, 1000);
-        setTimeout(optimizeForSmallScreens, 1000);
-        setTimeout(ensureActionButtonsVisible, 2000);
-        setTimeout(optimizeForSmallScreens, 2000);
-
-        // Démarrer l'observation continue
-        setupButtonObserver();
-
-        // Vérification périodique TRÈS fréquente
-        setInterval(periodicCheck, 1000); // Toutes les secondes
-
-        // Écouter TOUS les changements possibles
-        window.addEventListener("resize", function () {
-          setTimeout(ensureActionButtonsVisible, 50);
-          setTimeout(ensureActionButtonsVisible, 200);
-          setTimeout(optimizeForSmallScreens, 50);
-          setTimeout(optimizeForSmallScreens, 200);
-        });
-
-        window.addEventListener("orientationchange", function () {
-          setTimeout(ensureActionButtonsVisible, 100);
-          setTimeout(ensureActionButtonsVisible, 500);
-        });
-
-        document.addEventListener("visibilitychange", function () {
-          if (!document.hidden) {
-            setTimeout(ensureActionButtonsVisible, 100);
-          }
-        });
-
-        // Initialiser chaque polaroid
-        polaroids.forEach((polaroid, index) => {
-          // Récupérer la rotation de base
-          const rotation =
-            getComputedStyle(polaroid).getPropertyValue("--rotation") || "0deg";
-          const inner = polaroid.querySelector(".polaroid-inner");
-
-          // Définir l'état initial
-          inner.style.transform = `rotate(${rotation})`;
-          polaroid.setAttribute("aria-expanded", "false");
-
-          // Animation d'entrée échelonnée
-          setTimeout(() => {
-            polaroid.style.animation = `fadeInPolaroid 0.8s ease-out forwards`;
-
-            // Ajouter une animation de pulse subtile après l'entrée
-            setTimeout(() => {
-              if (!polaroid.classList.contains("flipped")) {
-                polaroid.style.animation +=
-                  ", polaroidPulse 3s ease-in-out infinite";
-              }
-            }, 800);
-          }, index * 150);
-
-          // Gestion des appareils tactiles
-          if ("ontouchstart" in window) {
-            polaroid.classList.add("touch-device");
-
-            // Animation tactile améliorée
-            polaroid.addEventListener("touchend", function () {
-              const inner = this.querySelector(".polaroid-inner");
-              inner.classList.add("flip-animation");
-
-              // Feedback haptique si disponible
-              if (navigator.vibrate) {
-                navigator.vibrate(50);
-              }
-
-              setTimeout(() => {
-                inner.classList.remove("flip-animation");
-              }, 600);
-            });
-          }
-
-          // Améliorer l'accessibilité en ajoutant des descriptions dynamiques
-          const title = polaroid.getAttribute("data-title") || "Polaroid";
-          const description = polaroid.getAttribute("data-description") || "";
-          polaroid.setAttribute(
-            "aria-label",
-            `${title}. ${description}. Utilisez Enter ou Espace pour interagir.`
-          );
-
-          // Amélioration spécifique pour le polaroid p5 - s'assurer que l'action est toujours visible
-          if (polaroid.classList.contains("p5")) {
-            const actionButton = polaroid.querySelector(".polaroid-action");
-            if (actionButton) {
-              actionButton.style.opacity = "1";
-              actionButton.style.visibility = "visible";
-              actionButton.style.display = "block";
-            }
-          }
-
-          // Ajouter un gestionnaire pour les changements de préférences de mouvement
-          if (window.matchMedia) {
-            const prefersReducedMotion = window.matchMedia(
-              "(prefers-reduced-motion: reduce)"
-            );
-
-            function handleMotionPreference(e) {
-              if (e.matches) {
-                // Désactiver les animations pour les utilisateurs qui préfèrent moins de mouvement
-                polaroid.style.animation = "none";
-                inner.style.transition = "transform 0.2s ease";
-              } else {
-                // Réactiver les animations normales
-                inner.style.transition =
-                  "transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
-              }
-            }
-
-            prefersReducedMotion.addListener(handleMotionPreference);
-            handleMotionPreference(prefersReducedMotion); // Appliquer immédiatement
-          }
-        });
-
-        // Ajouter des événements globaux pour l'amélioration de l'accessibilité
-
-        // Gérer la navigation avec les flèches
-        document.addEventListener("keydown", function (e) {
-          const focusedElement = document.activeElement;
-
-          if (focusedElement && focusedElement.classList.contains("polaroid")) {
-            const allPolaroids = Array.from(
-              document.querySelectorAll(".polaroid")
-            );
-            const currentIndex = allPolaroids.indexOf(focusedElement);
-            let nextIndex = -1;
-
-            switch (e.key) {
-              case "ArrowRight":
-              case "ArrowDown":
-                e.preventDefault();
-                nextIndex = (currentIndex + 1) % allPolaroids.length;
-                break;
-              case "ArrowLeft":
-              case "ArrowUp":
-                e.preventDefault();
-                nextIndex =
-                  (currentIndex - 1 + allPolaroids.length) %
-                  allPolaroids.length;
-                break;
-              case "Home":
-                e.preventDefault();
-                nextIndex = 0;
-                break;
-              case "End":
-                e.preventDefault();
-                nextIndex = allPolaroids.length - 1;
-                break;
-            }
-
-            if (nextIndex >= 0) {
-              allPolaroids[nextIndex].focus();
-
-              // Annoncer la navigation
-              const title =
-                allPolaroids[nextIndex].getAttribute("data-title") ||
-                "Polaroid";
-              announceToScreenReader(`Navigation vers ${title}`);
-            }
-          }
-        });
-
-        // Améliorer le contraste et la visibilité en fonction du thème
-        function updatePolaroidContrast() {
-          const isDarkMode =
-            document.documentElement.classList.contains("dark-mode");
-
-          polaroids.forEach((polaroid) => {
-            const focusIndicator = polaroid.querySelector(
-              ".polaroid-focus-indicator"
-            );
-            if (focusIndicator) {
-              // Supprimer complètement les couleurs bleues et blanches - garder transparent
-              focusIndicator.style.borderColor = "transparent";
-              focusIndicator.style.boxShadow = "none";
-              focusIndicator.style.opacity = "0";
-            }
-          });
-        }
-
-        // Observer les changements de thème
-        const observer = new MutationObserver(updatePolaroidContrast);
-        observer.observe(document.documentElement, {
-          attributes: true,
-          attributeFilter: ["class"],
-        });
-
-        // Appliquer immédiatement
-        updatePolaroidContrast();
-      });
+      // Le script d'initialisation des polaroids a été supprimé
+      // car ils ont été remplacés par le focus slider
     </script>
   </body>
 </html>
