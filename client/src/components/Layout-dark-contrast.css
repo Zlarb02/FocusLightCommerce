@@ -66,3 +66,16 @@
     outline: 1px solid rgba(255, 255, 255, 0.3) !important;
   }
 }
+
+/* Breakpoint personnalisé pour très petits écrans */
+@media (max-width: 369px) {
+  .xs\:block {
+    display: none !important;
+  }
+}
+
+@media (min-width: 370px) {
+  .xs\:block {
+    display: block !important;
+  }
+}

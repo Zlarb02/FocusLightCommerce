@@ -66,7 +66,14 @@ export function AdminLayout({ children }: AdminLayoutProps) {
       {/* Sidebar */}
       <div className="w-64 bg-white shadow-md">
         <div className="flex h-16 items-center border-b px-6">
-          <span className="text-lg font-bold">FOCUS Admin</span>
+          <div className="flex items-center gap-3">
+            <img
+              src="/images/logo.png"
+              alt="Alto Lille"
+              className="h-6 w-auto object-contain"
+            />
+            <span className="text-lg font-bold text-gray-900">Alto Admin</span>
+          </div>
         </div>
         <nav className="p-4">
           <ul className="space-y-2">

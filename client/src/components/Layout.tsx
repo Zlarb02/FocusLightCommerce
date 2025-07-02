@@ -91,14 +91,24 @@ export function Layout({ children, showCart = true }: LayoutProps) {
             </button>
           </div>
 
-          {/* Logo/Titre centré */}
+          {/* Logo centré */}
           <div className="flex-1 flex justify-center">
             <button
               onClick={backToLanding}
-              className="text-2xl font-bold text-gray-900 dark:text-gray-100 hover:text-gray-700 dark:hover:text-gray-300 transition-all duration-300 ease-out hover:scale-105"
-              style={{ fontFamily: "var(--font-titles)" }}
+              className="flex items-center gap-2 sm:gap-3 hover:opacity-80 transition-all duration-300 ease-out hover:scale-105"
+              aria-label="Retour à l'accueil"
             >
-              Alto Lille
+              <img
+                src="/images/logo.png"
+                alt="Alto Lille"
+                className="h-8 w-auto object-contain"
+              />
+              <span
+                className="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100 hidden xs:block"
+                style={{ fontFamily: "var(--font-titles)" }}
+              >
+                Alto Lille
+              </span>
             </button>
           </div>
 
@@ -139,12 +149,19 @@ export function Layout({ children, showCart = true }: LayoutProps) {
           <div className="fixed top-0 left-0 bottom-0 w-80 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl z-50 transform transition-transform duration-500 ease-out overflow-y-auto shadow-2xl border-r border-gray-200/30 dark:border-gray-700/30">
             {/* Header du menu épuré */}
             <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200/20 dark:border-gray-700/20">
-              <h2
-                className="text-lg font-semibold text-gray-900 dark:text-gray-100"
-                style={{ fontFamily: "var(--font-titles)" }}
-              >
-                {t("nav.menu")}
-              </h2>
+              <div className="flex items-center gap-3">
+                <img
+                  src="/images/logo.png"
+                  alt="Alto Lille"
+                  className="h-6 w-auto object-contain"
+                />
+                <h2
+                  className="text-lg font-semibold text-gray-900 dark:text-gray-100"
+                  style={{ fontFamily: "var(--font-titles)" }}
+                >
+                  {t("nav.menu")}
+                </h2>
+              </div>
               <button
                 onClick={() => setMenuOpen(false)}
                 className="group p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-all duration-300 ease-out hover:scale-110"
@@ -374,6 +391,11 @@ export function Layout({ children, showCart = true }: LayoutProps) {
             {/* Brand & Social */}
             <div>
               <div className="flex items-center mb-5">
+                <img
+                  src="/images/logo.png"
+                  alt="Alto Lille"
+                  className="h-8 w-auto object-contain mr-3"
+                />
                 <span
                   className="text-xl sm:text-2xl font-medium text-gray-900 dark:text-gray-100"
                   style={{ fontFamily: "var(--font-titles)" }}
