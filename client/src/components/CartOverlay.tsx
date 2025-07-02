@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/sheet";
 import { ShoppingBag, X } from "lucide-react";
 import { useLocation } from "wouter";
+import { useLanguage } from "@/contexts/LanguageContext";
+import "./CartOverlay-dark-contrast.css";
 
 interface CartOverlayProps {
   open: boolean;
@@ -21,6 +23,7 @@ interface CartOverlayProps {
 export function CartOverlay({ open, onClose }: CartOverlayProps) {
   const { items, getTotalItems, getTotalPrice } = useCart();
   const [, setLocation] = useLocation();
+  const { t } = useLanguage();
 
   const handleCheckout = () => {
     onClose();
@@ -33,7 +36,7 @@ export function CartOverlay({ open, onClose }: CartOverlayProps) {
         <SheetHeader className="border-b pb-4">
           <div className="flex justify-between items-center">
             <SheetTitle className="font-heading font-bold text-xl">
-              Votre Panier
+              {t("cart.title")}
             </SheetTitle>
           </div>
         </SheetHeader>
@@ -44,7 +47,7 @@ export function CartOverlay({ open, onClose }: CartOverlayProps) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
-              className="flex flex-col items-center justify-center h-full text-center"
+              className="flex flex-col items-center justify-center h-full text-center cart-empty-container"
             >
               <motion.div
                 initial={{ scale: 0.8 }}
@@ -64,7 +67,7 @@ export function CartOverlay({ open, onClose }: CartOverlayProps) {
                 transition={{ delay: 0.2 }}
                 className="text-lg font-medium mb-2"
               >
-                Votre panier est vide
+                {t("cart.empty")}
               </motion.h3>
               <motion.p
                 initial={{ opacity: 0 }}
@@ -72,14 +75,19 @@ export function CartOverlay({ open, onClose }: CartOverlayProps) {
                 transition={{ delay: 0.3 }}
                 className="text-muted-foreground mb-4"
               >
-                Ajoutez des produits pour commencer vos achats
+                {t("cart.emptyDescription")}
               </motion.p>
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
               >
-                <Button onClick={onClose}>Continuer vos achats</Button>
+                <Button 
+                  onClick={onClose}
+                  className="cart-continue-shopping-button bg-slate-800 text-white hover:bg-slate-900 dark:bg-slate-800 dark:text-white dark:hover:bg-slate-900 border border-slate-600 dark:border-slate-600 font-medium"
+                >
+                  {t("cart.continueShopping")}
+                </Button>
               </motion.div>
             </motion.div>
           ) : (
@@ -120,7 +128,7 @@ export function CartOverlay({ open, onClose }: CartOverlayProps) {
                 transition={{ delay: 0.1 }}
                 className="flex justify-between mb-2"
               >
-                <span>Sous-total</span>
+                <span>{t("cart.subtotal")}</span>
                 <span className="font-medium">
                   {formatPrice(getTotalPrice())}
                 </span>
@@ -131,9 +139,9 @@ export function CartOverlay({ open, onClose }: CartOverlayProps) {
                 transition={{ delay: 0.2 }}
                 className="flex justify-between mb-4 text-gray-700 dark:text-gray-300"
               >
-                <span>Livraison</span>
+                <span>{t("cart.shipping")}</span>
                 <span className="text-green-600 dark:text-green-400">
-                  Gratuite
+                  {t("cart.freeShipping")}
                 </span>
               </motion.div>
               <motion.div
@@ -142,7 +150,7 @@ export function CartOverlay({ open, onClose }: CartOverlayProps) {
                 transition={{ delay: 0.3 }}
                 className="flex justify-between mb-6 text-lg font-bold text-gray-900 dark:text-gray-100"
               >
-                <span>Total</span>
+                <span>{t("cart.total")}</span>
                 <span>{formatPrice(getTotalPrice())}</span>
               </motion.div>
               <motion.div
@@ -154,10 +162,10 @@ export function CartOverlay({ open, onClose }: CartOverlayProps) {
               >
                 <Button
                   onClick={handleCheckout}
-                  className="w-full py-6 dark:!bg-slate-800 dark:!text-white dark:hover:!bg-slate-700"
+                  className="w-full py-6 cart-checkout-button dark:!bg-slate-800 dark:!text-white dark:hover:!bg-slate-700"
                   variant="default"
                 >
-                  Procéder au paiement
+                  {t("cart.proceedToCheckout")}
                 </Button>
               </motion.div>
             </motion.div>

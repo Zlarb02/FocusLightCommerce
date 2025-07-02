@@ -15,32 +15,11 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useCart } from "@/hooks/useCart";
 import { useCheckout } from "@/hooks/useCheckout";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { useState } from "react";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { formatPrice } from "@/lib/utils";
-
-const paymentSchema = z.object({
-  cardNumber: z
-    .string()
-    .min(16, "Le numéro de carte doit comporter au moins 16 chiffres")
-    .max(19, "Le numéro de carte ne doit pas dépasser 19 caractères")
-    .regex(/^\d[\d\s-]*$/, "Le numéro de carte n'est pas valide"),
-  expiryDate: z
-    .string()
-    .regex(
-      /^(0[1-9]|1[0-2])\/\d{2}$/,
-      "La date d'expiration doit être au format MM/AA"
-    ),
-  cvv: z
-    .string()
-    .min(3, "Le CVV doit comporter au moins 3 chiffres")
-    .max(4, "Le CVV ne doit pas dépasser 4 chiffres")
-    .regex(/^\d+$/, "Le CVV doit contenir uniquement des chiffres"),
-  cardName: z.string().min(1, "Le nom sur la carte est requis"),
-});
-
-type PaymentFormValues = z.infer<typeof paymentSchema>;
 
 interface PaymentProps {
   onNext: (orderId: number, orderNumber: string) => void;
@@ -50,8 +29,31 @@ interface PaymentProps {
 export function Payment({ onNext, onBack }: PaymentProps) {
   const { items, getTotalPrice, clearCart } = useCart();
   const { customer } = useCheckout();
+  const { t } = useLanguage();
   const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
+
+  const paymentSchema = z.object({
+    cardNumber: z
+      .string()
+      .min(16, t('validation.cardNumberMinLength'))
+      .max(19, t('validation.cardNumberMaxLength'))
+      .regex(/^\d[\d\s-]*$/, t('validation.cardNumberInvalid')),
+    expiryDate: z
+      .string()
+      .regex(
+        /^(0[1-9]|1[0-2])\/\d{2}$/,
+        t('validation.expiryDateFormat')
+      ),
+    cvv: z
+      .string()
+      .min(3, t('validation.cvvMinLength'))
+      .max(4, t('validation.cvvMaxLength'))
+      .regex(/^\d+$/, t('validation.cvvInvalid')),
+    cardName: z.string().min(1, t('validation.cardNameRequired')),
+  });
+
+  type PaymentFormValues = z.infer<typeof paymentSchema>;
 
   const form = useForm<PaymentFormValues>({
     resolver: zodResolver(paymentSchema),
@@ -66,8 +68,8 @@ export function Payment({ onNext, onBack }: PaymentProps) {
   const onSubmit = async (data: PaymentFormValues) => {
     if (!customer) {
       toast({
-        title: "Erreur",
-        description: "Les informations client sont manquantes",
+        title: t('payment.error'),
+        description: t('payment.customerInfoMissing'),
         variant: "destructive",
       });
       return;
@@ -98,9 +100,8 @@ export function Payment({ onNext, onBack }: PaymentProps) {
     } catch (error) {
       console.error("Checkout error:", error);
       toast({
-        title: "Erreur de paiement",
-        description:
-          "Une erreur est survenue lors du traitement du paiement. Veuillez réessayer.",
+        title: t('payment.errorTitle'),
+        description: t('payment.errorDescription'),
         variant: "destructive",
       });
     } finally {
@@ -113,13 +114,13 @@ export function Payment({ onNext, onBack }: PaymentProps) {
   return (
     <div className="space-y-6">
       <h2 className="font-heading font-bold text-xl md:text-2xl mb-4 md:mb-6 text-gray-900 dark:text-gray-100">
-        Paiement sécurisé
+        {t('checkout.payment')}
       </h2>
 
       <Alert className="mb-4 md:mb-6 bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800">
         <Shield className="h-4 w-4 text-green-600 dark:text-green-400" />
         <AlertDescription className="text-sm text-green-800 dark:text-green-200">
-          Toutes vos informations de paiement sont cryptées et sécurisées.
+          {t('payment.securityMessage')}
         </AlertDescription>
       </Alert>
 
@@ -134,7 +135,7 @@ export function Payment({ onNext, onBack }: PaymentProps) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-sm md:text-base">
-                  Numéro de carte
+                  {t('payment.cardNumber')}
                 </FormLabel>
                 <FormControl>
                   <div className="relative">
@@ -187,7 +188,7 @@ export function Payment({ onNext, onBack }: PaymentProps) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-sm md:text-base">
-                    Date d'expiration
+                    {t('payment.expiryDate')}
                   </FormLabel>
                   <FormControl>
                     <Input
@@ -217,7 +218,7 @@ export function Payment({ onNext, onBack }: PaymentProps) {
               name="cvv"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm md:text-base">CVV</FormLabel>
+                  <FormLabel className="text-sm md:text-base">{t('payment.cvv')}</FormLabel>
                   <FormControl>
                     <Input
                       placeholder="123"
@@ -242,7 +243,7 @@ export function Payment({ onNext, onBack }: PaymentProps) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-sm md:text-base">
-                  Nom sur la carte
+                  {t('payment.cardName')}
                 </FormLabel>
                 <FormControl>
                   <Input {...field} className="h-11 md:h-auto" />
@@ -254,17 +255,17 @@ export function Payment({ onNext, onBack }: PaymentProps) {
 
           <div className="border-t border-gray-200 dark:border-gray-600 pt-4 space-y-2">
             <div className="flex justify-between text-sm md:text-base text-gray-700 dark:text-gray-300">
-              <span>Sous-total</span>
+              <span>{t('cart.subtotal')}</span>
               <span>{formatPrice(totalPrice)}</span>
             </div>
             <div className="flex justify-between text-sm md:text-base text-gray-700 dark:text-gray-300">
-              <span>Livraison</span>
+              <span>{t('cart.shipping')}</span>
               <span className="text-green-600 dark:text-green-400">
-                Gratuite
+                {t('cart.freeShipping')}
               </span>
             </div>
             <div className="flex justify-between font-bold text-base md:text-lg text-gray-900 dark:text-gray-100 pt-2 border-t border-gray-100 dark:border-gray-700">
-              <span>Total</span>
+              <span>{t('cart.total')}</span>
               <span>{formatPrice(totalPrice)}</span>
             </div>
           </div>
@@ -277,7 +278,7 @@ export function Payment({ onNext, onBack }: PaymentProps) {
               onClick={onBack}
               disabled={isProcessing}
             >
-              Retour
+              {t('button.back')}
             </Button>
             <Button
               type="submit"
@@ -285,8 +286,8 @@ export function Payment({ onNext, onBack }: PaymentProps) {
               disabled={isProcessing}
             >
               {isProcessing
-                ? "Traitement en cours..."
-                : `Payer ${formatPrice(totalPrice)}`}
+                ? t('checkout.processing')
+                : `${t('payment.pay')} ${formatPrice(totalPrice)}`}
             </Button>
           </div>
         </form>

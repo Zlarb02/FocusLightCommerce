@@ -8,6 +8,96 @@
       name="description"
       content="Lampe d'appoint FOCUS.01 écologique et design, fabriquée en PLA écoresponsable et en chêne écogéré. Disponible en 4 couleurs."
     />
+    <script>
+      !(function () {
+        var i = "analytics",
+          analytics = (window[i] = window[i] || []);
+        if (!analytics.initialize)
+          if (analytics.invoked)
+            window.console &&
+              console.error &&
+              console.error("Segment snippet included twice.");
+          else {
+            analytics.invoked = !0;
+            analytics.methods = [
+              "trackSubmit",
+              "trackClick",
+              "trackLink",
+              "trackForm",
+              "pageview",
+              "identify",
+              "reset",
+              "group",
+              "track",
+              "ready",
+              "alias",
+              "debug",
+              "page",
+              "screen",
+              "once",
+              "off",
+              "on",
+              "addSourceMiddleware",
+              "addIntegrationMiddleware",
+              "setAnonymousId",
+              "addDestinationMiddleware",
+              "register",
+            ];
+            analytics.factory = function (e) {
+              return function () {
+                if (window[i].initialized)
+                  return window[i][e].apply(window[i], arguments);
+                var n = Array.prototype.slice.call(arguments);
+                if (
+                  [
+                    "track",
+                    "screen",
+                    "alias",
+                    "group",
+                    "page",
+                    "identify",
+                  ].indexOf(e) > -1
+                ) {
+                  var c = document.querySelector("link[rel='canonical']");
+                  n.push({
+                    __t: "bpc",
+                    c: (c && c.getAttribute("href")) || void 0,
+                    p: location.pathname,
+                    u: location.href,
+                    s: location.search,
+                    t: document.title,
+                    r: document.referrer,
+                  });
+                }
+                n.unshift(e);
+                analytics.push(n);
+                return analytics;
+              };
+            };
+            for (var n = 0; n < analytics.methods.length; n++) {
+              var key = analytics.methods[n];
+              analytics[key] = analytics.factory(key);
+            }
+            analytics.load = function (key, n) {
+              var t = document.createElement("script");
+              t.type = "text/javascript";
+              t.async = !0;
+              t.setAttribute("data-global-segment-analytics-key", i);
+              t.src =
+                "https://cdn.segment.com/analytics.js/v1/" +
+                key +
+                "/analytics.min.js";
+              var r = document.getElementsByTagName("script")[0];
+              r.parentNode.insertBefore(t, r);
+              analytics._loadOptions = n;
+            };
+            analytics._writeKey = "5sdAshGCQiktYJLABOuYInaoPkZzzBBu";
+            analytics.SNIPPET_VERSION = "5.2.0";
+            analytics.load("5sdAshGCQiktYJLABOuYInaoPkZzzBBu");
+            analytics.page();
+          }
+      })();
+    </script>
     <link rel="icon" type="image/png" href="/images/logo.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -1486,12 +1576,61 @@
         box-shadow: 0 12px 35px rgba(0, 0, 0, 0.8),
           0 6px 15px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.1),
           inset 0 1px 0 rgba(255, 255, 255, 0.15); /* Ombre renforcée pour fond noir */
+        /* Amélioration de l'animation de flip en mode sombre */
+        transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+          box-shadow 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+
+      /* Animation de flip améliorée pour le mode sombre */
+      .dark-mode .polaroid.flipping .polaroid-inner {
+        /* Transition plus fluide avec effet élastique */
+        transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+          box-shadow 0.8s ease, filter 0.6s ease;
+        /* Effet de lueur pendant l'animation - RÉDUIT */
+        filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.15));
+        /* Ombre plus dramatique pendant le flip */
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9),
+          0 10px 30px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.2),
+          inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      }
+
+      /* État flippé avec effets renforcés en mode sombre */
+      .dark-mode .polaroid.flipped .polaroid-inner {
+        /* Ombre plus intense pour l'état retourné */
+        box-shadow: 0 15px 45px rgba(0, 0, 0, 0.85),
+          0 8px 20px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.15),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        /* Légère lueur pour le polaroid retourné - RÉDUITE */
+        filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.08));
       }
 
       .dark-mode .polaroid-back {
         background: linear-gradient(135deg, #252525 0%, #111111 100%);
         border: 1px solid rgba(255, 255, 255, 0.15); /* Légère bordure pour améliorer la visibilité */
         box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5); /* Légère ombre pour un meilleur contraste avec le fond */
+        /* Animation d'apparition améliorée en mode sombre */
+        transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+          transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+          box-shadow 0.6s ease;
+      }
+
+      /* Animation du verso pendant le flip en mode sombre */
+      .dark-mode .polaroid.flipping .polaroid-back {
+        /* Effet de lueur subtile pendant l'animation - RÉDUIT */
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.7),
+          0 0 15px rgba(255, 255, 255, 0.03),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        /* Légère transformation pour un effet plus dynamique */
+        transform: scaleX(-1) scale(1.01);
+      }
+
+      /* État final du verso en mode sombre */
+      .dark-mode .polaroid.flipped .polaroid-back {
+        /* Ombre plus douce pour l'état final */
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6),
+          0 0 10px rgba(255, 255, 255, 0.02),
+          inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        transform: scaleX(-1) scale(1);
       }
 
       /* Texte plus lisible sur fond sombre */
@@ -1500,6 +1639,10 @@
         font-weight: var(--fw-bold);
         text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
         letter-spacing: 0.03em;
+        /* Animation d'apparition du titre en mode sombre */
+        transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s,
+          transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s,
+          text-shadow 0.6s ease 0.2s;
       }
 
       .dark-mode .polaroid-back .polaroid-description {
@@ -1508,6 +1651,40 @@
         font-weight: var(
           --fw-medium
         ); /* Augmentation du poids de la police pour plus de lisibilité */
+        /* Animation d'apparition de la description en mode sombre */
+        transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s,
+          transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s,
+          text-shadow 0.6s ease 0.3s;
+      }
+
+      /* Animation des éléments de texte pendant le flip en mode sombre */
+      .dark-mode .polaroid.flipping .polaroid-back .polaroid-title {
+        opacity: 0;
+        transform: translateY(10px);
+        text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9),
+          0 0 5px rgba(255, 255, 255, 0.05);
+      }
+
+      .dark-mode .polaroid.flipping .polaroid-back .polaroid-description {
+        opacity: 0;
+        transform: translateY(15px);
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8),
+          0 0 3px rgba(255, 255, 255, 0.03);
+      }
+
+      /* État final des éléments de texte en mode sombre */
+      .dark-mode .polaroid.flipped .polaroid-back .polaroid-title {
+        opacity: 1;
+        transform: translateY(0);
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8),
+          0 0 3px rgba(255, 255, 255, 0.03);
+      }
+
+      .dark-mode .polaroid.flipped .polaroid-back .polaroid-description {
+        opacity: 1;
+        transform: translateY(0);
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7),
+          0 0 2px rgba(255, 255, 255, 0.02);
       }
 
       /* Bouton d'action amélioré en mode sombre */
@@ -1526,6 +1703,10 @@
           0 0 0 1px rgba(255, 255, 255, 0.1); /* Ajout d'un contour lumineux */
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
         letter-spacing: 0.05em; /* Espacement légèrement augmenté pour plus de lisibilité */
+        /* Animation d'apparition du bouton en mode sombre */
+        transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.4s,
+          transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.4s,
+          background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
       }
 
       .dark-mode .polaroid-back .polaroid-action:hover {
@@ -1536,8 +1717,38 @@
           255,
           0.7
         ); /* Bordure beaucoup plus visible au survol */
-        box-shadow: 0 2px 8px rgba(255, 255, 255, 0.2); /* Légère lueur pour améliorer la visibilité */
+        box-shadow: 0 2px 8px rgba(255, 255, 255, 0.15),
+          0 0 10px rgba(255, 255, 255, 0.05); /* Légère lueur RÉDUITE pour améliorer la visibilité */
         transform: translateY(-2px);
+      }
+
+      /* Animation du bouton pendant le flip en mode sombre */
+      .dark-mode .polaroid.flipping .polaroid-back .polaroid-action {
+        opacity: 0;
+        transform: translateY(20px) scale(0.9);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4),
+          0 0 0 1px rgba(255, 255, 255, 0.2), 0 0 8px rgba(255, 255, 255, 0.03);
+      }
+
+      /* État final du bouton en mode sombre */
+      .dark-mode .polaroid.flipped .polaroid-back .polaroid-action {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        animation: dark-button-glow 3s ease-in-out infinite alternate;
+      }
+
+      /* Animation de lueur subtile pour le bouton en mode sombre - RALENTIE ET RÉDUITE */
+      @keyframes dark-button-glow {
+        0% {
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3),
+            0 0 0 1px rgba(255, 255, 255, 0.1),
+            0 0 5px rgba(255, 255, 255, 0.01);
+        }
+        100% {
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3),
+            0 0 0 1px rgba(255, 255, 255, 0.1),
+            0 0 8px rgba(255, 255, 255, 0.03);
+        }
       }
 
       /* Amélioration des bordures des polaroids en mode sombre */
@@ -1575,13 +1786,43 @@
         box-shadow: none; /* Suppression de toutes les ombres non pivotées */
       }
 
-      /* Amélioration du survol des polaroids en mode sombre - SUPPRIMÉ */
+      /* Amélioration du survol des polaroids en mode sombre - CORRIGÉ */
       .dark-mode .polaroid:hover {
-        transform: translateY(-3px);
+        transform: translateY(-2px);
+        /* Effet de lueur au survol en mode sombre - TRÈS RÉDUIT */
+        filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.05));
       }
 
       .dark-mode .polaroid:hover .polaroid-inner {
-        box-shadow: none; /* Suppression de toutes les ombres de survol */
+        /* Ombres réduites et plus subtiles au survol */
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.85),
+          0 8px 20px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.15),
+          inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      }
+
+      /* Survol spécial pour les polaroids retournés en mode sombre - CORRIGÉ */
+      .dark-mode .polaroid.flipped:hover {
+        transform: translateY(-2px);
+        filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.06));
+      }
+
+      .dark-mode .polaroid.flipped:hover .polaroid-inner {
+        /* Ombres simplifiées pour éviter l'effet de carte de biais */
+        box-shadow: 0 18px 45px rgba(0, 0, 0, 0.9),
+          0 10px 25px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.2),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      }
+
+      /* Animation d'entrée en fondu pour le recto en mode sombre */
+      .dark-mode .polaroid-front {
+        transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+          filter 0.6s ease;
+      }
+
+      /* Animation de sortie du recto pendant le flip en mode sombre */
+      .dark-mode .polaroid.flipping .polaroid-front {
+        opacity: 0;
+        filter: blur(2px) brightness(0.8);
       }
 
       /* Amélioration de l'interface globale en mode sombre */

@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/contexts/LanguageContext";
 import ProjectLayoutUnified from "@/components/ProjectLayoutUnified";
 
 interface ProjectPageUnifiedProps {
@@ -22,6 +23,8 @@ export default function ProjectPageUnified({
   date,
   currentProject,
 }: ProjectPageUnifiedProps) {
+  const { t } = useLanguage();
+
   return (
     <ProjectLayoutUnified title={title} currentProject={currentProject}>
       {/* En-tête style journal */}
@@ -122,8 +125,7 @@ export default function ProjectPageUnified({
         <footer className="text-center mt-20 pt-12 border-t border-gray-200 dark:border-gray-700">
           <div className="mb-8">
             <p className="text-gray-600 dark:text-gray-400 font-light text-lg leading-relaxed max-w-2xl mx-auto">
-              Découvrez d'autres créations et projets dans notre boutique en
-              ligne.
+              {t("projects.discover")}
             </p>
           </div>
           <Link to="/shop">
@@ -132,7 +134,7 @@ export default function ProjectPageUnified({
               className="text-lg px-8 py-4 font-medium transition-all duration-300 hover:bg-gray-900 hover:text-white dark:hover:bg-gray-100 dark:hover:text-gray-900 border-2"
               style={{ fontFamily: "var(--font-buttons)" }}
             >
-              Découvrir le shop
+              {t("projects.discoverShop")}
             </Button>
           </Link>
         </footer>

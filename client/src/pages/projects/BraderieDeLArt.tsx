@@ -1,29 +1,20 @@
 import ProjectPageUnified from "@/components/ProjectPageUnified";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function BraderieDeLArt() {
+  const { t } = useLanguage();
+
   return (
     <ProjectPageUnified
       title="Braderie de l'Art"
-      subtitle="Week-end de création collective"
+      subtitle={t("projects.braderie.subtitle")}
       imagePath="/images/braderie-de-l-art.png"
-      date="Novembre 2023"
+      date={t("dates.november2023")}
       currentProject="BraderieDeLArt"
       description={
         <>
-          <p>
-            La Braderie de l'Art de Roubaix est un événement unique qui
-            transforme l'art en expérience collective. Durant ce week-end de
-            création, les artistes doivent créer à partir de la matériauthèque
-            mise à disposition, donnant naissance à des œuvres inattendues et
-            spontanées.
-          </p>
-          <p>
-            Pour cette édition 2023, j'ai conçu un meuble pour chaîne hi-fi
-            construit autour du mouvement dynamique qu'offre un pied de chaise
-            détourné. Cette création illustre parfaitement l'esprit de
-            l'événement : transformer l'ordinaire en extraordinaire par un
-            regard créatif renouvelé.
-          </p>
+          <p>{t("projects.braderie.description1")}</p>
+          <p>{t("projects.braderie.description2")}</p>
         </>
       }
       additionalContent={
@@ -33,19 +24,13 @@ export default function BraderieDeLArt() {
               className="text-xl font-semibold mb-4 dark:text-gray-100"
               style={{ fontFamily: "var(--font-titles)" }}
             >
-              Le défi créatif
+              {t("projects.braderie.context.title")}
             </h3>
             <p className="text-gray-700 dark:text-gray-300 mb-4">
-              L'essence de la Braderie de l'Art réside dans sa contrainte
-              temporelle et matérielle. En quelques heures seulement, les
-              participants doivent concevoir et réaliser une œuvre à partir des
-              matériaux disponibles sur place. Cette approche force l'innovation
-              et pousse à repenser l'usage habituel des objets.
+              {t("projects.braderie.context.text1")}
             </p>
             <p className="text-gray-700 dark:text-gray-300">
-              Mon meuble hi-fi transforme un simple pied de chaise en élément
-              fonctionnel et esthétique, créant un mouvement visuel qui dialogue
-              harmonieusement avec la musique qu'il supporte.
+              {t("projects.braderie.context.text2")}
             </p>
           </div>
 
@@ -55,13 +40,13 @@ export default function BraderieDeLArt() {
                 className="text-xl font-semibold mb-3 dark:text-gray-100"
                 style={{ fontFamily: "var(--font-titles)" }}
               >
-                Processus de création
+                {t("projects.braderie.process.title")}
               </h3>
               <ul className="space-y-2 text-gray-700 dark:text-gray-300">
-                <li>• Exploration de la matériauthèque</li>
-                <li>• Identification du potentiel du pied de chaise</li>
-                <li>• Conception autour du mouvement</li>
-                <li>• Assemblage et finalisation</li>
+                <li>{t("projects.braderie.process.explore")}</li>
+                <li>{t("projects.braderie.process.identify")}</li>
+                <li>{t("projects.braderie.process.design")}</li>
+                <li>{t("projects.braderie.process.assembly")}</li>
               </ul>
             </div>
             <div>
@@ -69,10 +54,10 @@ export default function BraderieDeLArt() {
                 className="text-xl font-semibold mb-3 dark:text-gray-100"
                 style={{ fontFamily: "var(--font-titles)" }}
               >
-                Philosophie du projet
+                {t("projects.braderie.philosophy.title")}
               </h3>
               <p className="text-gray-700 dark:text-gray-300">
-                Ce projet illustre ma démarche de réinterprétation des objets du
+                {t("projects.braderie.philosophy.text")}
                 quotidien. Le mouvement devient ici métaphore de la musique,
                 créant un dialogue entre forme et fonction.
               </p>

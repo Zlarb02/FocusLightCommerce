@@ -3,6 +3,8 @@ import { formatPrice } from "@/lib/utils";
 import { ProductWithSelectedVariation } from "@shared/schema";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import { useCart } from "@/hooks/useCart";
+import { useLanguage } from "@/contexts/LanguageContext";
+import "./CartOverlay-dark-contrast.css";
 
 interface CartItemProps {
   item: {
@@ -14,6 +16,7 @@ interface CartItemProps {
 export function CartItem({ item }: CartItemProps) {
   const { product, quantity } = item;
   const { updateQuantity, removeItem } = useCart();
+  const { t } = useLanguage();
 
   const handleIncrease = () => {
     updateQuantity(product.id, quantity + 1);
@@ -49,19 +52,19 @@ export function CartItem({ item }: CartItemProps) {
           <button
             onClick={handleRemove}
             className="text-red-500 dark:text-red-400 text-sm hover:text-red-700 dark:hover:text-red-300"
-            aria-label="Supprimer du panier"
+            aria-label={t("cart.removeFromCart")}
           >
             <Trash2 className="h-4 w-4" />
           </button>
         </div>
         <p className="text-sm text-muted-foreground dark:text-gray-400">
           {product.variationType === "color"
-            ? "Couleur"
+            ? t("cart.colorVariation")
             : product.variationType}
           : {product.variationValue}
         </p>
         <div className="flex justify-between items-center mt-2">
-          <div className="flex items-center border border-gray-200 dark:border-gray-600 rounded">
+          <div className="flex items-center border border-gray-200 dark:border-gray-600 rounded cart-quantity-controls">
             <Button
               variant="ghost"
               size="sm"
@@ -80,7 +83,7 @@ export function CartItem({ item }: CartItemProps) {
               <Plus className="h-3 w-3" />
             </Button>
           </div>
-          <span className="font-medium">
+          <span className="font-medium cart-price">
             {formatPrice(itemPrice * quantity)}
           </span>
         </div>

@@ -1,8 +1,11 @@
 import ProjectLayoutUnified from "@/components/ProjectLayoutUnified";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function FAQ() {
+  const { t } = useLanguage();
+
   return (
-    <ProjectLayoutUnified title="FAQ - Questions fréquentes" currentProject="">
+    <ProjectLayoutUnified title={t("faq.title")} currentProject="">
       <div className="max-w-4xl mx-auto">
         {/* En-tête */}
         <div className="text-center mb-12">
@@ -10,11 +13,10 @@ export default function FAQ() {
             className="text-3xl md:text-4xl font-bold text-[var(--color-text)] mb-4"
             style={{ fontFamily: "var(--font-titles)" }}
           >
-            Questions fréquentes
+            {t("faq.title")}
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Retrouvez les réponses aux questions les plus courantes sur nos
-            produits, la livraison et le service client.
+            {t("faq.subtitle")}
           </p>
         </div>
 
@@ -26,43 +28,34 @@ export default function FAQ() {
               className="text-2xl font-semibold text-[var(--color-text)] mb-6 pb-2 border-b border-gray-200"
               style={{ fontFamily: "var(--font-titles)" }}
             >
-              Nos produits
+              {t("faq.products.title")}
             </h2>
 
             <div className="space-y-6">
               <div className="bg-gray-50 p-6 rounded-lg">
                 <h3 className="text-lg font-medium text-[var(--color-text)] mb-3">
-                  Quels sont les matériaux utilisés pour vos lampes ?
+                  {t("faq.products.materials.title")}
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
-                  Nos lampes sont fabriquées avec des matériaux durables et
-                  écologiques : bois massif français (chêne, hêtre), LED basse
-                  consommation, composants électroniques recyclables et
-                  finitions naturelles sans solvants nocifs.
+                  {t("faq.products.materials.answer")}
                 </p>
               </div>
 
               <div className="bg-gray-50 p-6 rounded-lg">
                 <h3 className="text-lg font-medium text-[var(--color-text)] mb-3">
-                  Quelle est la consommation électrique de vos lampes ?
+                  {t("faq.products.consumption.title")}
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
-                  Nos lampes LED consomment entre 5W et 15W maximum selon le
-                  modèle, soit jusqu'à 80% de moins qu'une ampoule
-                  traditionnelle. Elles sont également compatibles avec les
-                  variateurs d'intensité.
+                  {t("faq.products.consumption.answer")}
                 </p>
               </div>
 
               <div className="bg-gray-50 p-6 rounded-lg">
                 <h3 className="text-lg font-medium text-[var(--color-text)] mb-3">
-                  Proposez-vous des personnalisations ?
+                  {t("faq.products.durability.title")}
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
-                  Oui, nous proposons des personnalisations sur certains modèles
-                  : choix du bois, dimensions sur mesure, gravure personnalisée.
-                  Contactez-nous à altolille@gmail.com pour discuter de votre
-                  projet.
+                  {t("faq.products.durability.answer")}
                 </p>
               </div>
             </div>
@@ -74,45 +67,34 @@ export default function FAQ() {
               className="text-2xl font-semibold text-[var(--color-text)] mb-6 pb-2 border-b border-gray-200"
               style={{ fontFamily: "var(--font-titles)" }}
             >
-              Commande et livraison
+              {t("faq.delivery.title")}
             </h2>
 
             <div className="space-y-6">
               <div className="bg-gray-50 p-6 rounded-lg">
                 <h3 className="text-lg font-medium text-[var(--color-text)] mb-3">
-                  Quels sont les délais de livraison ?
+                  {t("faq.delivery.time.title")}
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
-                  • France métropolitaine : 3-5 jours ouvrés
-                  <br />
-                  • Corse et DOM-TOM : 7-10 jours ouvrés
-                  <br />
-                  • Europe : 5-8 jours ouvrés
-                  <br />• Produits sur mesure : 2-3 semaines selon la complexité
+                  {t("faq.delivery.time.answer")}
                 </p>
               </div>
 
               <div className="bg-gray-50 p-6 rounded-lg">
                 <h3 className="text-lg font-medium text-[var(--color-text)] mb-3">
-                  Comment suivre ma commande ?
+                  {t("faq.delivery.cost.title")}
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
-                  Dès l'expédition, vous recevrez un email avec le numéro de
-                  suivi. Vous pourrez suivre votre colis en temps réel sur le
-                  site du transporteur. Un SMS vous préviendra également la
-                  veille de la livraison.
+                  {t("faq.delivery.cost.answer")}
                 </p>
               </div>
 
               <div className="bg-gray-50 p-6 rounded-lg">
                 <h3 className="text-lg font-medium text-[var(--color-text)] mb-3">
-                  Puis-je modifier ou annuler ma commande ?
+                  {t("faq.delivery.tracking.title")}
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
-                  Les commandes peuvent être modifiées ou annulées dans les 2h
-                  suivant la validation, en nous contactant directement. Passé
-                  ce délai, la commande entre en préparation et ne peut plus
-                  être modifiée.
+                  {t("faq.delivery.tracking.answer")}
                 </p>
               </div>
             </div>
@@ -124,43 +106,25 @@ export default function FAQ() {
               className="text-2xl font-semibold text-[var(--color-text)] mb-6 pb-2 border-b border-gray-200"
               style={{ fontFamily: "var(--font-titles)" }}
             >
-              Retours et garantie
+              {t("faq.warranty.title")}
             </h2>
 
             <div className="space-y-6">
               <div className="bg-gray-50 p-6 rounded-lg">
                 <h3 className="text-lg font-medium text-[var(--color-text)] mb-3">
-                  Comment procéder à un retour ?
+                  {t("faq.warranty.duration.title")}
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
-                  Vous disposez de 14 jours pour nous retourner un produit.
-                  Contactez-nous pour obtenir une étiquette de retour gratuite.
-                  Le produit doit être dans son emballage d'origine et en
-                  parfait état.
+                  {t("faq.warranty.duration.answer")}
                 </p>
               </div>
 
               <div className="bg-gray-50 p-6 rounded-lg">
                 <h3 className="text-lg font-medium text-[var(--color-text)] mb-3">
-                  Que couvre la garantie ?
+                  {t("faq.warranty.claim.title")}
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
-                  Garantie de 2 ans sur tous nos produits couvrant les défauts
-                  de fabrication, les composants électroniques et les finitions.
-                  Les dommages dus à une utilisation non conforme ne sont pas
-                  couverts.
-                </p>
-              </div>
-
-              <div className="bg-gray-50 p-6 rounded-lg">
-                <h3 className="text-lg font-medium text-[var(--color-text)] mb-3">
-                  Comment faire jouer la garantie ?
-                </h3>
-                <p className="text-gray-600 leading-relaxed">
-                  Contactez notre service client avec votre numéro de commande
-                  et une description du problème. Nous vous proposons une
-                  réparation, un échange ou un remboursement selon la nature du
-                  défaut.
+                  {t("faq.warranty.claim.answer")}
                 </p>
               </div>
             </div>
@@ -172,29 +136,25 @@ export default function FAQ() {
               className="text-2xl font-semibold text-[var(--color-text)] mb-6 pb-2 border-b border-gray-200"
               style={{ fontFamily: "var(--font-titles)" }}
             >
-              Paiement et sécurité
+              {t("faq.payment.title")}
             </h2>
 
             <div className="space-y-6">
               <div className="bg-gray-50 p-6 rounded-lg">
                 <h3 className="text-lg font-medium text-[var(--color-text)] mb-3">
-                  Quels moyens de paiement acceptez-vous ?
+                  {t("faq.payment.methods.title")}
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
-                  Nous acceptons les cartes bancaires (Visa, Mastercard,
-                  American Express) via Stripe. Tous les paiements sont
-                  sécurisés et nous ne stockons aucune donnée bancaire.
+                  {t("faq.payment.methods.answer")}
                 </p>
               </div>
 
               <div className="bg-gray-50 p-6 rounded-lg">
                 <h3 className="text-lg font-medium text-[var(--color-text)] mb-3">
-                  Mes données bancaires sont-elles sécurisées ?
+                  {t("faq.payment.security.title")}
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
-                  Oui, toutes les transactions sont sécurisées par SSL via
-                  Stripe. Nous ne stockons aucune donnée bancaire sur nos
-                  serveurs. Stripe est certifié PCI-DSS niveau 1.
+                  {t("faq.payment.security.answer")}
                 </p>
               </div>
             </div>
@@ -206,12 +166,9 @@ export default function FAQ() {
               className="text-2xl font-semibold text-[var(--color-text)] mb-4"
               style={{ fontFamily: "var(--font-titles)" }}
             >
-              Vous ne trouvez pas votre réponse ?
+              {t("faq.contact.title")}
             </h2>
-            <p className="text-gray-600 mb-6">
-              Notre équipe est là pour vous aider. N'hésitez pas à nous
-              contacter, nous vous répondrons dans les plus brefs délais.
-            </p>
+            <p className="text-gray-600 mb-6">{t("faq.contact.subtitle")}</p>
 
             <div className="grid md:grid-cols-2 gap-6">
               <div className="flex items-center">
@@ -229,7 +186,9 @@ export default function FAQ() {
                   />
                 </svg>
                 <div>
-                  <p className="font-medium text-[var(--color-text)]">Email</p>
+                  <p className="font-medium text-[var(--color-text)]">
+                    {t("faq.contact.email")}
+                  </p>
                   <a
                     href="mailto:altolille@gmail.com"
                     className="text-gray-600 hover:text-[var(--color-text)] transition"
@@ -255,7 +214,7 @@ export default function FAQ() {
                 </svg>
                 <div>
                   <p className="font-medium text-[var(--color-text)]">
-                    Téléphone
+                    {t("faq.contact.phone")}
                   </p>
                   <p className="text-gray-600">+33 782 086 690</p>
                 </div>

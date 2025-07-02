@@ -6,6 +6,7 @@ import { Shipping } from "./ShippingNew";
 import { Payment } from "./Payment";
 import { Confirmation } from "./Confirmation";
 import { useCart } from "@/hooks/useCart";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
 import {
   Check,
@@ -24,6 +25,7 @@ export default function CheckoutNew() {
   const [orderNumber, setOrderNumber] = useState<string>("");
   const { items, getTotalPrice } = useCart();
   const [, navigate] = useLocation();
+  const { t } = useLanguage();
 
   // Redirect if cart is empty
   useEffect(() => {
@@ -47,10 +49,10 @@ export default function CheckoutNew() {
   };
 
   const steps = [
-    { number: 1, title: "Informations", icon: User, completed: step > 1 },
-    { number: 2, title: "Livraison", icon: MapPin, completed: step > 2 },
-    { number: 3, title: "Paiement", icon: CreditCard, completed: step > 3 },
-    { number: 4, title: "Confirmation", icon: Package, completed: step === 4 },
+    { number: 1, title: t("checkout.customerInfo"), icon: User, completed: step > 1 },
+    { number: 2, title: t("checkout.shipping"), icon: MapPin, completed: step > 2 },
+    { number: 3, title: t("checkout.payment"), icon: CreditCard, completed: step > 3 },
+    { number: 4, title: t("checkout.confirmation"), icon: Package, completed: step === 4 },
   ];
 
   const renderStepContent = () => {
@@ -79,7 +81,7 @@ export default function CheckoutNew() {
                 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-gray-100"
                 style={{ fontFamily: "var(--font-titles)" }}
               >
-                Finaliser ma commande
+                {t("checkout.title")}
               </h1>
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
                 {step < 4 && (
@@ -98,7 +100,7 @@ export default function CheckoutNew() {
                   className="flex items-center gap-2 px-3 sm:px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors whitespace-nowrap"
                 >
                   <ArrowLeft className="w-4 h-4" />
-                  <span>Shop</span>
+                  <span>{t("nav.shop")}</span>
                 </button>
               </div>
             </div>
@@ -184,7 +186,7 @@ export default function CheckoutNew() {
                   </div>
                   <div>
                     <div className="text-sm text-gray-500 dark:text-gray-400">
-                      Étape {step} sur {steps.length}
+                      {t("checkout.step")} {step} {t("checkout.of")} {steps.length}
                     </div>
                     <div className="text-lg font-medium text-gray-900 dark:text-gray-100">
                       {steps[step - 1].title}
@@ -227,7 +229,7 @@ export default function CheckoutNew() {
                 <div className="lg:col-span-1">
                   <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 md:p-6 lg:sticky lg:top-6">
                     <h3 className="font-semibold text-lg mb-4 text-gray-900 dark:text-gray-100">
-                      Récapitulatif
+                      {t("checkout.review")}
                     </h3>
 
                     <div className="space-y-4">
@@ -250,7 +252,7 @@ export default function CheckoutNew() {
                             </p>
                             <div className="flex items-center justify-between mt-1">
                               <span className="text-xs text-gray-500 dark:text-gray-400">
-                                Qté: {item.quantity}
+                                {t("checkout.quantity")}: {item.quantity}
                               </span>
                               <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
                                 {formatPrice(
@@ -266,17 +268,17 @@ export default function CheckoutNew() {
 
                     <div className="border-t border-gray-200 dark:border-gray-600 mt-6 pt-4 space-y-2">
                       <div className="flex justify-between text-sm text-gray-700 dark:text-gray-300">
-                        <span>Sous-total</span>
+                        <span>{t("cart.subtotal")}</span>
                         <span>{formatPrice(getTotalPrice())}</span>
                       </div>
                       <div className="flex justify-between text-sm text-gray-700 dark:text-gray-300">
-                        <span>Livraison</span>
+                        <span>{t("cart.shipping")}</span>
                         <span className="text-green-600 dark:text-green-400 font-medium">
-                          Gratuite
+                          {t("cart.freeShipping")}
                         </span>
                       </div>
                       <div className="flex justify-between font-bold text-lg pt-2 border-t border-gray-200 dark:border-gray-600 text-gray-900 dark:text-gray-100">
-                        <span>Total</span>
+                        <span>{t("cart.total")}</span>
                         <span>{formatPrice(getTotalPrice())}</span>
                       </div>
                     </div>
@@ -287,19 +289,19 @@ export default function CheckoutNew() {
                         <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
                           <Check className="w-2 h-2 text-white" />
                         </div>
-                        <span>Paiement sécurisé</span>
+                        <span>{t("checkout.securePayment")}</span>
                       </div>
                       <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mb-2">
                         <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
                           <Check className="w-2 h-2 text-white" />
                         </div>
-                        <span>Livraison gratuite</span>
+                        <span>{t("checkout.freeShipping")}</span>
                       </div>
                       <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
                         <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
                           <Check className="w-2 h-2 text-white" />
                         </div>
-                        <span>Retour 30 jours</span>
+                        <span>{t("checkout.return30Days")}</span>
                       </div>
                     </div>
                   </div>

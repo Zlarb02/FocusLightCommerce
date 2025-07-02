@@ -1,0 +1,156 @@
+/* Corrections spécifiques pour le panier en mode sombre */
+
+/* Bouton "Continuer mes achats" dans le panier vide - ciblage plus spécifique */
+.dark .cart-empty-container button {
+  background-color: #1e293b !important; /* slate-800 */
+  color: #ffffff !important;
+  border: 1px solid #475569 !important; /* slate-600 */
+  font-weight: 500 !important;
+}
+
+.dark .cart-empty-container button:hover {
+  background-color: #0f172a !important; /* slate-900 */
+  color: #ffffff !important;
+  border-color: #64748b !important; /* slate-500 */
+}
+
+/* Alternative avec sélecteur plus général pour tous les boutons du panier vide */
+.dark .sheet-content .cart-empty-container button,
+.dark [data-state="open"] .cart-empty-container button {
+  background-color: #1e293b !important;
+  color: #ffffff !important;
+  border: 1px solid #475569 !important;
+  font-weight: 500 !important;
+}
+
+.dark .sheet-content .cart-empty-container button:hover,
+.dark [data-state="open"] .cart-empty-container button:hover {
+  background-color: #0f172a !important;
+  color: #ffffff !important;
+  border-color: #64748b !important;
+}
+
+/* Bouton "Continuer vos achats" - amélioration du contraste en mode sombre */
+.dark [data-radix-scroll-area-viewport] button:not(.cart-checkout-button) {
+  background-color: hsl(var(--primary)) !important;
+  color: hsl(var(--primary-foreground)) !important;
+  border: 1px solid hsl(var(--primary)) !important;
+  font-weight: 500 !important;
+}
+
+.dark
+  [data-radix-scroll-area-viewport]
+  button:not(.cart-checkout-button):hover {
+  background-color: hsl(var(--primary) / 0.9) !important;
+  color: hsl(var(--primary-foreground)) !important;
+  border-color: hsl(var(--primary) / 0.9) !important;
+}
+
+/* Bouton "Procéder au paiement" - maintenir les styles existants */
+.dark button.cart-checkout-button {
+  background-color: #1e293b !important;
+  color: #ffffff !important;
+}
+
+.dark button.cart-checkout-button:hover {
+  background-color: #334155 !important;
+}
+
+/* Amélioration des couleurs de texte en mode sombre */
+.dark .text-muted-foreground {
+  color: #94a3b8 !important;
+}
+
+.dark .text-gray-700 {
+  color: #e2e8f0 !important;
+}
+
+.dark .text-gray-900 {
+  color: #f1f5f9 !important;
+}
+
+/* Amélioration des bordures en mode sombre */
+.dark .border-gray-200 {
+  border-color: #374151 !important;
+}
+
+.dark .border-gray-600 {
+  border-color: #4b5563 !important;
+}
+
+/* Amélioration de la visibilité des icônes en mode sombre */
+.dark .text-red-500 {
+  color: #ef4444 !important;
+}
+
+.dark .text-red-400 {
+  color: #f87171 !important;
+}
+
+.dark .text-red-500:hover,
+.dark .text-red-400:hover {
+  color: #dc2626 !important;
+}
+
+/* Style spécifique pour le panier vide */
+.dark .cart-empty-container {
+  color: #e2e8f0 !important;
+}
+
+.dark .cart-empty-container h3 {
+  color: #f1f5f9 !important;
+}
+
+/* Styles plus spécifiques pour le bouton "Continuer mes achats" */
+.dark .cart-continue-shopping-button {
+  background-color: #1e293b !important; /* slate-800 */
+  color: #ffffff !important;
+  border: 1px solid #475569 !important; /* slate-600 */
+  font-weight: 500 !important;
+}
+
+.dark .cart-continue-shopping-button:hover {
+  background-color: #0f172a !important; /* slate-900 */
+  color: #ffffff !important;
+  border-color: #64748b !important; /* slate-500 */
+}
+
+/* Fallback avec !important pour forcer les styles */
+.dark button[class*="cart-continue-shopping"] {
+  background-color: #1e293b !important;
+  color: #ffffff !important;
+  border: 1px solid #475569 !important;
+}
+
+.dark button[class*="cart-continue-shopping"]:hover {
+  background-color: #0f172a !important;
+  color: #ffffff !important;
+}
+
+/* Amélioration du contraste pour les quantités */
+.dark .cart-quantity-controls button {
+  border-color: #4b5563 !important;
+  color: #e2e8f0 !important;
+}
+
+.dark .cart-quantity-controls button:hover {
+  background-color: #374151 !important;
+  color: #f1f5f9 !important;
+}
+
+/* Style pour les prix en mode sombre */
+.dark .cart-price {
+  color: #f1f5f9 !important;
+  font-weight: 600 !important;
+}
+
+/* Amélioration du contraste pour le texte de livraison gratuite */
+.dark .text-green-600 {
+  color: #22c55e !important;
+  font-weight: 500 !important;
+}
+
+.dark .text-green-400 {
+  color: #4ade80 !important;
+  font-weight: 500 !important;
+}

@@ -12,6 +12,8 @@ import { useQuery } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { ThemeDecoration } from "../../../shared/schema";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { LanguageToggle } from "@/components/LanguageToggle";
 import "./Layout-dark-contrast.css";
 
 interface LayoutProps {
@@ -28,6 +30,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const { getTotalItems } = useCart();
   const [location, setLocation] = useLocation();
+  const { t } = useLanguage();
 
   // Fonction pour retourner à la landing page de façon sécurisée
   const backToLanding = () => {
@@ -77,7 +80,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
             <button
               onClick={() => setMenuOpen(true)}
               className="p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-colors"
-              aria-label="Ouvrir le menu"
+              aria-label={t("nav.menu")}
             >
               <Menu className="h-5 w-5" />
             </button>
@@ -94,8 +97,9 @@ export function Layout({ children, showCart = true }: LayoutProps) {
             </button>
           </div>
 
-          {/* Icône panier et toggle thème à droite */}
+          {/* Icône panier et toggles à droite */}
           <div className="flex items-center gap-2">
+            <LanguageToggle variant="button" size="sm" showLabel={true} />
             <ThemeToggle variant="minimal" size="sm" showLabel={false} />
             {showCart && (
               <Button
@@ -103,9 +107,9 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                 size="icon"
                 className="relative hover:bg-transparent"
                 onClick={() => setCartOpen(true)}
-                aria-label={`Voir panier - ${cartItemCount} article${
-                  cartItemCount !== 1 ? "s" : ""
-                }`}
+                aria-label={`${t("nav.cart")} - ${cartItemCount} ${t(
+                  "cart.itemAdded"
+                ).toLowerCase()}`}
               >
                 <AnimatedCartIcon
                   itemCount={cartItemCount}
@@ -136,12 +140,12 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                 className="text-lg font-semibold text-gray-900 dark:text-gray-100"
                 style={{ fontFamily: "var(--font-titles)" }}
               >
-                Navigation
+                {t("nav.menu")}
               </h2>
               <button
                 onClick={() => setMenuOpen(false)}
                 className="p-2 rounded-md text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:text-gray-200 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                aria-label="Fermer le menu"
+                aria-label={t("nav.close")}
               >
                 <X className="h-5 w-5" />
               </button>
@@ -172,7 +176,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                       d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
                     />
                   </svg>
-                  <span>Accueil</span>
+                  <span>{t("nav.home")}</span>
                 </button>
               </div>
 
@@ -181,7 +185,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
               {/* Projets */}
               <div className="mb-6">
                 <h3 className="px-3 text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">
-                  Projets
+                  {t("nav.projects")}
                 </h3>
                 <div className="space-y-1">
                   <button
@@ -192,7 +196,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                     className="w-full flex items-center px-3 py-2.5 text-base font-medium text-gray-700 dark:text-gray-200 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 rounded-md transition-colors"
                     style={{ fontFamily: "var(--font-nav)" }}
                   >
-                    <span>Focus.01</span>
+                    <span>{t("focus.title")}</span>
                   </button>
 
                   <button
@@ -203,7 +207,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                     className="w-full flex items-center px-3 py-2.5 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 rounded-md transition-colors"
                     style={{ fontFamily: "var(--font-nav)" }}
                   >
-                    <span>Sea-clé</span>
+                    <span>{t("projects.seacle")}</span>
                   </button>
 
                   <button
@@ -214,7 +218,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                     className="w-full flex items-center px-3 py-2.5 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 rounded-md transition-colors"
                     style={{ fontFamily: "var(--font-nav)" }}
                   >
-                    <span>Without speaker</span>
+                    <span>{t("projects.lowtechvynil")}</span>
                   </button>
 
                   <button
@@ -225,7 +229,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                     className="w-full flex items-center px-3 py-2.5 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 rounded-md transition-colors"
                     style={{ fontFamily: "var(--font-nav)" }}
                   >
-                    <span>Braderie de l'Art</span>
+                    <span>{t("projects.braderie")}</span>
                   </button>
 
                   <button
@@ -236,7 +240,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                     className="w-full flex items-center px-3 py-2.5 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 rounded-md transition-colors"
                     style={{ fontFamily: "var(--font-nav)" }}
                   >
-                    <span>Waterfall</span>
+                    <span>{t("projects.waterfall")}</span>
                   </button>
 
                   <button
@@ -247,7 +251,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                     className="w-full flex items-center px-3 py-2.5 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 rounded-md transition-colors"
                     style={{ fontFamily: "var(--font-nav)" }}
                   >
-                    <span>Chaussures Custom</span>
+                    <span>{t("projects.chaussures")}</span>
                   </button>
                 </div>
               </div>
@@ -257,9 +261,14 @@ export function Layout({ children, showCart = true }: LayoutProps) {
               {/* Paramètres */}
               <div className="mb-6">
                 <h3 className="px-3 text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">
-                  Paramètres
+                  {t("settings.title")}
                 </h3>
-                <div className="px-3 py-2">
+                <div className="px-3 py-2 space-y-4">
+                  <LanguageToggle
+                    variant="switch"
+                    size="default"
+                    showLabel={true}
+                  />
                   <ThemeToggle size="md" />
                 </div>
               </div>
@@ -269,7 +278,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
               {/* À propos */}
               <div>
                 <h3 className="px-3 text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">
-                  À propos
+                  {t("nav.about")}
                 </h3>
                 <button
                   onClick={() => {
@@ -279,7 +288,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                   className="w-full flex items-center px-3 py-2.5 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 rounded-md transition-colors"
                   style={{ fontFamily: "var(--font-nav)" }}
                 >
-                  <span>Qui suis-je</span>
+                  <span>{t("projects.whoami")}</span>
                 </button>
               </div>
             </nav>
@@ -352,8 +361,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                 </span>
               </div>
               <p className="text-gray-600 dark:text-gray-400 mb-5 text-sm leading-relaxed">
-                Illuminez votre intérieur avec notre concept de lampe écologique
-                et design, fabriquée en France.
+                {t("about.description")}
               </p>
               <div className="flex space-x-4">
                 <a
@@ -378,7 +386,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                 className="font-medium text-base mb-5 text-gray-900 dark:text-gray-100"
                 style={{ fontFamily: "var(--font-titles)" }}
               >
-                Contact
+                {t("footer.contact")}
               </h4>
               <ul className="space-y-3">
                 <li className="flex items-start">
@@ -455,7 +463,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                 className="font-medium text-base mb-5 text-gray-900 dark:text-gray-100"
                 style={{ fontFamily: "var(--font-titles)" }}
               >
-                Services
+                {t("services.title")}
               </h4>
               <ul className="grid grid-cols-1 gap-2">
                 <li>
@@ -463,7 +471,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                     href="/livraison"
                     className="text-gray-600 dark:text-white hover:text-gray-900 dark:hover:text-blue-400 transition text-sm inline-block dark:font-medium"
                   >
-                    Livraison
+                    {t("services.delivery")}
                   </Link>
                 </li>
                 <li>
@@ -471,7 +479,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                     href="/retours"
                     className="text-gray-600 dark:text-white hover:text-gray-900 dark:hover:text-blue-400 transition text-sm inline-block dark:font-medium"
                   >
-                    Retours
+                    {t("services.returns")}
                   </Link>
                 </li>
                 <li>
@@ -479,7 +487,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                     href="/garantie"
                     className="text-gray-600 dark:text-white hover:text-gray-900 dark:hover:text-blue-400 transition text-sm inline-block dark:font-medium"
                   >
-                    Garantie
+                    {t("services.warranty")}
                   </Link>
                 </li>
                 <li>
@@ -487,7 +495,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                     href="/faq"
                     className="text-gray-600 dark:text-white hover:text-gray-900 dark:hover:text-blue-400 transition text-sm inline-block dark:font-medium"
                   >
-                    FAQ
+                    {t("footer.faq")}
                   </Link>
                 </li>
               </ul>
@@ -498,7 +506,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
             <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
               <div className="flex flex-col items-center md:items-start gap-3 order-2 md:order-1">
                 <p className="text-gray-500 dark:text-gray-400 text-xs text-center md:text-left">
-                  &copy; 2023 Alto Lille. Tous droits réservés.
+                  {t("footer.rights")}
                 </p>
                 <div className="flex items-center gap-4">
                   {/* Badge EcoIndex - adaptatif au thème */}
@@ -525,9 +533,9 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 text-xs transition-colors"
-                    title="Site développé par Etienne Pogoda"
+                    title={t("footer.developer")}
                   >
-                    Développé par Etienne Pogoda
+                    {t("footer.developer")}
                   </a>
                 </div>
               </div>
@@ -537,19 +545,19 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                   href="/mentions-legales"
                   className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 text-xs transition"
                 >
-                  Mentions légales
+                  {t("footer.legal")}
                 </Link>
                 <Link
                   href="/politique-confidentialite"
                   className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 text-xs transition"
                 >
-                  Politique de confidentialité
+                  {t("footer.privacy")}
                 </Link>
                 <Link
                   href="/cgv"
                   className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 text-xs transition"
                 >
-                  CGV
+                  {t("footer.cgv")}
                 </Link>
               </div>
             </div>

@@ -7,28 +7,24 @@ import {
   Lightbulb,
   Users,
 } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function QuiSuisJe() {
+  const { t } = useLanguage();
+
   return (
     <ProjectPageUnified
       title="Qui suis-je"
-      subtitle="Créateur & Fondateur d'Alto Lille"
+      subtitle={t("projects.quiSuisJe.subtitle")}
       imagePath="/images/qui-suis-je.jpg"
       currentProject="QuiSuisJe"
       description={
         <>
           <p className="text-lg leading-relaxed">
-            Passionné par la création et l'innovation, je suis le fondateur d'
-            <strong>Alto Lille</strong>, une marque qui unit artisanat
-            traditionnel et design contemporain. Mon parcours m'a mené de
-            l'exploration des matériaux à la création d'objets uniques qui
-            racontent une histoire.
+            {t("projects.quiSuisJe.description1")}
           </p>
           <p className="text-lg leading-relaxed">
-            Chaque projet est une aventure, chaque création une réponse à un
-            besoin esthétique et fonctionnel. Ma philosophie ? Créer des objets
-            qui enrichissent le quotidien et révèlent la beauté dans la
-            simplicité.
+            {t("projects.quiSuisJe.description2")}
           </p>
         </>
       }
@@ -45,11 +41,10 @@ export default function QuiSuisJe() {
                   className="text-xl font-semibold mb-3"
                   style={{ fontFamily: "var(--font-titles)" }}
                 >
-                  Créativité
+                  {t("quiSuisJe.vision.creativity")}
                 </h3>
                 <p className="text-gray-700">
-                  Explorer sans cesse de nouvelles formes, matériaux et
-                  techniques pour créer des objets qui surprennent et inspirent.
+                  {t("quiSuisJe.vision.creativity.desc")}
                 </p>
               </div>
 
@@ -61,11 +56,10 @@ export default function QuiSuisJe() {
                   className="text-xl font-semibold mb-3"
                   style={{ fontFamily: "var(--font-titles)" }}
                 >
-                  Innovation
+                  {t("quiSuisJe.vision.innovation")}
                 </h3>
                 <p className="text-gray-700">
-                  Allier tradition et modernité pour créer des solutions design
-                  qui répondent aux besoins contemporains.
+                  {t("quiSuisJe.vision.innovation.desc")}
                 </p>
               </div>
 
@@ -77,11 +71,10 @@ export default function QuiSuisJe() {
                   className="text-xl font-semibold mb-3"
                   style={{ fontFamily: "var(--font-titles)" }}
                 >
-                  Partage
+                  {t("quiSuisJe.vision.sharing")}
                 </h3>
                 <p className="text-gray-700">
-                  Transmettre ma passion et créer une communauté autour de
-                  l'artisanat et du design responsable.
+                  {t("quiSuisJe.vision.sharing.desc")}
                 </p>
               </div>
             </div>
@@ -94,7 +87,7 @@ export default function QuiSuisJe() {
                 className="text-2xl font-bold mb-6"
                 style={{ fontFamily: "var(--font-titles)" }}
               >
-                Mon Parcours
+                {t("quiSuisJe.journey.title")}
               </h3>
               <div className="space-y-6">
                 <div className="border-l-4 border-blue-500 pl-6 py-2">
@@ -212,16 +205,18 @@ export default function QuiSuisJe() {
               className="text-2xl font-bold mb-8"
               style={{ fontFamily: "var(--font-titles)" }}
             >
-              Mon Processus Créatif
+              {t("quiSuisJe.process.title")}
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
               <div className="bg-gradient-to-b from-blue-50 to-blue-100 p-6 rounded-xl">
                 <div className="bg-blue-500 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
                   <span className="text-white font-bold">1</span>
                 </div>
-                <h4 className="font-semibold mb-2">Inspiration</h4>
+                <h4 className="font-semibold mb-2">
+                  {t("quiSuisJe.process.inspiration")}
+                </h4>
                 <p className="text-sm text-gray-600">
-                  Observer, analyser et puiser dans l'environnement quotidien
+                  {t("quiSuisJe.process.inspiration.desc")}
                 </p>
               </div>
 
@@ -229,9 +224,11 @@ export default function QuiSuisJe() {
                 <div className="bg-green-500 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
                   <span className="text-white font-bold">2</span>
                 </div>
-                <h4 className="font-semibold mb-2">Conception</h4>
+                <h4 className="font-semibold mb-2">
+                  {t("quiSuisJe.process.conception")}
+                </h4>
                 <p className="text-sm text-gray-600">
-                  Esquisser, modéliser et définir les contraintes techniques
+                  {t("quiSuisJe.process.conception.desc")}
                 </p>
               </div>
 
@@ -239,9 +236,11 @@ export default function QuiSuisJe() {
                 <div className="bg-purple-500 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
                   <span className="text-white font-bold">3</span>
                 </div>
-                <h4 className="font-semibold mb-2">Prototype</h4>
+                <h4 className="font-semibold mb-2">
+                  {t("quiSuisJe.process.prototype")}
+                </h4>
                 <p className="text-sm text-gray-600">
-                  Tester, itérer et perfectionner chaque détail
+                  {t("quiSuisJe.process.prototype.desc")}
                 </p>
               </div>
 
@@ -249,9 +248,11 @@ export default function QuiSuisJe() {
                 <div className="bg-orange-500 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
                   <span className="text-white font-bold">4</span>
                 </div>
-                <h4 className="font-semibold mb-2">Production</h4>
+                <h4 className="font-semibold mb-2">
+                  {t("quiSuisJe.process.production")}
+                </h4>
                 <p className="text-sm text-gray-600">
-                  Fabriquer avec soin et attention aux détails
+                  {t("quiSuisJe.process.production.desc")}
                 </p>
               </div>
             </div>

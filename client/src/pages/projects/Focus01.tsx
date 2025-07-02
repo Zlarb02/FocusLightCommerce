@@ -1,27 +1,20 @@
 import ProjectPageUnified from "@/components/ProjectPageUnified";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function Focus01() {
+  const { t } = useLanguage();
+
   return (
     <ProjectPageUnified
       title="Focus.01"
-      subtitle="Lampe de bureau"
+      subtitle={t("projects.focus01.subtitle")}
       imagePath="/images/focus-01.jpg"
       date="2024/2025"
       currentProject="Focus01"
       description={
         <>
-          <p>
-            J'ai conçu ce projet pour lancer ma marque : Alto. C'est mon premier
-            produit réalisé en totale autonomie grâce à l'impression 3D. Je me
-            charge également du packaging et de la communication, créant ainsi
-            une approche globale du design de produit.
-          </p>
-          <p>
-            La Focus.01 représente le premier produit de mon entreprise Alto
-            Lille. Je distribue mes créations dans des dépôts-ventes spécialisés
-            en décoration d'intérieur ainsi que sur notre site internet en cours
-            de développement.
-          </p>
+          <p>{t("projects.focus01.description1")}</p>
+          <p>{t("projects.focus01.description2")}</p>
         </>
       }
       additionalContent={
@@ -50,17 +43,13 @@ export default function Focus01() {
                 className="text-xl font-semibold mb-3 dark:text-gray-100"
                 style={{ fontFamily: "var(--font-titles)" }}
               >
-                Caractéristiques
+                {t("projects.focus01.characteristics.title")}
               </h3>
               <p className="text-gray-700 dark:text-gray-300 mb-4">
-                La Focus.01 est livrée en kit pour optimiser l'emballage et
-                réduire l'impact environnemental. Une notice illustrée
-                accompagne le produit pour un montage rapide et accessible.
+                {t("projects.focus01.characteristics.text1")}
               </p>
               <p className="text-gray-700 dark:text-gray-300">
-                L'assemblage ne nécessite ni colle ni vis, rendant le montage
-                possible même pour un enfant, dans un esprit de simplicité et de
-                durabilité.
+                {t("projects.focus01.characteristics.text2")}
               </p>
             </div>
           </div>
@@ -70,18 +59,13 @@ export default function Focus01() {
               className="text-xl font-semibold mb-4 dark:text-gray-100"
               style={{ fontFamily: "var(--font-titles)" }}
             >
-              Public cible et positionnement
+              {t("projects.focus01.positioning.title")}
             </h3>
             <p className="text-gray-700 dark:text-gray-300 mb-4">
-              La Focus.01 est proposée à 60€ frais de port inclus, positionnée
-              comme une solution d'éclairage design accessible et
-              éco-responsable.
+              {t("projects.focus01.positioning.text1")}
             </p>
             <p className="text-gray-700 dark:text-gray-300">
-              Elle s'adresse à toute personne souhaitant offrir un cadeau
-              original ou renouveler sa décoration d'intérieur sans
-              investissement majeur. La lampe apporte une touche de modernité
-              abordable à n'importe quel espace de vie.
+              {t("projects.focus01.positioning.text2")}
             </p>
           </div>
 
@@ -91,14 +75,14 @@ export default function Focus01() {
                 className="text-lg font-semibold mb-3 dark:text-gray-100"
                 style={{ fontFamily: "var(--font-titles)" }}
               >
-                Spécifications techniques
+                {t("projects.focus01.specs.title")}
               </h3>
               <ul className="space-y-1 text-gray-700 dark:text-gray-300 text-sm">
-                <li>• Matières : PLA, chêne massif, LED</li>
-                <li>• Douille E14, câble textile</li>
-                <li>• Interrupteur intégré</li>
-                <li>• Designer : Anatole Collet / 2024</li>
-                <li>• 4 coloris disponibles</li>
+                <li>{t("projects.focus01.specs.materials")}</li>
+                <li>{t("projects.focus01.specs.socket")}</li>
+                <li>{t("projects.focus01.specs.switch")}</li>
+                <li>{t("projects.focus01.specs.designer")}</li>
+                <li>{t("projects.focus01.specs.colors")}</li>
               </ul>
             </div>
             <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg">
@@ -106,14 +90,10 @@ export default function Focus01() {
                 className="text-lg font-semibold mb-3 dark:text-gray-100"
                 style={{ fontFamily: "var(--font-titles)" }}
               >
-                Développement futur
+                {t("projects.focus01.future.title")}
               </h3>
               <p className="text-gray-700 dark:text-gray-300 text-sm">
-                Pour mon second produit, j'ai développé une liseuse qui
-                s'inscrit dans la continuité esthétique de la Focus.01. J'ai
-                conservé le même abat-jour pour créer une cohérence visuelle et
-                optimiser la production. D'autres créations sont actuellement en
-                cours de développement pour enrichir la gamme Alto.
+                {t("projects.focus01.future.text")}
               </p>
             </div>
           </div>

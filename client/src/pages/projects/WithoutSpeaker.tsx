@@ -1,28 +1,20 @@
 import ProjectPageUnified from "@/components/ProjectPageUnified";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function WithoutSpeaker() {
+  const { t } = useLanguage();
+
   return (
     <ProjectPageUnified
-      title="Without Speaker"
-      subtitle="Création innovante"
+      title={t("projects.lowtechvynil")}
+      subtitle={t("projects.withoutSpeaker.subtitle")}
       imagePath="/images/lowtech-vynil.jpg"
       date="2024"
       currentProject="WithoutSpeaker"
       description={
         <>
-          <p>
-            Without Speaker est une exploration audacieuse de l'expérience
-            musicale dépouillée de sa dimension sonore. Cette installation
-            interroge notre rapport à la musique à travers une approche
-            sensorielle alternative, où le vinyle devient protagoniste d'une
-            performance silencieuse.
-          </p>
-          <p>
-            Ce projet low-tech questionne les codes de l'écoute musicale
-            contemporaine en proposant une expérience contemplative où l'objet
-            vinyle, libéré de sa fonction première, révèle sa beauté plastique
-            et son potentiel poétique.
-          </p>
+          <p>{t("projects.withoutSpeaker.description1")}</p>
+          <p>{t("projects.withoutSpeaker.description2")}</p>
         </>
       }
       additionalContent={
@@ -33,18 +25,13 @@ export default function WithoutSpeaker() {
                 className="text-xl font-semibold mb-3"
                 style={{ fontFamily: "var(--font-titles)" }}
               >
-                Concept et démarche
+                {t("projects.withoutSpeaker.concept.title")}
               </h3>
               <p className="text-gray-700 mb-4">
-                L'absence volontaire de haut-parleur crée un espace de
-                méditation autour de l'objet musical. Le spectateur est invité à
-                imaginer la mélodie, à projeter ses souvenirs sonores sur le
-                mouvement hypnotique du disque.
+                {t("projects.withoutSpeaker.concept.text1")}
               </p>
               <p className="text-gray-700">
-                Cette approche minimaliste révèle l'essence contemplative de
-                l'écoute, transformant l'acte d'écouter en acte de regarder et
-                de ressentir.
+                {t("projects.withoutSpeaker.concept.text2")}
               </p>
             </div>
             <div>
@@ -52,18 +39,13 @@ export default function WithoutSpeaker() {
                 className="text-xl font-semibold mb-3"
                 style={{ fontFamily: "var(--font-titles)" }}
               >
-                Technologie détournée
+                {t("projects.withoutSpeaker.technology.title")}
               </h3>
               <p className="text-gray-700 mb-4">
-                En détournant la technologie de la platine vinyle, Without
-                Speaker questionne notre dépendance aux dispositifs de
-                restitution sonore et recentre l'attention sur l'objet physique
-                du disque.
+                {t("projects.withoutSpeaker.technology.text1")}
               </p>
               <p className="text-gray-700">
-                Cette démarche low-tech privilégie la simplicité mécanique et
-                l'essentiel, révélant la beauté du geste répétitif et de la
-                rotation perpétuelle.
+                {t("projects.withoutSpeaker.technology.text2")}
               </p>
             </div>
           </div>
@@ -73,18 +55,13 @@ export default function WithoutSpeaker() {
               className="text-xl font-semibold mb-4"
               style={{ fontFamily: "var(--font-titles)" }}
             >
-              Expérience immersive
+              {t("projects.withoutSpeaker.experience.title")}
             </h3>
             <p className="text-gray-700 mb-4">
-              Sans son, l'expérience devient purement visuelle et tactile. Le
-              spectateur peut toucher, manipuler, et créer sa propre bande
-              sonore mentale. Chaque vinyle devient une partition visuelle
-              unique.
+              {t("projects.withoutSpeaker.experience.text1")}
             </p>
             <p className="text-gray-700">
-              Cette installation invite à redécouvrir le plaisir de l'écoute
-              intérieure, où l'imagination supplée l'absence physique du son
-              pour créer une expérience musicale personnelle et intime.
+              {t("projects.withoutSpeaker.experience.text2")}
             </p>
           </div>
 
@@ -94,14 +71,14 @@ export default function WithoutSpeaker() {
                 className="text-lg font-semibold mb-3"
                 style={{ fontFamily: "var(--font-titles)" }}
               >
-                Spécifications techniques
+                {t("projects.withoutSpeaker.specs.title")}
               </h3>
               <ul className="space-y-1 text-gray-700 text-sm">
-                <li>• Platine vinyle modifiée</li>
-                <li>• Système d'entraînement mécanique</li>
-                <li>• Support pour vinyles 33 et 45 tours</li>
-                <li>• Design épuré sans amplification</li>
-                <li>• Matériaux : bois, métal, vinyle</li>
+                <li>{t("projects.withoutSpeaker.specs.turntable")}</li>
+                <li>{t("projects.withoutSpeaker.specs.drive")}</li>
+                <li>{t("projects.withoutSpeaker.specs.support")}</li>
+                <li>{t("projects.withoutSpeaker.specs.design")}</li>
+                <li>{t("projects.withoutSpeaker.specs.materials")}</li>
               </ul>
             </div>
             <div className="bg-gray-50 p-6 rounded-lg">
@@ -109,14 +86,10 @@ export default function WithoutSpeaker() {
                 className="text-lg font-semibold mb-3"
                 style={{ fontFamily: "var(--font-titles)" }}
               >
-                Réflexion artistique
+                {t("projects.withoutSpeaker.reflection.title")}
               </h3>
               <p className="text-gray-700 text-sm">
-                Without Speaker s'inscrit dans une démarche de questionnement
-                des habitudes de consommation culturelle. En supprimant
-                l'élément sonore, l'installation révèle d'autres dimensions de
-                l'objet musical et ouvre de nouveaux territoires d'exploration
-                sensorielle.
+                {t("projects.withoutSpeaker.reflection.text")}
               </p>
             </div>
           </div>
@@ -126,10 +99,10 @@ export default function WithoutSpeaker() {
               className="text-lg font-semibold mb-2"
               style={{ fontFamily: "var(--font-titles)" }}
             >
-              Without Speaker - Installation
+              {t("projects.withoutSpeaker.installation.title")}
             </h3>
             <p className="text-gray-600 text-sm">
-              Création expérimentale | 2024 | Série limitée
+              {t("projects.withoutSpeaker.installation.subtitle")}
             </p>
           </div>
         </div>

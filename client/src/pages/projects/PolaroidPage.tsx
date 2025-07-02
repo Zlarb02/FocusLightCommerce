@@ -2,6 +2,7 @@ import { ReactNode, useState } from "react";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Home, ShoppingBag, Menu, X } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface PolaroidPageProps {
   title: string;
@@ -21,54 +22,55 @@ export default function PolaroidPage({
   date,
 }: PolaroidPageProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { t } = useLanguage();
 
   // Navigation items
   const navigationItems = [
     {
-      name: "Accueil",
+      name: t("nav.home"),
       icon: Home,
       action: () => backToLanding(),
       type: "home",
     },
     {
-      name: "Shop",
+      name: t("nav.shop"),
       icon: ShoppingBag,
       action: () => navigateToShop(),
       type: "shop",
     },
-    { name: "Projets", type: "divider" },
+    { name: t("nav.projects"), type: "divider" },
     {
-      name: "Focus.01",
+      name: t("focus.title"),
       action: () => navigateToProject("Focus01"),
       type: "project",
       current: title === "Focus.01",
     },
     {
-      name: "Sea-clé",
+      name: t("projects.seacle"),
       action: () => navigateToProject("SeaCle"),
       type: "project",
       current: title === "Sea-clé",
     },
     {
-      name: "Without speaker",
+      name: t("projects.lowtechvynil"),
       action: () => navigateToProject("LowtechVynil"),
       type: "project",
       current: title === "Without speaker",
     },
     {
-      name: "Braderie de l'Art",
+      name: t("projects.braderie"),
       action: () => navigateToProject("BraderieDeLArt"),
       type: "project",
       current: title === "Braderie de l'Art",
     },
     {
-      name: "Waterfall",
+      name: t("projects.waterfall"),
       action: () => navigateToProject("Waterfall"),
       type: "project",
       current: title === "Waterfall",
     },
     {
-      name: "Chaussures Custom",
+      name: t("projects.chaussures"),
       action: () => navigateToProject("ChaussuresCustom"),
       type: "project",
       current: title === "Chaussures Custom",
@@ -130,7 +132,7 @@ export default function PolaroidPage({
               className="text-xl font-bold text-gray-900"
               style={{ fontFamily: "var(--font-titles)" }}
             >
-              Portfolio
+              {t("projects.portfolio")}
             </h2>
             <p className="text-sm text-gray-500 mt-1">Anatole Collet</p>
           </div>
@@ -223,7 +225,7 @@ export default function PolaroidPage({
               className="text-lg font-bold text-gray-900"
               style={{ fontFamily: "var(--font-titles)" }}
             >
-              Portfolio
+              {t("projects.portfolio")}
             </h2>
             <button
               onClick={() => setSidebarOpen(false)}
@@ -293,7 +295,7 @@ export default function PolaroidPage({
               className="inline-flex items-center text-gray-600 hover:text-[var(--color-text)] transition cursor-pointer"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
-              <span>Retour à l'accueil</span>
+              <span>{t("projects.backHome")}</span>
             </button>
           </div>
 
@@ -346,7 +348,7 @@ export default function PolaroidPage({
               className="text-base px-6 py-5"
               onClick={() => window.history.back()}
             >
-              Découvrir les autres créations
+              {t("common.discoverOtherCreations")}
             </Button>
           </div>
         </div>

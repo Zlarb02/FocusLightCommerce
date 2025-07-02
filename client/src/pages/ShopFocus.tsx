@@ -18,6 +18,7 @@ import { Leaf, Lightbulb, ShoppingBag, Trees } from "lucide-react";
 import { formatPrice, getColorInfo } from "@/lib/utils";
 import { useCart } from "@/hooks/useCart";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { Separator } from "@/components/ui/separator";
 
 // Ordre pour le sélecteur de la section hero: bleu, rouge, orange, blanc
@@ -76,6 +77,7 @@ export default function ShopFocus() {
   const { toast } = useToast();
   const { addToast, toasts, removeToast } = useEnhancedToast();
   const { showIndicator, isProductAdded } = useProductAddedIndicators();
+  const { t } = useLanguage();
 
   useEffect(() => {
     if (products.length > 0 && !selectedProduct) {
@@ -114,7 +116,7 @@ export default function ShopFocus() {
 
       // Toast amélioré avec image du produit
       addToast({
-        title: "Produit ajouté au panier !",
+        title: t("focus.addedToCart"),
         description: `${selectedProduct.name} coloris ${selectedVariation.variationValue}`,
         type: "cart",
         duration: 5000,
@@ -151,24 +153,23 @@ export default function ShopFocus() {
                 className="font-heading text-3xl md:text-6xl mb-4 md:mb-6 tracking-tight text-center md:text-left"
                 style={{ fontFamily: "var(--font-titles)" }}
               >
-                FOCUS.01
+                {t("focus.title")}
               </h1>
               <p className="mb-6 md:mb-8 text-gray-600 max-w-md text-base md:text-lg leading-relaxed text-center md:text-left mx-auto md:mx-0 dark:text-white dark:font-medium">
-                Lampe d'appoint éco-responsable aux lignes épurées, conçue par
-                Anatole Collet
+                {t("focus.subtitle")}
               </p>
               <div className="flex flex-wrap gap-4 md:gap-6 mb-6 md:mb-8 justify-center md:justify-start">
                 <div className="flex items-center text-xs md:text-sm">
                   <Leaf className="text-green-500 mr-2 h-3 w-3 md:h-4 md:w-4" />
-                  <span>PLA éco-responsable</span>
+                  <span>{t("focus.features.eco")}</span>
                 </div>
                 <div className="flex items-center text-xs md:text-sm">
                   <Trees className="text-amber-700 mr-2 h-3 w-3 md:h-4 md:w-4" />
-                  <span>Chêne écogéré</span>
+                  <span>{t("focus.features.wood")}</span>
                 </div>
                 <div className="flex items-center text-xs md:text-sm">
                   <Lightbulb className="text-yellow-400 mr-2 h-3 w-3 md:h-4 md:w-4" />
-                  <span>LED 60W E14 incluse</span>
+                  <span>{t("focus.features.led")}</span>
                 </div>
               </div>
               <div className="flex flex-col gap-3 md:gap-4 mb-6 md:mb-8 px-4 md:px-0">
@@ -191,12 +192,12 @@ export default function ShopFocus() {
                   className="w-full md:w-auto rounded-none border-foreground text-foreground hover:bg-foreground hover:text-background transition-all hover:translate-y-[-2px] mobile-tap-highlight"
                   style={{ fontFamily: "var(--font-buttons)" }}
                 >
-                  Voir les détails
+                  {t("product.viewDetails")}
                 </Button>
               </div>
               <div className="flex items-center justify-center md:justify-start text-gray-500 text-xs md:text-sm">
                 <span className="inline-block border-l-2 border-gray-300 pl-3">
-                  Livraison offerte en France métropolitaine
+                  {t("focus.freeShipping")}
                 </span>
               </div>
             </div>
@@ -262,21 +263,10 @@ export default function ShopFocus() {
                   className="text-base md:text-lg font-medium mb-2 md:mb-3 dark:text-gray-100"
                   style={{ fontFamily: "var(--font-titles)" }}
                 >
-                  Collection en cours de développement
+                  {t("focus.availability.title")}
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-sm md:text-base">
-                  Actuellement, la lampe FOCUS.01 est notre seul produit
-                  disponible à la vente. Pour toute demande concernant d'autres
-                  créations ou services d'Alto, n'hésitez pas à nous contacter
-                  via{" "}
-                  <a
-                    href="mailto:altolille@gmail.com"
-                    className="text-primary dark:text-blue-400 underline decoration-dotted underline-offset-4 hover:decoration-solid mobile-tap-highlight"
-                  >
-                    altolille@gmail.com
-                  </a>{" "}
-                  ou au +33 782 086 690. Nous serons ravis d'échanger avec vous
-                  sur vos projets.
+                  {t("focus.availability.text")}
                 </p>
               </div>
             </div>
@@ -290,7 +280,7 @@ export default function ShopFocus() {
               className="font-heading text-3xl md:text-4xl mb-16 text-center dark:text-gray-100"
               style={{ fontFamily: "var(--font-titles)" }}
             >
-              Conception & Détails
+              {t("focus.conceptDetails")}
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
@@ -302,11 +292,10 @@ export default function ShopFocus() {
                   className="font-heading text-xl mb-3 dark:text-gray-100"
                   style={{ fontFamily: "var(--font-titles)" }}
                 >
-                  Matériaux Durables
+                  {t("focus.sustainableMaterials")}
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300">
-                  Structure en PLA 100% biodégradable associée à du chêne
-                  provenant de forêts gérées durablement.
+                  {t("focus.sustainableMaterials.text")}
                 </p>
               </div>
 
@@ -318,11 +307,10 @@ export default function ShopFocus() {
                   className="font-heading text-xl mb-3 dark:text-gray-100"
                   style={{ fontFamily: "var(--font-titles)" }}
                 >
-                  Éclairage Optimal
+                  {t("focus.lighting.title")}
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300">
-                  Livrée avec une ampoule LED 60W E14 pour un éclairage
-                  chaleureux et économe en énergie.
+                  {t("focus.lighting.text")}
                 </p>
               </div>
 
@@ -346,11 +334,10 @@ export default function ShopFocus() {
                   className="font-heading text-xl mb-3 dark:text-gray-100"
                   style={{ fontFamily: "var(--font-titles)" }}
                 >
-                  Fabrication Artisanale
+                  {t("focus.artisanalCrafting")}
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300">
-                  Chaque lampe est conçue et assemblée à la main par Anatole
-                  Collet dans son atelier français.
+                  {t("focus.artisanalCrafting.text")}
                 </p>
               </div>
             </div>
@@ -370,7 +357,7 @@ export default function ShopFocus() {
                   className="font-heading text-2xl mb-6 dark:text-gray-100"
                   style={{ fontFamily: "var(--font-titles)" }}
                 >
-                  Caractéristiques Techniques
+                  {t("product.specifications")}
                 </h3>
                 <ul className="space-y-6 mb-8">
                   <li className="flex items-start">
@@ -389,10 +376,10 @@ export default function ShopFocus() {
                     </span>
                     <div>
                       <span className="font-medium block mb-1 dark:text-gray-100">
-                        Dimensions
+                        {t("product.dimensions")}
                       </span>
                       <p className="text-gray-600 dark:text-gray-300">
-                        Hauteur: 30cm, Largeur: 12cm, Profondeur: 15cm
+                        {t("focus.dimensions.text")}
                       </p>
                     </div>
                   </li>
@@ -412,11 +399,10 @@ export default function ShopFocus() {
                     </span>
                     <div>
                       <span className="font-medium block mb-1 dark:text-gray-100">
-                        Matériaux
+                        {t("product.materials")}
                       </span>
                       <p className="text-gray-600 dark:text-gray-300">
-                        Corps en PLA éco-responsable, base et tige en chêne
-                        massif écogéré
+                        {t("focus.materials.text")}
                       </p>
                     </div>
                   </li>
@@ -436,11 +422,10 @@ export default function ShopFocus() {
                     </span>
                     <div>
                       <span className="font-medium block mb-1 dark:text-gray-100">
-                        Éclairage
+                        {t("focus.lighting.label")}
                       </span>
                       <p className="text-gray-600 dark:text-gray-300">
-                        Ampoule LED 60W E14 incluse, câble avec interrupteur de
-                        1m50
+                        {t("focus.lighting.details")}
                       </p>
                     </div>
                   </li>
@@ -460,11 +445,10 @@ export default function ShopFocus() {
                     </span>
                     <div>
                       <span className="font-medium block mb-1 dark:text-gray-100">
-                        Orientation
+                        {t("product.orientation")}
                       </span>
                       <p className="text-gray-600 dark:text-gray-300">
-                        Tête orientable pour un éclairage directionnel et
-                        ajustable
+                        {t("focus.orientation.text")}
                       </p>
                     </div>
                   </li>
@@ -483,7 +467,9 @@ export default function ShopFocus() {
                       <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
                       <path d="M13.73 21a2 2 0 0 1-3.46 0" />
                     </svg>
-                    <span className="dark:text-gray-300">Garantie 2 ans</span>
+                    <span className="dark:text-gray-300">
+                      {t("focus.warranty2years")}
+                    </span>
                   </div>
                   <div className="flex items-center">
                     <svg
@@ -500,7 +486,7 @@ export default function ShopFocus() {
                       <line x1="12" y1="22.08" x2="12" y2="12" />
                     </svg>
                     <span className="dark:text-gray-300">
-                      Emballage éco-responsable
+                      {t("focus.features.packaging")}
                     </span>
                   </div>
                 </div>
@@ -515,11 +501,10 @@ export default function ShopFocus() {
             className="font-heading text-3xl md:text-4xl text-center mb-6"
             style={{ fontFamily: "var(--font-titles)" }}
           >
-            Les Coloris
+            {t("shop.focus.colors")}
           </h2>
           <p className="text-gray-600 text-center max-w-2xl mx-auto mb-16 dark:text-white dark:font-medium">
-            Choisissez parmi nos quatre coloris distinctifs, chacun apportant
-            une ambiance unique à votre espace.
+            {t("focus.colorSelection")}
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
@@ -553,7 +538,7 @@ export default function ShopFocus() {
             className="font-heading text-3xl md:text-4xl text-center mb-16"
             style={{ fontFamily: "var(--font-titles)" }}
           >
-            Ce qu'en disent nos clients
+            {t("focus.testimonials")}
           </h2>
 
           {/* Widget Trustpilot Démo */}
@@ -597,7 +582,7 @@ export default function ShopFocus() {
               <div className="w-14 h-14 border border-gray-200 flex items-center justify-center mx-auto mb-3">
                 <Leaf className="text-green-600 h-5 w-5" />
               </div>
-              <p className="font-medium text-sm">Éco-responsable</p>
+              <p className="font-medium text-sm">{t("focus.ecoResponsible")}</p>
             </div>
             <div className="text-center">
               <div className="w-14 h-14 border border-gray-200 flex items-center justify-center mx-auto mb-3">
@@ -616,7 +601,7 @@ export default function ShopFocus() {
                   <circle cx="18.5" cy="18.5" r="2.5" />
                 </svg>
               </div>
-              <p className="font-medium text-sm">Livraison Offerte</p>
+              <p className="font-medium text-sm">{t("focus.freeDelivery")}</p>
             </div>
             <div className="text-center">
               <div className="w-14 h-14 border border-gray-200 flex items-center justify-center mx-auto mb-3">
@@ -633,7 +618,7 @@ export default function ShopFocus() {
                   <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                 </svg>
               </div>
-              <p className="font-medium text-sm">Paiement Sécurisé</p>
+              <p className="font-medium text-sm">{t("focus.securePayment")}</p>
             </div>
             <div className="text-center">
               <div className="w-14 h-14 border border-gray-200 flex items-center justify-center mx-auto mb-3">
@@ -651,7 +636,7 @@ export default function ShopFocus() {
                   <path d="M12 22a10 10 0 0 1 0-20" />
                 </svg>
               </div>
-              <p className="font-medium text-sm">Retour 30 Jours</p>
+              <p className="font-medium text-sm">{t("focus.return30")}</p>
             </div>
           </div>
         </section>
@@ -681,10 +666,10 @@ export default function ShopFocus() {
                     className="font-medium text-lg mb-2"
                     style={{ fontFamily: "var(--font-titles)" }}
                   >
-                    Contactez-nous
+                    {t("focus.contactUs")}
                   </h3>
                   <p className="text-gray-600 dark:text-white dark:font-medium">
-                    Besoin d'aide ?{" "}
+                    {t("focus.contactUs.text")}{" "}
                     <a
                       href="mailto:altolille@gmail.com"
                       className="text-primary hover:underline dark:text-blue-400"
@@ -721,17 +706,17 @@ export default function ShopFocus() {
                     className="font-medium text-lg mb-2"
                     style={{ fontFamily: "var(--font-titles)" }}
                   >
-                    Projets sur mesure
+                    {t("focus.custom.title")}
                   </h3>
                   <p className="text-gray-600 dark:text-white dark:font-medium">
-                    Vous cherchez une création unique ou personnalisée?
+                    {t("focus.custom.text")}
                   </p>
                   <p className="mt-2">
                     <a
                       href="mailto:altolille@gmail.com"
                       className="inline-flex items-center text-primary hover:underline"
                     >
-                      Nous contacter
+                      {t("focus.custom.contact")}
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-4 w-4 ml-1"

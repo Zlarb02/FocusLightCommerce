@@ -1,28 +1,20 @@
 import ProjectPageUnified from "@/components/ProjectPageUnified";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function ChaussuresCustom() {
+  const { t } = useLanguage();
+
   return (
     <ProjectPageUnified
       title="Chaussures Custom"
-      subtitle="Créer des chaussures uniques à partir d'une chaussure basique"
+      subtitle={t("projects.chaussures.subtitle")}
       imagePath="/images/chaussures-custom.jpg"
-      date="Depuis 2020"
+      date={t("dates.since2020")}
       currentProject="ChaussuresCustom"
       description={
         <>
-          <p>
-            Le projet "Chaussures Custom" est un projet extra-scolaire qui
-            consiste à créer des chaussures uniques à partir d'une chaussure
-            basique à la demande des clients. J'effectue un travail de peinture
-            et de rajout ou suppression d'empiècements.
-          </p>
-          <p>
-            Chaque paire devient ainsi une pièce unique, véritables œuvres d'art
-            ambulantes qui permettent à chacun d'exprimer sa personnalité à
-            travers ses pas. Plus qu'un simple accessoire, ces chaussures
-            deviennent un moyen d'expression personnelle et un support
-            artistique innovant.
-          </p>
+          <p>{t("projects.chaussures.description1")}</p>
+          <p>{t("projects.chaussures.description2")}</p>
         </>
       }
       additionalContent={
@@ -45,10 +37,10 @@ export default function ChaussuresCustom() {
                   >
                     Modèle{" "}
                     {i === 1
-                      ? "Urban Flow"
+                      ? t("projects.chaussures.models.urbanFlow")
                       : i === 2
-                      ? "Nature Spirit"
-                      : "Abstract Vision"}
+                      ? t("projects.chaussures.models.natureSpirit")
+                      : t("projects.chaussures.models.abstractVision")}
                   </h4>
                 </div>
               </div>
@@ -60,13 +52,10 @@ export default function ChaussuresCustom() {
               className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100"
               style={{ fontFamily: "var(--font-titles)" }}
             >
-              Technique de customisation
+              {t("projects.chaussures.technique.title")}
             </h3>
             <p className="text-gray-700 dark:text-gray-300 mb-4">
-              Ma technique consiste en un travail minutieux de peinture et de
-              modification des empiècements. Chaque chaussure de base est
-              transformée selon les désirs du client, créant une pièce
-              totalement personnalisée qui reflète sa personnalité.
+              {t("projects.chaussures.technique.description")}
             </p>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
               <div>
@@ -76,10 +65,10 @@ export default function ChaussuresCustom() {
                   </span>
                 </div>
                 <h4 className="font-medium mb-2 text-gray-900 dark:text-gray-100">
-                  Consultation
+                  {t("projects.chaussures.process.consultation")}
                 </h4>
                 <p className="text-sm text-gray-600 dark:text-gray-300">
-                  Échange sur les préférences et le style souhaité
+                  {t("projects.chaussures.process.consultation.desc")}
                 </p>
               </div>
               <div>
@@ -89,10 +78,10 @@ export default function ChaussuresCustom() {
                   </span>
                 </div>
                 <h4 className="font-medium mb-2 text-gray-900 dark:text-gray-100">
-                  Design
+                  {t("projects.chaussures.process.design")}
                 </h4>
                 <p className="text-sm text-gray-600 dark:text-gray-300">
-                  Création du motif personnalisé et choix des empiècements
+                  {t("projects.chaussures.process.design.desc")}
                 </p>
               </div>
               <div>
@@ -102,10 +91,10 @@ export default function ChaussuresCustom() {
                   </span>
                 </div>
                 <h4 className="font-medium mb-2 text-gray-900 dark:text-gray-100">
-                  Transformation
+                  {t("projects.chaussures.process.transformation")}
                 </h4>
                 <p className="text-sm text-gray-600 dark:text-gray-300">
-                  Peinture et modification des empiècements
+                  {t("projects.chaussures.process.transformation.desc")}
                 </p>
               </div>
               <div>
@@ -115,10 +104,10 @@ export default function ChaussuresCustom() {
                   </span>
                 </div>
                 <h4 className="font-medium mb-2 text-gray-900 dark:text-gray-100">
-                  Finition
+                  {t("projects.chaussures.process.finishing")}
                 </h4>
                 <p className="text-sm text-gray-600 dark:text-gray-300">
-                  Traitement protecteur pour une durabilité optimale
+                  {t("projects.chaussures.process.finishing.desc")}
                 </p>
               </div>
             </div>
@@ -129,15 +118,11 @@ export default function ChaussuresCustom() {
               className="text-xl font-semibold mb-3"
               style={{ fontFamily: "var(--font-titles)" }}
             >
-              Envie d'une paire unique ?
+              {t("projects.chaussures.cta.title")}
             </h3>
-            <p className="mb-6">
-              Les commandes personnalisées sont ouvertes depuis 2020. Chaque
-              projet est une collaboration unique entre l'artiste et le client
-              pour créer LA paire qui vous ressemble.
-            </p>
+            <p className="mb-6">{t("projects.chaussures.cta.text")}</p>
             <div className="inline-block border border-white dark:border-gray-300 px-5 py-3 rounded">
-              Contact : custom@focuslight.fr
+              {t("projects.chaussures.cta.contact")}
             </div>
           </div>
         </div>

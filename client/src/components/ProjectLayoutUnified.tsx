@@ -3,6 +3,8 @@ import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Home, ShoppingBag, Menu, X } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { LanguageToggle } from "@/components/LanguageToggle";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface ProjectLayoutUnifiedProps {
   children: ReactNode;
@@ -18,6 +20,7 @@ export default function ProjectLayoutUnified({
 }: ProjectLayoutUnifiedProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [location, setLocation] = useLocation();
+  const { t } = useLanguage();
 
   // Fonction pour retourner à la landing page de façon sécurisée
   const backToLanding = () => {
@@ -68,7 +71,7 @@ export default function ProjectLayoutUnified({
             <button
               onClick={() => setMenuOpen(true)}
               className="p-2 rounded-md text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-              aria-label="Ouvrir le menu"
+              aria-label={t("nav.menu")}
             >
               <Menu className="h-5 w-5" />
             </button>
@@ -87,6 +90,7 @@ export default function ProjectLayoutUnified({
 
           {/* Actions droite */}
           <div className="flex items-center space-x-2">
+            <LanguageToggle variant="button" size="sm" showLabel={true} />
             <ThemeToggle variant="minimal" size="sm" showLabel={false} />
             <Button
               variant="ghost"
@@ -103,7 +107,7 @@ export default function ProjectLayoutUnified({
               }}
             >
               <ShoppingBag className="h-4 w-4 mr-1" />
-              Shop
+              {t("nav.shop")}
             </Button>
           </div>
         </div>
@@ -126,12 +130,12 @@ export default function ProjectLayoutUnified({
                 className="text-lg font-semibold text-gray-900 dark:text-gray-100"
                 style={{ fontFamily: "var(--font-titles)" }}
               >
-                Navigation
+                {t("projects.navigation")}
               </h2>
               <button
                 onClick={() => setMenuOpen(false)}
                 className="p-2 rounded-md text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                aria-label="Fermer le menu"
+                aria-label={t("nav.close")}
               >
                 <X className="h-5 w-5" />
               </button>
@@ -150,7 +154,7 @@ export default function ProjectLayoutUnified({
                   style={{ fontFamily: "var(--font-nav)" }}
                 >
                   <Home className="h-4 w-4 mr-3" />
-                  <span>Accueil</span>
+                  <span>{t("nav.home")}</span>
                 </button>
 
                 <button
@@ -167,7 +171,7 @@ export default function ProjectLayoutUnified({
                   style={{ fontFamily: "var(--font-nav)" }}
                 >
                   <ShoppingBag className="h-4 w-4 mr-3" />
-                  <span>Shop</span>
+                  <span>{t("nav.shop")}</span>
                 </button>
               </div>
 
@@ -176,7 +180,7 @@ export default function ProjectLayoutUnified({
               {/* Projets */}
               <div className="mb-6">
                 <h3 className="px-3 text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">
-                  Projets
+                  {t("nav.projects")}
                 </h3>
                 <div className="space-y-1">
                   <button
@@ -191,7 +195,7 @@ export default function ProjectLayoutUnified({
                     }`}
                     style={{ fontFamily: "var(--font-nav)" }}
                   >
-                    <span>Focus.01</span>
+                    <span>{t("focus.title")}</span>
                   </button>
 
                   <button
@@ -206,7 +210,7 @@ export default function ProjectLayoutUnified({
                     }`}
                     style={{ fontFamily: "var(--font-nav)" }}
                   >
-                    <span>Sea-clé</span>
+                    <span>{t("projects.seacle")}</span>
                   </button>
 
                   <button
@@ -221,7 +225,7 @@ export default function ProjectLayoutUnified({
                     }`}
                     style={{ fontFamily: "var(--font-nav)" }}
                   >
-                    <span>Without speaker</span>
+                    <span>{t("projects.lowtechvynil")}</span>
                   </button>
 
                   <button
@@ -236,7 +240,7 @@ export default function ProjectLayoutUnified({
                     }`}
                     style={{ fontFamily: "var(--font-nav)" }}
                   >
-                    <span>Braderie de l'Art</span>
+                    <span>{t("projects.braderie")}</span>
                   </button>
 
                   <button
@@ -251,7 +255,7 @@ export default function ProjectLayoutUnified({
                     }`}
                     style={{ fontFamily: "var(--font-nav)" }}
                   >
-                    <span>Waterfall</span>
+                    <span>{t("projects.waterfall")}</span>
                   </button>
 
                   <button
@@ -266,7 +270,7 @@ export default function ProjectLayoutUnified({
                     }`}
                     style={{ fontFamily: "var(--font-nav)" }}
                   >
-                    <span>Chaussures Custom</span>
+                    <span>{t("projects.chaussures")}</span>
                   </button>
                 </div>
               </div>
@@ -290,7 +294,7 @@ export default function ProjectLayoutUnified({
                   }`}
                   style={{ fontFamily: "var(--font-nav)" }}
                 >
-                  <span>Qui suis-je</span>
+                  <span>{t("projects.whoami")}</span>
                 </button>
               </div>
             </nav>
@@ -540,19 +544,19 @@ export default function ProjectLayoutUnified({
                   href="/mentions-legales"
                   className="text-gray-500 hover:text-[var(--color-text)] text-xs transition"
                 >
-                  Mentions légales
+                  {t("footer.legal")}
                 </Link>
                 <Link
                   href="/politique-confidentialite"
                   className="text-gray-500 hover:text-[var(--color-text)] text-xs transition"
                 >
-                  Politique de confidentialité
+                  {t("footer.privacy")}
                 </Link>
                 <Link
                   href="/cgv"
                   className="text-gray-500 hover:text-[var(--color-text)] text-xs transition"
                 >
-                  CGV
+                  {t("footer.cgv")}
                 </Link>
               </div>
             </div>

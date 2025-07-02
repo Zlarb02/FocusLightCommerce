@@ -4,6 +4,7 @@ import { Layout } from "@/components/Layout";
 import { ProductCard } from "@/components/ProductCard";
 import { ProductWithVariations } from "@shared/schema";
 import { Input } from "@/components/ui/input";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { Search } from "lucide-react";
 
 export default function Shop() {
@@ -13,6 +14,7 @@ export default function Shop() {
   });
 
   const [searchTerm, setSearchTerm] = useState("");
+  const { t } = useLanguage();
 
   // Filtrer les produits selon la recherche
   const filteredProducts = useMemo(() => {
@@ -32,11 +34,10 @@ export default function Shop() {
         <div className="container mx-auto py-12">
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold mb-4 text-gray-900 dark:text-gray-100">
-              Boutique Générale
+              {t("shop.general.title")}
             </h1>
             <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              Découvrez notre collection complète de produits design et
-              éco-responsables.
+              {t("shop.general.subtitle")}
             </p>
           </div>
 
@@ -48,7 +49,7 @@ export default function Shop() {
             />
             <Input
               type="text"
-              placeholder="Rechercher un produit..."
+              placeholder={t("shop.general.search")}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10 w-full bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
@@ -60,8 +61,8 @@ export default function Shop() {
             {filteredProducts.length === 0 ? (
               <div className="col-span-full text-center text-gray-500 dark:text-gray-400 py-12">
                 {searchTerm
-                  ? "Aucun produit ne correspond à votre recherche."
-                  : "Aucun produit disponible."}
+                  ? t("shop.general.noResults")
+                  : t("shop.general.noProducts")}
               </div>
             ) : (
               filteredProducts.flatMap((product) =>
