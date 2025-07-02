@@ -73,16 +73,21 @@ export function Layout({ children, showCart = true }: LayoutProps) {
       {/* Intégration des décorations thématiques */}
       {themeData && <ThemeDecorator decoration={themeData.themeDecoration} />}
 
-      <header className="fixed top-0 left-0 right-0 bg-white dark:bg-gray-900 z-50 border-b border-gray-200 dark:border-gray-700 shadow-sm">
-        <div className="flex items-center justify-between h-16 px-4">
-          {/* Menu burger à gauche */}
+      <header className="fixed top-0 left-0 right-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md z-50 border-b border-gray-200/20 dark:border-gray-700/20">
+        <div className="flex items-center justify-between h-16 px-5">
+          {/* Menu burger à gauche - Design minimaliste WOW */}
           <div>
             <button
               onClick={() => setMenuOpen(true)}
-              className="p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-colors"
+              className="group p-3 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-all duration-300 ease-out"
               aria-label={t("nav.menu")}
             >
-              <Menu className="h-5 w-5" />
+              {/* Icône burger minimaliste avec animation */}
+              <div className="relative w-6 h-5 flex flex-col justify-between transform transition-all duration-300 group-hover:scale-110">
+                <span className="block h-0.5 w-6 bg-current transform transition-all duration-300 group-hover:w-7 origin-left"></span>
+                <span className="block h-0.5 w-5 bg-current transform transition-all duration-300 group-hover:w-6 origin-left"></span>
+                <span className="block h-0.5 w-6 bg-current transform transition-all duration-300 group-hover:w-7 origin-left"></span>
+              </div>
             </button>
           </div>
 
@@ -90,22 +95,20 @@ export function Layout({ children, showCart = true }: LayoutProps) {
           <div className="flex-1 flex justify-center">
             <button
               onClick={backToLanding}
-              className="text-xl font-bold text-gray-900 dark:text-gray-100 hover:text-gray-700 dark:text-gray-200 dark:hover:text-gray-300 transition-colors"
+              className="text-2xl font-bold text-gray-900 dark:text-gray-100 hover:text-gray-700 dark:hover:text-gray-300 transition-all duration-300 ease-out hover:scale-105"
               style={{ fontFamily: "var(--font-titles)" }}
             >
               Alto Lille
             </button>
           </div>
 
-          {/* Icône panier et toggles à droite */}
-          <div className="flex items-center gap-2">
-            <LanguageToggle variant="button" size="sm" showLabel={true} />
+          {/* Icônes à droite - Style ultra minimaliste */}
+          <div className="flex items-center gap-1">
+            <LanguageToggle variant="minimal" size="sm" showLabel={false} />
             <ThemeToggle variant="minimal" size="sm" showLabel={false} />
             {showCart && (
-              <Button
-                variant="ghost"
-                size="icon"
-                className="relative hover:bg-transparent"
+              <button
+                className="p-3 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-all duration-300 ease-out hover:scale-110 relative"
                 onClick={() => setCartOpen(true)}
                 aria-label={`${t("nav.cart")} - ${cartItemCount} ${t(
                   "cart.itemAdded"
@@ -117,7 +120,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                     // Optionnel: ajouter un son ou autre feedback
                   }}
                 />
-              </Button>
+              </button>
             )}
           </div>
         </div>
@@ -133,9 +136,9 @@ export function Layout({ children, showCart = true }: LayoutProps) {
           />
 
           {/* Menu sidebar sobre et épuré */}
-          <div className="fixed top-0 left-0 bottom-0 w-80 bg-white dark:bg-gray-900 z-50 transform transition-transform duration-300 overflow-y-auto shadow-lg border-r border-gray-200 dark:border-gray-700">
+          <div className="fixed top-0 left-0 bottom-0 w-80 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl z-50 transform transition-transform duration-500 ease-out overflow-y-auto shadow-2xl border-r border-gray-200/30 dark:border-gray-700/30">
             {/* Header du menu épuré */}
-            <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200/20 dark:border-gray-700/20">
               <h2
                 className="text-lg font-semibold text-gray-900 dark:text-gray-100"
                 style={{ fontFamily: "var(--font-titles)" }}
@@ -144,27 +147,27 @@ export function Layout({ children, showCart = true }: LayoutProps) {
               </h2>
               <button
                 onClick={() => setMenuOpen(false)}
-                className="p-2 rounded-md text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:text-gray-200 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                className="group p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-all duration-300 ease-out hover:scale-110"
                 aria-label={t("nav.close")}
               >
-                <X className="h-5 w-5" />
+                <X className="h-5 w-5 transform group-hover:rotate-90 transition-transform duration-300" />
               </button>
             </div>
 
             {/* Navigation sobre et épurée */}
             <nav className="flex flex-col p-6">
               {/* Actions principales */}
-              <div className="space-y-2 mb-6">
+              <div className="space-y-1 mb-6">
                 <button
                   onClick={() => {
                     backToLanding();
                     setMenuOpen(false);
                   }}
-                  className="w-full flex items-center px-3 py-3 text-base font-medium text-gray-700 dark:text-gray-200 dark:text-gray-200 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors"
+                  className="w-full flex items-center px-4 py-3 text-base font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-50/50 dark:hover:bg-gray-800/30 rounded-lg transition-all duration-300 ease-out group"
                   style={{ fontFamily: "var(--font-nav)" }}
                 >
                   <svg
-                    className="h-4 w-4 mr-3"
+                    className="h-4 w-4 mr-3 group-hover:scale-110 transition-transform duration-300"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -176,15 +179,17 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                       d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
                     />
                   </svg>
-                  <span>{t("nav.home")}</span>
+                  <span className="group-hover:translate-x-1 transition-transform duration-300">
+                    {t("nav.home")}
+                  </span>
                 </button>
               </div>
 
-              <div className="border-t border-gray-200 dark:border-gray-700 mb-6" />
+              <div className="border-t border-gray-200/30 dark:border-gray-700/30 mb-6" />
 
               {/* Projets */}
               <div className="mb-6">
-                <h3 className="px-3 text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">
+                <h3 className="px-4 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">
                   {t("nav.projects")}
                 </h3>
                 <div className="space-y-1">
@@ -193,10 +198,12 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                       setLocation("/focus-01");
                       setMenuOpen(false);
                     }}
-                    className="w-full flex items-center px-3 py-2.5 text-base font-medium text-gray-700 dark:text-gray-200 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 rounded-md transition-colors"
+                    className="w-full flex items-center px-4 py-2.5 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50/50 dark:hover:bg-gray-800/30 hover:text-gray-900 dark:hover:text-gray-100 rounded-lg transition-all duration-300 ease-out group"
                     style={{ fontFamily: "var(--font-nav)" }}
                   >
-                    <span>{t("focus.title")}</span>
+                    <span className="group-hover:translate-x-1 transition-transform duration-300">
+                      {t("focus.title")}
+                    </span>
                   </button>
 
                   <button
@@ -204,10 +211,12 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                       setLocation("/sea-cle");
                       setMenuOpen(false);
                     }}
-                    className="w-full flex items-center px-3 py-2.5 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 rounded-md transition-colors"
+                    className="w-full flex items-center px-4 py-2.5 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50/50 dark:hover:bg-gray-800/30 hover:text-gray-900 dark:hover:text-gray-100 rounded-lg transition-all duration-300 ease-out group"
                     style={{ fontFamily: "var(--font-nav)" }}
                   >
-                    <span>{t("projects.seacle")}</span>
+                    <span className="group-hover:translate-x-1 transition-transform duration-300">
+                      {t("projects.seacle")}
+                    </span>
                   </button>
 
                   <button
@@ -215,10 +224,12 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                       setLocation("/lowtech-vynil");
                       setMenuOpen(false);
                     }}
-                    className="w-full flex items-center px-3 py-2.5 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 rounded-md transition-colors"
+                    className="w-full flex items-center px-4 py-2.5 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50/50 dark:hover:bg-gray-800/30 hover:text-gray-900 dark:hover:text-gray-100 rounded-lg transition-all duration-300 ease-out group"
                     style={{ fontFamily: "var(--font-nav)" }}
                   >
-                    <span>{t("projects.lowtechvynil")}</span>
+                    <span className="group-hover:translate-x-1 transition-transform duration-300">
+                      {t("projects.lowtechvynil")}
+                    </span>
                   </button>
 
                   <button
@@ -226,10 +237,12 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                       setLocation("/braderie-de-l-art");
                       setMenuOpen(false);
                     }}
-                    className="w-full flex items-center px-3 py-2.5 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 rounded-md transition-colors"
+                    className="w-full flex items-center px-4 py-2.5 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50/50 dark:hover:bg-gray-800/30 hover:text-gray-900 dark:hover:text-gray-100 rounded-lg transition-all duration-300 ease-out group"
                     style={{ fontFamily: "var(--font-nav)" }}
                   >
-                    <span>{t("projects.braderie")}</span>
+                    <span className="group-hover:translate-x-1 transition-transform duration-300">
+                      {t("projects.braderie")}
+                    </span>
                   </button>
 
                   <button
@@ -237,10 +250,12 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                       setLocation("/waterfall");
                       setMenuOpen(false);
                     }}
-                    className="w-full flex items-center px-3 py-2.5 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 rounded-md transition-colors"
+                    className="w-full flex items-center px-4 py-2.5 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50/50 dark:hover:bg-gray-800/30 hover:text-gray-900 dark:hover:text-gray-100 rounded-lg transition-all duration-300 ease-out group"
                     style={{ fontFamily: "var(--font-nav)" }}
                   >
-                    <span>{t("projects.waterfall")}</span>
+                    <span className="group-hover:translate-x-1 transition-transform duration-300">
+                      {t("projects.waterfall")}
+                    </span>
                   </button>
 
                   <button
@@ -248,36 +263,40 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                       setLocation("/chaussures-custom");
                       setMenuOpen(false);
                     }}
-                    className="w-full flex items-center px-3 py-2.5 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 rounded-md transition-colors"
+                    className="w-full flex items-center px-4 py-2.5 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50/50 dark:hover:bg-gray-800/30 hover:text-gray-900 dark:hover:text-gray-100 rounded-lg transition-all duration-300 ease-out group"
                     style={{ fontFamily: "var(--font-nav)" }}
                   >
-                    <span>{t("projects.chaussures")}</span>
+                    <span className="group-hover:translate-x-1 transition-transform duration-300">
+                      {t("projects.chaussures")}
+                    </span>
                   </button>
                 </div>
               </div>
 
-              <div className="border-t border-gray-200 dark:border-gray-700 mb-6" />
+              <div className="border-t border-gray-200/30 dark:border-gray-700/30 mb-6" />
 
               {/* Paramètres */}
               <div className="mb-6">
-                <h3 className="px-3 text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">
+                <h3 className="px-4 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">
                   {t("settings.title")}
                 </h3>
-                <div className="px-3 py-2 space-y-4">
+                <div className="px-4 py-3 space-y-4 bg-gray-50/30 dark:bg-gray-800/20 rounded-lg">
                   <LanguageToggle
                     variant="switch"
                     size="default"
                     showLabel={true}
                   />
-                  <ThemeToggle size="md" />
+                  <div style={{ marginLeft: "-7px" }}>
+                    <ThemeToggle size="md" />
+                  </div>
                 </div>
               </div>
 
-              <div className="border-t border-gray-200 dark:border-gray-700 mb-6" />
+              <div className="border-t border-gray-200/30 dark:border-gray-700/30 mb-6" />
 
               {/* À propos */}
               <div>
-                <h3 className="px-3 text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">
+                <h3 className="px-4 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">
                   {t("nav.about")}
                 </h3>
                 <button
@@ -285,16 +304,18 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                     setLocation("/anatolle-collet");
                     setMenuOpen(false);
                   }}
-                  className="w-full flex items-center px-3 py-2.5 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 rounded-md transition-colors"
+                  className="w-full flex items-center px-4 py-2.5 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50/50 dark:hover:bg-gray-800/30 hover:text-gray-900 dark:hover:text-gray-100 rounded-lg transition-all duration-300 ease-out group"
                   style={{ fontFamily: "var(--font-nav)" }}
                 >
-                  <span>{t("projects.whoami")}</span>
+                  <span className="group-hover:translate-x-1 transition-transform duration-300">
+                    {t("projects.whoami")}
+                  </span>
                 </button>
               </div>
             </nav>
 
             {/* Footer sobre et épuré */}
-            <div className="mt-auto border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-6 py-4">
+            <div className="mt-auto border-t border-gray-200/30 dark:border-gray-700/30 bg-gray-50/30 dark:bg-gray-800/20 px-6 py-4">
               <div className="space-y-3">
                 <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
                   © 2025 Alto Lille
@@ -307,17 +328,17 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                     target="_blank"
                     rel="noopener noreferrer"
                     title="Voir le score EcoIndex du site"
-                    className="inline-block hover:opacity-80 transition-opacity"
+                    className="inline-block hover:opacity-80 transition-opacity duration-300"
                   >
                     <img
                       src="https://bff.ecoindex.fr/badge/?theme=light&url=https://www.alto-lille.fr"
                       alt="Badge EcoIndex"
-                      className="h-6 dark:hidden"
+                      className="h-5 dark:hidden"
                     />
                     <img
                       src="https://bff.ecoindex.fr/badge/?theme=dark&url=https://www.alto-lille.fr"
                       alt="Badge EcoIndex"
-                      className="h-6 hidden dark:block"
+                      className="h-5 hidden dark:block"
                     />
                   </a>
                 </div>
@@ -328,7 +349,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                     href="https://pogodev.com"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
+                    className="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors duration-300"
                     title="Site développé par Etienne Pogoda"
                   >
                     Développé par Etienne Pogoda
@@ -405,14 +426,14 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                   </svg>
                   <a
                     href="mailto:altolille@gmail.com"
-                    className="text-gray-600 dark:text-blue-400 hover:text-gray-900 dark:hover:text-blue-300 transition text-sm leading-relaxed dark:font-medium"
+                    className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-300 text-sm leading-relaxed"
                   >
                     altolille@gmail.com
                   </a>
                 </li>
                 <li className="flex items-start">
                   <svg
-                    className="h-5 w-5 text-gray-500 dark:text-blue-400 mt-0.5 mr-3 flex-shrink-0"
+                    className="h-5 w-5 text-gray-500 dark:text-gray-400 mt-0.5 mr-3 flex-shrink-0"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -424,7 +445,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                       d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
                     />
                   </svg>
-                  <span className="text-gray-600 dark:text-white dark:font-semibold text-sm leading-relaxed dark:text-shadow-sm">
+                  <span className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
                     +33 782 086 690
                   </span>
                 </li>
@@ -469,7 +490,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                 <li>
                   <Link
                     href="/livraison"
-                    className="text-gray-600 dark:text-white hover:text-gray-900 dark:hover:text-blue-400 transition text-sm inline-block dark:font-medium"
+                    className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-300 text-sm inline-block"
                   >
                     {t("services.delivery")}
                   </Link>
@@ -477,7 +498,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                 <li>
                   <Link
                     href="/retours"
-                    className="text-gray-600 dark:text-white hover:text-gray-900 dark:hover:text-blue-400 transition text-sm inline-block dark:font-medium"
+                    className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-300 text-sm inline-block"
                   >
                     {t("services.returns")}
                   </Link>
@@ -485,7 +506,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                 <li>
                   <Link
                     href="/garantie"
-                    className="text-gray-600 dark:text-white hover:text-gray-900 dark:hover:text-blue-400 transition text-sm inline-block dark:font-medium"
+                    className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-300 text-sm inline-block"
                   >
                     {t("services.warranty")}
                   </Link>
@@ -493,7 +514,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                 <li>
                   <Link
                     href="/faq"
-                    className="text-gray-600 dark:text-white hover:text-gray-900 dark:hover:text-blue-400 transition text-sm inline-block dark:font-medium"
+                    className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-300 text-sm inline-block"
                   >
                     {t("footer.faq")}
                   </Link>
@@ -532,7 +553,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                     href="https://pogodev.com"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 text-xs transition-colors"
+                    className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 text-xs transition-colors duration-300"
                     title={t("footer.developer")}
                   >
                     {t("footer.developer")}
@@ -543,19 +564,19 @@ export function Layout({ children, showCart = true }: LayoutProps) {
               <div className="flex flex-wrap justify-center md:justify-end gap-5 order-1 md:order-2 mb-4 md:mb-0">
                 <Link
                   href="/mentions-legales"
-                  className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 text-xs transition"
+                  className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 text-xs transition-colors duration-300"
                 >
                   {t("footer.legal")}
                 </Link>
                 <Link
                   href="/politique-confidentialite"
-                  className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 text-xs transition"
+                  className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 text-xs transition-colors duration-300"
                 >
                   {t("footer.privacy")}
                 </Link>
                 <Link
                   href="/cgv"
-                  className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 text-xs transition"
+                  className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 text-xs transition-colors duration-300"
                 >
                   {t("footer.cgv")}
                 </Link>

@@ -5,7 +5,7 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 
 interface LanguageToggleProps {
-  variant?: "switch" | "button";
+  variant?: "switch" | "button" | "minimal";
   size?: "sm" | "default" | "lg";
   showLabel?: boolean;
 }
@@ -21,13 +21,25 @@ export const LanguageToggle: React.FC<LanguageToggleProps> = ({
     setLanguage(language === "fr" ? "en" : "fr");
   };
 
+  if (variant === "minimal") {
+    return (
+      <button
+        onClick={handleLanguageChange}
+        className="p-3 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-all duration-300 ease-out opacity-70 hover:opacity-100 hover:scale-110"
+        aria-label={`Changer de langue - Actuel: ${language.toUpperCase()}`}
+      >
+        <span className="text-sm font-medium">{language.toUpperCase()}</span>
+      </button>
+    );
+  }
+
   if (variant === "button") {
     return (
       <Button
-        variant="outline"
+        variant="ghost"
         size={size}
         onClick={handleLanguageChange}
-        className="min-w-[50px]"
+        className="min-w-[50px] text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-50/50 dark:hover:bg-gray-800/30 transition-all duration-300"
       >
         {language.toUpperCase()}
       </Button>

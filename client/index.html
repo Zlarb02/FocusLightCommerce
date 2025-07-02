@@ -237,15 +237,23 @@
         pointer-events: none;
         font-family: var(--font-body);
         font-weight: var(--fw-regular);
+        opacity: 0;
+        transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
       }
 
-      /* Style pour les toggles en haut à droite */
+      /* Afficher le footer quand l'indicateur de défilement n'est pas visible */
+      #landing-container footer.show-credits {
+        opacity: 1;
+      }
+
+      /* Style épuré pour les toggles en haut à droite */
+      /* Style pour les toggles - Style Layout.tsx minimaliste */
       .toggle-container {
         position: fixed;
         top: 20px;
         right: 20px;
         display: flex;
-        gap: 15px;
+        gap: 4px;
         z-index: 100;
       }
 
@@ -253,60 +261,39 @@
         position: relative;
         display: flex;
         align-items: center;
+        padding: 12px;
+        cursor: pointer;
+        background: transparent;
+        border: none;
+        border-radius: 0;
+        transition: all 0.3s ease-out;
+      }
+
+      .toggle:hover {
+        transform: scale(1.1);
       }
 
       .toggle-label {
-        font-size: 14px;
-        margin-right: 10px;
+        display: none; /* Masquer les labels texte pour utiliser seulement les icônes */
+      }
+
+      .toggle-icon {
+        width: 18px;
+        height: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         color: var(--text-color);
-        font-weight: var(--fw-medium);
-        font-family: var(--font-nav);
-        user-select: none;
+        transition: all 0.3s ease-out;
+        opacity: 0.6;
+      }
+
+      .toggle:hover .toggle-icon {
+        opacity: 1;
       }
 
       .toggle-switch {
-        position: relative;
-        display: inline-block;
-        width: 50px;
-        height: 24px;
-      }
-
-      .toggle-switch input {
-        opacity: 0;
-        width: 0;
-        height: 0;
-      }
-
-      .slider {
-        position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: var(--toggle-bg);
-        transition: 0.4s;
-        border-radius: 24px;
-      }
-
-      .slider:before {
-        position: absolute;
-        content: "";
-        height: 18px;
-        width: 18px;
-        left: 3px;
-        bottom: 3px;
-        background-color: var(--toggle-knob);
-        transition: 0.3s;
-        border-radius: 50%;
-      }
-
-      input:checked + .slider {
-        background-color: var(--toggle-bg-active);
-      }
-
-      input:checked + .slider:before {
-        transform: translateX(26px);
+        display: none; /* Masquer les switches pour un style plus minimaliste */
       }
 
       /* Style pour le slider Focus - Mobile First */
@@ -376,48 +363,69 @@
         transform: scale(1.2);
       }
 
-      /* Menu burger - Mobile seulement - Design moderne */
+      /* Menu burger - Style Layout.tsx */
       .mobile-menu-burger {
         position: fixed;
         top: 20px;
         left: 20px;
         z-index: 100;
-        width: 44px;
-        height: 44px;
+        padding: 12px;
         cursor: pointer;
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 12px;
+        background: transparent;
+        border: none;
+        border-radius: 0;
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease-out;
+        color: var(--text-color);
       }
 
       .mobile-menu-burger:hover {
-        background: rgba(255, 255, 255, 0.15);
-        transform: translateY(-1px);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        transform: scale(1.1);
       }
 
-      .dark-mode .mobile-menu-burger {
-        background: rgba(0, 0, 0, 0.3);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-      }
-
-      .dark-mode .mobile-menu-burger:hover {
-        background: rgba(0, 0, 0, 0.4);
-      }
-
-      .burger-icon {
-        width: 20px;
+      /* Icône burger minimaliste avec animation comme dans Layout.tsx */
+      .burger-lines {
+        position: relative;
+        width: 24px;
         height: 20px;
-        stroke: var(--text-color);
-        stroke-width: 2;
-        stroke-linecap: round;
-        stroke-linejoin: round;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        transition: all 0.3s ease-out;
+      }
+
+      .burger-line {
+        display: block;
+        height: 2px;
+        background-color: var(--text-color);
+        transform-origin: left;
+        transition: all 0.3s ease-out;
+      }
+
+      .burger-line:nth-child(1) {
+        width: 24px;
+      }
+
+      .burger-line:nth-child(2) {
+        width: 20px;
+      }
+
+      .burger-line:nth-child(3) {
+        width: 24px;
+      }
+
+      .mobile-menu-burger:hover .burger-line:nth-child(1) {
+        width: 28px;
+      }
+
+      .mobile-menu-burger:hover .burger-line:nth-child(2) {
+        width: 24px;
+      }
+
+      .mobile-menu-burger:hover .burger-line:nth-child(3) {
+        width: 28px;
       }
 
       /* Masquer le burger sur desktop */
@@ -441,28 +449,45 @@
         display: block;
       }
 
-      /* Style pour le titre de la marque */
+      /* Style pour le titre de la marque - Style Layout.tsx */
       #brand-title {
         position: absolute;
-        top: 8%;
+        top: 24px;
         left: 50%;
         transform: translateX(-50%);
         text-align: center;
         font-family: var(--font-titles);
-        font-size: clamp(32px, 5vw, 58px);
+        font-size: clamp(20px, 3vw, 28px);
         font-weight: var(--fw-bold);
         color: var(--text-color);
-        opacity: 1; /* Toujours visible */
-        transition: opacity 0.6s, color 0.3s;
-        z-index: 20; /* Au-dessus des polaroids */
-        pointer-events: none; /* N'interfère pas avec les clics */
-        user-select: none; /* Empêche la sélection */
+        opacity: 1;
+        transition: all 0.3s ease-out;
+        pointer-events: none;
+        user-select: none;
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        padding: 0;
+        cursor: pointer;
+      }
+
+      #brand-title:hover {
+        transform: translateX(-50%) scale(1.05);
+      }
+
+      /* Repositionner sur mobile pour laisser place au burger */
+      @media (max-width: 767px) {
+        #brand-title {
+          left: 50%;
+          transform: translateX(-50%);
+          top: 20px;
+        }
       }
 
       /* Style pour l'indicateur de défilement moderne */
       #scroll-indicator {
         position: fixed;
-        bottom: 8%;
+        bottom: 4%;
         left: 50%;
         transform: translateX(-50%) translateY(20px);
         opacity: 0;
@@ -499,27 +524,27 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 1rem;
+        gap: 0.8rem;
         background: linear-gradient(
           135deg,
           rgba(255, 255, 255, 0.75) 0%,
           rgba(255, 255, 255, 0.65) 100%
         );
         backdrop-filter: blur(15px) saturate(150%);
-        border-radius: 24px;
-        padding: 18px 24px;
+        border-radius: 20px;
+        padding: 14px 20px;
         border: 1px solid rgba(255, 255, 255, 0.25);
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08),
           0 2px 8px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.3);
-        max-width: 90vw;
-        min-width: 300px;
+        max-width: 85vw;
+        min-width: 280px;
       }
 
       .product-highlight {
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 1.7rem;
+        gap: 1.2rem;
         text-align: center;
       }
 
@@ -592,8 +617,8 @@
 
       .scroll-arrow-container {
         position: relative;
-        width: 40px;
-        height: 40px;
+        width: 36px;
+        height: 36px;
         background: linear-gradient(
           135deg,
           var(--text-color) 0%,
@@ -608,8 +633,8 @@
       }
 
       .scroll-arrow {
-        width: 20px;
-        height: 20px;
+        width: 18px;
+        height: 18px;
         color: var(--bg-color);
         transition: transform 0.3s ease;
       }
@@ -842,7 +867,7 @@
 
         /* Optimiser l'indicateur de scroll */
         #scroll-indicator {
-          bottom: 5%;
+          bottom: 3%;
         }
       }
 
@@ -886,7 +911,7 @@
 
         /* Optimisation moderne de l'indicateur de défilement pour mobile */
         #scroll-indicator {
-          bottom: 6%;
+          bottom: 4%;
         }
 
         .scroll-content {
@@ -1056,7 +1081,7 @@
 
         /* Optimisation moderne de l'indicateur de défilement pour tablette */
         #scroll-indicator {
-          bottom: 7%;
+          bottom: 5%;
         }
 
         .scroll-content {
@@ -1137,7 +1162,7 @@
 
         /* Optimiser l'indicateur de défilement pour les grands écrans */
         #scroll-indicator {
-          bottom: 8%;
+          bottom: 6%;
         }
 
         .scroll-content {
@@ -2553,30 +2578,22 @@
   <body>
     <!-- Landing page avec Three.js -->
     <div id="landing-container">
-      <!-- Toggles en haut à droite -->
+      <!-- Toggles en haut à droite - Style Layout.tsx -->
       <div class="toggle-container">
-        <div class="toggle">
-          <span class="toggle-label" id="theme-label">Thème</span>
-          <label class="toggle-switch" aria-label="Interrupteur de thème">
-            <input
-              type="checkbox"
-              id="theme-toggle"
-              aria-label="Basculer entre thème clair et sombre"
-            />
-            <span class="slider"></span>
-          </label>
-        </div>
-        <div class="toggle">
-          <span class="toggle-label" id="lang-label">FR</span>
-          <label class="toggle-switch" aria-label="Interrupteur de langue">
-            <input
-              type="checkbox"
-              id="lang-toggle"
-              aria-label="Basculer entre français et anglais"
-            />
-            <span class="slider"></span>
-          </label>
-        </div>
+        <button
+          class="toggle"
+          id="lang-toggle-btn"
+          aria-label="Basculer entre français et anglais"
+        >
+          <span class="toggle-icon" id="lang-icon">🌐</span>
+        </button>
+        <button
+          class="toggle"
+          id="theme-toggle-btn"
+          aria-label="Basculer entre thème clair et sombre"
+        >
+          <span class="toggle-icon" id="theme-icon">🌙</span>
+        </button>
       </div>
 
       <canvas
@@ -2637,19 +2654,11 @@
         id="menuBurger"
         aria-label="Ouvrir le menu de navigation"
       >
-        <svg
-          class="burger-icon"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-        >
-          <path
-            d="M3 12h18M3 6h18M3 18h18"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
+        <div class="burger-lines">
+          <span class="burger-line"></span>
+          <span class="burger-line"></span>
+          <span class="burger-line"></span>
+        </div>
       </button>
 
       <!-- Menu mobile overlay -->
@@ -2862,16 +2871,28 @@
         <div class="slider-container">
           <div class="slider-track" id="sliderTrack">
             <div class="slider-slide">
-              <img src="/images/rouge.png" alt="Lampe Focus.01 Rouge" />
+              <img
+                src="https://www.alto-lille.fr/uploads/f2010149-5520-4995-987b-82bed5dfbded.jpeg"
+                alt="Lampe Focus.01 Rouge"
+              />
             </div>
             <div class="slider-slide">
-              <img src="/images/orange.png" alt="Lampe Focus.01 Orange" />
+              <img
+                src="https://www.alto-lille.fr/uploads/7430a650-8622-461a-b724-3bb5f43f69b7.jpeg"
+                alt="Lampe Focus.01 Orange"
+              />
             </div>
             <div class="slider-slide">
-              <img src="/images/bleue.png" alt="Lampe Focus.01 Bleue" />
+              <img
+                src="https://www.alto-lille.fr/uploads/79205ce8-c9e2-4642-b701-ae4673925032.jpeg"
+                alt="Lampe Focus.01 Bleue"
+              />
             </div>
             <div class="slider-slide">
-              <img src="/images/blanche.png" alt="Lampe Focus.01 Blanche" />
+              <img
+                src="https://www.alto-lille.fr/uploads/a0de865a-f812-4523-a685-ca83b972d469.jpeg"
+                alt="Lampe Focus.01 Blanche"
+              />
             </div>
           </div>
           <div class="slider-nav">
@@ -3235,13 +3256,18 @@
           camera.lookAt(center);
           caps.forEach((e) => (e.style.opacity = 0));
           cta.style.opacity = 0;
+          // Afficher l'indicateur de défilement dans la phase d'intro avec animation
+          const scrollIndicatorEl = document.getElementById("scroll-indicator");
+          scrollIndicatorEl.classList.add("visible");
+          // Masquer les crédits tant que l'indicateur est visible
+          const footerEl = document.querySelector("#landing-container footer");
+          if (footerEl) {
+            footerEl.classList.remove("show-credits");
+          }
           // Masquer le webgl en phase d'intro - seulement les photos sont visibles
           document.getElementById("webgl").style.opacity = 0;
           // Afficher le titre ALTO LILLE dès le début
           document.getElementById("brand-title").style.opacity = 1;
-          // Afficher l'indicateur de défilement dans la phase d'intro avec animation
-          const scrollIndicatorEl = document.getElementById("scroll-indicator");
-          scrollIndicatorEl.classList.add("visible");
           // Afficher les images de produits
           document
             .querySelectorAll(".product-image")
@@ -3278,6 +3304,11 @@
           // Masquer l'indicateur de défilement dès que l'utilisateur commence à défiler
           const scrollIndicatorEl = document.getElementById("scroll-indicator");
           scrollIndicatorEl.classList.remove("visible");
+          // Afficher les crédits quand l'indicateur disparaît
+          const footerEl = document.querySelector("#landing-container footer");
+          if (footerEl) {
+            footerEl.classList.add("show-credits");
+          }
           // Faire disparaître les images de produits avant que "PLA éco-responsable" n'apparaisse
           // La première légende apparaît à t = 0.04 (CFG.legend.fade)
           const firstCaptionStart = CFG.legend.fade; // 0.04
@@ -3420,9 +3451,9 @@
         }
       }
 
-      // Gestion du thème sombre/clair
-      const themeToggle = document.getElementById("theme-toggle");
-      const themeLabel = document.getElementById("theme-label");
+      // Gestion du thème sombre/clair - Style Layout.tsx
+      const themeToggleBtn = document.getElementById("theme-toggle-btn");
+      const themeIcon = document.getElementById("theme-icon");
 
       // Vérifier le mode préféré de l'utilisateur ou le mode stocké
       const prefersDarkMode =
@@ -3430,36 +3461,46 @@
         window.matchMedia("(prefers-color-scheme: dark)").matches;
       const savedTheme = localStorage.getItem("theme");
 
+      // Fonction pour mettre à jour l'icône du thème
+      function updateThemeIcon(isDark) {
+        themeIcon.textContent = isDark ? "☀️" : "🌙";
+      }
+
       // Appliquer le thème initial
       if (savedTheme === "dark" || (!savedTheme && prefersDarkMode)) {
         document.body.classList.add("dark-mode");
         document.documentElement.classList.add("dark");
-        themeToggle.checked = true;
-        themeLabel.textContent = "Sombre";
+        updateThemeIcon(true);
         // Mettre à jour la couleur du renderer si déjà défini
         if (typeof renderer !== "undefined") {
           renderer.setClearColor("#000000", 1);
         }
       } else {
-        themeLabel.textContent = "Clair";
+        updateThemeIcon(false);
       }
 
       // Écouter les changements de thème
-      themeToggle.addEventListener("change", function () {
-        if (this.checked) {
+      themeToggleBtn.addEventListener("click", function () {
+        const isDarkMode = document.body.classList.contains("dark-mode");
+
+        if (!isDarkMode) {
           document.body.classList.add("dark-mode");
           document.documentElement.classList.add("dark");
           localStorage.setItem("theme", "dark");
-          themeLabel.textContent = "Sombre";
+          updateThemeIcon(true);
           // Mettre à jour la couleur de fond du renderer pour le mode sombre
-          renderer.setClearColor("#000000", 1);
+          if (typeof renderer !== "undefined") {
+            renderer.setClearColor("#000000", 1);
+          }
         } else {
           document.body.classList.remove("dark-mode");
           document.documentElement.classList.remove("dark");
           localStorage.setItem("theme", "light");
-          themeLabel.textContent = "Clair";
+          updateThemeIcon(false);
           // Mettre à jour la couleur de fond du renderer pour le mode clair
-          renderer.setClearColor(CFG.colours.bg, 1);
+          if (typeof renderer !== "undefined") {
+            renderer.setClearColor(CFG.colours.bg, 1);
+          }
         }
 
         // Mettre à jour les badges EcoIndex
@@ -3468,7 +3509,7 @@
         // Émettre un événement personnalisé pour l'application React
         window.dispatchEvent(
           new CustomEvent("themeChange", {
-            detail: { theme: this.checked ? "dark" : "light" },
+            detail: { theme: !isDarkMode ? "dark" : "light" },
           })
         );
       });
@@ -3486,8 +3527,7 @@
           document.body.classList.add("dark-mode");
           document.documentElement.classList.add("dark");
           localStorage.setItem("theme", "dark");
-          themeToggle.checked = true;
-          themeLabel.textContent = "Sombre";
+          updateThemeIcon(true);
 
           // Mettre à jour la couleur de fond du renderer pour le mode sombre
           if (typeof renderer !== "undefined") {
@@ -3497,8 +3537,7 @@
           document.body.classList.remove("dark-mode");
           document.documentElement.classList.remove("dark");
           localStorage.setItem("theme", "light");
-          themeToggle.checked = false;
-          themeLabel.textContent = "Clair";
+          updateThemeIcon(false);
 
           // Mettre à jour la couleur de fond du renderer pour le mode clair
           if (typeof renderer !== "undefined") {
@@ -3510,9 +3549,14 @@
         updateEcoIndexBadges();
       });
 
-      // Gestion du changement de langue
-      const langToggle = document.getElementById("lang-toggle");
-      const langLabel = document.getElementById("lang-label");
+      // Gestion du changement de langue - Style Layout.tsx
+      const langToggleBtn = document.getElementById("lang-toggle-btn");
+      const langIcon = document.getElementById("lang-icon");
+
+      // Fonction pour mettre à jour l'icône de langue
+      function updateLangIcon(isEnglish) {
+        langIcon.textContent = isEnglish ? "FR" : "EN";
+      }
 
       // Objets de traduction (français et anglais)
       const translations = {
@@ -3524,8 +3568,6 @@
           cap4: "LED 60 W E14 incluse",
           cap5: "Emballage éco‑responsable",
           cta: "Visiter la boutique",
-          theme: "Clair",
-          themeDark: "Sombre",
           scroll: "Produit disponible à la vente",
           scrollAction: "Scroll vers le bas !",
           footer: "© 2025 Alto Lille - Tous droits réservés",
@@ -3538,8 +3580,6 @@
           cap4: "60W E14 LED bulb included",
           cap5: "Eco-responsible packaging",
           cta: "Visit the shop",
-          theme: "Light",
-          themeDark: "Dark",
           scroll: "Product available for purchase",
           scrollAction: "Scroll down!",
           footer: "© 2025 Alto Lille - All rights reserved",
@@ -3551,11 +3591,11 @@
 
       // Appliquer la langue initiale
       if (savedLang === "en") {
-        langToggle.checked = true;
-        langLabel.textContent = "EN";
+        updateLangIcon(true);
         applyLanguage("en");
       } else {
-        langLabel.textContent = "FR";
+        updateLangIcon(false);
+        applyLanguage("fr");
       }
 
       // Fonction pour appliquer une langue
@@ -3572,26 +3612,23 @@
         document.querySelector("#scroll-icon .scroll-action").textContent =
           t.scrollAction;
         document.querySelector("footer").textContent = t.footer;
-
-        // Mettre à jour les libellés des toggles en fonction de la langue
-        if (themeToggle.checked) {
-          themeLabel.textContent = t.themeDark;
-        } else {
-          themeLabel.textContent = t.theme;
-        }
       }
 
       // Écouter les changements de langue
-      langToggle.addEventListener("change", function () {
-        if (this.checked) {
-          langLabel.textContent = "EN";
-          localStorage.setItem("lang", "en");
-          applyLanguage("en");
-        } else {
-          langLabel.textContent = "FR";
-          localStorage.setItem("lang", "fr");
-          applyLanguage("fr");
-        }
+      langToggleBtn.addEventListener("click", function () {
+        const currentLang = localStorage.getItem("lang") || "fr";
+        const newLang = currentLang === "fr" ? "en" : "fr";
+
+        localStorage.setItem("lang", newLang);
+        updateLangIcon(newLang === "en");
+        applyLanguage(newLang);
+
+        // Émettre un événement pour synchroniser avec l'app React
+        window.dispatchEvent(
+          new CustomEvent("languageChange", {
+            detail: { language: newLang, fromLanding: true },
+          })
+        );
       });
 
       // Exécuter au chargement initial

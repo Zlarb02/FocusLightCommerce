@@ -43,11 +43,6 @@
   text-decoration: underline;
 }
 
-.dark footer a:hover,
-.dark .text-gray-300 a:hover {
-  color: #4a9eff !important;
-}
-
 /* Menu burger */
 .dark .fixed .bg-white {
   background-color: #1e1e1e !important;
@@ -57,12 +52,6 @@
 .dark .fixed button,
 .dark .fixed a {
   color: #ffffff !important;
-}
-
-.dark .fixed button:hover,
-.dark .fixed a:hover {
-  background-color: #333333 !important;
-  color: #4a9eff !important;
 }
 
 /* Autres textes en mode sombre pour assurer une excellente lisibilité */
@@ -75,10 +64,6 @@
 .dark button.text-gray-600,
 .dark button.text-gray-700 {
   color: #ffffff !important;
-}
-
-.dark button:hover {
-  background-color: #333333 !important;
 }
 
 /* Tous les liens du menu burger et du footer */

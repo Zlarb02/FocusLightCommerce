@@ -31,7 +31,7 @@ export function ThemeToggle({
     return (
       <button
         onClick={toggleTheme}
-        className="p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-gray-400 dark:hover:text-gray-100 dark:hover:bg-gray-800 transition-colors"
+        className="p-3 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-all duration-300 ease-out opacity-70 hover:opacity-100 hover:scale-110"
         aria-label={`Changer vers le thème ${
           theme === "light" ? "sombre" : "clair"
         }`}
@@ -50,12 +50,12 @@ export function ThemeToggle({
       {showLabel && (
         <label
           className={`${sizeClasses[size]} font-medium text-gray-700 dark:text-gray-300 select-none`}
-        >
-          {theme === "light" ? "Clair" : "Sombre"}
-        </label>
+        ></label>
       )}
       <div className="flex items-center gap-1">
-        <Sun className={`${iconSizes[size]} text-yellow-500`} />
+        <Sun
+          className={`${iconSizes[size]} text-yellow-500 dark:text-yellow-400`}
+        />
         <Switch
           checked={theme === "dark"}
           onCheckedChange={toggleTheme}
@@ -63,7 +63,9 @@ export function ThemeToggle({
             theme === "light" ? "sombre" : "clair"
           }`}
         />
-        <Moon className={`${iconSizes[size]} text-blue-400`} />
+        <Moon
+          className={`${iconSizes[size]} text-gray-600 dark:text-gray-300`}
+        />
       </div>
     </div>
   );

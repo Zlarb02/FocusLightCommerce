@@ -1,68 +1,68 @@
-/* Améliorations du contraste pour le Layout en mode sombre */
+/* Styles minimalistes harmonisés pour le Layout - Dark Mode Fix */
 
-/* Liens du menu burger en mode sombre */
-.dark .text-gray-700,
-.dark .text-gray-600 {
-  color: #ffffff !important;
-  font-weight: 500;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+/* Suppression ciblée des couleurs bleues uniquement */
+.dark .hover\:text-blue-400:hover,
+.dark .dark\:hover\:text-blue-300:hover,
+.dark .dark\:hover\:text-blue-400:hover,
+.dark .text-blue-400,
+.dark .dark\:text-blue-400 {
+  color: #d1d5db !important; /* gray-300 au lieu de bleu */
 }
 
-/* Création unique ou personnalisée */
-.dark div h3:has(+ p:contains("création unique")) + p {
-  color: #ffffff !important;
-  font-weight: 600;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+/* Suppression des backgrounds bleus uniquement */
+.dark .hover\:bg-blue-50:hover,
+.dark .dark\:hover\:bg-blue-900:hover {
+  background-color: rgba(
+    55,
+    65,
+    81,
+    0.3
+  ) !important; /* gray-700/30 au lieu de bleu */
 }
 
-/* Survol des liens du menu burger */
-.dark button:hover,
-.dark a:hover {
-  background-color: rgba(255, 255, 255, 0.1) !important;
-  color: #4a9eff !important;
+/* Override pour les composants Switch - pas de bleu */
+.dark [data-state="checked"] {
+  background-color: #6b7280 !important; /* gray-500 au lieu de primary/blue */
 }
 
-/* Titres des sections du menu */
-.dark .text-gray-500 {
-  color: #c0c0c0 !important;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+.dark [data-state="unchecked"] {
+  background-color: #374151 !important; /* gray-700 au lieu de input */
 }
 
-/* Liens du footer */
-.dark footer .text-gray-600,
-.dark footer .text-gray-400,
-.dark footer .text-gray-500 {
-  color: #e0e0e0 !important;
-  font-weight: 500;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+/* Override pour les boutons primary - pas de bleu */
+.dark .bg-primary {
+  background-color: #6b7280 !important; /* gray-500 */
 }
 
-/* Liens du footer au survol */
+.dark .hover\:bg-primary:hover {
+  background-color: #9ca3af !important; /* gray-400 */
+}
+
+/* Suppression des ring colors bleues */
+.dark .focus-visible\:ring-primary {
+  --tw-ring-color: rgb(156 163 175) !important; /* gray-400 */
+}
+
+/* Navigation items - garde les backgrounds subtils mais pas de bleu */
+.dark nav button:hover .group-hover\:translate-x-1 {
+  transform: translateX(4px) !important;
+}
+
+/* Footer links - style minimal sans casser les couleurs de base */
 .dark footer a:hover {
-  color: #4a9eff !important;
-  text-decoration: underline;
-}
-
-/* Contact au téléphone */
-.dark .text-gray-400 {
-  color: #ffffff !important;
+  color: #f3f4f6 !important;
+  text-decoration: none !important;
 }
 
 /* Mode haute-contraste pour l'accessibilité */
 @media (prefers-contrast: high) {
-  .dark .text-gray-700,
-  .dark .text-gray-600,
   .dark .text-gray-500,
   .dark .text-gray-400 {
-    color: white !important;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9) !important;
-    font-weight: bold !important;
+    color: #d1d5db !important;
   }
 
-  .dark a,
-  .dark button {
-    border: 2px solid white !important;
-    padding: 0.25rem 0.5rem !important;
-    background-color: #333333 !important;
+  .dark a:hover,
+  .dark button:hover {
+    outline: 1px solid rgba(255, 255, 255, 0.3) !important;
   }
 }
