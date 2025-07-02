@@ -25,16 +25,16 @@ export function Confirmation({ orderId, orderNumber }: ConfirmationProps) {
         <Check className="text-green-600 dark:text-green-400 h-5 w-5 md:h-6 md:w-6" />
       </div>
       <h2 className="font-heading font-bold text-xl md:text-2xl mb-2 text-gray-900 dark:text-gray-100">
-        {t('checkout.confirmation')}
+        {t("checkout.confirmation")}
       </h2>
       <p className="text-sm md:text-base text-muted-foreground dark:text-gray-400 mb-6">
-        {t('confirmation.thankYou')}
+        {t("confirmation.thankYou")}
       </p>
 
       <div className="max-w-md mx-auto bg-slate-50 dark:bg-gray-800 rounded-lg p-4 md:p-6 text-left mb-6 md:mb-8 border border-gray-200 dark:border-gray-600">
         <div className="flex justify-between mb-4 text-sm md:text-base">
           <span className="text-muted-foreground dark:text-gray-400">
-            {t('confirmation.orderNumber')}:
+            {t("confirmation.orderNumber")}:
           </span>
           <span className="font-medium text-gray-900 dark:text-gray-100 break-all">
             {orderNumber}
@@ -68,7 +68,7 @@ export function Confirmation({ orderId, orderNumber }: ConfirmationProps) {
 
         <div className="border-t border-gray-200 dark:border-gray-600 pt-4 mt-4 text-sm md:text-base">
           <div className="flex justify-between mb-1">
-            <span>{t('cart.subtotal')}</span>
+            <span>{t("cart.subtotal")}</span>
             <span>
               {formatPrice(
                 orderDetails.reduce(
@@ -82,11 +82,13 @@ export function Confirmation({ orderId, orderNumber }: ConfirmationProps) {
             </span>
           </div>
           <div className="flex justify-between mb-1">
-            <span>{t('cart.shipping')}</span>
-            <span className="text-green-600 dark:text-green-400">{t('cart.freeShipping')}</span>
+            <span>{t("cart.shipping")}</span>
+            <span className="text-green-600 dark:text-green-400">
+              {t("cart.freeShipping")}
+            </span>
           </div>
           <div className="flex justify-between font-bold mt-2 pt-2 border-t border-gray-100 dark:border-gray-700">
-            <span>{t('cart.total')}</span>
+            <span>{t("cart.total")}</span>
             <span>
               {formatPrice(
                 orderDetails.reduce(
@@ -104,13 +106,13 @@ export function Confirmation({ orderId, orderNumber }: ConfirmationProps) {
 
       <div className="text-sm md:text-base space-y-2 mb-6 md:mb-8">
         <p className="text-muted-foreground dark:text-gray-400">
-          {t('confirmation.emailSent')}{" "}
+          {t("confirmation.emailSent")}{" "}
           <span className="font-medium break-all">{customer?.email}</span>
         </p>
         <p className="text-muted-foreground dark:text-gray-400">
-          {t('confirmation.questions')}{" "}
+          {t("confirmation.questions")}{" "}
           <a href="#" className="text-primary hover:underline">
-            {t('confirmation.contactUs')}
+            {t("confirmation.contactUs")}
           </a>
         </p>
       </div>
@@ -119,7 +121,7 @@ export function Confirmation({ orderId, orderNumber }: ConfirmationProps) {
         onClick={handleContinueShopping}
         className="w-full sm:w-auto h-12 md:h-auto text-base md:text-sm"
       >
-        {t('cart.continueShopping')}
+        {t("cart.continueShopping")}
       </Button>
     </div>
   );

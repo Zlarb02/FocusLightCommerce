@@ -8,6 +8,7 @@
       name="description"
       content="Lampe d'appoint FOCUS.01 écologique et design, fabriquée en PLA écoresponsable et en chêne écogéré. Disponible en 4 couleurs."
     />
+    <link rel="stylesheet" href="https://use.typekit.net/bli0ejk.css" />
     <script>
       !(function () {
         var i = "analytics",
@@ -99,12 +100,6 @@
       })();
     </script>
     <link rel="icon" type="image/png" href="/images/logo.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600&family=Jost:wght@500;600;700&family=League+Spartan:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
     <style>
       :root {
         --bg-color: #fff;
@@ -119,9 +114,9 @@
         --toggle-knob: #fff;
 
         /* Polices principales */
-        --font-primary: "Noto Sans", system-ui, sans-serif;
-        --font-heading: "Jost", system-ui, sans-serif;
-        --font-accent: "League Spartan", system-ui, sans-serif;
+        --font-primary: "futura-pt", sans-serif;
+        --font-heading: "helvetica-neue-lt-pro", sans-serif;
+        --font-accent: "helvetica-neue-lt-pro", sans-serif;
 
         /* Variantes fonctionnelles par usage */
         --font-body: var(--font-primary);
@@ -415,13 +410,13 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 0.5rem;
+        gap: 1.7rem;
         text-align: center;
       }
 
       .product-name {
         font-size: clamp(18px, 2.5vw, 24px);
-        font-weight: 700;
+        font-weight: 500;
         font-family: var(--font-titles);
         margin: 0;
         color: var(--text-color);
@@ -466,7 +461,7 @@
         letter-spacing: 0.02em;
         margin: 0;
         color: var(--text-color);
-        font-family: var(--font-titles);
+        font-family: var(--font-body);
         background: linear-gradient(
           135deg,
           var(--text-color) 0%,
@@ -2215,6 +2210,7 @@
           left: 50% !important;
           transform: translateX(-50%) !important;
           box-sizing: border-box !important;
+          margin-bottom: 3px;
         }
 
         .product-name {

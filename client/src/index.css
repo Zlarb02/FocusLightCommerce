@@ -35,9 +35,9 @@
     --radius: 0.5rem;
 
     /* Polices principales */
-    --font-primary: "Noto Sans", system-ui, sans-serif;
-    --font-heading: "Jost", system-ui, sans-serif;
-    --font-accent: "League Spartan", system-ui, sans-serif;
+    --font-primary: "futura-pt", sans-serif;
+    --font-heading: "helvetica-neue-lt-pro", sans-serif;
+    --font-accent: "helvetica-neue-lt-pro", sans-serif;
 
     /* Variantes fonctionnelles par usage */
     --font-body: var(--font-primary);

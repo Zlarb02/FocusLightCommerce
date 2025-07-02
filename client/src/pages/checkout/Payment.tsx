@@ -36,21 +36,18 @@ export function Payment({ onNext, onBack }: PaymentProps) {
   const paymentSchema = z.object({
     cardNumber: z
       .string()
-      .min(16, t('validation.cardNumberMinLength'))
-      .max(19, t('validation.cardNumberMaxLength'))
-      .regex(/^\d[\d\s-]*$/, t('validation.cardNumberInvalid')),
+      .min(16, t("validation.cardNumberMinLength"))
+      .max(19, t("validation.cardNumberMaxLength"))
+      .regex(/^\d[\d\s-]*$/, t("validation.cardNumberInvalid")),
     expiryDate: z
       .string()
-      .regex(
-        /^(0[1-9]|1[0-2])\/\d{2}$/,
-        t('validation.expiryDateFormat')
-      ),
+      .regex(/^(0[1-9]|1[0-2])\/\d{2}$/, t("validation.expiryDateFormat")),
     cvv: z
       .string()
-      .min(3, t('validation.cvvMinLength'))
-      .max(4, t('validation.cvvMaxLength'))
-      .regex(/^\d+$/, t('validation.cvvInvalid')),
-    cardName: z.string().min(1, t('validation.cardNameRequired')),
+      .min(3, t("validation.cvvMinLength"))
+      .max(4, t("validation.cvvMaxLength"))
+      .regex(/^\d+$/, t("validation.cvvInvalid")),
+    cardName: z.string().min(1, t("validation.cardNameRequired")),
   });
 
   type PaymentFormValues = z.infer<typeof paymentSchema>;
@@ -68,8 +65,8 @@ export function Payment({ onNext, onBack }: PaymentProps) {
   const onSubmit = async (data: PaymentFormValues) => {
     if (!customer) {
       toast({
-        title: t('payment.error'),
-        description: t('payment.customerInfoMissing'),
+        title: t("payment.error"),
+        description: t("payment.customerInfoMissing"),
         variant: "destructive",
       });
       return;
@@ -100,8 +97,8 @@ export function Payment({ onNext, onBack }: PaymentProps) {
     } catch (error) {
       console.error("Checkout error:", error);
       toast({
-        title: t('payment.errorTitle'),
-        description: t('payment.errorDescription'),
+        title: t("payment.errorTitle"),
+        description: t("payment.errorDescription"),
         variant: "destructive",
       });
     } finally {
@@ -114,13 +111,13 @@ export function Payment({ onNext, onBack }: PaymentProps) {
   return (
     <div className="space-y-6">
       <h2 className="font-heading font-bold text-xl md:text-2xl mb-4 md:mb-6 text-gray-900 dark:text-gray-100">
-        {t('checkout.payment')}
+        {t("checkout.payment")}
       </h2>
 
       <Alert className="mb-4 md:mb-6 bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800">
         <Shield className="h-4 w-4 text-green-600 dark:text-green-400" />
         <AlertDescription className="text-sm text-green-800 dark:text-green-200">
-          {t('payment.securityMessage')}
+          {t("payment.securityMessage")}
         </AlertDescription>
       </Alert>
 
@@ -135,7 +132,7 @@ export function Payment({ onNext, onBack }: PaymentProps) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-sm md:text-base">
-                  {t('payment.cardNumber')}
+                  {t("payment.cardNumber")}
                 </FormLabel>
                 <FormControl>
                   <div className="relative">
@@ -188,7 +185,7 @@ export function Payment({ onNext, onBack }: PaymentProps) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-sm md:text-base">
-                    {t('payment.expiryDate')}
+                    {t("payment.expiryDate")}
                   </FormLabel>
                   <FormControl>
                     <Input
@@ -218,7 +215,9 @@ export function Payment({ onNext, onBack }: PaymentProps) {
               name="cvv"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm md:text-base">{t('payment.cvv')}</FormLabel>
+                  <FormLabel className="text-sm md:text-base">
+                    {t("payment.cvv")}
+                  </FormLabel>
                   <FormControl>
                     <Input
                       placeholder="123"
@@ -243,7 +242,7 @@ export function Payment({ onNext, onBack }: PaymentProps) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-sm md:text-base">
-                  {t('payment.cardName')}
+                  {t("payment.cardName")}
                 </FormLabel>
                 <FormControl>
                   <Input {...field} className="h-11 md:h-auto" />
@@ -255,17 +254,17 @@ export function Payment({ onNext, onBack }: PaymentProps) {
 
           <div className="border-t border-gray-200 dark:border-gray-600 pt-4 space-y-2">
             <div className="flex justify-between text-sm md:text-base text-gray-700 dark:text-gray-300">
-              <span>{t('cart.subtotal')}</span>
+              <span>{t("cart.subtotal")}</span>
               <span>{formatPrice(totalPrice)}</span>
             </div>
             <div className="flex justify-between text-sm md:text-base text-gray-700 dark:text-gray-300">
-              <span>{t('cart.shipping')}</span>
+              <span>{t("cart.shipping")}</span>
               <span className="text-green-600 dark:text-green-400">
-                {t('cart.freeShipping')}
+                {t("cart.freeShipping")}
               </span>
             </div>
             <div className="flex justify-between font-bold text-base md:text-lg text-gray-900 dark:text-gray-100 pt-2 border-t border-gray-100 dark:border-gray-700">
-              <span>{t('cart.total')}</span>
+              <span>{t("cart.total")}</span>
               <span>{formatPrice(totalPrice)}</span>
             </div>
           </div>
@@ -278,7 +277,7 @@ export function Payment({ onNext, onBack }: PaymentProps) {
               onClick={onBack}
               disabled={isProcessing}
             >
-              {t('button.back')}
+              {t("button.back")}
             </Button>
             <Button
               type="submit"
@@ -286,8 +285,8 @@ export function Payment({ onNext, onBack }: PaymentProps) {
               disabled={isProcessing}
             >
               {isProcessing
-                ? t('checkout.processing')
-                : `${t('payment.pay')} ${formatPrice(totalPrice)}`}
+                ? t("checkout.processing")
+                : `${t("payment.pay")} ${formatPrice(totalPrice)}`}
             </Button>
           </div>
         </form>

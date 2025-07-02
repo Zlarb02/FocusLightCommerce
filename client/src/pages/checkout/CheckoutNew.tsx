@@ -49,10 +49,30 @@ export default function CheckoutNew() {
   };
 
   const steps = [
-    { number: 1, title: t("checkout.customerInfo"), icon: User, completed: step > 1 },
-    { number: 2, title: t("checkout.shipping"), icon: MapPin, completed: step > 2 },
-    { number: 3, title: t("checkout.payment"), icon: CreditCard, completed: step > 3 },
-    { number: 4, title: t("checkout.confirmation"), icon: Package, completed: step === 4 },
+    {
+      number: 1,
+      title: t("checkout.customerInfo"),
+      icon: User,
+      completed: step > 1,
+    },
+    {
+      number: 2,
+      title: t("checkout.shipping"),
+      icon: MapPin,
+      completed: step > 2,
+    },
+    {
+      number: 3,
+      title: t("checkout.payment"),
+      icon: CreditCard,
+      completed: step > 3,
+    },
+    {
+      number: 4,
+      title: t("checkout.confirmation"),
+      icon: Package,
+      completed: step === 4,
+    },
   ];
 
   const renderStepContent = () => {
@@ -186,7 +206,8 @@ export default function CheckoutNew() {
                   </div>
                   <div>
                     <div className="text-sm text-gray-500 dark:text-gray-400">
-                      {t("checkout.step")} {step} {t("checkout.of")} {steps.length}
+                      {t("checkout.step")} {step} {t("checkout.of")}{" "}
+                      {steps.length}
                     </div>
                     <div className="text-lg font-medium text-gray-900 dark:text-gray-100">
                       {steps[step - 1].title}

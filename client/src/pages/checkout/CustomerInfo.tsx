@@ -24,12 +24,10 @@ export function CustomerInfo({ onNext }: CustomerInfoProps) {
   const { t } = useLanguage();
 
   const customerInfoSchema = z.object({
-    firstName: z
-      .string()
-      .min(2, t('validation.firstNameMinLength')),
-    lastName: z.string().min(2, t('validation.lastNameMinLength')),
-    email: z.string().email(t('validation.emailInvalid')),
-    phone: z.string().min(10, t('validation.phoneInvalid')),
+    firstName: z.string().min(2, t("validation.firstNameMinLength")),
+    lastName: z.string().min(2, t("validation.lastNameMinLength")),
+    email: z.string().email(t("validation.emailInvalid")),
+    phone: z.string().min(10, t("validation.phoneInvalid")),
   });
 
   type CustomerInfoFormValues = z.infer<typeof customerInfoSchema>;
@@ -52,7 +50,7 @@ export function CustomerInfo({ onNext }: CustomerInfoProps) {
   return (
     <div className="space-y-6">
       <h2 className="font-heading font-bold text-xl md:text-2xl mb-4 md:mb-6 text-gray-900 dark:text-gray-100">
-        {t('checkout.customerInfo')}
+        {t("checkout.customerInfo")}
       </h2>
 
       <Form {...form}>
@@ -66,7 +64,9 @@ export function CustomerInfo({ onNext }: CustomerInfoProps) {
               name="firstName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm md:text-base">{t('checkout.firstName')}</FormLabel>
+                  <FormLabel className="text-sm md:text-base">
+                    {t("checkout.firstName")}
+                  </FormLabel>
                   <FormControl>
                     <Input {...field} className="h-11 md:h-auto" />
                   </FormControl>
@@ -79,7 +79,9 @@ export function CustomerInfo({ onNext }: CustomerInfoProps) {
               name="lastName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm md:text-base">{t('checkout.lastName')}</FormLabel>
+                  <FormLabel className="text-sm md:text-base">
+                    {t("checkout.lastName")}
+                  </FormLabel>
                   <FormControl>
                     <Input {...field} className="h-11 md:h-auto" />
                   </FormControl>
@@ -94,7 +96,9 @@ export function CustomerInfo({ onNext }: CustomerInfoProps) {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm md:text-base">{t('checkout.email')}</FormLabel>
+                <FormLabel className="text-sm md:text-base">
+                  {t("checkout.email")}
+                </FormLabel>
                 <FormControl>
                   <Input type="email" {...field} className="h-11 md:h-auto" />
                 </FormControl>
@@ -109,7 +113,7 @@ export function CustomerInfo({ onNext }: CustomerInfoProps) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-sm md:text-base">
-                  {t('checkout.phone')}
+                  {t("checkout.phone")}
                 </FormLabel>
                 <FormControl>
                   <Input type="tel" {...field} className="h-11 md:h-auto" />
@@ -124,7 +128,7 @@ export function CustomerInfo({ onNext }: CustomerInfoProps) {
               type="submit"
               className="w-full h-12 md:h-auto text-base md:text-sm"
             >
-              {t('checkout.continue')}
+              {t("checkout.continue")}
             </Button>
           </div>
         </form>

@@ -82,7 +82,7 @@ export function CartOverlay({ open, onClose }: CartOverlayProps) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
               >
-                <Button 
+                <Button
                   onClick={onClose}
                   className="cart-continue-shopping-button bg-slate-800 text-white hover:bg-slate-900 dark:bg-slate-800 dark:text-white dark:hover:bg-slate-900 border border-slate-600 dark:border-slate-600 font-medium"
                 >

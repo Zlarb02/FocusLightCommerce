@@ -72,7 +72,7 @@ export function Shipping({ onNext, onBack }: ShippingProps) {
   return (
     <div>
       <h2 className="font-heading font-bold text-2xl mb-6 text-gray-900 dark:text-gray-100">
-        {t('checkout.shipping')}
+        {t("checkout.shipping")}
       </h2>
 
       {/* Information sur le mode de livraison */}
@@ -83,15 +83,15 @@ export function Shipping({ onNext, onBack }: ShippingProps) {
           </div>
           <div>
             <h3 className="font-semibold text-lg text-gray-900 dark:text-gray-100">
-              {t('shipping.relayPoint')}
+              {t("shipping.relayPoint")}
             </h3>
             <p className="text-gray-600 dark:text-gray-400">
-              {t('shipping.relayPointDescription')}
+              {t("shipping.relayPointDescription")}
             </p>
           </div>
           <div className="ml-auto">
             <span className="bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-200 px-3 py-1 rounded-full font-medium">
-              {t('shipping.free')}
+              {t("shipping.free")}
             </span>
           </div>
         </div>
@@ -102,19 +102,19 @@ export function Shipping({ onNext, onBack }: ShippingProps) {
         <div className="flex items-center gap-2 mb-4">
           <MapPin className="w-5 h-5 text-primary" />
           <h3 className="font-medium text-gray-900 dark:text-gray-100">
-            {t('shipping.enterPostalCode')}
+            {t("shipping.enterPostalCode")}
           </h3>
         </div>
 
         <div className="flex gap-2">
           <div className="flex-1">
             <Label htmlFor="postalCode" className="sr-only">
-              {t('checkout.postalCode')}
+              {t("checkout.postalCode")}
             </Label>
             <Input
               id="postalCode"
               type="text"
-              placeholder={t('shipping.postalCodePlaceholder')}
+              placeholder={t("shipping.postalCodePlaceholder")}
               value={postalCode}
               onChange={(e) => setPostalCode(e.target.value)}
               onKeyDown={(e) => {
@@ -131,7 +131,7 @@ export function Shipping({ onNext, onBack }: ShippingProps) {
             className="flex-shrink-0"
             onClick={handleSearch}
           >
-            {t('shipping.search')}
+            {t("shipping.search")}
           </Button>
         </div>
       </div>
@@ -141,7 +141,7 @@ export function Shipping({ onNext, onBack }: ShippingProps) {
         <div className="flex items-center gap-2 mb-4">
           <MapPin className="w-5 h-5 text-primary" />
           <h3 className="font-medium text-gray-900 dark:text-gray-100">
-            {t('shipping.chooseRelayPoint')}
+            {t("shipping.chooseRelayPoint")}
           </h3>
         </div>
 
@@ -153,10 +153,8 @@ export function Shipping({ onNext, onBack }: ShippingProps) {
         ) : (
           <div className="text-center py-8 text-gray-500 dark:text-gray-400">
             <MapPin className="w-12 h-12 mx-auto mb-2 text-gray-300 dark:text-gray-600" />
-            <p>{t('shipping.enterPostalCodeFirst')}</p>
-            <p className="text-sm">
-              {t('shipping.clickSearchToShowMap')}
-            </p>
+            <p>{t("shipping.enterPostalCodeFirst")}</p>
+            <p className="text-sm">{t("shipping.clickSearchToShowMap")}</p>
           </div>
         )}
       </div>
@@ -180,7 +178,8 @@ export function Shipping({ onNext, onBack }: ShippingProps) {
               </p>
               {selectedRelayPoint.distance > 0 && (
                 <p className="text-green-600 dark:text-green-400 text-xs mt-1">
-                  {t('shipping.distance')} {selectedRelayPoint.distance.toFixed(1)} km
+                  {t("shipping.distance")}{" "}
+                  {selectedRelayPoint.distance.toFixed(1)} km
                 </p>
               )}
             </div>
@@ -196,7 +195,7 @@ export function Shipping({ onNext, onBack }: ShippingProps) {
           className="w-1/3"
           onClick={onBack}
         >
-          {t('button.back')}
+          {t("button.back")}
         </Button>
         <Button
           type="button"
@@ -204,7 +203,9 @@ export function Shipping({ onNext, onBack }: ShippingProps) {
           disabled={!selectedRelayPoint}
           onClick={handleSubmit}
         >
-          {selectedRelayPoint ? t('checkout.continue') : t('shipping.selectRelayPoint')}
+          {selectedRelayPoint
+            ? t("checkout.continue")
+            : t("shipping.selectRelayPoint")}
         </Button>
       </div>
     </div>
