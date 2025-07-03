@@ -105,7 +105,11 @@
         --bg-color: #fff;
         --text-color: #111;
         --text-light: #777777;
-        --scroll-indicator-bg: linear-gradient(135deg, #2563eb 0%, #d97706 100%);
+        --scroll-indicator-bg: linear-gradient(
+          135deg,
+          #2563eb 0%,
+          #d97706 100%
+        );
         --scroll-indicator-shadow: rgba(37, 99, 235, 0.3);
         --toggle-bg: #f0f0f0;
         --toggle-bg-active: #2196f3;
@@ -134,8 +138,12 @@
         --bg-color: #000000;
         --text-color: #f5f5f5;
         --text-light: #b0b0b0;
-        --scroll-indicator-bg: linear-gradient(135deg, #3b82f6 0%, #f59e0b 100%);
-        --scroll-indicator-shadow: rgba(59, 130, 246, 0.4);
+        --scroll-indicator-bg: linear-gradient(
+          135deg,
+          #198ece 0%,
+          #9d7c2f 100%
+        );
+        --scroll-indicator-shadow: rgba(25, 142, 206, 0.3);
         --toggle-bg: #2a2a2a;
         --toggle-bg-active: #4a9eff;
         --toggle-knob: #f8f8f8;
@@ -564,6 +572,31 @@
         min-width: 280px;
       }
 
+      /* Layout optimisé pour desktop/tablette (>=765px) - Vertical mais compact */
+      @media (min-width: 765px) {
+        .scroll-content {
+          flex-direction: column;
+          gap: 0.6rem; /* Réduire l'espacement pour être moins haut */
+          padding: 12px 24px; /* Réduire le padding vertical */
+          border-radius: 20px;
+          min-width: 320px;
+          max-width: 450px;
+          max-height: 100px; /* Limiter la hauteur maximum */
+        }
+
+        .product-highlight {
+          gap: 0.5rem; /* Réduire l'espacement interne */
+          text-align: center;
+        }
+
+        .scroll-action-wrapper {
+          flex-shrink: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+
       .product-highlight {
         display: flex;
         flex-direction: column;
@@ -611,6 +644,7 @@
         border-radius: 50%;
         animation: softPulse 3s infinite;
         box-shadow: 0 0 0 0 rgba(25, 142, 206, 0.3);
+        flex-shrink: 0; /* Empêcher l'écrasement dans tous les contextes flexbox */
       }
 
       #scroll-message {
@@ -729,6 +763,79 @@
 
       #scroll-indicator:hover .scroll-arrow {
         transform: translateY(2px);
+      }
+
+      /* Navigation suivante - Bouton de défilement séquentiel */
+      #next-scroll-btn {
+        position: fixed;
+        bottom: 50px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 100;
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        border: none;
+        cursor: pointer;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        background: var(--scroll-indicator-bg);
+        box-shadow: 0 8px 25px var(--scroll-indicator-shadow);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #next-scroll-btn.visible {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) scale(1);
+      }
+
+      #next-scroll-btn:hover {
+        transform: translateX(-50%) scale(1.1);
+        box-shadow: 0 12px 35px var(--scroll-indicator-shadow);
+      }
+
+      #next-scroll-btn:active {
+        transform: translateX(-50%) scale(0.95);
+      }
+
+      #next-scroll-btn .next-arrow {
+        width: 18px;
+        height: 18px;
+        color: white;
+        transition: transform 0.3s ease;
+      }
+
+      #next-scroll-btn:hover .next-arrow {
+        transform: translateY(2px);
+      }
+
+      /* Adaptations responsive pour le bouton */
+      @media (max-width: 768px) {
+        #next-scroll-btn {
+          width: 32px;
+          height: 32px;
+        }
+
+        #next-scroll-btn .next-arrow {
+          width: 14px;
+          height: 14px;
+        }
+      }
+
+      @media (min-width: 1081px) {
+        #next-scroll-btn {
+          width: 32px;
+          height: 32px;
+        }
+
+        #next-scroll-btn .next-arrow {
+          width: 14px;
+          height: 14px;
+        }
       }
 
       /* Focus et accessibilité pour les images */
@@ -886,8 +993,8 @@
         }
       }
 
-      /* Amélioration pour mobile */
-      @media (min-width: 481px) and (max-width: 767px) {
+      /* Amélioration pour mobile large (avant tablette) */
+      @media (min-width: 481px) and (max-width: 764px) {
         #brand-title {
           top: 6%;
           font-size: clamp(28px, 5.5vw, 38px);
@@ -924,12 +1031,13 @@
 
         /* Instructions visuelles supprimées sur mobile pour éviter la surcharge visuelle */
 
-        /* Optimisation moderne de l'indicateur de défilement pour mobile */
+        /* Optimisation moderne de l'indicateur de défilement pour mobile large */
         #scroll-indicator {
           bottom: 4%;
         }
 
         .scroll-content {
+          flex-direction: column; /* Forcer colonne sur mobile */
           padding: 14px 18px;
           gap: 0.8rem;
           border-radius: 20px;
@@ -941,6 +1049,10 @@
             rgba(255, 255, 255, 0.7) 0%,
             rgba(255, 255, 255, 0.6) 100%
           );
+        }
+
+        .product-highlight {
+          text-align: center; /* Centré sur mobile */
         }
 
         .product-name {
@@ -1061,11 +1173,79 @@
         }
       }
 
-      /* Amélioration pour tablette */
-      @media (min-width: 768px) and (max-width: 1024px) {
+      /* Optimisation spécifique pour la plage 765px-1080px (desktop/tablette) */
+      @media (min-width: 765px) and (max-width: 1080px) {
+        /* Forcer le scroll indicator horizontal et élégant */
+        #scroll-indicator {
+          bottom: 5%;
+        }
+
+        .scroll-content {
+          flex-direction: row !important; /* Forcer horizontal */
+          gap: 1.2rem;
+          padding: 12px 20px;
+          border-radius: 24px;
+          min-width: 340px;
+          max-width: 550px;
+          backdrop-filter: blur(14px) saturate(125%);
+          background: linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.75) 0%,
+            rgba(255, 255, 255, 0.65) 100%
+          );
+        }
+
+        .product-highlight {
+          text-align: center !important; /* Centré pour ce format compact */
+          gap: 0.4rem; /* Espacement réduit */
+        }
+
+        .product-name {
+          font-size: clamp(16px, 2.2vw, 20px); /* Taille réduite */
+          font-weight: 600;
+          line-height: 1.1; /* Ligne plus compacte */
+        }
+
+        .scroll-badge {
+          padding: 4px 10px; /* Padding réduit */
+          gap: 0.5rem;
+          align-self: center; /* Centré */
+          align-items: center;
+          min-height: 20px; /* Hauteur réduite */
+        }
+
+        .availability-dot {
+          width: 7px; /* Légèrement plus petit pour ce format */
+          height: 7px;
+          flex-shrink: 0;
+        }
+
+        #scroll-message {
+          font-size: clamp(12px, 2vw, 14px); /* Taille réduite */
+          font-weight: 500;
+        }
+
+        .scroll-action {
+          font-size: clamp(11px, 1.8vw, 13px); /* Plus petit */
+          margin-top: 2px;
+        }
+
+        /* Réduire la taille du bouton next-scroll-btn et de la flèche sur toutes les tailles d'écrans, y compris les media queries */
+        #next-scroll-btn {
+          width: 38px;
+          height: 38px;
+        }
+        #next-scroll-btn .next-arrow {
+          width: 18px;
+          height: 18px;
+        }
+      }
+
+      /* Amélioration pour tablette large */
+      @media (min-width: 1081px) and (max-width: 1440px) {
         #brand-title {
-          top: 7%;
-          font-size: clamp(36px, 5vw, 48px);
+          top: 24px; /* Position cohérente avec desktop */
+          font-size: clamp(24px, 2.5vw, 32px); /* Taille plus raisonnable */
         }
 
         .polaroid {
@@ -1094,59 +1274,71 @@
           gap: 9px;
         }
 
-        /* Optimisation moderne de l'indicateur de défilement pour tablette */
+        /* Optimisation moderne de l'indicateur de défilement pour tablette - FORMAT HORIZONTAL */
         #scroll-indicator {
           bottom: 5%;
         }
 
         .scroll-content {
-          padding: 16px 22px;
-          gap: 0.9rem;
-          border-radius: 22px;
-          min-width: 320px;
-          max-width: 80vw;
-          background: linear-gradient(
-            135deg,
-            rgba(255, 255, 255, 0.72) 0%,
-            rgba(255, 255, 255, 0.62) 100%
-          );
+          flex-direction: row; /* Côte à côte pour tablette large */
+          padding: 12px 24px; /* Compact */
+          gap: 1.5rem; /* Espacement entre les deux sections */
+          border-radius: 20px;
+          min-width: 380px;
+          max-width: 550px;
+          max-height: 80px; /* Plus bas car format horizontal */
+        }
+
+        .product-highlight {
+          gap: 0.5rem;
+          text-align: left; /* Aligné à gauche en format horizontal */
+          flex: 1; /* Prend l'espace disponible */
         }
 
         .product-name {
-          font-size: clamp(17px, 2.8vw, 22px);
+          font-size: clamp(16px, 2.2vw, 20px); /* Taille adaptée */
+          line-height: 1.1; /* Compact */
         }
 
         .scroll-badge {
-          padding: 6px 13px;
+          padding: 4px 12px; /* Compact */
           gap: 0.6rem;
+          align-items: center;
+          min-height: 22px; /* Hauteur réduite */
         }
 
         .availability-dot {
-          width: 7px;
+          width: 7px; /* Adapté au format compact */
           height: 7px;
+          flex-shrink: 0;
         }
 
         #scroll-message {
-          font-size: clamp(14px, 2.5vw, 17px);
+          font-size: clamp(12px, 1.8vw, 15px); /* Taille réduite */
         }
 
         .scroll-arrow-container {
-          width: 38px;
-          height: 38px;
+          width: 34px; /* Plus compact */
+          height: 34px;
         }
 
         .scroll-arrow {
-          width: 19px;
-          height: 19px;
+          width: 17px; /* Plus compact */
+          height: 17px;
         }
 
         .scroll-action {
-          font-size: clamp(13px, 2vw, 16px);
+          font-size: clamp(11px, 1.6vw, 13px); /* Plus compact */
         }
       }
 
       /* Optimisation pour les grands écrans */
       @media (min-width: 1441px) and (max-width: 1919px) {
+        #brand-title {
+          top: 24px; /* Position cohérente */
+          font-size: clamp(26px, 2.8vw, 36px); /* Taille modérée */
+        }
+
         .polaroid {
           width: 18vw; /* Taille standard optimisée pour les grands écrans */
           min-width: 220px;
@@ -1175,54 +1367,75 @@
           gap: 14px;
         }
 
-        /* Optimiser l'indicateur de défilement pour les grands écrans */
+        /* Optimiser l'indicateur de défilement pour les grands écrans - FORMAT HORIZONTAL */
         #scroll-indicator {
           bottom: 6%;
         }
 
         .scroll-content {
-          padding: 20px 28px;
-          gap: 1.2rem;
-          border-radius: 26px;
-          min-width: 380px;
-          max-width: 500px;
+          flex-direction: row; /* Côte à côte pour grands écrans */
+          padding: 14px 26px; /* Légèrement plus grand que tablette */
+          gap: 1.8rem; /* Espacement légèrement plus grand */
+          border-radius: 22px;
+          min-width: 420px;
+          max-width: 600px;
+          max-height: 85px; /* Légèrement plus haut que tablette */
+        }
+
+        .product-highlight {
+          gap: 0.6rem;
+          text-align: left; /* Aligné à gauche en format horizontal */
+          flex: 1; /* Prend l'espace disponible */
         }
 
         .product-name {
-          font-size: clamp(22px, 2.2vw, 28px);
+          font-size: clamp(18px, 2.4vw, 24px); /* Taille adaptée */
+          line-height: 1.2; /* Légèrement moins compact */
         }
 
         .scroll-badge {
-          padding: 8px 16px;
-          gap: 0.8rem;
+          padding: 5px 14px; /* Légèrement plus grand */
+          gap: 0.7rem;
+          align-items: center;
+          min-height: 24px;
         }
 
         .availability-dot {
-          width: 8px;
+          width: 8px; /* Taille standard */
           height: 8px;
+          flex-shrink: 0;
         }
 
         #scroll-message {
-          font-size: clamp(16px, 1.8vw, 20px);
+          font-size: clamp(14px, 2vw, 18px); /* Taille adaptée */
         }
 
         .scroll-arrow-container {
-          width: 42px;
-          height: 42px;
+          width: 38px; /* Taille intermédiaire */
+          height: 38px;
         }
 
         .scroll-arrow {
-          width: 21px;
-          height: 21px;
+          width: 19px; /* Taille intermédiaire */
+          height: 19px;
         }
 
         .scroll-action {
-          font-size: clamp(15px, 1.5vw, 18px);
+          font-size: clamp(13px, 1.8vw, 16px); /* Taille adaptée */
         }
       }
 
       /* Optimisations pour les très grandes tailles d'écran */
       @media (min-width: 1920px) and (max-width: 2559px) {
+        #brand-title {
+          top: 24px; /* Position cohérente */
+          font-size: clamp(
+            28px,
+            3vw,
+            42px
+          ); /* Taille pour très grands écrans */
+        }
+
         .polaroid {
           width: 16vw;
           min-width: 240px;
@@ -1251,10 +1464,76 @@
           padding: 32px 24px;
           gap: 16px;
         }
+
+        /* Optimiser l'indicateur de défilement pour les très grands écrans - FORMAT HORIZONTAL */
+        #scroll-indicator {
+          bottom: 6%;
+        }
+
+        .scroll-content {
+          flex-direction: row; /* Côte à côte pour très grands écrans */
+          padding: 16px 28px; /* Plus grand pour très grands écrans */
+          gap: 2rem; /* Espacement adapté */
+          border-radius: 24px;
+          min-width: 460px;
+          max-width: 680px;
+          max-height: 90px; /* Hauteur adaptée */
+        }
+
+        .product-highlight {
+          gap: 0.7rem;
+          text-align: left; /* Aligné à gauche en format horizontal */
+          flex: 1; /* Prend l'espace disponible */
+        }
+
+        .product-name {
+          font-size: clamp(20px, 2.6vw, 28px); /* Taille adaptée */
+          line-height: 1.2;
+        }
+
+        .scroll-badge {
+          padding: 6px 16px; /* Plus grand */
+          gap: 0.8rem;
+          align-items: center;
+          min-height: 26px;
+        }
+
+        .availability-dot {
+          width: 9px; /* Légèrement plus grand */
+          height: 9px;
+          flex-shrink: 0;
+        }
+
+        #scroll-message {
+          font-size: clamp(16px, 2.2vw, 20px); /* Taille adaptée */
+        }
+
+        .scroll-arrow-container {
+          width: 42px; /* Plus grand */
+          height: 42px;
+        }
+
+        .scroll-arrow {
+          width: 21px; /* Plus grand */
+          height: 21px;
+        }
+
+        .scroll-action {
+          font-size: clamp(15px, 2vw, 18px); /* Taille adaptée */
+        }
       }
 
       /* Amélioration pour les écrans ultra-larges */
       @media (min-width: 2560px) {
+        #brand-title {
+          top: 24px; /* Position cohérente */
+          font-size: clamp(
+            32px,
+            3.2vw,
+            48px
+          ); /* Taille pour écrans ultra-larges */
+        }
+
         .polaroid {
           width: 14vw;
           min-width: 260px;
@@ -1282,6 +1561,63 @@
         .polaroid-back {
           padding: 36px 26px;
           gap: 18px;
+        }
+
+        /* Optimiser l'indicateur de défilement pour les écrans ultra-larges - FORMAT HORIZONTAL */
+        #scroll-indicator {
+          bottom: 6%;
+        }
+
+        .scroll-content {
+          flex-direction: row; /* Côte à côte pour écrans ultra-larges */
+          padding: 18px 32px; /* Le plus grand pour ultra-larges écrans */
+          gap: 2.2rem; /* Espacement adapté */
+          border-radius: 26px;
+          min-width: 500px;
+          max-width: 750px;
+          max-height: 95px; /* Hauteur maximale */
+        }
+
+        .product-highlight {
+          gap: 0.8rem;
+          text-align: left; /* Aligné à gauche en format horizontal */
+          flex: 1; /* Prend l'espace disponible */
+        }
+
+        .product-name {
+          font-size: clamp(22px, 2.8vw, 32px); /* Taille maximale */
+          line-height: 1.2;
+        }
+
+        .scroll-badge {
+          padding: 7px 18px; /* Le plus grand */
+          gap: 0.9rem;
+          align-items: center;
+          min-height: 28px;
+        }
+
+        .availability-dot {
+          width: 10px; /* Le plus grand */
+          height: 10px;
+          flex-shrink: 0;
+        }
+
+        #scroll-message {
+          font-size: clamp(18px, 2.4vw, 22px); /* Taille maximale */
+        }
+
+        .scroll-arrow-container {
+          width: 46px; /* Le plus grand */
+          height: 46px;
+        }
+
+        .scroll-arrow {
+          width: 23px; /* Le plus grand */
+          height: 23px;
+        }
+
+        .scroll-action {
+          font-size: clamp(17px, 2.2vw, 20px); /* Taille maximale */
         }
       }
 
@@ -1656,10 +1992,10 @@
       .dark-mode .scroll-badge {
         background: linear-gradient(
           135deg,
-          rgba(34, 197, 94, 0.15) 0%,
-          rgba(16, 185, 129, 0.15) 100%
+          rgba(25, 142, 206, 0.15) 0%,
+          rgba(157, 124, 47, 0.15) 100%
         );
-        border: 1px solid rgba(34, 197, 94, 0.25);
+        border: 1px solid rgba(25, 142, 206, 0.25);
       }
 
       .dark-mode #scroll-message {
@@ -1670,12 +2006,12 @@
       }
 
       .dark-mode .scroll-arrow-container {
-        background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        background: linear-gradient(135deg, #198ece 0%, #9d7c2f 100%);
+        box-shadow: 0 4px 20px rgba(25, 142, 206, 0.3);
       }
 
       .dark-mode .scroll-arrow {
-        color: #1a1a1a;
+        color: #ffffff;
       }
 
       .dark-mode .scroll-glow {
@@ -2592,28 +2928,48 @@
               <p id="scroll-message">Disponible à la vente</p>
             </div>
           </div>
-          <div id="scroll-icon">
-            <div class="scroll-arrow-container">
-              <svg
-                class="scroll-arrow"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M7 13L12 18L17 13M7 6L12 11L17 6"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
+          <div class="scroll-action-wrapper">
+            <div id="scroll-icon">
+              <div class="scroll-arrow-container">
+                <svg
+                  class="scroll-arrow"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M7 13L12 18L17 13M7 6L12 11L17 6"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+              <p class="scroll-action">Scroll vers le bas</p>
             </div>
-            <p class="scroll-action">Scroll vers le bas</p>
           </div>
         </div>
         <div class="scroll-glow"></div>
       </div>
+
+      <!-- Bouton de navigation suivante -->
+      <button id="next-scroll-btn" aria-label="Aller au prochain élément">
+        <svg
+          class="next-arrow"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M7 13L12 18L17 13"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
 
       <!-- Titre placé au-dessus -->
       <h1 id="brand-title">ALTO LILLE</h1>
@@ -3294,12 +3650,95 @@
           }
         }
         renderer.render(scene, camera);
+
+        // Mettre à jour le bouton de navigation suivante
+        updateNextScrollButton();
       }
 
       /* ===== NAVIGATION ===== */
       document.getElementById("cta").addEventListener("click", function () {
         navigateToShop();
       });
+
+      // Gestion du clic sur l'indicateur de scroll
+      document
+        .getElementById("scroll-indicator")
+        .addEventListener("click", function () {
+          // Calculer la position où "PLA éco-responsable" est complètement visible
+          // La première légende (cap0) apparaît à t = 0.04 (CFG.legend.fade)
+          // On veut scroller jusqu'à un point où elle est bien visible, disons t = 0.15
+          const targetProgress = 0.15;
+          const targetScrollPosition =
+            (CFG.intro + targetProgress * (1 - CFG.intro)) *
+            document.body.scrollHeight;
+
+          // Scroll fluide vers la position cible
+          window.scrollTo({
+            top: targetScrollPosition,
+            behavior: "smooth",
+          });
+        });
+
+      // Gestion du bouton de navigation séquentiel
+      let currentCaptionIndex = 0;
+      const nextScrollBtn = document.getElementById("next-scroll-btn");
+
+      // Positions cibles pour chaque légende (en valeur t)
+      const captionTargets = [
+        0.15, // cap0 - PLA éco-responsable (bien visible)
+        0.25, // cap1 - Montage ultra simple
+        0.37, // cap2 - Chêne écogéré
+        0.49, // cap3 - Conçu & fabriqué par Alto Lille
+        0.61, // cap4 - LED 60 W E14 incluse
+        0.73, // cap5 - Emballage éco-responsable
+        0.95, // Fin de page - CTA
+      ];
+
+      nextScrollBtn.addEventListener("click", function () {
+        if (currentCaptionIndex < captionTargets.length - 1) {
+          currentCaptionIndex++;
+          const targetProgress = captionTargets[currentCaptionIndex];
+          const targetScrollPosition =
+            (CFG.intro + targetProgress * (1 - CFG.intro)) *
+            document.body.scrollHeight;
+
+          window.scrollTo({
+            top: targetScrollPosition,
+            behavior: "smooth",
+          });
+        }
+      });
+
+      // Fonction pour gérer l'affichage/masquage du bouton de navigation
+      function updateNextScrollButton() {
+        if (prog >= CFG.intro) {
+          const t = (prog - CFG.intro) / (1 - CFG.intro);
+
+          // Afficher le bouton quand on atteint la première légende
+          if (t >= 0.1 && t < 0.95) {
+            nextScrollBtn.classList.add("visible");
+
+            // Mettre à jour l'index actuel basé sur la position
+            for (let i = 0; i < captionTargets.length; i++) {
+              if (
+                t >= captionTargets[i] - 0.05 &&
+                t < captionTargets[i] + 0.05
+              ) {
+                currentCaptionIndex = i;
+                break;
+              }
+            }
+          } else {
+            // Masquer le bouton avant la première légende ou après la dernière
+            nextScrollBtn.classList.remove("visible");
+            if (t < 0.1) currentCaptionIndex = 0;
+          }
+        } else {
+          // Masquer le bouton pendant la phase d'intro
+          nextScrollBtn.classList.remove("visible");
+          currentCaptionIndex = 0;
+        }
+      }
 
       // Gestion de la navigation
       function navigateToShop() {
