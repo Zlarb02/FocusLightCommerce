@@ -181,6 +181,13 @@ export default function Stocks() {
   const [productForVariation, setProductForVariation] =
     useState<ProductWithVariations | null>(null);
 
+  // États pour la modale des images
+  const [isImagesModalOpen, setIsImagesModalOpen] = useState(false);
+  const [selectedVariationImages, setSelectedVariationImages] = useState<{
+    variation: ProductVariation;
+    productName: string;
+  } | null>(null);
+
   const { data: products = [], isLoading } = useQuery<ProductWithVariations[]>({
     queryKey: ["/api/products"],
     enabled: true,
@@ -442,6 +449,15 @@ export default function Stocks() {
     setIsDeleteVariationAlertOpen(true);
   };
 
+  // Ouvrir la modale d'images
+  const openImagesModal = (
+    variation: ProductVariation,
+    productName: string
+  ) => {
+    setSelectedVariationImages({ variation, productName });
+    setIsImagesModalOpen(true);
+  };
+
   // Soumettre le formulaire de stock
   const onSubmitStock = (data: StockFormValues) => {
     if (selectedVariation) {
@@ -538,7 +554,7 @@ export default function Stocks() {
                 <TableHeader>
                   <TableRow>
                     <TableHead className="w-12">ID</TableHead>
-                    <TableHead className="w-16">Image</TableHead>
+                    <TableHead className="w-32">Images</TableHead>
                     <TableHead>Produit</TableHead>
                     <TableHead>Couleur</TableHead>
                     <TableHead>Prix</TableHead>
@@ -566,15 +582,72 @@ export default function Stocks() {
                                 {variation.id}
                               </TableCell>
                               <TableCell>
-                                <div className="w-10 h-10 relative">
+                                <div className="flex flex-col items-center gap-1">
                                   {variation.images &&
-                                    variation.images.length > 0 && (
-                                      <img
-                                        src={variation.images[0].url}
-                                        alt={`${product.name} ${variation.variationValue}`}
-                                        className="object-contain w-full h-full"
-                                      />
-                                    )}
+                                  variation.images.length > 0 ? (
+                                    <>
+                                      {/* Image principale cliquable */}
+                                      <div className="relative group flex-shrink-0">
+                                        <img
+                                          src={variation.images[0].url}
+                                          alt={`${product.name} ${variation.variationValue}`}
+                                          className="w-12 h-12 object-cover rounded border hover:scale-110 transition-transform cursor-pointer"
+                                          onClick={() =>
+                                            openImagesModal(
+                                              variation,
+                                              product.name
+                                            )
+                                          }
+                                        />
+                                        {/* Tooltip avec image agrandie au survol */}
+                                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity z-50 pointer-events-none">
+                                          <img
+                                            src={variation.images[0].url}
+                                            alt={`${product.name} ${variation.variationValue}`}
+                                            className="w-32 h-32 object-cover rounded shadow-lg border-2 border-white"
+                                          />
+                                          <div className="text-center text-xs text-gray-600 mt-1 bg-white px-2 py-1 rounded shadow">
+                                            {variation.images.length > 1
+                                              ? `Voir les ${variation.images.length} images`
+                                              : "Voir l'image"}
+                                          </div>
+                                        </div>
+                                      </div>
+
+                                      {/* Badge avec le nombre total d'images */}
+                                      {variation.images.length > 1 && (
+                                        <Badge
+                                          variant="secondary"
+                                          className="text-xs cursor-pointer hover:bg-gray-300 transition-colors flex-shrink-0"
+                                          onClick={() =>
+                                            openImagesModal(
+                                              variation,
+                                              product.name
+                                            )
+                                          }
+                                          title="Voir toutes les images"
+                                        >
+                                          {variation.images.length} imgs
+                                        </Badge>
+                                      )}
+                                    </>
+                                  ) : (
+                                    <div className="w-12 h-12 bg-gray-100 rounded border flex items-center justify-center flex-shrink-0">
+                                      <svg
+                                        className="w-6 h-6 text-gray-400"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                      >
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          strokeWidth={2}
+                                          d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                        />
+                                      </svg>
+                                    </div>
+                                  )}
                                 </div>
                               </TableCell>
                               <TableCell>{product.name}</TableCell>
@@ -961,32 +1034,96 @@ export default function Stocks() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Images de la variation</FormLabel>
-                    <div className="space-y-2">
+                    <div className="space-y-3">
                       {field.value.map((img, idx) => (
-                        <div key={idx} className="flex gap-2 items-center">
-                          <Input
-                            value={img.url}
-                            placeholder="URL de l'image"
-                            onChange={(e) => {
-                              const newArr = [...field.value];
-                              newArr[idx] = { ...img, url: e.target.value };
-                              field.onChange(newArr);
-                            }}
-                          />
-                          <Input
-                            type="number"
-                            min={0}
-                            className="w-20"
-                            value={img.order}
-                            onChange={(e) => {
-                              const newArr = [...field.value];
-                              newArr[idx] = {
-                                ...img,
-                                order: Number(e.target.value),
-                              };
-                              field.onChange(newArr);
-                            }}
-                          />
+                        <div
+                          key={idx}
+                          className="flex gap-3 items-center p-3 border rounded-lg bg-gray-50"
+                        >
+                          {/* Miniature de l'image */}
+                          <div className="w-16 h-16 flex-shrink-0">
+                            {img.url ? (
+                              <div className="relative w-full h-full">
+                                <img
+                                  src={img.url}
+                                  alt={`Image ${idx + 1}`}
+                                  className="w-full h-full object-cover rounded border"
+                                  onError={(e) => {
+                                    // Cacher l'image cassée et afficher le placeholder
+                                    e.currentTarget.style.display = "none";
+                                  }}
+                                />
+                                <div
+                                  className="absolute inset-0 w-full h-full bg-gray-200 rounded border flex items-center justify-center"
+                                  style={{ display: "none" }}
+                                >
+                                  <svg
+                                    className="w-6 h-6 text-gray-400"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                    />
+                                  </svg>
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="w-full h-full bg-gray-200 rounded border flex items-center justify-center">
+                                <svg
+                                  className="w-6 h-6 text-gray-400"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                  />
+                                </svg>
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Champs URL et ordre */}
+                          <div className="flex-1 space-y-2">
+                            <Input
+                              value={img.url}
+                              placeholder="URL de l'image"
+                              onChange={(e) => {
+                                const newArr = [...field.value];
+                                newArr[idx] = { ...img, url: e.target.value };
+                                field.onChange(newArr);
+                              }}
+                            />
+                            <div className="flex gap-2 items-center">
+                              <label className="text-sm text-gray-600 font-medium">
+                                Ordre:
+                              </label>
+                              <Input
+                                type="number"
+                                min={0}
+                                className="w-20"
+                                value={img.order}
+                                onChange={(e) => {
+                                  const newArr = [...field.value];
+                                  newArr[idx] = {
+                                    ...img,
+                                    order: Number(e.target.value),
+                                  };
+                                  field.onChange(newArr);
+                                }}
+                              />
+                            </div>
+                          </div>
+
+                          {/* Bouton de suppression */}
                           <Button
                             type="button"
                             variant="outline"
@@ -999,8 +1136,10 @@ export default function Stocks() {
                                 newArr.length ? newArr : [{ url: "", order: 0 }]
                               );
                             }}
+                            className="text-red-500 hover:bg-red-50"
+                            title="Supprimer cette image"
                           >
-                            -
+                            <Trash2 className="h-4 w-4" />
                           </Button>
                         </div>
                       ))}
@@ -1014,8 +1153,10 @@ export default function Stocks() {
                             { url: "", order: field.value.length },
                           ]);
                         }}
+                        className="w-full"
                       >
-                        + Ajouter une image
+                        <Plus className="h-4 w-4 mr-2" />
+                        Ajouter une image
                       </Button>
                     </div>
                     <FormMessage />
@@ -1034,8 +1175,7 @@ export default function Stocks() {
                         type="number"
                         min="0"
                         step="0.01"
-                        {...field}
-                        value={field.value === null ? "" : field.value}
+                        value={field.value ?? ""}
                         onChange={(e) => {
                           const value =
                             e.target.value === ""
@@ -1144,6 +1284,69 @@ export default function Stocks() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Modale d'images */}
+      <Dialog open={isImagesModalOpen} onOpenChange={setIsImagesModalOpen}>
+        <DialogContent className="sm:max-w-[800px] max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>
+              Images de la variation{" "}
+              {selectedVariationImages?.variation.variationValue}
+            </DialogTitle>
+            {selectedVariationImages && (
+              <DialogDescription>
+                Produit : <strong>{selectedVariationImages.productName}</strong>{" "}
+                -{selectedVariationImages.variation.images.length} image(s)
+                disponible(s)
+              </DialogDescription>
+            )}
+          </DialogHeader>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+            {selectedVariationImages?.variation.images.map((image, index) => (
+              <div
+                key={index}
+                className="relative group cursor-pointer rounded-lg overflow-hidden border shadow-sm hover:shadow-md transition-shadow"
+                onClick={() => {
+                  // Ouvrir l'image en grand dans une nouvelle modale ou un nouvel onglet
+                  window.open(image.url, "_blank");
+                }}
+              >
+                <div className="aspect-square">
+                  <img
+                    src={image.url}
+                    alt={`Image ${index + 1} de la variation ${
+                      selectedVariationImages.variation.variationValue
+                    }`}
+                    className="w-full h-full object-cover transition-transform group-hover:scale-105"
+                  />
+                </div>
+                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 flex items-center justify-center transition-all">
+                  <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="bg-white bg-opacity-90 rounded-lg px-3 py-2 text-sm font-medium text-gray-900">
+                      Voir en grand
+                    </div>
+                  </div>
+                </div>
+                <div className="absolute top-2 left-2 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded">
+                  {index + 1} /{" "}
+                  {selectedVariationImages.variation.images.length}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <DialogFooter>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setIsImagesModalOpen(false)}
+            >
+              Fermer
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </DashboardLayout>
   );
 }
