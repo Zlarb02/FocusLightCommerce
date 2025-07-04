@@ -101,6 +101,17 @@ function Router() {
         <Route path="/checkout" component={CheckoutNew} />
 
         {/* Routes des projets */}
+        <Route path="/design-action">
+          <Suspense fallback={<div className="loading">Chargement...</div>}>
+            <DesignEnAction />
+          </Suspense>
+        </Route>
+        <Route path="/creations-demande">
+          <Suspense fallback={<div className="loading">Chargement...</div>}>
+            <CreationsSurMesure />
+          </Suspense>
+        </Route>
+        {/* Routes de compatibilité */}
         <Route path="/design-en-action">
           <Suspense fallback={<div className="loading">Chargement...</div>}>
             <DesignEnAction />

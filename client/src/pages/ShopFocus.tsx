@@ -579,13 +579,13 @@ export default function ShopFocus() {
 
           <div className="flex flex-wrap justify-center items-center gap-10 md:gap-20 animate fade-in-up delay-4">
             <div className="text-center">
-              <div className="w-14 h-14 border border-gray-200 flex items-center justify-center mx-auto mb-3">
+              <div className="w-14 h-14 flex items-center justify-center mx-auto mb-3">
                 <Leaf className="text-green-600 h-5 w-5" />
               </div>
               <p className="font-medium text-sm">{t("focus.ecoResponsible")}</p>
             </div>
             <div className="text-center">
-              <div className="w-14 h-14 border border-gray-200 flex items-center justify-center mx-auto mb-3">
+              <div className="w-14 h-14 flex items-center justify-center mx-auto mb-3">
                 <svg
                   className="text-blue-600 h-5 w-5"
                   viewBox="0 0 24 24"
@@ -604,7 +604,7 @@ export default function ShopFocus() {
               <p className="font-medium text-sm">{t("focus.freeDelivery")}</p>
             </div>
             <div className="text-center">
-              <div className="w-14 h-14 border border-gray-200 flex items-center justify-center mx-auto mb-3">
+              <div className="w-14 h-14 flex items-center justify-center mx-auto mb-3">
                 <svg
                   className="text-purple-600 h-5 w-5"
                   viewBox="0 0 24 24"
@@ -621,7 +621,7 @@ export default function ShopFocus() {
               <p className="font-medium text-sm">{t("focus.securePayment")}</p>
             </div>
             <div className="text-center">
-              <div className="w-14 h-14 border border-gray-200 flex items-center justify-center mx-auto mb-3">
+              <div className="w-14 h-14 flex items-center justify-center mx-auto mb-3">
                 <svg
                   className="text-orange-600 h-5 w-5"
                   viewBox="0 0 24 24"

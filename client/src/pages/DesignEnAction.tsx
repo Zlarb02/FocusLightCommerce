@@ -85,7 +85,7 @@ export default function DesignEnAction() {
 
                   <div className="relative h-96 lg:h-auto">
                     <img
-                      src="/images/sea-cle.jpg"
+                      src="https://www.alto-lille.fr/uploads/sea-cle.jpg"
                       alt="Sea-clé"
                       className="w-full h-full object-cover"
                     />
@@ -100,7 +100,7 @@ export default function DesignEnAction() {
                 <div className="grid grid-cols-1 lg:grid-cols-2">
                   <div className="relative h-96 lg:h-auto lg:order-1">
                     <img
-                      src="/images/lowtech-vynil.jpg"
+                      src="https://www.alto-lille.fr/uploads/lowtech-vynil.jpg"
                       alt="Without Speaker"
                       className="w-full h-full object-cover"
                     />

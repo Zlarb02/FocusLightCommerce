@@ -310,13 +310,367 @@
         top: 42%;
         left: 50%;
         transform: translate(-50%, -50%);
-        width: 85vw;
+        width: 75vw;
         max-width: 320px;
         aspect-ratio: 3/4;
         z-index: 10;
         border-radius: 0;
         overflow: hidden;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .focus-slider:hover {
+        transform: translate(-50%, -50%) scale(1.02);
+        box-shadow: 0 6px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Focus slider position pour écrans > 765px */
+      @media (min-width: 766px) {
+        .focus-slider {
+          top: 50%;
+        }
+      }
+
+      /* Containers pour les sections latérales desktop */
+      .focus-section-desktop {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 5;
+        display: none !important; /* Masqué sur mobile et tablette */
+      }
+
+      /* Desktop uniquement - design moderne et épuré */
+      @media (min-width: 1200px) {
+        .focus-section-desktop {
+          display: block !important;
+        }
+
+        /* Sections positionnées avec plus d'air */
+        .left-section {
+          left: clamp(2%, 8vw, 120px);
+          width: clamp(280px, 25vw, 400px);
+        }
+
+        .right-section {
+          right: clamp(2%, 8vw, 120px);
+          width: clamp(280px, 25vw, 400px);
+        }
+
+        /* Contenu des sections - design épuré */
+        .section-content {
+          cursor: pointer;
+          transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          padding: 0;
+          background: none;
+          border: none;
+          outline: none;
+        }
+
+        .section-content:hover {
+          transform: translateY(-8px);
+        }
+
+        /* Grilles d'images - design flexible et moderne */
+        .design-images-grid,
+        .creations-images-grid {
+          display: grid;
+          gap: clamp(16px, 3vw, 32px);
+          width: 100%;
+          height: auto;
+          min-height: clamp(300px, 40vh, 500px);
+          align-content: center;
+          justify-content: center;
+        }
+
+        /* Layout pour section gauche - asymétrique */
+        .design-images-grid {
+          grid-template-columns: 1fr;
+          grid-template-rows: auto auto auto;
+          grid-template-areas:
+            "main"
+            "title"
+            "secondary";
+          justify-items: start;
+        }
+
+        /* Layout pour section droite - asymétrique inverse */
+        .creations-images-grid {
+          grid-template-columns: 1fr;
+          grid-template-rows: auto auto auto;
+          grid-template-areas:
+            "main"
+            "title"
+            "secondary";
+          justify-items: end;
+        }
+
+        /* Images principales - design moderne */
+        .design-image-main,
+        .creation-image-main {
+          grid-area: main;
+          width: clamp(240px, 20vw, 320px);
+          height: clamp(140px, 12vw, 200px);
+        }
+
+        /* Images secondaires */
+        .design-image-secondary,
+        .creation-image-secondary {
+          grid-area: secondary;
+          width: clamp(200px, 18vw, 280px);
+          height: clamp(120px, 10vw, 160px);
+        }
+
+        /* Titres - typographie moderne */
+        .section-title {
+          grid-area: title;
+          font-family: var(--font-titles);
+          font-size: clamp(16px, 1.8vw, 24px);
+          font-weight: 400;
+          color: var(--text-color);
+          line-height: 1.2;
+          letter-spacing: 0.025em;
+          text-align: center;
+          margin: 0;
+          width: 100%;
+          text-transform: uppercase;
+          opacity: 0.9;
+        }
+
+        /* Style des images - moderne et épuré */
+        .section-image {
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+          border-radius: 0;
+          background: var(--bg-color);
+          transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08),
+            0 1px 3px rgba(0, 0, 0, 0.12);
+          position: relative;
+        }
+
+        .section-image::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: linear-gradient(
+            135deg,
+            transparent 0%,
+            rgba(0, 0, 0, 0.02) 100%
+          );
+          opacity: 0;
+          transition: opacity 0.4s ease;
+          pointer-events: none;
+          z-index: 1;
+        }
+
+        .section-image:hover::before {
+          opacity: 1;
+        }
+
+        .section-image:hover {
+          box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15),
+            0 4px 12px rgba(0, 0, 0, 0.1);
+          transform: translateY(-4px) scale(1.02);
+        }
+
+        /* Images - qualité et recadrage optimisés */
+        .section-image img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center;
+          display: block;
+          transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          filter: contrast(1.05) saturate(1.1);
+        }
+
+        .section-image:hover img {
+          transform: scale(1.05);
+        }
+
+        /* Image Sea-Clé - recadrage horizontal optimisé + performance */
+        .design-image-secondary img {
+          object-fit: cover;
+          object-position: center center;
+          transition: transform 0.4s ease; /* Transition plus rapide pour Sea-Clé */
+        }
+
+        .design-image-secondary {
+          will-change: transform; /* Optimisation GPU spécifique */
+        }
+
+        /* Autres images - préservation du ratio */
+        .design-image-main img,
+        .creation-image-main img,
+        .creation-image-secondary img {
+          object-fit: contain;
+          object-position: center;
+        }
+
+        /* Mode sombre - adaptation subtile */
+        .dark-mode .section-image {
+          background: rgba(255, 255, 255, 0.02);
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3),
+            0 1px 3px rgba(0, 0, 0, 0.4);
+        }
+
+        .dark-mode .section-image:hover {
+          box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4),
+            0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .dark-mode .section-image::before {
+          background: linear-gradient(
+            135deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0.03) 100%
+          );
+        }
+
+        /* Effet parallax optimisé */
+        .parallax-layer {
+          transition: transform 0.1s ease-out;
+          will-change: transform;
+        }
+      }
+
+      /* Très grands écrans - scaling intelligent */
+      @media (min-width: 1600px) {
+        .left-section {
+          left: clamp(60px, 6vw, 150px);
+          width: clamp(320px, 28vw, 450px);
+        }
+
+        .right-section {
+          right: clamp(60px, 6vw, 150px);
+          width: clamp(320px, 28vw, 450px);
+        }
+
+        .design-images-grid,
+        .creations-images-grid {
+          gap: clamp(20px, 4vw, 40px);
+          min-height: clamp(400px, 45vh, 600px);
+        }
+
+        .section-title {
+          font-size: clamp(18px, 2vw, 28px);
+          letter-spacing: 0.05em;
+        }
+      }
+
+      /* Écrans ultra-larges - limites maximales */
+      @media (min-width: 2000px) {
+        .left-section,
+        .right-section {
+          width: 450px;
+        }
+
+        .design-image-main,
+        .creation-image-main {
+          width: 350px;
+          height: 220px;
+        }
+
+        .design-image-secondary,
+        .creation-image-secondary {
+          width: 300px;
+          height: 180px;
+        }
+
+        .section-title {
+          font-size: 28px;
+        }
+
+        /* Optimisations parallax pour écrans ultra-larges */
+        .parallax-layer {
+          transform-style: preserve-3d;
+          backface-visibility: hidden;
+        }
+      }
+
+      /* Optimisations performances pour le parallax */
+      @media (min-width: 1200px) {
+        .parallax-layer {
+          will-change: transform, opacity;
+          transform-style: preserve-3d;
+          backface-visibility: hidden;
+          perspective: 1000px;
+        }
+
+        .section-image {
+          will-change: transform, opacity, filter;
+          transform-style: preserve-3d;
+          backface-visibility: hidden;
+        }
+
+        .section-title {
+          will-change: transform, filter;
+          transform-style: preserve-3d;
+          backface-visibility: hidden;
+        }
+
+        .focus-slider {
+          will-change: transform;
+          transform-style: preserve-3d;
+          backface-visibility: hidden;
+        }
+
+        /* Animations fluides pour le parallax */
+        .parallax-layer,
+        .section-image,
+        .section-title {
+          transition: none; /* Pas de transition pour le parallax temps réel */
+        }
+
+        /* Mode réduit pour les utilisateurs sensibles au mouvement */
+        @media (prefers-reduced-motion: reduce) {
+          .parallax-layer,
+          .section-image,
+          .section-title,
+          .focus-slider {
+            will-change: auto;
+            transform: none !important;
+            filter: none !important;
+            opacity: 1 !important;
+          }
+
+          .focus-section-desktop {
+            transform: translateY(-50%) !important;
+          }
+        }
+      }
+
+      /* Sur mobile et petits écrans, s'assurer que les sections desktop sont cachées */
+      @media (max-width: 1199px) {
+        .focus-section-desktop {
+          display: none !important;
+          visibility: hidden !important;
+        }
+      }
+
+      /* Sur tablette (768px-1199px), cacher les placeholders */
+      @media (min-width: 768px) and (max-width: 1199px) {
+        .focus-section-desktop {
+          display: none !important;
+        }
+
+        .focus-slider {
+          max-width: 400px; /* Plus grand sur tablette */
+        }
+      }
+
+      /* Focus slider position pour écrans > 765px */
+      @media (min-width: 766px) {
+        .focus-slider {
+          top: 50%;
+        }
       }
 
       .slider-container {
@@ -327,13 +681,13 @@
 
       .slider-track {
         display: flex;
-        width: 400%; /* 4 images */
+        width: 800%; /* 8 images (4 originales + 4 dupliquées) pour l'effet infini */
         height: 100%;
         transition: transform 0.5s ease-in-out;
       }
 
       .slider-slide {
-        width: 25%; /* 1/4 de la largeur totale */
+        width: 12.5%; /* 1/8 de la largeur totale */
         height: 100%;
         flex-shrink: 0;
       }
@@ -344,31 +698,6 @@
         object-fit: cover;
         object-position: center;
         display: block;
-      }
-
-      /* Navigation du slider */
-      .slider-nav {
-        position: absolute;
-        bottom: 16px;
-        left: 50%;
-        transform: translateX(-50%);
-        display: flex;
-        gap: 8px;
-        z-index: 2;
-      }
-
-      .slider-dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.5);
-        cursor: pointer;
-        transition: all 0.3s ease;
-      }
-
-      .slider-dot.active {
-        background: rgba(255, 255, 255, 1);
-        transform: scale(1.2);
       }
 
       /* Menu burger - Style minimaliste identique à Layout.tsx */
@@ -489,8 +818,8 @@
         transform: translateX(-50%);
         text-align: center;
         font-family: var(--font-titles);
-        font-size: clamp(20px, 3vw, 28px);
-        font-weight: var(--fw-bold);
+        font-size: clamp(64px, 8vw, 96px);
+        font-weight: 1000;
         color: var(--text-color);
         opacity: 1;
         transition: all 0.3s ease-out;
@@ -501,6 +830,7 @@
         box-shadow: none;
         padding: 0;
         cursor: pointer;
+        letter-spacing: 0.02em;
       }
 
       #brand-title:hover {
@@ -765,79 +1095,6 @@
         transform: translateY(2px);
       }
 
-      /* Navigation suivante - Bouton de défilement séquentiel */
-      #next-scroll-btn {
-        position: fixed;
-        bottom: 50px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 100;
-        width: 38px;
-        height: 38px;
-        border-radius: 50%;
-        border: none;
-        cursor: pointer;
-        opacity: 0;
-        visibility: hidden;
-        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        background: var(--scroll-indicator-bg);
-        box-shadow: 0 8px 25px var(--scroll-indicator-shadow);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      #next-scroll-btn.visible {
-        opacity: 1;
-        visibility: visible;
-        transform: translateX(-50%) scale(1);
-      }
-
-      #next-scroll-btn:hover {
-        transform: translateX(-50%) scale(1.1);
-        box-shadow: 0 12px 35px var(--scroll-indicator-shadow);
-      }
-
-      #next-scroll-btn:active {
-        transform: translateX(-50%) scale(0.95);
-      }
-
-      #next-scroll-btn .next-arrow {
-        width: 18px;
-        height: 18px;
-        color: white;
-        transition: transform 0.3s ease;
-      }
-
-      #next-scroll-btn:hover .next-arrow {
-        transform: translateY(2px);
-      }
-
-      /* Adaptations responsive pour le bouton */
-      @media (max-width: 768px) {
-        #next-scroll-btn {
-          width: 32px;
-          height: 32px;
-        }
-
-        #next-scroll-btn .next-arrow {
-          width: 14px;
-          height: 14px;
-        }
-      }
-
-      @media (min-width: 1081px) {
-        #next-scroll-btn {
-          width: 32px;
-          height: 32px;
-        }
-
-        #next-scroll-btn .next-arrow {
-          width: 14px;
-          height: 14px;
-        }
-      }
-
       /* Focus et accessibilité pour les images */
       .product-image:focus,
       .product-image:focus-visible {
@@ -845,191 +1102,12 @@
         outline-offset: 2px;
       }
 
-      /* Positionnement des images de produits - Mobile First avec Parallax */
-      .p1 {
-        top: 10%;
-        left: 50%;
-        transform: translateX(-50%);
-      }
-
-      .p2 {
-        top: 30%;
-        left: 50%;
-        transform: translateX(-50%);
-      }
-
-      .p3 {
-        top: 50%;
-        left: 50%;
-        transform: translateX(-50%);
-      }
-
-      .p4 {
-        top: 70%;
-        left: 50%;
-        transform: translateX(-50%);
-      }
-
-      .p5 {
-        top: 90%;
-        left: 50%;
-        transform: translateX(-50%);
-      }
-
-      .p6 {
-        top: 110%;
-        left: 50%;
-        transform: translateX(-50%);
-      }
-
-      /* Layout Desktop - Grille comme sur la maquette */
-      @media (min-width: 768px) {
-        .p1 {
-          top: 2%;
-          left: 5%;
-          transform: none;
-        }
-
-        .p2 {
-          bottom: 2%;
-          left: 3%;
-          transform: none;
-        }
-
-        .p3 {
-          top: 20%;
-          right: 2%;
-          transform: none;
-        }
-
-        .p4 {
-          left: 2%;
-          top: 36%;
-          transform: none;
-        }
-
-        .p5 {
-          right: 1%;
-          bottom: 2%;
-          transform: none;
-        }
-
-        .p6 {
-          top: 10%;
-          right: 13%;
-          transform: none;
-        }
-      }
-
-      /* Amélioration pour très petits écrans (fallback pour < 320px) */
-      @media (max-width: 319px) {
-        #brand-title {
-          top: 5%;
-          font-size: clamp(20px, 7vw, 28px);
-        }
-
-        .polaroid {
-          width: 45vw; /* Encore plus grand pour les très petits écrans */
-          min-width: 130px;
-        }
-
-        .polaroid-title {
-          font-size: 15px;
-          line-height: 1.3;
-          margin-bottom: 7px;
-        }
-
-        .polaroid-description {
-          font-size: 13px;
-          line-height: 1.4;
-          margin-bottom: 11px;
-        }
-
-        .polaroid-action {
-          font-size: 12px;
-          padding: 11px 17px;
-          min-height: 42px;
-        }
-      }
-
-      /* Amélioration pour petits écrans intermédiaires (501-600px) */
-      @media (min-width: 501px) and (max-width: 600px) {
-        #brand-title {
-          top: 5.5%;
-          font-size: clamp(26px, 5.5vw, 34px);
-        }
-
-        .polaroid {
-          width: 38vw; /* Taille intermédiaire optimisée */
-          min-width: 150px;
-        }
-
-        .polaroid-title {
-          font-size: 17px;
-          line-height: 1.3;
-          margin-bottom: 8px;
-        }
-
-        .polaroid-description {
-          font-size: 15px;
-          line-height: 1.4;
-          margin-bottom: 12px;
-        }
-
-        .polaroid-action {
-          font-size: 14px;
-          padding: 12px 19px;
-          min-height: 44px;
-        }
-
-        .polaroid-back {
-          padding: 24px 18px;
-          gap: 8px;
-        }
-
-        /* Optimiser l'indicateur de scroll */
-        #scroll-indicator {
-          bottom: 3%;
-        }
-      }
-
       /* Amélioration pour mobile large (avant tablette) */
       @media (min-width: 481px) and (max-width: 764px) {
         #brand-title {
           top: 6%;
-          font-size: clamp(28px, 5.5vw, 38px);
+          font-size: clamp(40px, 8vw, 50px);
         }
-
-        .polaroid {
-          width: 35vw; /* Augmenté pour meilleure lisibilité */
-          min-width: 140px;
-        }
-
-        .polaroid-title {
-          font-size: 16px; /* Augmenté pour meilleure lisibilité */
-          line-height: 1.3;
-          margin-bottom: 8px;
-        }
-
-        .polaroid-description {
-          font-size: 14px; /* Augmenté pour meilleure lisibilité */
-          line-height: 1.4;
-          margin-bottom: 12px;
-        }
-
-        .polaroid-action {
-          font-size: 13px; /* Augmenté pour meilleure lisibilité */
-          padding: 12px 19px;
-          min-height: 44px;
-        }
-
-        /* Ajuster l'espacement interne du verso */
-        .polaroid-back {
-          padding: 22px 16px; /* Augmenté pour meilleure lisibilité */
-          gap: 7px;
-        }
-
-        /* Instructions visuelles supprimées sur mobile pour éviter la surcharge visuelle */
 
         /* Optimisation moderne de l'indicateur de défilement pour mobile large */
         #scroll-indicator {
@@ -1115,62 +1193,6 @@
             transform: translate(-50%, -50%) scale(1.05);
           }
         }
-
-        /* Désactiver l'effet de survol sur les appareils tactiles */
-        .touch-device .polaroid:hover .polaroid-inner {
-          transform: none;
-        }
-
-        /* Désactiver les effets de survol pour les appareils tactiles */
-        .touch-device .polaroid:hover .polaroid-inner {
-          transform: rotate(var(--rotation, 0deg)) !important;
-        }
-
-        /* Forcer l'état normal des rotations pour les appareils tactiles */
-        .touch-device .p1 .polaroid-inner {
-          transform: rotate(-8deg);
-        }
-        .touch-device .p2 .polaroid-inner {
-          transform: rotate(10deg);
-        }
-        .touch-device .p3 .polaroid-inner {
-          transform: rotate(5deg);
-        }
-        .touch-device .p4 .polaroid-inner {
-          transform: rotate(-6deg);
-        }
-        .touch-device .p5 .polaroid-inner {
-          transform: rotate(-12deg);
-        }
-        .touch-device .p6 .polaroid-inner {
-          transform: rotate(7deg);
-        }
-
-        /* États retournés pour appareils tactiles */
-        .touch-device .p1.flipped .polaroid-inner {
-          transform: rotate(-8deg) rotateY(180deg);
-        }
-        .touch-device .p2.flipped .polaroid-inner {
-          transform: rotate(10deg) rotateY(180deg);
-        }
-        .touch-device .p3.flipped .polaroid-inner {
-          transform: rotate(5deg) rotateY(180deg);
-        }
-        .touch-device .p4.flipped .polaroid-inner {
-          transform: rotate(-6deg) rotateY(180deg);
-        }
-        .touch-device .p5.flipped .polaroid-inner {
-          transform: rotate(-12deg) rotateY(180deg);
-        }
-        .touch-device .p6.flipped .polaroid-inner {
-          transform: rotate(7deg) rotateY(180deg);
-        }
-
-        /* Améliorer la visibilité du focus sur les appareils tactiles - sans contour bleu */
-        .touch-device .polaroid:focus-visible {
-          outline: none !important;
-          box-shadow: none !important;
-        }
       }
 
       /* Optimisation spécifique pour la plage 765px-1080px (desktop/tablette) */
@@ -1229,49 +1251,13 @@
           font-size: clamp(11px, 1.8vw, 13px); /* Plus petit */
           margin-top: 2px;
         }
-
-        /* Réduire la taille du bouton next-scroll-btn et de la flèche sur toutes les tailles d'écrans, y compris les media queries */
-        #next-scroll-btn {
-          width: 38px;
-          height: 38px;
-        }
-        #next-scroll-btn .next-arrow {
-          width: 18px;
-          height: 18px;
-        }
       }
 
       /* Amélioration pour tablette large */
       @media (min-width: 1081px) and (max-width: 1440px) {
         #brand-title {
           top: 24px; /* Position cohérente avec desktop */
-          font-size: clamp(24px, 2.5vw, 32px); /* Taille plus raisonnable */
-        }
-
-        .polaroid {
-          width: 22vw; /* Légèrement augmenté pour meilleure visibilité */
-          min-width: 170px;
-        }
-
-        .polaroid-title {
-          font-size: 17px; /* Augmenté pour meilleure lisibilité */
-          line-height: 1.3;
-        }
-
-        .polaroid-description {
-          font-size: 15px; /* Augmenté pour meilleure lisibilité */
-          line-height: 1.4;
-        }
-
-        .polaroid-action {
-          font-size: 14px; /* Augmenté pour meilleure lisibilité */
-          padding: 11px 19px;
-          min-height: 42px;
-        }
-
-        .polaroid-back {
-          padding: 24px 17px; /* Augmenté pour meilleure lisibilité */
-          gap: 9px;
+          font-size: clamp(48px, 5.5vw, 64px); /* Taille harmonisée tablette */
         }
 
         /* Optimisation moderne de l'indicateur de défilement pour tablette - FORMAT HORIZONTAL */
@@ -1336,35 +1322,11 @@
       @media (min-width: 1441px) and (max-width: 1919px) {
         #brand-title {
           top: 24px; /* Position cohérente */
-          font-size: clamp(26px, 2.8vw, 36px); /* Taille modérée */
-        }
-
-        .polaroid {
-          width: 18vw; /* Taille standard optimisée pour les grands écrans */
-          min-width: 220px;
-        }
-
-        .polaroid-title {
-          font-size: 20px;
-          line-height: 1.3;
-          font-weight: 600;
-        }
-
-        .polaroid-description {
-          font-size: 18px;
-          line-height: 1.4;
-          margin-bottom: 14px;
-        }
-
-        .polaroid-action {
-          font-size: 17px;
-          padding: 14px 22px;
-          min-height: 46px;
-        }
-
-        .polaroid-back {
-          padding: 30px 22px;
-          gap: 14px;
+          font-size: clamp(
+            72px,
+            6vw,
+            96px
+          ); /* Taille harmonisée grands écrans */
         }
 
         /* Optimiser l'indicateur de défilement pour les grands écrans - FORMAT HORIZONTAL */
@@ -1430,39 +1392,10 @@
         #brand-title {
           top: 24px; /* Position cohérente */
           font-size: clamp(
-            28px,
-            3vw,
-            42px
-          ); /* Taille pour très grands écrans */
-        }
-
-        .polaroid {
-          width: 16vw;
-          min-width: 240px;
-          max-width: 320px;
-        }
-
-        .polaroid-title {
-          font-size: 22px;
-          line-height: 1.3;
-          font-weight: 600;
-        }
-
-        .polaroid-description {
-          font-size: 18px;
-          line-height: 1.4;
-          margin-bottom: 16px;
-        }
-
-        .polaroid-action {
-          font-size: 18px;
-          padding: 16px 24px;
-          min-height: 48px;
-        }
-
-        .polaroid-back {
-          padding: 32px 24px;
-          gap: 16px;
+            80px,
+            5.5vw,
+            108px
+          ); /* Taille harmonisée très grands écrans */
         }
 
         /* Optimiser l'indicateur de défilement pour les très grands écrans - FORMAT HORIZONTAL */
@@ -1528,39 +1461,10 @@
         #brand-title {
           top: 24px; /* Position cohérente */
           font-size: clamp(
-            32px,
-            3.2vw,
-            48px
-          ); /* Taille pour écrans ultra-larges */
-        }
-
-        .polaroid {
-          width: 14vw;
-          min-width: 260px;
-          max-width: 340px;
-        }
-
-        .polaroid-title {
-          font-size: 24px;
-          line-height: 1.3;
-          font-weight: 600;
-        }
-
-        .polaroid-description {
-          font-size: 20px;
-          line-height: 1.4;
-          margin-bottom: 18px;
-        }
-
-        .polaroid-action {
-          font-size: 19px;
-          padding: 18px 26px;
-          min-height: 50px;
-        }
-
-        .polaroid-back {
-          padding: 36px 26px;
-          gap: 18px;
+            88px,
+            5vw,
+            120px
+          ); /* Taille harmonisée écrans ultra-larges */
         }
 
         /* Optimiser l'indicateur de défilement pour les écrans ultra-larges - FORMAT HORIZONTAL */
@@ -1621,37 +1525,6 @@
         }
       }
 
-      /* État de chargement pour les transitions */
-      .polaroid.loading .polaroid-inner {
-        pointer-events: none;
-      }
-
-      .polaroid.loading .polaroid-focus-indicator {
-        border-color: transparent; /* Suppression des bordures de chargement */
-        animation: none; /* Suppression de l'animation pulse qui pourrait créer des cadres */
-      }
-
-      /* Amélioration de la visibilité du texte sur le verso */
-      .polaroid-back {
-        background: linear-gradient(
-          135deg,
-          var(--bg-color) 0%,
-          var(--polaroid-border) 100%
-        );
-        backdrop-filter: blur(2px);
-      }
-
-      /* Protection contre les clics multiples */
-      .polaroid[aria-busy="true"] {
-        pointer-events: none;
-        opacity: 0.7;
-      }
-
-      /* Feedback visuel pour les interactions réussies */
-      .polaroid.success .polaroid-inner {
-        animation: clickSuccess 0.3s ease;
-      }
-
       /* Style pour l'annonceur de lecteur d'écran (caché visuellement) */
       .sr-only {
         position: absolute;
@@ -1665,786 +1538,8 @@
         border: 0;
       }
 
-      /* Mode haute-contraste - suppression des bordures */
-      @media (prefers-contrast: high) {
-        .polaroid-inner {
-          border: none; /* Suppression des bordures en mode haute-contraste */
-        }
-
-        .polaroid:focus-visible {
-          outline: none; /* Suppression complète du contour */
-        }
-
-        .polaroid-focus-indicator {
-          border-width: 0px; /* Suppression de l'épaisseur de bordure */
-        }
-      }
-
-      /* Animation d'attention pour guider l'utilisateur */
-      .polaroid.attention {
-        animation: polaroidPulse 2s ease-in-out 3;
-      }
-
-      /* État désactivé si nécessaire */
-      .polaroid:disabled,
-      .polaroid[aria-disabled="true"] {
-        opacity: 0.5;
-        pointer-events: none;
-        cursor: not-allowed;
-      }
-
-      /* Amélioration de la transition de focus - sans contour bleu */
-      .polaroid:focus-within .polaroid-focus-indicator {
-        transition: border-color 0.2s ease, box-shadow 0.2s ease;
-        box-shadow: none;
-      }
-
-      /* ===== AMÉLIORATIONS SPÉCIFIQUES POUR LE MODE SOMBRE ===== */
-
-      /* Amélioration des polaroids en mode sombre */
-      .dark-mode .polaroid-inner {
-        border: 12px solid #ffffff; /* Bordure blanche propre */
-        box-sizing: border-box;
-        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.8),
-          0 6px 15px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.1),
-          inset 0 1px 0 rgba(255, 255, 255, 0.15); /* Ombre renforcée pour fond noir */
-        /* Amélioration de l'animation de flip en mode sombre */
-        transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-          box-shadow 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      }
-
-      /* Animation de flip améliorée pour le mode sombre */
-      .dark-mode .polaroid.flipping .polaroid-inner {
-        /* Transition plus fluide avec effet élastique */
-        transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-          box-shadow 0.8s ease, filter 0.6s ease;
-        /* Effet de lueur pendant l'animation - RÉDUIT */
-        filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.15));
-        /* Ombre plus dramatique pendant le flip */
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9),
-          0 10px 30px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.2),
-          inset 0 1px 0 rgba(255, 255, 255, 0.3);
-      }
-
-      /* État flippé avec effets renforcés en mode sombre */
-      .dark-mode .polaroid.flipped .polaroid-inner {
-        /* Ombre plus intense pour l'état retourné */
-        box-shadow: 0 15px 45px rgba(0, 0, 0, 0.85),
-          0 8px 20px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.15),
-          inset 0 1px 0 rgba(255, 255, 255, 0.2);
-        /* Légère lueur pour le polaroid retourné - RÉDUITE */
-        filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.08));
-      }
-
-      .dark-mode .polaroid-back {
-        background: linear-gradient(135deg, #252525 0%, #111111 100%);
-        border: 1px solid rgba(255, 255, 255, 0.15); /* Légère bordure pour améliorer la visibilité */
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5); /* Légère ombre pour un meilleur contraste avec le fond */
-        /* Animation d'apparition améliorée en mode sombre */
-        transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-          transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-          box-shadow 0.6s ease;
-      }
-
-      /* Animation du verso pendant le flip en mode sombre */
-      .dark-mode .polaroid.flipping .polaroid-back {
-        /* Effet de lueur subtile pendant l'animation - RÉDUIT */
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.7),
-          0 0 15px rgba(255, 255, 255, 0.03),
-          inset 0 1px 0 rgba(255, 255, 255, 0.1);
-        /* Légère transformation pour un effet plus dynamique */
-        transform: scaleX(-1) scale(1.01);
-      }
-
-      /* État final du verso en mode sombre */
-      .dark-mode .polaroid.flipped .polaroid-back {
-        /* Ombre plus douce pour l'état final */
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6),
-          0 0 10px rgba(255, 255, 255, 0.02),
-          inset 0 1px 0 rgba(255, 255, 255, 0.08);
-        transform: scaleX(-1) scale(1);
-      }
-
-      /* Texte plus lisible sur fond sombre */
-      .dark-mode .polaroid-back .polaroid-title {
-        color: #ffffff;
-        font-weight: var(--fw-bold);
-        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
-        letter-spacing: 0.03em;
-        /* Animation d'apparition du titre en mode sombre */
-        transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s,
-          transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s,
-          text-shadow 0.6s ease 0.2s;
-      }
-
-      .dark-mode .polaroid-back .polaroid-description {
-        color: #ffffff; /* Augmenté de #f0f0f0 à #ffffff pour un contraste maximal */
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
-        font-weight: var(
-          --fw-medium
-        ); /* Augmentation du poids de la police pour plus de lisibilité */
-        /* Animation d'apparition de la description en mode sombre */
-        transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s,
-          transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s,
-          text-shadow 0.6s ease 0.3s;
-      }
-
-      /* Animation des éléments de texte pendant le flip en mode sombre */
-      .dark-mode .polaroid.flipping .polaroid-back .polaroid-title {
-        opacity: 0;
-        transform: translateY(10px);
-        text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9),
-          0 0 5px rgba(255, 255, 255, 0.05);
-      }
-
-      .dark-mode .polaroid.flipping .polaroid-back .polaroid-description {
-        opacity: 0;
-        transform: translateY(15px);
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8),
-          0 0 3px rgba(255, 255, 255, 0.03);
-      }
-
-      /* État final des éléments de texte en mode sombre */
-      .dark-mode .polaroid.flipped .polaroid-back .polaroid-title {
-        opacity: 1;
-        transform: translateY(0);
-        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8),
-          0 0 3px rgba(255, 255, 255, 0.03);
-      }
-
-      .dark-mode .polaroid.flipped .polaroid-back .polaroid-description {
-        opacity: 1;
-        transform: translateY(0);
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7),
-          0 0 2px rgba(255, 255, 255, 0.02);
-      }
-
-      /* Bouton d'action amélioré en mode sombre */
-      .dark-mode .polaroid-back .polaroid-action {
-        background: linear-gradient(
-          135deg,
-          #4a4a4a 0%,
-          #3a3a3a 100%
-        ); /* Fond plus clair pour meilleur contraste */
-        color: #ffffff;
-        border: 2px solid rgba(255, 255, 255, 0.7); /* Bordure plus visible avec opacité augmentée */
-        font-weight: var(
-          --fw-bold
-        ); /* Augmenté à bold pour meilleure lisibilité */
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3),
-          0 0 0 1px rgba(255, 255, 255, 0.1); /* Ajout d'un contour lumineux */
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
-        letter-spacing: 0.05em; /* Espacement légèrement augmenté pour plus de lisibilité */
-        /* Animation d'apparition du bouton en mode sombre */
-        transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.4s,
-          transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.4s,
-          background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-      }
-
-      .dark-mode .polaroid-back .polaroid-action:hover {
-        background: linear-gradient(135deg, #4a4a4a 0%, #3a3a3a 100%);
-        border-color: rgba(
-          255,
-          255,
-          255,
-          0.7
-        ); /* Bordure beaucoup plus visible au survol */
-        box-shadow: 0 2px 8px rgba(255, 255, 255, 0.15),
-          0 0 10px rgba(255, 255, 255, 0.05); /* Légère lueur RÉDUITE pour améliorer la visibilité */
-        transform: translateY(-2px);
-      }
-
-      /* Animation du bouton pendant le flip en mode sombre */
-      .dark-mode .polaroid.flipping .polaroid-back .polaroid-action {
-        opacity: 0;
-        transform: translateY(20px) scale(0.9);
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4),
-          0 0 0 1px rgba(255, 255, 255, 0.2), 0 0 8px rgba(255, 255, 255, 0.03);
-      }
-
-      /* État final du bouton en mode sombre */
-      .dark-mode .polaroid.flipped .polaroid-back .polaroid-action {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-        animation: dark-button-glow 3s ease-in-out infinite;
-      }
-
-      /* Animation de lueur subtile pour le bouton en mode sombre - RALENTIE ET RÉDUITE */
-      @keyframes dark-button-glow {
-        0% {
-          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3),
-            0 0 0 1px rgba(255, 255, 255, 0.1),
-            0 0 5px rgba(255, 255, 255, 0.01);
-        }
-        100% {
-          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3),
-            0 0 0 1px rgba(255, 255, 255, 0.1),
-            0 0 8px rgba(255, 255, 255, 0.03);
-        }
-      }
-
-      /* Amélioration des bordures des polaroids en mode sombre */
-      .dark-mode .polaroid-front {
-        border: none;
-        box-shadow: none;
-      }
-
-      /* Effet de lueur subtile sur le recto en mode sombre - SUPPRIMÉ */
-      .dark-mode .polaroid-front {
-        box-shadow: none; /* Suppression complète des ombres */
-      }
-
-      /* Amélioration de l'indicateur de focus en mode sombre - SUPPRIMÉ */
-      .dark-mode .polaroid:focus .polaroid-focus-indicator,
-      .dark-mode .polaroid:focus-visible .polaroid-focus-indicator {
-        border-color: transparent; /* Suppression de la bordure blanche */
-        box-shadow: none; /* Suppression de l'ombre blanche */
-        opacity: 0; /* Désactiver complètement */
-      }
-
-      /* Amélioration de l'effet de texture en mode sombre */
-      .dark-mode .polaroid-back::before {
-        background: linear-gradient(
-          135deg,
-          rgba(255, 255, 255, 0.08) 0%,
-          transparent 50%,
-          rgba(255, 255, 255, 0.02) 100%
-        );
-        opacity: 1;
-      }
-
-      /* Amélioration de l'ombre des polaroids en mode sombre - SUPPRIMÉ */
-      .dark-mode .polaroid-inner {
-        box-shadow: none; /* Suppression de toutes les ombres non pivotées */
-      }
-
-      /* Amélioration du survol des polaroids en mode sombre - CORRIGÉ */
-      .dark-mode .polaroid:hover {
-        transform: translateY(-2px);
-        /* Effet de lueur au survol en mode sombre - TRÈS RÉDUIT */
-        filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.05));
-      }
-
-      .dark-mode .polaroid:hover .polaroid-inner {
-        /* Ombres réduites et plus subtiles au survol */
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.85),
-          0 8px 20px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.15),
-          inset 0 1px 0 rgba(255, 255, 255, 0.15);
-      }
-
-      /* Survol spécial pour les polaroids retournés en mode sombre - CORRIGÉ */
-      .dark-mode .polaroid.flipped:hover {
-        transform: translateY(-2px);
-        filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.06));
-      }
-
-      .dark-mode .polaroid.flipped:hover .polaroid-inner {
-        /* Ombres simplifiées pour éviter l'effet de carte de biais */
-        box-shadow: 0 18px 45px rgba(0, 0, 0, 0.9),
-          0 10px 25px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.2),
-          inset 0 1px 0 rgba(255, 255, 255, 0.2);
-      }
-
-      /* Animation d'entrée en fondu pour le recto en mode sombre */
-      .dark-mode .polaroid-front {
-        transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-          filter 0.6s ease;
-      }
-
-      /* Animation de sortie du recto pendant le flip en mode sombre */
-      .dark-mode .polaroid.flipping .polaroid-front {
-        opacity: 0;
-        filter: blur(2px) brightness(0.8);
-      }
-
-      /* Amélioration de l'interface globale en mode sombre */
-      .dark-mode #brand-title {
-        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
-      }
-
-      .dark-mode .caption {
-        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
-      }
-
-      .dark-mode #cta {
-        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
-      }
-
-      /* Amélioration de l'indicateur de défilement en mode sombre */
-      .dark-mode .scroll-content {
-        background: linear-gradient(
-          135deg,
-          rgba(30, 30, 30, 0.8) 0%,
-          rgba(20, 20, 20, 0.75) 100%
-        );
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.15),
-          inset 0 1px 0 rgba(255, 255, 255, 0.08);
-      }
-
-      .dark-mode .product-name {
-        background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-      }
-
-      .dark-mode .scroll-badge {
-        background: linear-gradient(
-          135deg,
-          rgba(25, 142, 206, 0.15) 0%,
-          rgba(157, 124, 47, 0.15) 100%
-        );
-        border: 1px solid rgba(25, 142, 206, 0.25);
-      }
-
-      .dark-mode #scroll-message {
-        background: linear-gradient(135deg, var(--text-color) 0%, #ffffff 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-      }
-
-      .dark-mode .scroll-arrow-container {
-        background: linear-gradient(135deg, #198ece 0%, #9d7c2f 100%);
-        box-shadow: 0 4px 20px rgba(25, 142, 206, 0.3);
-      }
-
-      .dark-mode .scroll-arrow {
-        color: #ffffff;
-      }
-
-      .dark-mode .scroll-glow {
-        background: radial-gradient(
-          circle,
-          rgba(255, 255, 255, 0.05) 0%,
-          transparent 70%
-        );
-      }
-
-      /* Amélioration des toggles en mode sombre */
-      .dark-mode .toggle-label {
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
-      }
-
-      .dark-mode .slider {
-        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
-      }
-
-      .dark-mode .slider:before {
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-      }
-
-      /* Amélioration du footer en mode sombre */
-      .dark-mode footer {
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
-        color: #cccccc; /* Augmenté de #888888 à #cccccc pour meilleur contraste */
-      }
-
-      /* Amélioration des liens du footer en mode sombre */
-      .dark-mode footer a {
-        color: #ffffff;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
-        font-weight: var(--fw-medium);
-        text-decoration: underline;
-        transition: all 0.2s ease;
-      }
-
-      .dark-mode footer a:hover {
-        color: #4a9eff;
-        text-decoration: none;
-      }
-
-      /* Animation d'entrée améliorée pour le mode sombre */
-      .dark-mode .polaroid {
-        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      }
-
-      /* Amélioration des contrastes pour l'accessibilité en mode sombre */
-      @media (prefers-contrast: high) {
-        .dark-mode .polaroid-back .polaroid-title {
-          color: #ffffff;
-          font-weight: 700;
-        }
-
-        .dark-mode .polaroid-back .polaroid-description {
-          color: #ffffff;
-          font-weight: 600;
-        }
-
-        .dark-mode .polaroid-back .polaroid-action {
-          background: #4a4a4a;
-          color: #ffffff;
-          border: 3px solid #ffffff; /* Bordure très contrastée pour le mode haute-contraste */
-          font-weight: bold;
-        }
-
-        /* ===== FIN DES AMÉLIORATIONS MODE SOMBRE ===== */
-
-        /* SOLUTION DRASTIQUE UNIVERSELLE - Boutons visibles sur TOUS les appareils */
-        /* Suppression de toutes les conditions restrictives */
-        .polaroid .polaroid-action,
-        .polaroid-back .polaroid-action,
-        .polaroid-inner .polaroid-action,
-        .polaroid .polaroid-back .polaroid-action,
-        .p1 .polaroid-action,
-        .p2 .polaroid-action,
-        .p3 .polaroid-action,
-        .p4 .polaroid-action,
-        .p5 .polaroid-action,
-        .p6 .polaroid-action {
-          opacity: 1;
-          visibility: visible;
-          display: block;
-          pointer-events: auto;
-          position: relative;
-          z-index: 999;
-          background: rgba(0, 0, 0, 0.9);
-          color: white;
-          border: 2px solid rgba(255, 255, 255, 0.8) !important;
-          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
-
-          /* Taille optimale pour tous les appareils */
-          font-size: 11px !important;
-          padding: 8px 12px !important;
-          margin: 4px auto 0 auto !important;
-          min-height: 36px !important;
-          min-width: 80px !important;
-          max-width: 90% !important;
-
-          /* Contraintes pour un affichage parfait */
-          box-sizing: border-box !important;
-          overflow: hidden !important;
-          text-overflow: ellipsis !important;
-          white-space: nowrap !important;
-
-          /* Style visible et contrasté sur tous appareils */
-          border-radius: 4px !important;
-          cursor: pointer !important;
-          background-color: rgba(0, 0, 0, 0.8) !important;
-          color: white !important;
-          border: 1px solid rgba(255, 255, 255, 0.6) !important;
-          font-weight: var(--fw-semibold) !important;
-
-          /* Transition douce pour effet de survol desktop */
-          transition: all 0.2s ease !important;
-        }
-
-        /* Réduire drastiquement le padding du verso */
-        .polaroid-back {
-          padding: 8px 6px !important;
-          box-sizing: border-box !important;
-          overflow: hidden !important;
-          display: flex !important;
-          flex-direction: column !important;
-          justify-content: center !important;
-          align-items: center !important;
-        }
-
-        /* Réduire la taille du texte pour plus d'espace */
-        .polaroid-title {
-          font-size: 12px !important;
-          margin-bottom: 4px !important;
-          line-height: 1.2 !important;
-        }
-
-        .polaroid-description {
-          font-size: 10px !important;
-          margin-bottom: 4px !important;
-          line-height: 1.2 !important;
-          max-height: 3em !important;
-          overflow: hidden !important;
-        }
-
-        /* Zone cliquable augmentée */
-        .polaroid {
-          padding: 4px !important;
-          margin: 2px !important;
-        }
-
-        /* Feedback tactile */
-        .polaroid:active {
-          transform: scale(0.98) !important;
-          transition: transform 0.1s ease !important;
-        }
-      }
-
-      /* Force l'affichage des boutons d'action sur tous les polaroids */
-      .polaroid-back .polaroid-action {
-        opacity: 1 !important;
-        visibility: visible !important;
-        display: block !important;
-        pointer-events: auto !important;
-        z-index: 10 !important;
-        position: relative !important;
-        margin: 8px auto 0 auto !important; /* Centrage et espacement contrôlé */
-      }
-
-      /* Protection supplémentaire contre les changements d'opacité intempestifs */
-      .polaroid-action[data-touch-visible="true"] {
-        opacity: 1 !important;
-        visibility: visible !important;
-        display: block !important;
-        transition: none !important;
-      }
-
-      /* SOLUTION ULTIME - Forcer l'affichage avec sélecteur ultra-spécifique */
-      .polaroid .polaroid-back .polaroid-action {
-        opacity: 1 !important;
-        display: block !important;
-        visibility: visible !important;
-      }
-
-      /* Optimiser l'espace pour les pouces sur les bords */
-      .p1,
-      .p3,
-      .p6 {
-        margin-left: 8px;
-      }
-
-      .p2,
-      .p4,
-      .p5 {
-        margin-right: 8px;
-      }
-
-      /* Éviter que les polaroids soient trop près du scroll indicator */
-      .p2,
-      .p5 {
-        margin-bottom: 60px;
-      }
-
-      /* Amélioration pour les écrans avec densité élevée (Retina) sur petits écrans */
-      @media (max-width: 500px) and (-webkit-min-device-pixel-ratio: 2) {
-        .polaroid-title {
-          font-size: 17px; /* Légèrement plus grand sur écrans haute densité */
-        }
-
-        .polaroid-description {
-          font-size: 15px;
-        }
-
-        .polaroid-action {
-          font-size: 14px;
-        }
-      }
-
-      /* OPTIMISATIONS CRITIQUES POUR TRÈS PETITS ÉCRANS (≤320px) */
-      @media (max-width: 320px) {
-        /* Réduction drastique des polaroids pour éviter les débordements */
-        .polaroid {
-          width: 140px !important;
-          height: 180px !important;
-          margin: 3px !important;
-          padding: 2px !important;
-        }
-
-        .polaroid-inner {
-          width: 136px !important;
-          height: 176px !important;
-        }
-
-        .polaroid-front,
-        .polaroid-back {
-          width: 136px !important;
-          height: 176px !important;
-          padding: 6px !important;
-        }
-
-        /* Centrage optimal du verso des polaroids */
-        .polaroid-back {
-          display: flex !important;
-          flex-direction: column !important;
-          justify-content: center !important;
-          align-items: center !important;
-          text-align: center !important;
-          box-sizing: border-box !important;
-        }
-
-        /* Texte ultra-compact mais lisible et bien centré */
-        .polaroid-title {
-          font-size: 11px !important;
-          line-height: 1.2 !important;
-          margin-bottom: 3px !important;
-          max-height: 2.4em !important;
-          overflow: hidden !important;
-          text-align: center !important;
-          width: 100% !important;
-          display: block !important;
-        }
-
-        .polaroid-description {
-          font-size: 9px !important;
-          line-height: 1.3 !important;
-          margin-bottom: 4px !important;
-          max-height: 2.6em !important;
-          overflow: hidden !important;
-          text-align: center !important;
-          width: 100% !important;
-          display: block !important;
-        }
-
-        /* Boutons d'action parfaitement centrés et esthétiques */
-        .polaroid-action {
-          font-size: 9px !important;
-          padding: 5px 8px !important;
-          min-height: 26px !important;
-          min-width: 55px !important;
-          max-width: 115px !important;
-          margin: 4px auto 0 auto !important;
-          border-radius: 3px !important;
-          line-height: 1.2 !important;
-          display: flex !important;
-          align-items: center !important;
-          justify-content: center !important;
-          text-align: center !important;
-          background: rgba(0, 0, 0, 0.8) !important;
-          color: white !important;
-          border: 1px solid rgba(255, 255, 255, 0.3) !important;
-          font-weight: 500 !important;
-          letter-spacing: 0.3px !important;
-        }
-
-        /* Centrage optimal des polaroids dans l'espace disponible */
-        .p1 {
-          left: 2% !important;
-          margin-left: 3px !important;
-        }
-
-        .p2 {
-          left: 50% !important;
-          transform: translateX(-50%) rotate(10deg) !important;
-          margin-bottom: 50px !important;
-        }
-
-        .p3 {
-          right: 2% !important;
-          margin-right: 3px !important;
-        }
-
-        .p4 {
-          left: 1% !important;
-          margin-left: 3px !important;
-        }
-
-        .p5 {
-          right: 1% !important;
-          margin-right: 3px !important;
-          margin-bottom: 50px !important;
-        }
-
-        .p6 {
-          right: 8% !important;
-          margin-right: 3px !important;
-        }
-
-        /* Optimisation de l'encart du bas - CRITIQUE */
-        .scroll-content {
-          width: 280px !important;
-          max-width: calc(100vw - 20px) !important;
-          padding: 8px !important;
-          margin: 0 auto !important;
-          left: 50% !important;
-          transform: translateX(-50%) !important;
-          box-sizing: border-box !important;
-          margin-bottom: 3px;
-        }
-
-        .product-name {
-          font-size: 14px !important;
-          line-height: 1.2 !important;
-          margin-bottom: 4px !important;
-        }
-
-        #cta {
-          font-size: 10px !important;
-          padding: 8px 12px !important;
-          min-height: 32px !important;
-          margin: 6px auto !important;
-          max-width: 200px !important;
-        }
-
-        #scroll-message {
-          font-size: 8px !important;
-          line-height: 1.2 !important;
-          margin: 4px 0 !important;
-        }
-
-        /* Flèche de scroll plus compacte */
-        .scroll-arrow-container {
-          width: 24px !important;
-          height: 24px !important;
-          margin: 4px auto !important;
-        }
-
-        .scroll-arrow {
-          font-size: 12px !important;
-        }
-
-        /* Réduction des marges générales */
-        #landing-container {
-          padding: 5px !important;
-        }
-
-        /* Titre principal plus compact */
-        #brand-title {
-          font-size: 20px !important;
-          line-height: 1.1 !important;
-          margin-bottom: 8px !important;
-        }
-
-        .caption {
-          font-size: 10px !important;
-          line-height: 1.2 !important;
-          margin-bottom: 10px !important;
-        }
-
-        /* Toggles plus compacts */
-        .toggle-container {
-          top: 5px !important;
-          right: 5px !important;
-          gap: 4px !important;
-        }
-
-        .toggle-label {
-          font-size: 8px !important;
-        }
-
-        .slider {
-          width: 30px !important;
-          height: 16px !important;
-        }
-
-        .slider:before {
-          width: 12px !important;
-          height: 12px !important;
-        }
-
-        /* Footer ultra-compact */
-        footer {
-          font-size: 7px !important;
-          padding: 4px !important;
-          line-height: 1.1 !important;
-        }
-
-        /* Espacement optimisé entre polaroids pour éviter les chevauchements */
-        .p1,
-        .p3,
-        .p6 {
-          margin-left: 4px !important;
-        }
-
-        .p2,
-        .p4,
-        .p5 {
-          margin-right: 4px !important;
-        }
-
-        .p2,
-        .p5 {
-          margin-bottom: 50px !important;
-        }
-
+      /* Amélioration pour écrans très compacts */
+      @media (max-width: 280px) {
         /* Amélioration de la lisibilité globale */
         #landing-container {
           padding: 6px !important;
@@ -2463,7 +1558,6 @@
           font-size: 11px !important;
           line-height: 1.3 !important;
           margin-bottom: 12px !important;
-
           text-align: center !important;
         }
 
@@ -2545,15 +1639,21 @@
           font-weight: var(--fw-medium);
         }
 
-        .projets-recherche {
+        .design-action {
           top: 15%;
           left: 5%;
         }
 
-        .produits-mesure {
+        .creations-demande {
           top: 15%;
           right: 5%;
         }
+      }
+
+      /* Classes pour faire disparaître les placeholders */
+      .focus-section-desktop.fade-out {
+        opacity: 0;
+        transform: translateY(-50%) translateY(-50px);
       }
 
       /* Transitions fluides pour les éléments de l'interface */
@@ -2832,8 +1932,8 @@
         background: #374151;
       }
 
-      /* Animation d'entrée améliorée pour les éléments du menu */
-      .mobile-menu-item {
+      /* Animation d'entrée améliorée pour le menu sombre */
+      .dark-mode .mobile-menu-item {
         animation: slideInLeft 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)
           forwards;
         opacity: 0;
@@ -2863,23 +1963,147 @@
         color: #f9fafb;
       }
 
-      /* Menu burger visible sur tous les écrans */
-      @media (min-width: 1024px) {
-        /* .mobile-menu-burger {
-          display: none;
-        } */
+      /* Amélioration du scroll-indicator en mode sombre */
+      .dark-mode .scroll-content {
+        background: linear-gradient(
+          135deg,
+          rgba(30, 30, 30, 0.85) 0%,
+          rgba(20, 20, 20, 0.75) 100%
+        );
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.2),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1);
       }
 
-      .mobile-menu-burger.fade-out {
+      .dark-mode .product-name {
+        background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .dark-mode .scroll-badge {
+        background: linear-gradient(
+          135deg,
+          rgba(25, 142, 206, 0.2) 0%,
+          rgba(157, 124, 47, 0.2) 100%
+        );
+        border: 1px solid rgba(25, 142, 206, 0.3);
+      }
+
+      .dark-mode #scroll-message {
+        background: linear-gradient(135deg, var(--text-color) 0%, #ffffff 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .dark-mode .scroll-arrow-container {
+        background: linear-gradient(135deg, #198ece 0%, #9d7c2f 100%);
+        box-shadow: 0 4px 20px rgba(25, 142, 206, 0.3);
+      }
+
+      .dark-mode .scroll-arrow {
+        color: #ffffff;
+      }
+
+      .dark-mode .scroll-glow {
+        background: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.08) 0%,
+          transparent 70%
+        );
+      }
+
+      /* Focus slider position pour écrans > 765px */
+      @media (min-width: 766px) {
+        .focus-slider {
+          top: 50%;
+        }
+      }
+
+      /* ===== BOUTON REPLAY ANIMATION ===== */
+      #replay-animation-btn {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 50px;
+        padding: 0.75rem 1.25rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #333;
+        cursor: pointer;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
+        transform: translateY(100px);
         opacity: 0;
-        transform: translateY(-50px);
+        visibility: hidden;
+        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        z-index: 1000;
+      }
+
+      #replay-animation-btn.visible {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+      }
+
+      #replay-animation-btn:hover {
+        background: rgba(255, 255, 255, 1);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+      }
+
+      .replay-icon {
+        width: 1rem;
+        height: 1rem;
+        color: #666;
+        transition: transform 0.3s ease;
+      }
+
+      #replay-animation-btn:hover .replay-icon {
+        transform: rotate(180deg);
+      }
+
+      .replay-text {
+        color: #333;
+        white-space: nowrap;
+      }
+
+      /* Mobile responsif pour le bouton replay */
+      @media (max-width: 768px) {
+        #replay-animation-btn {
+          bottom: 1rem;
+          right: 1rem;
+          padding: 0.625rem 1rem;
+          font-size: 0.8rem;
+        }
+
+        .replay-icon {
+          width: 0.875rem;
+          height: 0.875rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        #replay-animation-btn {
+          bottom: 0.75rem;
+          right: 0.75rem;
+          padding: 0.5rem 0.875rem;
+          font-size: 0.75rem;
+        }
+
+        .replay-text {
+          display: none; /* Masquer le texte sur très petits écrans */
+        }
       }
     </style>
-    <!-- Chargement de la configuration d'environnement en production -->
-    <script>
-      window.ENV = { API_URL: "", NODE_ENV: "development" };
-    </script>
-    <script src="/env-config.js" type="module"></script>
   </head>
   <body>
     <!-- Landing page avec Three.js -->
@@ -2953,26 +2177,41 @@
         <div class="scroll-glow"></div>
       </div>
 
-      <!-- Bouton de navigation suivante -->
-      <button id="next-scroll-btn" aria-label="Aller au prochain élément">
+      <!-- Bouton rejouer l'animation -->
+      <button id="replay-animation-btn" aria-label="Rejouer l'animation">
         <svg
-          class="next-arrow"
+          class="replay-icon"
           viewBox="0 0 24 24"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
-            d="M7 13L12 18L17 13"
+            d="M1 4V10H7"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M23 20V14H17"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10M3.51 15A9 9 0 0 0 18.36 18.36L23 14"
             stroke="currentColor"
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
           />
         </svg>
+        <span class="replay-text">Rejouer l'animation</span>
       </button>
 
       <!-- Titre placé au-dessus -->
-      <h1 id="brand-title">ALTO LILLE</h1>
+      <h1 id="brand-title">Alto lille</h1>
 
       <!-- Menu burger moderne pour mobile - Structure identique à Layout.tsx -->
       <button
@@ -3172,10 +2411,36 @@
         </div>
       </div>
 
-      <!-- Slider Focus avec 4 images -->
-      <div class="focus-slider">
+      <!-- Slider Focus avec 4 images + 4 images dupliquées pour l'effet infini -->
+      <div class="focus-slider" onclick="navigateToShop()">
         <div class="slider-container">
           <div class="slider-track" id="sliderTrack">
+            <!-- Images originales -->
+            <div class="slider-slide">
+              <img
+                src="https://www.alto-lille.fr/uploads/f2010149-5520-4995-987b-82bed5dfbded.jpeg"
+                alt="Lampe Focus.01 Rouge"
+              />
+            </div>
+            <div class="slider-slide">
+              <img
+                src="https://www.alto-lille.fr/uploads/7430a650-8622-461a-b724-3bb5f43f69b7.jpeg"
+                alt="Lampe Focus.01 Orange"
+              />
+            </div>
+            <div class="slider-slide">
+              <img
+                src="https://www.alto-lille.fr/uploads/79205ce8-c9e2-4642-b701-ae4673925032.jpeg"
+                alt="Lampe Focus.01 Bleue"
+              />
+            </div>
+            <div class="slider-slide">
+              <img
+                src="https://www.alto-lille.fr/uploads/a0de865a-f812-4523-a685-ca83b972d469.jpeg"
+                alt="Lampe Focus.01 Blanche"
+              />
+            </div>
+            <!-- Images dupliquées pour l'effet infini -->
             <div class="slider-slide">
               <img
                 src="https://www.alto-lille.fr/uploads/f2010149-5520-4995-987b-82bed5dfbded.jpeg"
@@ -3201,11 +2466,46 @@
               />
             </div>
           </div>
-          <div class="slider-nav">
-            <div class="slider-dot active" data-slide="0"></div>
-            <div class="slider-dot" data-slide="1"></div>
-            <div class="slider-dot" data-slide="2"></div>
-            <div class="slider-dot" data-slide="3"></div>
+        </div>
+      </div>
+
+      <!-- Sections latérales desktop -->
+      <div class="focus-section-desktop left-section parallax-layer">
+        <div class="section-content" onclick="navigateToDesignAction()">
+          <div class="design-images-grid">
+            <div class="section-image design-image-main">
+              <img
+                src="https://www.alto-lille.fr/uploads/lowtech-vynil.jpg"
+                alt="Vinyle Low-Tech"
+              />
+            </div>
+            <div class="section-title">Design en action</div>
+            <div class="section-image design-image-secondary">
+              <img
+                src="https://www.alto-lille.fr/uploads/sea-cle.jpg"
+                alt="Création Sea-Clé"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="focus-section-desktop right-section parallax-layer">
+        <div class="section-content" onclick="navigateToCreationsDemande()">
+          <div class="creations-images-grid">
+            <div class="section-image creation-image-main">
+              <img
+                src="https://www.alto-lille.fr/uploads/c5e2d6c0-e84d-4409-9349-0c3582bf0d6c.png"
+                alt="Lampadaire sur mesure"
+              />
+            </div>
+            <div class="section-title">Créations à la demande</div>
+            <div class="section-image creation-image-secondary">
+              <img
+                src="https://www.alto-lille.fr/uploads/ca4d1b96-c00f-4992-b23d-5a7cdaafde05.png"
+                alt="Lampe murale sur mesure"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -3213,18 +2513,27 @@
       <!-- Liens Desktop -->
       <div class="desktop-links">
         <div
-          class="desktop-link projets-recherche"
-          onclick="navigateToProjects()"
+          class="desktop-link design-action"
+          onclick="navigateToDesignAction()"
         >
-          <img src="/images/lowtech-vynil.jpg" alt="Projets recherche" />
+          <img
+            src="https://www.alto-lille.fr/uploads/sea-cle.jpg"
+            alt="Design en action"
+          />
           <div class="desktop-link-overlay">
-            <span>Projets recherche</span>
+            <span>Design en action</span>
           </div>
         </div>
-        <div class="desktop-link produits-mesure" onclick="navigateToCustom()">
-          <img src="/images/chaussures-custom.jpg" alt="Produits sur mesure" />
+        <div
+          class="desktop-link creations-demande"
+          onclick="navigateToCreationsDemande()"
+        >
+          <img
+            src="https://www.alto-lille.fr/uploads/c5e2d6c0-e84d-4409-9349-0c3582bf0d6c.png"
+            alt="Créations à la demande"
+          />
           <div class="desktop-link-overlay">
-            <span>Produits sur mesure</span>
+            <span>Créations à la demande</span>
           </div>
         </div>
       </div>
@@ -3449,6 +2758,16 @@
 
       /* ===== INTERACTION ===== */
       let prog = 0;
+      let parallaxScheduled = false;
+
+      /* ===== SLIDER FOCUS VARIABLES ===== */
+      let currentSlide = 0;
+      const slides = 4;
+      let sliderInterval = null;
+
+      /* ===== BOUTON REPLAY VARIABLES ===== */
+      let replayButtonVisible = false;
+
       addEventListener(
         "scroll",
         (e) => {
@@ -3456,6 +2775,20 @@
           prog = C(scrollY / m);
           lastScrollTime = Date.now(); // Mettre à jour le temps du dernier défilement
           hasScrolled = true; // Marquer que l'utilisateur a défilé
+
+          // Gérer la visibilité du bouton replay - n'apparaît qu'au tout dernier moment
+          const isAtBottom =
+            window.innerHeight + window.scrollY >=
+            document.body.scrollHeight - 10;
+          const replayBtn = document.getElementById("replay-animation-btn");
+
+          if (isAtBottom && !replayButtonVisible) {
+            replayButtonVisible = true;
+            replayBtn.classList.add("visible");
+          } else if (!isAtBottom && replayButtonVisible) {
+            replayButtonVisible = false;
+            replayBtn.classList.remove("visible");
+          }
         },
         { passive: true }
       );
@@ -3650,9 +2983,6 @@
           }
         }
         renderer.render(scene, camera);
-
-        // Mettre à jour le bouton de navigation suivante
-        updateNextScrollButton();
       }
 
       /* ===== NAVIGATION ===== */
@@ -3679,84 +3009,140 @@
           });
         });
 
-      // Gestion du bouton de navigation séquentiel
-      let currentCaptionIndex = 0;
-      const nextScrollBtn = document.getElementById("next-scroll-btn");
+      // Gestion du clic sur l'indicateur de scroll
+      document
+        .getElementById("scroll-indicator")
+        .addEventListener("click", function () {
+          // Défilement optimisé avec lecture confortable en 9 secondes
+          const startTime = performance.now();
+          const startPosition = window.scrollY;
+          const targetPosition =
+            document.body.scrollHeight - window.innerHeight;
+          const distance = targetPosition - startPosition;
+          const duration = 9000; // 9 secondes au total (+28% plus long)
 
-      // Positions cibles pour chaque légende (en valeur t)
-      const captionTargets = [
-        0.15, // cap0 - PLA éco-responsable (bien visible)
-        0.25, // cap1 - Montage ultra simple
-        0.37, // cap2 - Chêne écogéré
-        0.49, // cap3 - Conçu & fabriqué par Alto Lille
-        0.61, // cap4 - LED 60 W E14 incluse
-        0.73, // cap5 - Emballage éco-responsable
-        0.95, // Fin de page - CTA
-      ];
+          function smoothScrollToBottom(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
 
-      nextScrollBtn.addEventListener("click", function () {
-        if (currentCaptionIndex < captionTargets.length - 1) {
-          currentCaptionIndex++;
-          const targetProgress = captionTargets[currentCaptionIndex];
-          const targetScrollPosition =
-            (CFG.intro + targetProgress * (1 - CFG.intro)) *
-            document.body.scrollHeight;
+            // Fonction d'easing optimisée : rapide au début, constante au milieu, légère décélération à la fin
+            let easeProgress;
+            if (progress < 0.2) {
+              // 20% du temps pour 25% du parcours (démarrage rapide mais contrôlé)
+              const startProgress = progress / 0.2;
+              easeProgress = startProgress * 0.25;
+            } else if (progress < 0.9) {
+              // 70% du temps pour 65% du parcours (vitesse constante pour lecture)
+              const middleProgress = (progress - 0.2) / 0.7;
+              easeProgress = 0.25 + middleProgress * 0.65;
+            } else {
+              // 10% du temps restant pour les 10% finaux (légère décélération)
+              const endProgress = (progress - 0.9) / 0.1;
+              // Décélération douce à la fin
+              const slowEasing = 1 - Math.pow(1 - endProgress, 1.5);
+              easeProgress = 0.9 + slowEasing * 0.1;
+            }
 
+            const currentPosition = startPosition + distance * easeProgress;
+            window.scrollTo(0, currentPosition);
+
+            if (progress < 1) {
+              requestAnimationFrame(smoothScrollToBottom);
+            }
+          }
+
+          requestAnimationFrame(smoothScrollToBottom);
+        });
+
+      // Gestion du bouton "Rejouer l'animation"
+      document
+        .getElementById("replay-animation-btn")
+        .addEventListener("click", function () {
+          // Scroll fluide vers le haut d'abord
           window.scrollTo({
-            top: targetScrollPosition,
+            top: 0,
             behavior: "smooth",
           });
-        }
-      });
 
-      // Fonction pour gérer l'affichage/masquage du bouton de navigation
-      function updateNextScrollButton() {
-        if (prog >= CFG.intro) {
-          const t = (prog - CFG.intro) / (1 - CFG.intro);
+          // Attendre que le scroll vers le haut soit terminé, puis relancer l'animation
+          setTimeout(() => {
+            // Défilement optimisé avec lecture confortable en 9 secondes
+            const startTime = performance.now();
+            const startPosition = window.scrollY;
+            const targetPosition =
+              document.body.scrollHeight - window.innerHeight;
+            const distance = targetPosition - startPosition;
+            const duration = 9000; // 9 secondes au total (+28% plus long)
 
-          // Afficher le bouton quand on atteint la première légende
-          if (t >= 0.1 && t < 0.95) {
-            nextScrollBtn.classList.add("visible");
+            function smoothScrollToBottom(currentTime) {
+              const elapsed = currentTime - startTime;
+              const progress = Math.min(elapsed / duration, 1);
 
-            // Mettre à jour l'index actuel basé sur la position
-            for (let i = 0; i < captionTargets.length; i++) {
-              if (
-                t >= captionTargets[i] - 0.05 &&
-                t < captionTargets[i] + 0.05
-              ) {
-                currentCaptionIndex = i;
-                break;
+              // Fonction d'easing optimisée : rapide au début, constante au milieu, légère décélération à la fin
+              let easeProgress;
+              if (progress < 0.2) {
+                // 20% du temps pour 25% du parcours (démarrage rapide mais contrôlé)
+                const startProgress = progress / 0.2;
+                easeProgress = startProgress * 0.25;
+              } else if (progress < 0.9) {
+                // 70% du temps pour 65% du parcours (vitesse constante pour lecture)
+                const middleProgress = (progress - 0.2) / 0.7;
+                easeProgress = 0.25 + middleProgress * 0.65;
+              } else {
+                // 10% du temps restant pour les 10% finaux (légère décélération)
+                const endProgress = (progress - 0.9) / 0.1;
+                // Décélération douce à la fin
+                const slowEasing = 1 - Math.pow(1 - endProgress, 1.5);
+                easeProgress = 0.9 + slowEasing * 0.1;
+              }
+
+              const currentPosition = startPosition + distance * easeProgress;
+              window.scrollTo(0, currentPosition);
+
+              if (progress < 1) {
+                requestAnimationFrame(smoothScrollToBottom);
               }
             }
-          } else {
-            // Masquer le bouton avant la première légende ou après la dernière
-            nextScrollBtn.classList.remove("visible");
-            if (t < 0.1) currentCaptionIndex = 0;
-          }
-        } else {
-          // Masquer le bouton pendant la phase d'intro
-          nextScrollBtn.classList.remove("visible");
-          currentCaptionIndex = 0;
-        }
-      }
+
+            requestAnimationFrame(smoothScrollToBottom);
+          }, 800); // Délai pour laisser le temps au scroll vers le haut
+        });
 
       // Gestion de la navigation
       function navigateToShop() {
-        // Mettre à jour l'URL
-        history.pushState({}, "", "/shop");
-        // Arrêter l'animation Three.js
-        animationActive = false;
-        if (animFrameId) {
-          cancelAnimationFrame(animFrameId);
-          animFrameId = null;
-        }
-        // Afficher l'app React et masquer la landing
-        document.getElementById("landing-container").style.display = "none";
-        document.getElementById("root").style.display = "block";
-        // Notifier l'app React du changement
-        window.dispatchEvent(
-          new CustomEvent("routeChange", { detail: { path: "/shop" } })
-        );
+        // Arrêter l'auto-play du slider avant navigation
+        stopSliderAutoPlay();
+
+        // Ajouter les animations fade-out
+        document.querySelector(".focus-slider")?.classList.add("fade-out");
+        document.querySelector("#brand-title")?.classList.add("fade-out");
+        document.querySelector(".desktop-links")?.classList.add("fade-out");
+        document.querySelector(".toggle-container")?.classList.add("fade-out");
+        document
+          .querySelector(".mobile-menu-burger")
+          ?.classList.add("fade-out");
+        document
+          .querySelectorAll(".focus-section-desktop")
+          .forEach((el) => el.classList.add("fade-out"));
+
+        // Attendre la fin des animations avant de naviguer
+        setTimeout(() => {
+          // Mettre à jour l'URL
+          history.pushState({}, "", "/shop");
+          // Arrêter l'animation Three.js
+          animationActive = false;
+          if (animFrameId) {
+            cancelAnimationFrame(animFrameId);
+            animFrameId = null;
+          }
+          // Afficher l'app React et masquer la landing
+          document.getElementById("landing-container").style.display = "none";
+          document.getElementById("root").style.display = "block";
+          // Notifier l'app React du changement
+          window.dispatchEvent(
+            new CustomEvent("routeChange", { detail: { path: "/shop" } })
+          );
+        }, 800);
       }
 
       function handleNavigation() {
@@ -3767,15 +3153,61 @@
           document.getElementById("landing-container").style.display = "block";
           document.getElementById("root").style.display = "none";
 
+          // Nettoyer les classes fade-out et restaurer tous les éléments
+          const focusSlider = document.querySelector(".focus-slider");
+          if (focusSlider) {
+            focusSlider.classList.remove("fade-out");
+            focusSlider.style.display = "block";
+            focusSlider.style.opacity = "1";
+          }
+
+          const brandTitle = document.querySelector("#brand-title");
+          if (brandTitle) {
+            brandTitle.classList.remove("fade-out");
+            brandTitle.style.display = "block";
+            brandTitle.style.opacity = "1";
+          }
+
+          const desktopLinks = document.querySelector(".desktop-links");
+          if (desktopLinks) {
+            desktopLinks.classList.remove("fade-out");
+            desktopLinks.style.display = "block";
+            desktopLinks.style.opacity = "1";
+          }
+
+          const toggleContainer = document.querySelector(".toggle-container");
+          if (toggleContainer) {
+            toggleContainer.classList.remove("fade-out");
+            toggleContainer.style.display = "flex";
+            toggleContainer.style.opacity = "1";
+          }
+
+          const menuBurger = document.querySelector(".mobile-menu-burger");
+          if (menuBurger) {
+            menuBurger.classList.remove("fade-out");
+            menuBurger.style.display = "block";
+            menuBurger.style.opacity = "1";
+          }
+
+          document.querySelectorAll(".focus-section-desktop").forEach((el) => {
+            el.classList.remove("fade-out");
+            el.style.display = "block";
+            el.style.opacity = "1";
+          });
+
           // Redémarrer l'animation Three.js
           animationActive = true;
           // Réinitialiser la position de défilement
           window.scrollTo(0, 0);
+
           // Redémarrer toujours l'animation pour s'assurer qu'elle fonctionne
           if (animFrameId) {
             cancelAnimationFrame(animFrameId); // Annuler l'animation précédente si elle existait
           }
           animFrameId = requestAnimationFrame(anim); // Relancer une nouvelle boucle d'animation
+
+          // Réinitialiser le slider focus
+          resetFocusSlider();
         } else {
           // Afficher l'app React pour TOUS les autres chemins (sans exception)
           document.getElementById("landing-container").style.display = "none";
@@ -3787,6 +3219,9 @@
             cancelAnimationFrame(animFrameId);
             animFrameId = null;
           }
+
+          // Arrêter l'auto-play du slider
+          stopSliderAutoPlay();
         }
       }
 
@@ -3795,6 +3230,19 @@
 
       // Écouter l'événement personnalisé de retour à la landing page depuis l'app React
       window.addEventListener("returnToLanding", function () {
+        // Nettoyer les classes fade-out
+        document.querySelector("#brand-title")?.classList.remove("fade-out");
+        document.querySelector(".desktop-links")?.classList.remove("fade-out");
+        document
+          .querySelector(".toggle-container")
+          ?.classList.remove("fade-out");
+        document
+          .querySelector(".mobile-menu-burger")
+          ?.classList.remove("fade-out");
+        document
+          .querySelectorAll(".focus-section-desktop")
+          .forEach((el) => el.classList.remove("fade-out"));
+
         // Réinitialiser les variables d'animation
         prog = 0;
         animationActive = true;
@@ -3807,6 +3255,9 @@
 
         // Relancer une nouvelle boucle d'animation
         animFrameId = requestAnimationFrame(anim);
+
+        // Réinitialiser le slider focus
+        resetFocusSlider();
       });
 
       // Fonction pour mettre à jour les badges EcoIndex selon le thème
@@ -4018,12 +3469,16 @@
             detail: { language: newLang, fromLanding: true },
           })
         );
-      });
-
-      // Exécuter au chargement initial
+      }); // Exécuter au chargement initial
       document.addEventListener("DOMContentLoaded", function () {
         handleNavigation();
         updateEcoIndexBadges(); // Configurer les badges EcoIndex selon le thème initial
+
+        // Démarrer l'auto-play du slider si on est sur la landing
+        const path = window.location.pathname;
+        if (path === "/" || path === "") {
+          startSliderAutoPlay();
+        }
       });
 
       // S'assurer que la page est correctement initialisée immédiatement (sans attendre les événements)
@@ -4032,77 +3487,176 @@
       /* ===== SLIDER FOCUS & NAVIGATION ===== */
 
       // Fonctions de navigation pour les liens desktop
+      function navigateToDesignAction() {
+        // Arrêter l'auto-play du slider avant navigation
+        stopSliderAutoPlay();
+
+        // Ajouter les animations fade-out
+        document.querySelector(".focus-slider")?.classList.add("fade-out");
+        document.querySelector("#brand-title")?.classList.add("fade-out");
+        document.querySelector(".desktop-links")?.classList.add("fade-out");
+        document.querySelector(".toggle-container")?.classList.add("fade-out");
+        document
+          .querySelector(".mobile-menu-burger")
+          ?.classList.add("fade-out");
+        document
+          .querySelectorAll(".focus-section-desktop")
+          .forEach((el) => el.classList.add("fade-out"));
+
+        // Attendre la fin des animations avant de naviguer
+        setTimeout(() => {
+          // Mettre à jour l'URL
+          history.pushState({}, "", "/design-en-action");
+          // Arrêter l'animation Three.js
+          animationActive = false;
+          if (animFrameId) {
+            cancelAnimationFrame(animFrameId);
+            animFrameId = null;
+          }
+          // Afficher l'app React et masquer la landing
+          document.getElementById("landing-container").style.display = "none";
+          document.getElementById("root").style.display = "block";
+          // Notifier l'app React du changement
+          window.dispatchEvent(
+            new CustomEvent("routeChange", {
+              detail: { path: "/design-en-action" },
+            })
+          );
+        }, 800);
+      }
+
+      function navigateToCreationsDemande() {
+        // Arrêter l'auto-play du slider avant navigation
+        stopSliderAutoPlay();
+
+        // Ajouter les animations fade-out
+        document.querySelector(".focus-slider")?.classList.add("fade-out");
+        document.querySelector("#brand-title")?.classList.add("fade-out");
+        document.querySelector(".desktop-links")?.classList.add("fade-out");
+        document.querySelector(".toggle-container")?.classList.add("fade-out");
+        document
+          .querySelector(".mobile-menu-burger")
+          ?.classList.add("fade-out");
+        document
+          .querySelectorAll(".focus-section-desktop")
+          .forEach((el) => el.classList.add("fade-out"));
+
+        // Attendre la fin des animations avant de naviguer
+        setTimeout(() => {
+          // Mettre à jour l'URL
+          history.pushState({}, "", "/creations-sur-mesure");
+          // Arrêter l'animation Three.js
+          animationActive = false;
+          if (animFrameId) {
+            cancelAnimationFrame(animFrameId);
+            animFrameId = null;
+          }
+          // Afficher l'app React et masquer la landing
+          document.getElementById("landing-container").style.display = "none";
+          document.getElementById("root").style.display = "block";
+          // Notifier l'app React du changement
+          window.dispatchEvent(
+            new CustomEvent("routeChange", {
+              detail: { path: "/creations-sur-mesure" },
+            })
+          );
+        }, 800);
+      }
+
+      // Garder les anciennes fonctions pour compatibilité
       function navigateToProjects() {
-        // Mettre à jour l'URL
-        history.pushState({}, "", "/projects");
-        // Arrêter l'animation Three.js
-        animationActive = false;
-        if (animFrameId) {
-          cancelAnimationFrame(animFrameId);
-          animFrameId = null;
-        }
-        // Afficher l'app React et masquer la landing
-        document.getElementById("landing-container").style.display = "none";
-        document.getElementById("root").style.display = "block";
-        // Notifier l'app React du changement
-        window.dispatchEvent(
-          new CustomEvent("routeChange", { detail: { path: "/projects" } })
-        );
+        navigateToDesignAction();
       }
 
       function navigateToCustom() {
-        // Mettre à jour l'URL
-        history.pushState({}, "", "/custom");
-        // Arrêter l'animation Three.js
-        animationActive = false;
-        if (animFrameId) {
-          cancelAnimationFrame(animFrameId);
-          animFrameId = null;
-        }
-        // Afficher l'app React et masquer la landing
-        document.getElementById("landing-container").style.display = "none";
-        document.getElementById("root").style.display = "block";
-        // Notifier l'app React du changement
-        window.dispatchEvent(
-          new CustomEvent("routeChange", { detail: { path: "/custom" } })
-        );
+        navigateToCreationsDemande();
       }
 
       // Gestion du slider Focus
-      let currentSlide = 0;
-      const slides = 4;
+      function resetFocusSlider() {
+        // Réinitialiser la position du slider au premier slide
+        currentSlide = 0;
+        const track = document.getElementById("sliderTrack");
+        if (track) {
+          track.style.transition = "none"; // Pas de transition pour le reset
+          track.style.transform = `translateX(0%)`;
+          // Remettre la transition après un petit délai
+          setTimeout(() => {
+            track.style.transition = "transform 0.5s ease-in-out";
+          }, 50);
+        }
+
+        // S'assurer que le slider est visible et fonctionnel
+        const focusSlider = document.querySelector(".focus-slider");
+        if (focusSlider) {
+          focusSlider.style.display = "block";
+          focusSlider.style.opacity = "1";
+          focusSlider.classList.remove("fade-out");
+        }
+
+        // Redémarrer l'auto-play du slider (éviter les intervalles multiples)
+        startSliderAutoPlay();
+      }
 
       function showSlide(index) {
         const track = document.getElementById("sliderTrack");
-        const dots = document.querySelectorAll(".slider-dot");
-
-        // Mettre à jour la position du slider
-        track.style.transform = `translateX(-${index * 25}%)`;
-
-        // Mettre à jour les dots
-        dots.forEach((dot, i) => {
-          dot.classList.toggle("active", i === index);
-        });
-
-        currentSlide = index;
+        if (track) {
+          // Mettre à jour la position du slider (12.5% par slide car width: 12.5% par slide)
+          track.style.transform = `translateX(-${index * 12.5}%)`;
+          currentSlide = index;
+        }
       }
 
       function nextSlide() {
-        const nextIndex = (currentSlide + 1) % slides;
-        showSlide(nextIndex);
+        currentSlide++;
+
+        // Si on atteint la fin des images originales (slide 4), on revient au début
+        if (currentSlide >= slides) {
+          const track = document.getElementById("sliderTrack");
+          if (track) {
+            // Aller à la première image dupliquée (slide 4) avec transition
+            track.style.transform = `translateX(-${currentSlide * 12.5}%)`;
+
+            // Après la transition, revenir instantanément au début
+            setTimeout(() => {
+              track.style.transition = "none";
+              currentSlide = 0;
+              track.style.transform = `translateX(0%)`;
+
+              // Remettre la transition
+              setTimeout(() => {
+                track.style.transition = "transform 0.5s ease-in-out";
+              }, 50);
+            }, 500); // Attendre la fin de la transition
+          }
+        } else {
+          showSlide(currentSlide);
+        }
       }
 
-      // Auto-play du slider
-      setInterval(nextSlide, 4000); // Change toutes les 4 secondes
+      function startSliderAutoPlay() {
+        // Arrêter l'intervalle existant s'il y en a un
+        if (sliderInterval) {
+          clearInterval(sliderInterval);
+          sliderInterval = null;
+        }
 
-      // Ajouter les événements aux dots
+        // Démarrer un nouveau auto-play uniquement si on est sur la landing
+        const path = window.location.pathname;
+        if (path === "/" || path === "") {
+          sliderInterval = setInterval(nextSlide, 3500); // Change toutes les 3.5 secondes
+        }
+      }
+
+      function stopSliderAutoPlay() {
+        if (sliderInterval) {
+          clearInterval(sliderInterval);
+          sliderInterval = null;
+        }
+      }
+
+      // Event listeners
       document.addEventListener("DOMContentLoaded", function () {
-        const dots = document.querySelectorAll(".slider-dot");
-        dots.forEach((dot, index) => {
-          dot.addEventListener("click", () => showSlide(index));
-        });
-
-        // Menu burger moderne pour mobile
         const menuBurger = document.getElementById("menuBurger");
         const menuOverlay = document.getElementById("menuOverlay");
         const menuSidebar = document.getElementById("menuSidebar");
@@ -4125,6 +3679,9 @@
         // Fonction de navigation
         function navigateFromMenu(path) {
           closeMobileMenu();
+
+          // Arrêter l'auto-play du slider avant navigation
+          stopSliderAutoPlay();
 
           // Arrêter l'animation Three.js
           animationActive = false;
@@ -4184,8 +3741,11 @@
       });
 
       // Rendre les fonctions de navigation globales pour les onclick
+      window.navigateToDesignAction = navigateToDesignAction;
+      window.navigateToCreationsDemande = navigateToCreationsDemande;
       window.navigateToProjects = navigateToProjects;
       window.navigateToCustom = navigateToCustom;
+      window.navigateToShop = navigateToShop;
 
       // Fonction pour annoncer les changements aux lecteurs d'écran
       function announceToScreenReader(message) {

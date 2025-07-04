@@ -8,68 +8,44 @@ export default function CreationsSurMesure() {
 
   const customCreations = [
     {
-      id: "applique-murale",
-      title: "Applique Murale Moderne",
+      id: "lampadaire-sur-mesure",
+      title: "Lampadaire sur Mesure",
       description:
-        "Applique murale sur mesure avec éclairage LED indirect, créée pour un projet d'architecture d'intérieur contemporain.",
-      image: "/images/blanche.png", // Placeholder
+        "Lampadaire unique conçu sur demande particulière, alliant design contemporain et fonctionnalité optimale pour un éclairage d'ambiance exceptionnel.",
+      image:
+        "https://www.alto-lille.fr/uploads/c5e2d6c0-e84d-4409-9349-0c3582bf0d6c.png",
       features: [
-        "Design épuré et minimaliste",
-        "Éclairage LED dimmable",
-        "Installation murale discrète",
-        "Matériaux premium (chêne + aluminium)",
+        "Design unique et personnalisé",
+        "Éclairage LED haute qualité",
+        "Hauteur et intensité ajustables",
+        "Matériaux durables et écoresponsables",
+        "Fabrication artisanale française",
       ],
       specs:
-        "Dimensions : 40x20x15cm • Puissance : 15W LED • Température : 2700K-4000K",
-      price: "Sur devis",
+        "Hauteur : 165cm • Base : 35cm diamètre • Puissance : 20W LED • Température : 2700K-4000K",
+      price: "À partir de 850€",
+      story:
+        "Cette création unique a été développée suite à la demande spécifique d'un client recherchant un éclairage d'exception pour son salon. Le défi était de créer une pièce à la fois fonctionnelle et artistique, capable de s'intégrer parfaitement dans un intérieur contemporain.",
     },
     {
-      id: "lampe-bras-articule",
-      title: "Lampe à Bras Articulé",
+      id: "lampe-murale-sur-mesure",
+      title: "Lampe Murale sur Mesure",
       description:
-        "Luminaire mural avec bras articulé pour un espace de travail, offrant une flexibilité maximale d'éclairage.",
-      image: "/images/orange.png", // Placeholder
+        "Applique murale exclusive réalisée pour un projet d'architecture d'intérieur, offrant un éclairage ciblé et une esthétique raffinée.",
+      image:
+        "https://www.alto-lille.fr/uploads/ca4d1b96-c00f-4992-b23d-5a7cdaafde05.png",
       features: [
-        "Bras articulé 360°",
-        "Tête orientable",
-        "Intensité variable",
-        "Finition bois massif",
+        "Installation murale optimisée",
+        "Éclairage directionnel précis",
+        "Finitions haut de gamme",
+        "Design minimaliste et élégant",
+        "Commande tactile intuitive",
       ],
       specs:
-        "Portée : 80cm • Rotation : 360° • Puissance : 12W LED • Gradation tactile",
-      price: "Sur devis",
-    },
-    {
-      id: "lampadaire-design",
-      title: "Lampadaire Design Contemporain",
-      description:
-        "Lampadaire sur mesure alliant esthétique moderne et fonctionnalité, créé pour un salon d'entreprise.",
-      image: "/images/bleue.png", // Placeholder
-      features: [
-        "Hauteur ajustable",
-        "Double éclairage (direct/indirect)",
-        "Base lestée stable",
-        "Interrupteur au pied",
-      ],
-      specs:
-        "Hauteur : 150-180cm • Double flux LED • Base Ø30cm • Finition naturelle",
-      price: "Sur devis",
-    },
-    {
-      id: "lampadaire-sculptural",
-      title: "Lampadaire Sculptural",
-      description:
-        "Pièce unique sculptée dans du chêne massif, fusionnant art et éclairage pour un hall d'accueil.",
-      image: "/images/rouge.png", // Placeholder
-      features: [
-        "Sculpture sur bois unique",
-        "Éclairage intégré invisible",
-        "Essence de chêne français",
-        "Vernis écologique",
-      ],
-      specs:
-        "Hauteur : 200cm • Éclairage ambiant 360° • Socle intégré • Pièce unique",
-      price: "Sur devis",
+        "Dimensions : 45x25x18cm • Puissance : 12W LED • Angle d'éclairage : 120° • Gradation : 5%-100%",
+      price: "À partir de 420€",
+      story:
+        "Née d'une collaboration avec un architecte d'intérieur, cette lampe murale répond à des exigences techniques précises tout en apportant une touche design unique. Elle illustre parfaitement notre capacité à transformer une contrainte en opportunité créative.",
     },
   ];
 
@@ -188,6 +164,16 @@ export default function CreationsSurMesure() {
                       </p>
                       <p className="text-sm text-gray-700 dark:text-gray-300">
                         {creation.specs}
+                      </p>
+                    </div>
+
+                    {/* Story */}
+                    <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3">
+                      <p className="text-xs text-amber-600 dark:text-amber-400 font-medium mb-1">
+                        HISTOIRE DE LA CRÉATION
+                      </p>
+                      <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                        {creation.story}
                       </p>
                     </div>
                   </div>
