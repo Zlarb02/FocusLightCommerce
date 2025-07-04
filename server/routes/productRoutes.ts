@@ -154,7 +154,9 @@ router.put(
   async (req: Request, res: Response): Promise<void> => {
     try {
       const id = parseInt(req.params.id);
+      console.log(`🔄 Mise à jour variation ${id} - Données reçues:`, JSON.stringify(req.body, null, 2));
       const data = insertProductVariationSchema.partial().parse(req.body);
+      console.log(`🔄 Données parsées:`, JSON.stringify(data, null, 2));
       const variation = await storage.updateProductVariation(id, data);
       if (!variation) {
         res.status(404).json({ message: "Product variation not found" });

@@ -54,13 +54,21 @@ export const productVariations = pgTable("product_variations", {
   variationValue: text("variation_value").notNull(), // Blanc, Rouge, 'S', 'M', 'L', etc.
   price: real("price"), // Price override for this variation (optional)
   stock: integer("stock").notNull().default(0),
-  imageUrl: text("image_url").notNull(),
+  // imageUrl supprimé, remplacé par variation_images
+});
+
+// Schéma pour les images de variation
+export const variationImageSchema = z.object({
+  url: z.string(),
+  order: z.number(),
 });
 
 export const insertProductVariationSchema = createInsertSchema(
   productVariations
 ).omit({
   id: true,
+}).extend({
+  images: z.array(variationImageSchema).optional(),
 });
 
 // Customer schema
@@ -124,10 +132,14 @@ export const insertUserSchema = createInsertSchema(users).omit({
 export type Product = typeof products.$inferSelect;
 export type InsertProduct = z.infer<typeof insertProductSchema>;
 
-export type ProductVariation = typeof productVariations.$inferSelect;
-export type InsertProductVariation = z.infer<
-  typeof insertProductVariationSchema
->;
+export type VariationImage = z.infer<typeof variationImageSchema>;
+export type ProductVariation = Omit<
+  typeof productVariations.$inferSelect,
+  "imageUrl"
+> & {
+  images: VariationImage[];
+};
+export type InsertProductVariation = z.infer<typeof insertProductVariationSchema>;
 
 // Extended Product type with variations
 export type ProductWithVariations = Product & {

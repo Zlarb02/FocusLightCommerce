@@ -52,7 +52,7 @@ export function ProductCard({ product, variation }: ProductCardProps) {
     <Card className="h-full overflow-hidden hover:shadow-lg dark:hover:shadow-xl transition-all duration-300 relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600">
       <div className="relative p-4 h-52 flex items-center justify-center bg-gray-50 dark:bg-gray-900/50 rounded-t-lg">
         <img
-          src={variation.imageUrl}
+          src={variation.images[0]?.url || ""}
           alt={`${product.name} - ${variation.variationValue}`}
           className="max-h-full object-contain transition-transform hover:scale-105"
         />

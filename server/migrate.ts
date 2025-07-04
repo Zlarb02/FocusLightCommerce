@@ -13,6 +13,54 @@ const __dirname = path.dirname(__filename);
 // Chemin vers le dossier de migrations
 const migrationsFolder = path.join(__dirname, "../migrations");
 
+async function migrateImageData() {
+  console.log("Vérification des données à migrer...");
+  
+  try {
+    // Vérifier si la colonne image_url existe encore
+    const hasImageUrlColumn = await db.execute(sql`
+      SELECT column_name 
+      FROM information_schema.columns 
+      WHERE table_name = 'product_variations' AND column_name = 'image_url'
+    `);
+
+    if (hasImageUrlColumn.rowCount && hasImageUrlColumn.rowCount > 0) {
+      console.log("Migration des données image_url vers variation_images...");
+      
+      // Récupérer toutes les variations avec image_url
+      const variationsWithImages = await db.execute(sql`
+        SELECT id, image_url FROM product_variations WHERE image_url IS NOT NULL AND image_url != ''
+      `);
+
+      for (const variation of variationsWithImages.rows) {
+        // Vérifier si l'image n'existe pas déjà dans variation_images
+        const existingImage = await db.execute(sql`
+          SELECT id FROM variation_images WHERE variation_id = ${variation.id}
+        `);
+
+        if (existingImage.rowCount === 0) {
+          // Insérer l'image dans variation_images
+          await db.execute(sql`
+            INSERT INTO variation_images (variation_id, url, "order")
+            VALUES (${variation.id}, ${variation.image_url}, 0)
+          `);
+          console.log(`✅ Image migrée pour la variation ${variation.id}`);
+        }
+      }
+
+      // Supprimer la colonne image_url
+      console.log("Suppression de la colonne image_url...");
+      await db.execute(sql`ALTER TABLE product_variations DROP COLUMN IF EXISTS image_url`);
+      console.log("✅ Colonne image_url supprimée");
+    } else {
+      console.log("✅ La colonne image_url n'existe plus, migration déjà effectuée");
+    }
+  } catch (error) {
+    console.error("Erreur lors de la migration des images:", error);
+    // Ne pas faire échouer toute la migration pour ça
+  }
+}
+
 async function createTablesDirectly() {
   console.log("Création directe des tables dans la base de données...");
 
@@ -36,10 +84,23 @@ async function createTablesDirectly() {
         variation_type TEXT NOT NULL,
         variation_value TEXT NOT NULL,
         price REAL,
-        stock INTEGER NOT NULL DEFAULT 0,
-        image_url TEXT NOT NULL
+        stock INTEGER NOT NULL DEFAULT 0
       )
     `);
+
+    console.log("Création de la table des images de variations...");
+    await db.execute(sql`
+      CREATE TABLE IF NOT EXISTS variation_images (
+        id SERIAL PRIMARY KEY,
+        variation_id INTEGER NOT NULL REFERENCES product_variations(id) ON DELETE CASCADE,
+        url TEXT NOT NULL,
+        "order" INTEGER NOT NULL DEFAULT 0
+      )
+    `);
+
+    // Migration des données existantes de image_url vers variation_images
+    console.log("Migration des données existantes...");
+    await migrateImageData();
 
     console.log("Création de la table des clients...");
     await db.execute(sql`
@@ -219,16 +280,33 @@ async function initializeDefaultData() {
       if (lampProductResult.rowCount && lampProductResult.rowCount > 0) {
         const productId = lampProductResult.rows[0].id;
 
-        // Ajouter les variations de couleur avec les nouvelles URLs
-        await db.execute(
-          sql`INSERT INTO product_variations 
-              (product_id, variation_type, variation_value, stock, image_url)
-              VALUES 
-              (${productId}, 'color', 'Blanc', 10, 'https://www.alto-lille.fr/uploads/fbf9e3c1-9afe-446f-9e3d-5966f078b4c0.png'),
-              (${productId}, 'color', 'Bleu', 10, 'https://www.alto-lille.fr/uploads/6b611585-bb6c-411c-85bf-342fe95950c6.png'),
-              (${productId}, 'color', 'Rouge', 10, 'https://www.alto-lille.fr/uploads/1f1cdf28-f233-4191-9c1a-f9d7e12b709f.png'),
-              (${productId}, 'color', 'Orange', 10, 'https://www.alto-lille.fr/uploads/a8e085a1-8bc5-4c90-a738-151c7ce4d8d0.png')`
-        );
+        // Ajouter les variations de couleur
+        const variations = [
+          { color: 'Blanc', imageUrl: 'https://www.alto-lille.fr/uploads/fbf9e3c1-9afe-446f-9e3d-5966f078b4c0.png' },
+          { color: 'Bleu', imageUrl: 'https://www.alto-lille.fr/uploads/6b611585-bb6c-411c-85bf-342fe95950c6.png' },
+          { color: 'Rouge', imageUrl: 'https://www.alto-lille.fr/uploads/1f1cdf28-f233-4191-9c1a-f9d7e12b709f.png' },
+          { color: 'Orange', imageUrl: 'https://www.alto-lille.fr/uploads/a8e085a1-8bc5-4c90-a738-151c7ce4d8d0.png' }
+        ];
+
+        for (const variation of variations) {
+          // Créer la variation
+          const variationResult = await db.execute(
+            sql`INSERT INTO product_variations 
+                (product_id, variation_type, variation_value, stock)
+                VALUES (${productId}, 'color', ${variation.color}, 10)
+                RETURNING id`
+          );
+
+          if (variationResult.rowCount && variationResult.rowCount > 0) {
+            const variationId = variationResult.rows[0].id;
+            
+            // Ajouter l'image de la variation
+            await db.execute(sql`
+              INSERT INTO variation_images (variation_id, url, "order")
+              VALUES (${variationId}, ${variation.imageUrl}, 0)
+            `);
+          }
+        }
 
         console.log("✅ Produits initialisés avec succès");
       }

@@ -120,7 +120,7 @@ export default function ShopFocus() {
         description: `${selectedProduct.name} coloris ${selectedVariation.variationValue}`,
         type: "cart",
         duration: 5000,
-        productImage: selectedVariation.imageUrl,
+        productImage: selectedVariation.images[0]?.url || "",
         productName: `${selectedProduct.name} - ${selectedVariation.variationValue}`,
         quantity: 1,
       });
@@ -209,7 +209,7 @@ export default function ShopFocus() {
                     className="w-full h-full flex items-center justify-center"
                   >
                     <img
-                      src={selectedVariation.imageUrl}
+                      src={selectedVariation.images[0]?.url || ""}
                       alt={`Lampe FOCUS.01 coloris ${selectedVariation.variationValue}`}
                       className="w-full max-w-[70%] mx-auto object-contain z-1 mobile-optimized"
                       loading="eager"
@@ -346,7 +346,7 @@ export default function ShopFocus() {
               <div className="md:w-1/2 animate fade-in-right delay-4">
                 {selectedProduct && selectedVariation && (
                   <img
-                    src={selectedVariation.imageUrl}
+                    src={selectedVariation.images[0]?.url || ""}
                     alt={`FOCUS.01 en détail`}
                     className="w-full max-h-[500px] object-contain"
                   />

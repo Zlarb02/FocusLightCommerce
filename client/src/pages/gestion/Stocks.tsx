@@ -7,6 +7,7 @@ import {
   ProductWithVariations,
   InsertProduct,
   InsertProductVariation,
+  VariationImage,
 } from "@shared/schema";
 import { formatPrice } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
@@ -90,7 +91,14 @@ const variationFormSchema = z.object({
   productId: z.coerce.number(),
   variationType: z.string().min(1, "Le type de variation est requis"),
   variationValue: z.string().min(1, "La valeur de variation est requise"),
-  imageUrl: z.string().min(1, "L'URL de l'image est requise"),
+  images: z
+    .array(
+      z.object({
+        url: z.string().min(1, "L'URL de l'image est requise"),
+        order: z.number().int().min(0),
+      })
+    )
+    .min(1, "Au moins une image est requise"),
   price: z.coerce.number().nullable().optional(),
   stock: z.coerce.number().int().min(0).default(0),
 });
@@ -98,6 +106,61 @@ const variationFormSchema = z.object({
 type VariationFormValues = z.infer<typeof variationFormSchema>;
 
 export default function Stocks() {
+  // Mutation pour mettre à jour une variation
+  const { mutate: updateVariation } = useMutation({
+    mutationFn: async ({
+      id,
+      data,
+    }: {
+      id: number;
+      data: Partial<InsertProductVariation>;
+    }) => {
+      return apiRequest("PUT", `/api/products/variation/${id}`, data);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/products"] });
+      toast({
+        title: "Variation modifiée",
+        description: "La variation a été modifiée avec succès.",
+      });
+      setIsVariationDialogOpen(false);
+      resetVariationForm();
+      setEditingVariation(null);
+    },
+    onError: (error) => {
+      toast({
+        title: "Erreur",
+        description:
+          "Une erreur est survenue lors de la modification de la variation.",
+        variant: "destructive",
+      });
+      console.error(error);
+    },
+  });
+  // État pour savoir si on édite une variation
+  const [editingVariation, setEditingVariation] =
+    useState<ProductVariation | null>(null);
+
+  // Ouvrir la boîte de dialogue de variation pour édition
+  const openEditVariationDialog = (
+    variation: ProductVariation,
+    product: ProductWithVariations
+  ) => {
+    setProductForVariation(product);
+    variationForm.reset({
+      productId: product.id,
+      variationType: variation.variationType,
+      variationValue: variation.variationValue,
+      images:
+        variation.images && variation.images.length > 0
+          ? variation.images
+          : [{ url: "", order: 0 }],
+      price: variation.price,
+      stock: variation.stock,
+    });
+    setEditingVariation(variation);
+    setIsVariationDialogOpen(true);
+  };
   const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedVariation, setSelectedVariation] =
@@ -148,7 +211,7 @@ export default function Stocks() {
       productId: 0,
       variationType: "color",
       variationValue: "",
-      imageUrl: "",
+      images: [{ url: "", order: 0 }],
       price: null,
       stock: 0,
     },
@@ -323,7 +386,7 @@ export default function Stocks() {
       productId: productForVariation?.id || 0,
       variationType: "color",
       variationValue: "",
-      imageUrl: "",
+      images: [],
       price: null,
       stock: 0,
     });
@@ -397,9 +460,13 @@ export default function Stocks() {
     }
   };
 
-  // Soumettre le formulaire de variation
+  // Soumettre le formulaire de variation (création ou édition)
   const onSubmitVariation = (data: VariationFormValues) => {
-    createVariation(data);
+    if (editingVariation) {
+      updateVariation({ id: editingVariation.id, data });
+    } else {
+      createVariation(data);
+    }
   };
 
   const filteredProducts = products.filter(
@@ -500,11 +567,14 @@ export default function Stocks() {
                               </TableCell>
                               <TableCell>
                                 <div className="w-10 h-10 relative">
-                                  <img
-                                    src={variation.imageUrl}
-                                    alt={`${product.name} ${variation.variationValue}`}
-                                    className="object-contain w-full h-full"
-                                  />
+                                  {variation.images &&
+                                    variation.images.length > 0 && (
+                                      <img
+                                        src={variation.images[0].url}
+                                        alt={`${product.name} ${variation.variationValue}`}
+                                        className="object-contain w-full h-full"
+                                      />
+                                    )}
                                 </div>
                               </TableCell>
                               <TableCell>{product.name}</TableCell>
@@ -545,6 +615,19 @@ export default function Stocks() {
                                     title="Modifier le stock"
                                   >
                                     <RefreshCw className="h-4 w-4" />
+                                  </Button>
+                                  <Button
+                                    variant="outline"
+                                    size="icon"
+                                    onClick={() =>
+                                      openEditVariationDialog(
+                                        variation,
+                                        product
+                                      )
+                                    }
+                                    title="Éditer la variation"
+                                  >
+                                    <Edit className="h-4 w-4" />
                                   </Button>
                                   <Button
                                     variant="outline"
@@ -679,7 +762,10 @@ export default function Stocks() {
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-12 h-12 relative">
                     <img
-                      src={selectedVariation.imageUrl}
+                      src={
+                        selectedVariation.images[0]?.url ||
+                        "/placeholder-image.png"
+                      }
                       alt={selectedVariation.variationValue}
                       className="object-contain w-full h-full"
                     />
@@ -804,11 +890,20 @@ export default function Stocks() {
       {/* Boîte de dialogue pour ajouter une variation */}
       <Dialog
         open={isVariationDialogOpen}
-        onOpenChange={setIsVariationDialogOpen}
+        onOpenChange={(open) => {
+          setIsVariationDialogOpen(open);
+          if (!open) {
+            setEditingVariation(null);
+          }
+        }}
       >
         <DialogContent className="sm:max-w-[600px]">
           <DialogHeader>
-            <DialogTitle>Ajouter une variation</DialogTitle>
+            <DialogTitle>
+              {editingVariation
+                ? "Modifier une variation"
+                : "Ajouter une variation"}
+            </DialogTitle>
             {productForVariation && (
               <DialogDescription>
                 Pour le produit : {productForVariation.name}
@@ -862,13 +957,67 @@ export default function Stocks() {
 
               <FormField
                 control={variationForm.control}
-                name="imageUrl"
+                name="images"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>URL de l'image</FormLabel>
-                    <FormControl>
-                      <Input {...field} placeholder="images/nom-image.png" />
-                    </FormControl>
+                    <FormLabel>Images de la variation</FormLabel>
+                    <div className="space-y-2">
+                      {field.value.map((img, idx) => (
+                        <div key={idx} className="flex gap-2 items-center">
+                          <Input
+                            value={img.url}
+                            placeholder="URL de l'image"
+                            onChange={(e) => {
+                              const newArr = [...field.value];
+                              newArr[idx] = { ...img, url: e.target.value };
+                              field.onChange(newArr);
+                            }}
+                          />
+                          <Input
+                            type="number"
+                            min={0}
+                            className="w-20"
+                            value={img.order}
+                            onChange={(e) => {
+                              const newArr = [...field.value];
+                              newArr[idx] = {
+                                ...img,
+                                order: Number(e.target.value),
+                              };
+                              field.onChange(newArr);
+                            }}
+                          />
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="icon"
+                            onClick={() => {
+                              const newArr = field.value.filter(
+                                (_, i) => i !== idx
+                              );
+                              field.onChange(
+                                newArr.length ? newArr : [{ url: "", order: 0 }]
+                              );
+                            }}
+                          >
+                            -
+                          </Button>
+                        </div>
+                      ))}
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          field.onChange([
+                            ...field.value,
+                            { url: "", order: field.value.length },
+                          ]);
+                        }}
+                      >
+                        + Ajouter une image
+                      </Button>
+                    </div>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -920,11 +1069,16 @@ export default function Stocks() {
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => setIsVariationDialogOpen(false)}
+                  onClick={() => {
+                    setIsVariationDialogOpen(false);
+                    setEditingVariation(null);
+                  }}
                 >
                   Annuler
                 </Button>
-                <Button type="submit">Ajouter</Button>
+                <Button type="submit">
+                  {editingVariation ? "Mettre à jour" : "Ajouter"}
+                </Button>
               </DialogFooter>
             </form>
           </Form>

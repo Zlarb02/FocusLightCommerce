@@ -44,7 +44,7 @@ export function Confirmation({ orderId, orderNumber }: ConfirmationProps) {
           {orderDetails.map((item, index) => (
             <div key={index} className="flex gap-3 md:gap-4 mb-4">
               <img
-                src={item.product.imageUrl}
+                src={item.product.images[0]?.url || ""}
                 alt={`${item.product.productName} ${item.product.variationValue}`}
                 className="w-12 h-12 md:w-16 md:h-16 object-contain flex-shrink-0"
               />

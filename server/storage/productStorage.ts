@@ -4,6 +4,7 @@ import {
   type ProductVariation,
   type InsertProductVariation,
   type ProductWithVariations,
+  type VariationImage,
 } from "../../shared/schema.js";
 
 export class ProductStorage {
@@ -39,35 +40,52 @@ export class ProductStorage {
       variationType: "color",
       variationValue: "Blanc",
       stock: 10,
-      imageUrl:
-        "https://www.alto-lille.fr/uploads/fbf9e3c1-9afe-446f-9e3d-5966f078b4c0.png",
+      images: [
+        {
+          url: "https://www.alto-lille.fr/uploads/fbf9e3c1-9afe-446f-9e3d-5966f078b4c0.png",
+          order: 0,
+        },
+        {
+          url: "https://www.alto-lille.fr/uploads/extra-blanc-2.png",
+          order: 1,
+        },
+      ],
     });
-
     await this.createProductVariation({
       productId: lampProduct.id,
       variationType: "color",
       variationValue: "Bleu",
       stock: 10,
-      imageUrl:
-        "https://www.alto-lille.fr/uploads/6b611585-bb6c-411c-85bf-342fe95950c6.png",
+      images: [
+        { url: "images/bleusurfond.jpeg", order: 0 },
+        { url: "images/bleu2.jpeg", order: 1 },
+      ],
     });
-
     await this.createProductVariation({
       productId: lampProduct.id,
       variationType: "color",
       variationValue: "Rouge",
       stock: 10,
-      imageUrl:
-        "https://www.alto-lille.fr/uploads/1f1cdf28-f233-4191-9c1a-f9d7e12b709f.png",
+      images: [
+        {
+          url: "https://www.alto-lille.fr/uploads/1f1cdf28-f233-4191-9c1a-f9d7e12b709f.png",
+          order: 0,
+        },
+        { url: "images/rouge2.jpeg", order: 1 },
+      ],
     });
-
     await this.createProductVariation({
       productId: lampProduct.id,
       variationType: "color",
       variationValue: "Orange",
       stock: 10,
-      imageUrl:
-        "https://www.alto-lille.fr/uploads/a8e085a1-8bc5-4c90-a738-151c7ce4d8d0.png",
+      images: [
+        {
+          url: "https://www.alto-lille.fr/uploads/a8e085a1-8bc5-4c90-a738-151c7ce4d8d0.png",
+          order: 0,
+        },
+        { url: "images/orange2.jpeg", order: 1 },
+      ],
     });
   }
 
@@ -149,11 +167,12 @@ export class ProductStorage {
   ): Promise<ProductVariation> {
     const id = this.variationId++;
     // Assurez-vous que les propriétés requises ont des valeurs par défaut
-    const newVariation = {
+    const newVariation: ProductVariation = {
       ...variation,
       id,
       price: variation.price ?? null,
       stock: variation.stock ?? 0,
+      images: variation.images ?? [],
     };
     this.productVariations.set(id, newVariation);
     return newVariation;
@@ -178,7 +197,11 @@ export class ProductStorage {
     const existingVariation = this.productVariations.get(id);
     if (!existingVariation) return undefined;
 
-    const updatedVariation = { ...existingVariation, ...variation };
+    const updatedVariation: ProductVariation = {
+      ...existingVariation,
+      ...variation,
+      images: variation.images ?? existingVariation.images,
+    };
     this.productVariations.set(id, updatedVariation);
     return updatedVariation;
   }

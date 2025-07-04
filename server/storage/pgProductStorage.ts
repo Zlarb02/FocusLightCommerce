@@ -7,11 +7,9 @@ import {
   type ProductVariation,
   type InsertProductVariation,
   type ProductWithVariations,
+  type VariationImage,
 } from "../../shared/schema.js";
-import {
-  transformProductWithVariations,
-  transformProductVariation,
-} from "../utils/imageMapper.js";
+
 
 /**
  * Gestion des produits et leurs variations dans PostgreSQL
@@ -21,50 +19,38 @@ export class PgProductStorage {
    * Récupère tous les produits avec leurs variations
    */
   async getAllProducts(): Promise<ProductWithVariations[]> {
-    const rawProducts = await db.execute(
-      sql`SELECT p.*, 
-          json_agg(
-            json_build_object(
-              'id', pv.id,
-              'productId', pv.product_id,
-              'variationType', pv.variation_type,
-              'variationValue', pv.variation_value,
-              'price', pv.price,
-              'stock', pv.stock,
-              'imageUrl', pv.image_url
-            )
-          ) as variations
-        FROM products p
-        LEFT JOIN product_variations pv ON p.id = pv.product_id
-        GROUP BY p.id`
+    const rawProducts = await db.execute(sql`SELECT * FROM products`);
+    const rawVariations = await db.execute(
+      sql`SELECT * FROM product_variations`
     );
+    const rawImages = await db.execute(sql`SELECT * FROM variation_images`);
 
     return rawProducts.rows.map((row) => {
-      const product = {
+      const productVariations = rawVariations.rows.filter(
+        (v) => v.product_id === row.id
+      );
+      const variations: ProductVariation[] = productVariations.map((v) => {
+        const images: VariationImage[] = rawImages.rows
+          .filter((img) => img.variation_id === v.id)
+          .sort((a, b) => Number(a.order) - Number(b.order))
+          .map((img) => ({ url: String(img.url), order: Number(img.order) }));
+        return {
+          id: Number(v.id),
+          productId: Number(v.product_id),
+          variationType: String(v.variation_type),
+          variationValue: String(v.variation_value),
+          price: v.price !== null ? Number(v.price) : null,
+          stock: Number(v.stock),
+          images,
+        };
+      });
+      return {
         id: Number(row.id),
         name: String(row.name),
         description: String(row.description),
         price: Number(row.price),
-        variations:
-          row.variations &&
-          Array.isArray(row.variations) &&
-          row.variations.length > 0 &&
-          row.variations[0] &&
-          row.variations[0].id !== null
-            ? row.variations.map((v: any) => ({
-                id: Number(v.id),
-                productId: Number(v.productId),
-                variationType: String(v.variationType),
-                variationValue: String(v.variationValue),
-                price: v.price !== null ? Number(v.price) : null,
-                stock: Number(v.stock),
-                imageUrl: String(v.imageUrl),
-              }))
-            : [],
+        variations,
       };
-
-      // Appliquer la transformation des URLs d'images
-      return transformProductWithVariations(product);
     });
   }
 
@@ -75,37 +61,40 @@ export class PgProductStorage {
     const productResult = await db.execute(
       sql`SELECT * FROM products WHERE id = ${id}`
     );
-
     if (productResult.rowCount === 0 || productResult.rowCount === undefined) {
       return undefined;
     }
-
     const product = productResult.rows[0];
-
     const variationsResult = await db.execute(
       sql`SELECT * FROM product_variations WHERE product_id = ${id}`
     );
-
-    const variations: ProductVariation[] = variationsResult.rows.map((row) => ({
-      id: Number(row.id),
-      productId: Number(row.product_id),
-      variationType: String(row.variation_type),
-      variationValue: String(row.variation_value),
-      price: row.price !== null ? Number(row.price) : null,
-      stock: Number(row.stock),
-      imageUrl: String(row.image_url),
-    }));
-
-    const productWithVariations = {
+    const imagesResult = await db.execute(
+      sql`SELECT * FROM variation_images WHERE variation_id IN (${
+        variationsResult.rows.map((v) => v.id).join(",") || 0
+      })`
+    );
+    const variations: ProductVariation[] = variationsResult.rows.map((row) => {
+      const images: VariationImage[] = imagesResult.rows
+        .filter((img) => img.variation_id === row.id)
+        .sort((a, b) => Number(a.order) - Number(b.order))
+        .map((img) => ({ url: String(img.url), order: Number(img.order) }));
+      return {
+        id: Number(row.id),
+        productId: Number(row.product_id),
+        variationType: String(row.variation_type),
+        variationValue: String(row.variation_value),
+        price: row.price !== null ? Number(row.price) : null,
+        stock: Number(row.stock),
+        images,
+      };
+    });
+    return {
       id: Number(product.id),
       name: String(product.name),
       description: String(product.description),
       price: Number(product.price),
       variations,
     };
-
-    // Appliquer la transformation des URLs d'images
-    return transformProductWithVariations(productWithVariations);
   }
 
   /**
@@ -115,51 +104,37 @@ export class PgProductStorage {
     type: string,
     value: string
   ): Promise<ProductWithVariations[]> {
-    const result = await db.execute(
-      sql`SELECT p.*, 
-          json_agg(
-            json_build_object(
-              'id', pv.id,
-              'productId', pv.product_id,
-              'variationType', pv.variation_type,
-              'variationValue', pv.variation_value,
-              'price', pv.price,
-              'stock', pv.stock,
-              'imageUrl', pv.image_url
-            )
-          ) as variations
-        FROM products p
-        JOIN product_variations pv ON p.id = pv.product_id
-        WHERE pv.variation_type = ${type} AND pv.variation_value = ${value}
-        GROUP BY p.id`
+    const result = await db.execute(sql`SELECT * FROM products`);
+    const rawVariations = await db.execute(
+      sql`SELECT * FROM product_variations WHERE variation_type = ${type} AND variation_value = ${value}`
     );
-
+    const rawImages = await db.execute(sql`SELECT * FROM variation_images`);
     return result.rows.map((row) => {
-      const product = {
+      const productVariations = rawVariations.rows.filter(
+        (v) => v.product_id === row.id
+      );
+      const variations: ProductVariation[] = productVariations.map((v) => {
+        const images: VariationImage[] = rawImages.rows
+          .filter((img) => img.variation_id === v.id)
+          .sort((a, b) => Number(a.order) - Number(b.order))
+          .map((img) => ({ url: String(img.url), order: Number(img.order) }));
+        return {
+          id: Number(v.id),
+          productId: Number(v.product_id),
+          variationType: String(v.variation_type),
+          variationValue: String(v.variation_value),
+          price: v.price !== null ? Number(v.price) : null,
+          stock: Number(v.stock),
+          images,
+        };
+      });
+      return {
         id: Number(row.id),
         name: String(row.name),
         description: String(row.description),
         price: Number(row.price),
-        variations:
-          row.variations &&
-          Array.isArray(row.variations) &&
-          row.variations.length > 0 &&
-          row.variations[0] &&
-          row.variations[0].id !== null
-            ? row.variations.map((v: any) => ({
-                id: Number(v.id),
-                productId: Number(v.productId),
-                variationType: String(v.variationType),
-                variationValue: String(v.variationValue),
-                price: v.price !== null ? Number(v.price) : null,
-                stock: Number(v.stock),
-                imageUrl: String(v.imageUrl),
-              }))
-            : [],
+        variations,
       };
-
-      // Appliquer la transformation des URLs d'images
-      return transformProductWithVariations(product);
     });
   }
 
@@ -178,6 +153,17 @@ export class PgProductStorage {
     }
 
     const row = result.rows[0];
+    
+    // Récupérer les images de la variation
+    const imagesResult = await db.execute(
+      sql`SELECT * FROM variation_images WHERE variation_id = ${id} ORDER BY "order"`
+    );
+    
+    const images: VariationImage[] = imagesResult.rows.map((img) => ({
+      url: String(img.url),
+      order: Number(img.order),
+    }));
+
     const variation = {
       id: Number(row.id),
       productId: Number(row.product_id),
@@ -185,11 +171,10 @@ export class PgProductStorage {
       variationValue: String(row.variation_value),
       price: row.price !== null ? Number(row.price) : null,
       stock: Number(row.stock),
-      imageUrl: String(row.image_url),
+      images,
     };
 
-    // Appliquer la transformation des URLs d'images
-    return transformProductVariation(variation);
+    return variation;
   }
 
   /**
@@ -219,31 +204,35 @@ export class PgProductStorage {
   ): Promise<ProductVariation> {
     const result = await db.execute(
       sql`INSERT INTO product_variations 
-          (product_id, variation_type, variation_value, price, stock, image_url)
+          (product_id, variation_type, variation_value, price, stock)
           VALUES (
             ${variation.productId}, 
             ${variation.variationType}, 
             ${variation.variationValue}, 
             ${variation.price}, 
-            ${variation.stock}, 
-            ${variation.imageUrl}
+            ${variation.stock}
           )
-          RETURNING id, product_id, variation_type, variation_value, price, stock, image_url`
+          RETURNING id, product_id, variation_type, variation_value, price, stock`
     );
-
     const row = result.rows[0];
-    const createdVariation = {
+    // Insérer les images
+    if (variation.images && Array.isArray(variation.images)) {
+      for (const image of variation.images) {
+        await db.execute(sql`
+          INSERT INTO variation_images (variation_id, url, "order")
+          VALUES (${row.id}, ${image.url}, ${image.order})
+        `);
+      }
+    }
+    return {
       id: Number(row.id),
       productId: Number(row.product_id),
       variationType: String(row.variation_type),
       variationValue: String(row.variation_value),
       price: row.price !== null ? Number(row.price) : null,
       stock: Number(row.stock),
-      imageUrl: String(row.image_url),
+      images: variation.images ?? [],
     };
-
-    // Appliquer la transformation des URLs d'images
-    return transformProductVariation(createdVariation);
   }
 
   /**
@@ -309,65 +298,114 @@ export class PgProductStorage {
     id: number,
     variation: Partial<InsertProductVariation>
   ): Promise<ProductVariation | undefined> {
-    // Si aucune mise à jour demandée, simplement récupérer la variation
-    if (Object.keys(variation).length === 0) {
+    // Gérer les images d'abord si elles sont fournies
+    if (variation.images && Array.isArray(variation.images)) {
+      console.log(`🖼️  Mise à jour des images pour la variation ${id}:`, variation.images);
+      
+      // Supprimer les anciennes images
+      const deleteResult = await db.execute(
+        sql`DELETE FROM variation_images WHERE variation_id = ${id}`
+      );
+      console.log(`🗑️  ${deleteResult.rowCount || 0} anciennes images supprimées`);
+      
+      // Insérer les nouvelles
+      for (const image of variation.images) {
+        const insertResult = await db.execute(sql`
+          INSERT INTO variation_images (variation_id, url, "order")
+          VALUES (${id}, ${image.url}, ${image.order})
+        `);
+        console.log(`✅ Image insérée: ${image.url} (ordre: ${image.order})`);
+      }
+    }
+
+    // Si seules les images sont mises à jour, retourner la variation mise à jour
+    const variationData = { ...variation };
+    delete variationData.images;
+    
+    if (Object.keys(variationData).length === 0) {
       return this.getProductVariationById(id);
     }
 
-    // Construire la requête dynamiquement dans un style similaire aux autres méthodes
-    const updates: string[] = [];
-
-    if (variation.productId !== undefined) {
-      updates.push(sql`product_id = ${variation.productId}`.toString());
+    // Construire la requête SQL séparément pour chaque cas
+    let result;
+    
+    if (variation.productId !== undefined && variation.variationType !== undefined && 
+        variation.variationValue !== undefined && variation.price !== undefined && 
+        variation.stock !== undefined) {
+      result = await db.execute(sql`
+        UPDATE product_variations 
+        SET product_id = ${variation.productId}, 
+            variation_type = ${variation.variationType}, 
+            variation_value = ${variation.variationValue}, 
+            price = ${variation.price}, 
+            stock = ${variation.stock}
+        WHERE id = ${id} 
+        RETURNING id, product_id, variation_type, variation_value, price, stock
+      `);
+    } else if (variation.stock !== undefined) {
+      result = await db.execute(sql`
+        UPDATE product_variations 
+        SET stock = ${variation.stock}
+        WHERE id = ${id} 
+        RETURNING id, product_id, variation_type, variation_value, price, stock
+      `);
+    } else if (variation.price !== undefined) {
+      result = await db.execute(sql`
+        UPDATE product_variations 
+        SET price = ${variation.price}
+        WHERE id = ${id} 
+        RETURNING id, product_id, variation_type, variation_value, price, stock
+      `);
+    } else if (variation.variationType !== undefined) {
+      result = await db.execute(sql`
+        UPDATE product_variations 
+        SET variation_type = ${variation.variationType}
+        WHERE id = ${id} 
+        RETURNING id, product_id, variation_type, variation_value, price, stock
+      `);
+    } else if (variation.variationValue !== undefined) {
+      result = await db.execute(sql`
+        UPDATE product_variations 
+        SET variation_value = ${variation.variationValue}
+        WHERE id = ${id} 
+        RETURNING id, product_id, variation_type, variation_value, price, stock
+      `);
+    } else if (variation.productId !== undefined) {
+      result = await db.execute(sql`
+        UPDATE product_variations 
+        SET product_id = ${variation.productId}
+        WHERE id = ${id} 
+        RETURNING id, product_id, variation_type, variation_value, price, stock
+      `);
+    } else {
+      return this.getProductVariationById(id);
     }
-
-    if (variation.variationType !== undefined) {
-      updates.push(sql`variation_type = ${variation.variationType}`.toString());
-    }
-
-    if (variation.variationValue !== undefined) {
-      updates.push(
-        sql`variation_value = ${variation.variationValue}`.toString()
-      );
-    }
-
-    if (variation.price !== undefined) {
-      updates.push(sql`price = ${variation.price}`.toString());
-    }
-
-    if (variation.stock !== undefined) {
-      updates.push(sql`stock = ${variation.stock}`.toString());
-    }
-
-    if (variation.imageUrl !== undefined) {
-      updates.push(sql`image_url = ${variation.imageUrl}`.toString());
-    }
-
-    const updateClause = updates.join(", ");
-
-    const result = await db.execute(
-      sql`UPDATE product_variations SET ${sql.raw(updateClause)} 
-          WHERE id = ${id} 
-          RETURNING id, product_id, variation_type, variation_value, price, stock, image_url`
-    );
 
     if (result.rowCount === 0 || result.rowCount === undefined) {
       return undefined;
     }
 
     const row = result.rows[0];
-    const updatedVariation = {
+    
+    // Récupérer les images de la variation
+    const imagesResult = await db.execute(
+      sql`SELECT * FROM variation_images WHERE variation_id = ${id} ORDER BY "order"`
+    );
+    
+    const images: VariationImage[] = imagesResult.rows.map((img) => ({
+      url: String(img.url),
+      order: Number(img.order),
+    }));
+
+    return {
       id: Number(row.id),
       productId: Number(row.product_id),
       variationType: String(row.variation_type),
       variationValue: String(row.variation_value),
       price: row.price !== null ? Number(row.price) : null,
       stock: Number(row.stock),
-      imageUrl: String(row.image_url),
+      images,
     };
-
-    // Appliquer la transformation des URLs d'images
-    return transformProductVariation(updatedVariation);
   }
 
   /**
@@ -381,7 +419,7 @@ export class PgProductStorage {
       sql`UPDATE product_variations 
           SET stock = stock + ${quantity}
           WHERE id = ${id}
-          RETURNING id, product_id, variation_type, variation_value, price, stock, image_url`
+          RETURNING id, product_id, variation_type, variation_value, price, stock`
     );
 
     if (result.rowCount === 0 || result.rowCount === undefined) {
@@ -389,18 +427,26 @@ export class PgProductStorage {
     }
 
     const row = result.rows[0];
-    const updatedVariation = {
+    
+    // Récupérer les images de la variation
+    const imagesResult = await db.execute(
+      sql`SELECT * FROM variation_images WHERE variation_id = ${id} ORDER BY "order"`
+    );
+    
+    const images: VariationImage[] = imagesResult.rows.map((img) => ({
+      url: String(img.url),
+      order: Number(img.order),
+    }));
+
+    return {
       id: Number(row.id),
       productId: Number(row.product_id),
       variationType: String(row.variation_type),
       variationValue: String(row.variation_value),
       price: row.price !== null ? Number(row.price) : null,
       stock: Number(row.stock),
-      imageUrl: String(row.image_url),
+      images,
     };
-
-    // Appliquer la transformation des URLs d'images
-    return transformProductVariation(updatedVariation);
   }
 
   /**

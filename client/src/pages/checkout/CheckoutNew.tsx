@@ -258,7 +258,7 @@ export default function CheckoutNew() {
                         <div key={index} className="flex gap-3">
                           <div className="w-16 h-16 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700 flex-shrink-0">
                             <img
-                              src={item.product.imageUrl}
+                              src={item.product.images[0]?.url || ""}
                               alt={`${item.product.productName} ${item.product.variationValue}`}
                               className="w-full h-full object-contain"
                             />

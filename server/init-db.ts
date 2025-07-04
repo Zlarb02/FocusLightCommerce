@@ -20,36 +20,59 @@ const initialProducts = [
   },
 ];
 
-// Données initiales pour les variations de produits
+// Données initiales pour les variations de produits (avec images multiples)
 const initialProductVariations = [
-  // Variations pour FOCUS.01 - Nouvelles URLs avec transparence
   {
     productId: 1,
     variationType: "color",
     variationValue: "Blanc",
     stock: 10,
-    imageUrl: "https://www.alto-lille.fr/uploads/fbf9e3c1-9afe-446f-9e3d-5966f078b4c0.png",
+    images: [
+      {
+        url: "https://www.alto-lille.fr/uploads/fbf9e3c1-9afe-446f-9e3d-5966f078b4c0.png",
+        order: 0,
+      },
+      { url: "https://www.alto-lille.fr/uploads/extra-blanc-2.png", order: 1 },
+    ],
   },
   {
     productId: 1,
     variationType: "color",
     variationValue: "Bleu",
     stock: 10,
-    imageUrl: "https://www.alto-lille.fr/uploads/6b611585-bb6c-411c-85bf-342fe95950c6.png",
+    images: [
+      {
+        url: "https://www.alto-lille.fr/uploads/6b611585-bb6c-411c-85bf-342fe95950c6.png",
+        order: 0,
+      },
+      { url: "https://www.alto-lille.fr/uploads/extra-bleu-2.png", order: 1 },
+    ],
   },
   {
     productId: 1,
     variationType: "color",
     variationValue: "Rouge",
     stock: 10,
-    imageUrl: "https://www.alto-lille.fr/uploads/1f1cdf28-f233-4191-9c1a-f9d7e12b709f.png",
+    images: [
+      {
+        url: "https://www.alto-lille.fr/uploads/1f1cdf28-f233-4191-9c1a-f9d7e12b709f.png",
+        order: 0,
+      },
+      { url: "https://www.alto-lille.fr/uploads/extra-rouge-2.png", order: 1 },
+    ],
   },
   {
     productId: 1,
     variationType: "color",
     variationValue: "Orange",
     stock: 10,
-    imageUrl: "https://www.alto-lille.fr/uploads/a8e085a1-8bc5-4c90-a738-151c7ce4d8d0.png",
+    images: [
+      {
+        url: "https://www.alto-lille.fr/uploads/a8e085a1-8bc5-4c90-a738-151c7ce4d8d0.png",
+        order: 0,
+      },
+      { url: "https://www.alto-lille.fr/uploads/extra-orange-2.png", order: 1 },
+    ],
   },
 ];
 
@@ -96,15 +119,23 @@ async function initDatabase() {
     }
     console.log(`${initialProducts.length} produits insérés avec succès.`);
 
-    // Insérer les variations de produits
+    // Insérer les variations de produits et leurs images
     for (const variation of initialProductVariations) {
-      await db.execute(sql`
-        INSERT INTO product_variations (product_id, variation_type, variation_value, stock, image_url)
-        VALUES (${variation.productId}, ${variation.variationType}, ${variation.variationValue}, ${variation.stock}, ${variation.imageUrl})
+      const result = await db.execute(sql`
+        INSERT INTO product_variations (product_id, variation_type, variation_value, stock)
+        VALUES (${variation.productId}, ${variation.variationType}, ${variation.variationValue}, ${variation.stock})
+        RETURNING id
       `);
+      const variationId = result.rows[0].id;
+      for (const image of variation.images) {
+        await db.execute(sql`
+          INSERT INTO variation_images (variation_id, url, "order")
+          VALUES (${variationId}, ${image.url}, ${image.order})
+        `);
+      }
     }
     console.log(
-      `${initialProductVariations.length} variations de produits insérées avec succès.`
+      `${initialProductVariations.length} variations de produits (et images) insérées avec succès.`
     );
 
     console.log("Initialisation de la base de données terminée avec succès.");
