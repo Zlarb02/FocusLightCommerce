@@ -255,28 +255,70 @@ export class PgProductStorage {
         : undefined;
     }
 
-    // Construire la requête dynamiquement dans un style similaire aux autres méthodes
-    const updates: string[] = [];
-
-    if (product.name !== undefined) {
-      updates.push(sql`name = ${product.name}`.toString());
+    // Construire la requête SQL séparément pour chaque cas
+    let result;
+    
+    if (product.name !== undefined && product.description !== undefined && product.price !== undefined) {
+      result = await db.execute(sql`
+        UPDATE products 
+        SET name = ${product.name}, description = ${product.description}, price = ${product.price}
+        WHERE id = ${id} 
+        RETURNING id, name, description, price
+      `);
+    } else if (product.name !== undefined && product.description !== undefined) {
+      result = await db.execute(sql`
+        UPDATE products 
+        SET name = ${product.name}, description = ${product.description}
+        WHERE id = ${id} 
+        RETURNING id, name, description, price
+      `);
+    } else if (product.name !== undefined && product.price !== undefined) {
+      result = await db.execute(sql`
+        UPDATE products 
+        SET name = ${product.name}, price = ${product.price}
+        WHERE id = ${id} 
+        RETURNING id, name, description, price
+      `);
+    } else if (product.description !== undefined && product.price !== undefined) {
+      result = await db.execute(sql`
+        UPDATE products 
+        SET description = ${product.description}, price = ${product.price}
+        WHERE id = ${id} 
+        RETURNING id, name, description, price
+      `);
+    } else if (product.name !== undefined) {
+      result = await db.execute(sql`
+        UPDATE products 
+        SET name = ${product.name}
+        WHERE id = ${id} 
+        RETURNING id, name, description, price
+      `);
+    } else if (product.description !== undefined) {
+      result = await db.execute(sql`
+        UPDATE products 
+        SET description = ${product.description}
+        WHERE id = ${id} 
+        RETURNING id, name, description, price
+      `);
+    } else if (product.price !== undefined) {
+      result = await db.execute(sql`
+        UPDATE products 
+        SET price = ${product.price}
+        WHERE id = ${id} 
+        RETURNING id, name, description, price
+      `);
+    } else {
+      // Cas par défaut : récupérer le produit existant
+      const existingProduct = await this.getProductById(id);
+      return existingProduct
+        ? {
+            id: existingProduct.id,
+            name: existingProduct.name,
+            description: existingProduct.description,
+            price: existingProduct.price,
+          }
+        : undefined;
     }
-
-    if (product.description !== undefined) {
-      updates.push(sql`description = ${product.description}`.toString());
-    }
-
-    if (product.price !== undefined) {
-      updates.push(sql`price = ${product.price}`.toString());
-    }
-
-    const updateClause = updates.join(", ");
-
-    const result = await db.execute(
-      sql`UPDATE products SET ${sql.raw(updateClause)} 
-          WHERE id = ${id} 
-          RETURNING id, name, description, price`
-    );
 
     if (result.rowCount === 0 || result.rowCount === undefined) {
       return undefined;
