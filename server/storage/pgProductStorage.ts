@@ -10,7 +10,6 @@ import {
   type VariationImage,
 } from "../../shared/schema.js";
 
-
 /**
  * Gestion des produits et leurs variations dans PostgreSQL
  */
@@ -153,12 +152,12 @@ export class PgProductStorage {
     }
 
     const row = result.rows[0];
-    
+
     // Récupérer les images de la variation
     const imagesResult = await db.execute(
       sql`SELECT * FROM variation_images WHERE variation_id = ${id} ORDER BY "order"`
     );
-    
+
     const images: VariationImage[] = imagesResult.rows.map((img) => ({
       url: String(img.url),
       order: Number(img.order),
@@ -257,15 +256,22 @@ export class PgProductStorage {
 
     // Construire la requête SQL séparément pour chaque cas
     let result;
-    
-    if (product.name !== undefined && product.description !== undefined && product.price !== undefined) {
+
+    if (
+      product.name !== undefined &&
+      product.description !== undefined &&
+      product.price !== undefined
+    ) {
       result = await db.execute(sql`
         UPDATE products 
         SET name = ${product.name}, description = ${product.description}, price = ${product.price}
         WHERE id = ${id} 
         RETURNING id, name, description, price
       `);
-    } else if (product.name !== undefined && product.description !== undefined) {
+    } else if (
+      product.name !== undefined &&
+      product.description !== undefined
+    ) {
       result = await db.execute(sql`
         UPDATE products 
         SET name = ${product.name}, description = ${product.description}
@@ -279,7 +285,10 @@ export class PgProductStorage {
         WHERE id = ${id} 
         RETURNING id, name, description, price
       `);
-    } else if (product.description !== undefined && product.price !== undefined) {
+    } else if (
+      product.description !== undefined &&
+      product.price !== undefined
+    ) {
       result = await db.execute(sql`
         UPDATE products 
         SET description = ${product.description}, price = ${product.price}
@@ -342,14 +351,19 @@ export class PgProductStorage {
   ): Promise<ProductVariation | undefined> {
     // Gérer les images d'abord si elles sont fournies
     if (variation.images && Array.isArray(variation.images)) {
-      console.log(`🖼️  Mise à jour des images pour la variation ${id}:`, variation.images);
-      
+      console.log(
+        `🖼️  Mise à jour des images pour la variation ${id}:`,
+        variation.images
+      );
+
       // Supprimer les anciennes images
       const deleteResult = await db.execute(
         sql`DELETE FROM variation_images WHERE variation_id = ${id}`
       );
-      console.log(`🗑️  ${deleteResult.rowCount || 0} anciennes images supprimées`);
-      
+      console.log(
+        `🗑️  ${deleteResult.rowCount || 0} anciennes images supprimées`
+      );
+
       // Insérer les nouvelles
       for (const image of variation.images) {
         const insertResult = await db.execute(sql`
@@ -363,17 +377,21 @@ export class PgProductStorage {
     // Si seules les images sont mises à jour, retourner la variation mise à jour
     const variationData = { ...variation };
     delete variationData.images;
-    
+
     if (Object.keys(variationData).length === 0) {
       return this.getProductVariationById(id);
     }
 
     // Construire la requête SQL séparément pour chaque cas
     let result;
-    
-    if (variation.productId !== undefined && variation.variationType !== undefined && 
-        variation.variationValue !== undefined && variation.price !== undefined && 
-        variation.stock !== undefined) {
+
+    if (
+      variation.productId !== undefined &&
+      variation.variationType !== undefined &&
+      variation.variationValue !== undefined &&
+      variation.price !== undefined &&
+      variation.stock !== undefined
+    ) {
       result = await db.execute(sql`
         UPDATE product_variations 
         SET product_id = ${variation.productId}, 
@@ -428,12 +446,12 @@ export class PgProductStorage {
     }
 
     const row = result.rows[0];
-    
+
     // Récupérer les images de la variation
     const imagesResult = await db.execute(
       sql`SELECT * FROM variation_images WHERE variation_id = ${id} ORDER BY "order"`
     );
-    
+
     const images: VariationImage[] = imagesResult.rows.map((img) => ({
       url: String(img.url),
       order: Number(img.order),
@@ -469,12 +487,12 @@ export class PgProductStorage {
     }
 
     const row = result.rows[0];
-    
+
     // Récupérer les images de la variation
     const imagesResult = await db.execute(
       sql`SELECT * FROM variation_images WHERE variation_id = ${id} ORDER BY "order"`
     );
-    
+
     const images: VariationImage[] = imagesResult.rows.map((img) => ({
       url: String(img.url),
       order: Number(img.order),

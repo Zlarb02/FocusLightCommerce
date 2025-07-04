@@ -15,7 +15,7 @@ const migrationsFolder = path.join(__dirname, "../migrations");
 
 async function migrateImageData() {
   console.log("Vérification des données à migrer...");
-  
+
   try {
     // Vérifier si la colonne image_url existe encore
     const hasImageUrlColumn = await db.execute(sql`
@@ -26,7 +26,7 @@ async function migrateImageData() {
 
     if (hasImageUrlColumn.rowCount && hasImageUrlColumn.rowCount > 0) {
       console.log("Migration des données image_url vers variation_images...");
-      
+
       // Récupérer toutes les variations avec image_url
       const variationsWithImages = await db.execute(sql`
         SELECT id, image_url FROM product_variations WHERE image_url IS NOT NULL AND image_url != ''
@@ -50,10 +50,14 @@ async function migrateImageData() {
 
       // Supprimer la colonne image_url
       console.log("Suppression de la colonne image_url...");
-      await db.execute(sql`ALTER TABLE product_variations DROP COLUMN IF EXISTS image_url`);
+      await db.execute(
+        sql`ALTER TABLE product_variations DROP COLUMN IF EXISTS image_url`
+      );
       console.log("✅ Colonne image_url supprimée");
     } else {
-      console.log("✅ La colonne image_url n'existe plus, migration déjà effectuée");
+      console.log(
+        "✅ La colonne image_url n'existe plus, migration déjà effectuée"
+      );
     }
   } catch (error) {
     console.error("Erreur lors de la migration des images:", error);
@@ -282,10 +286,26 @@ async function initializeDefaultData() {
 
         // Ajouter les variations de couleur
         const variations = [
-          { color: 'Blanc', imageUrl: 'https://www.alto-lille.fr/uploads/fbf9e3c1-9afe-446f-9e3d-5966f078b4c0.png' },
-          { color: 'Bleu', imageUrl: 'https://www.alto-lille.fr/uploads/6b611585-bb6c-411c-85bf-342fe95950c6.png' },
-          { color: 'Rouge', imageUrl: 'https://www.alto-lille.fr/uploads/1f1cdf28-f233-4191-9c1a-f9d7e12b709f.png' },
-          { color: 'Orange', imageUrl: 'https://www.alto-lille.fr/uploads/a8e085a1-8bc5-4c90-a738-151c7ce4d8d0.png' }
+          {
+            color: "Blanc",
+            imageUrl:
+              "https://www.alto-lille.fr/uploads/fbf9e3c1-9afe-446f-9e3d-5966f078b4c0.png",
+          },
+          {
+            color: "Bleu",
+            imageUrl:
+              "https://www.alto-lille.fr/uploads/6b611585-bb6c-411c-85bf-342fe95950c6.png",
+          },
+          {
+            color: "Rouge",
+            imageUrl:
+              "https://www.alto-lille.fr/uploads/1f1cdf28-f233-4191-9c1a-f9d7e12b709f.png",
+          },
+          {
+            color: "Orange",
+            imageUrl:
+              "https://www.alto-lille.fr/uploads/a8e085a1-8bc5-4c90-a738-151c7ce4d8d0.png",
+          },
         ];
 
         for (const variation of variations) {
@@ -299,7 +319,7 @@ async function initializeDefaultData() {
 
           if (variationResult.rowCount && variationResult.rowCount > 0) {
             const variationId = variationResult.rows[0].id;
-            
+
             // Ajouter l'image de la variation
             await db.execute(sql`
               INSERT INTO variation_images (variation_id, url, "order")

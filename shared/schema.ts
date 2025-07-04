@@ -65,11 +65,13 @@ export const variationImageSchema = z.object({
 
 export const insertProductVariationSchema = createInsertSchema(
   productVariations
-).omit({
-  id: true,
-}).extend({
-  images: z.array(variationImageSchema).optional(),
-});
+)
+  .omit({
+    id: true,
+  })
+  .extend({
+    images: z.array(variationImageSchema).optional(),
+  });
 
 // Customer schema
 export const customers = pgTable("customers", {
@@ -139,7 +141,9 @@ export type ProductVariation = Omit<
 > & {
   images: VariationImage[];
 };
-export type InsertProductVariation = z.infer<typeof insertProductVariationSchema>;
+export type InsertProductVariation = z.infer<
+  typeof insertProductVariationSchema
+>;
 
 // Extended Product type with variations
 export type ProductWithVariations = Product & {
