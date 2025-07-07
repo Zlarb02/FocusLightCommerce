@@ -928,16 +928,18 @@ export default function ShopFocus() {
           </h2>
 
           {/* Elfsight Google Reviews Widget */}
-          <div className="max-w-6xl mx-auto">
-            <script
-              src="https://static.elfsight.com/platform/platform.js"
-              async
-            ></script>
-            <div
-              className="elfsight-app-4e4b87d4-745d-4e46-ab59-bc0b36f7d8ad"
-              data-elfsight-app-lazy
-            ></div>
-          </div>
+          <div
+            className="elfsight-app-4e4b87d4-745d-4e46-ab59-bc0b36f7d8ad relative overflow-visible"
+            data-elfsight-app-lazy
+            style={{ margin: '0 -40px', padding: 0 }}
+          />
+          {/* Masquage du titre et du badge via CSS-in-JS (sans !important) */}
+          <style>{`
+            .elfsight-app-4e4b87d4-745d-4e46-ab59-bc0b36f7d8ad [class*="es-widget-title"],
+            .elfsight-app-4e4b87d4-745d-4e46-ab59-bc0b36f7d8ad [class*="es-powered-by"] {
+              display: none;
+            }
+          `}</style>
         </section>
 
         {/* Product Availability Notice - Style minimaliste avec optimisations mobile */}
