@@ -970,8 +970,8 @@ export default function Stocks() {
           }
         }}
       >
-        <DialogContent className="sm:max-w-[600px]">
-          <DialogHeader>
+        <DialogContent className="sm:max-w-[600px] max-h-[90vh] flex flex-col">
+          <DialogHeader className="flex-shrink-0">
             <DialogTitle>
               {editingVariation
                 ? "Modifier une variation"
@@ -986,77 +986,98 @@ export default function Stocks() {
           <Form {...variationForm}>
             <form
               onSubmit={variationForm.handleSubmit(onSubmitVariation)}
-              className="space-y-4"
+              className="flex flex-col h-full"
             >
-              <FormField
-                control={variationForm.control}
-                name="variationType"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Type de variation</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
+              <div className="flex-1 overflow-y-auto space-y-4 pr-2">
+                <FormField
+                  control={variationForm.control}
+                  name="variationType"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Type de variation</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Sélectionner un type" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="color">Couleur</SelectItem>
+                          <SelectItem value="size">Taille</SelectItem>
+                          <SelectItem value="material">Matériau</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={variationForm.control}
+                  name="variationValue"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Valeur de la variation</FormLabel>
                       <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Sélectionner un type" />
-                        </SelectTrigger>
+                        <Input
+                          {...field}
+                          placeholder="Ex: Rouge, XL, Bois..."
+                        />
                       </FormControl>
-                      <SelectContent>
-                        <SelectItem value="color">Couleur</SelectItem>
-                        <SelectItem value="size">Taille</SelectItem>
-                        <SelectItem value="material">Matériau</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-              <FormField
-                control={variationForm.control}
-                name="variationValue"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Valeur de la variation</FormLabel>
-                    <FormControl>
-                      <Input {...field} placeholder="Ex: Rouge, XL, Bois..." />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={variationForm.control}
-                name="images"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Images de la variation</FormLabel>
-                    <div className="space-y-3">
-                      {field.value.map((img, idx) => (
-                        <div
-                          key={idx}
-                          className="flex gap-3 items-center p-3 border rounded-lg bg-gray-50"
-                        >
-                          {/* Miniature de l'image */}
-                          <div className="w-16 h-16 flex-shrink-0">
-                            {img.url ? (
-                              <div className="relative w-full h-full">
-                                <img
-                                  src={img.url}
-                                  alt={`Image ${idx + 1}`}
-                                  className="w-full h-full object-cover rounded border"
-                                  onError={(e) => {
-                                    // Cacher l'image cassée et afficher le placeholder
-                                    e.currentTarget.style.display = "none";
-                                  }}
-                                />
-                                <div
-                                  className="absolute inset-0 w-full h-full bg-gray-200 rounded border flex items-center justify-center"
-                                  style={{ display: "none" }}
-                                >
+                <FormField
+                  control={variationForm.control}
+                  name="images"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Images de la variation</FormLabel>
+                      <div className="max-h-60 overflow-y-auto space-y-3 pr-2">
+                        {field.value.map((img, idx) => (
+                          <div
+                            key={idx}
+                            className="flex gap-3 items-center p-3 border rounded-lg bg-gray-50"
+                          >
+                            {/* Miniature de l'image */}
+                            <div className="w-16 h-16 flex-shrink-0">
+                              {img.url ? (
+                                <div className="relative w-full h-full">
+                                  <img
+                                    src={img.url}
+                                    alt={`Image ${idx + 1}`}
+                                    className="w-full h-full object-cover rounded border"
+                                    onError={(e) => {
+                                      // Cacher l'image cassée et afficher le placeholder
+                                      e.currentTarget.style.display = "none";
+                                    }}
+                                  />
+                                  <div
+                                    className="absolute inset-0 w-full h-full bg-gray-200 rounded border flex items-center justify-center"
+                                    style={{ display: "none" }}
+                                  >
+                                    <svg
+                                      className="w-6 h-6 text-gray-400"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                      />
+                                    </svg>
+                                  </div>
+                                </div>
+                              ) : (
+                                <div className="w-full h-full bg-gray-200 rounded border flex items-center justify-center">
                                   <svg
                                     className="w-6 h-6 text-gray-400"
                                     fill="none"
@@ -1071,141 +1092,127 @@ export default function Stocks() {
                                     />
                                   </svg>
                                 </div>
-                              </div>
-                            ) : (
-                              <div className="w-full h-full bg-gray-200 rounded border flex items-center justify-center">
-                                <svg
-                                  className="w-6 h-6 text-gray-400"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                                  />
-                                </svg>
-                              </div>
-                            )}
-                          </div>
+                              )}
+                            </div>
 
-                          {/* Champs URL et ordre */}
-                          <div className="flex-1 space-y-2">
-                            <Input
-                              value={img.url}
-                              placeholder="URL de l'image"
-                              onChange={(e) => {
-                                const newArr = [...field.value];
-                                newArr[idx] = { ...img, url: e.target.value };
-                                field.onChange(newArr);
-                              }}
-                            />
-                            <div className="flex gap-2 items-center">
-                              <label className="text-sm text-gray-600 font-medium">
-                                Ordre:
-                              </label>
+                            {/* Champs URL et ordre */}
+                            <div className="flex-1 space-y-2">
                               <Input
-                                type="number"
-                                min={0}
-                                className="w-20"
-                                value={img.order}
+                                value={img.url}
+                                placeholder="URL de l'image"
                                 onChange={(e) => {
                                   const newArr = [...field.value];
-                                  newArr[idx] = {
-                                    ...img,
-                                    order: Number(e.target.value),
-                                  };
+                                  newArr[idx] = { ...img, url: e.target.value };
                                   field.onChange(newArr);
                                 }}
                               />
+                              <div className="flex gap-2 items-center">
+                                <label className="text-sm text-gray-600 font-medium">
+                                  Ordre:
+                                </label>
+                                <Input
+                                  type="number"
+                                  min={0}
+                                  className="w-20"
+                                  value={img.order}
+                                  onChange={(e) => {
+                                    const newArr = [...field.value];
+                                    newArr[idx] = {
+                                      ...img,
+                                      order: Number(e.target.value),
+                                    };
+                                    field.onChange(newArr);
+                                  }}
+                                />
+                              </div>
                             </div>
+
+                            {/* Bouton de suppression */}
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="icon"
+                              onClick={() => {
+                                const newArr = field.value.filter(
+                                  (_, i) => i !== idx
+                                );
+                                field.onChange(
+                                  newArr.length
+                                    ? newArr
+                                    : [{ url: "", order: 0 }]
+                                );
+                              }}
+                              className="text-red-500 hover:bg-red-50"
+                              title="Supprimer cette image"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
                           </div>
+                        ))}
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            field.onChange([
+                              ...field.value,
+                              { url: "", order: field.value.length },
+                            ]);
+                          }}
+                          className="w-full"
+                        >
+                          <Plus className="h-4 w-4 mr-2" />
+                          Ajouter une image
+                        </Button>
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-                          {/* Bouton de suppression */}
-                          <Button
-                            type="button"
-                            variant="outline"
-                            size="icon"
-                            onClick={() => {
-                              const newArr = field.value.filter(
-                                (_, i) => i !== idx
-                              );
-                              field.onChange(
-                                newArr.length ? newArr : [{ url: "", order: 0 }]
-                              );
-                            }}
-                            className="text-red-500 hover:bg-red-50"
-                            title="Supprimer cette image"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      ))}
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={() => {
-                          field.onChange([
-                            ...field.value,
-                            { url: "", order: field.value.length },
-                          ]);
-                        }}
-                        className="w-full"
-                      >
-                        <Plus className="h-4 w-4 mr-2" />
-                        Ajouter une image
-                      </Button>
-                    </div>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                <FormField
+                  control={variationForm.control}
+                  name="price"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Prix spécifique (optionnel)</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          min="0"
+                          step="0.01"
+                          value={field.value ?? ""}
+                          onChange={(e) => {
+                            const value =
+                              e.target.value === ""
+                                ? null
+                                : parseFloat(e.target.value);
+                            field.onChange(value);
+                          }}
+                          placeholder="Laissez vide pour utiliser le prix de base"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-              <FormField
-                control={variationForm.control}
-                name="price"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Prix spécifique (optionnel)</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        min="0"
-                        step="0.01"
-                        value={field.value ?? ""}
-                        onChange={(e) => {
-                          const value =
-                            e.target.value === ""
-                              ? null
-                              : parseFloat(e.target.value);
-                          field.onChange(value);
-                        }}
-                        placeholder="Laissez vide pour utiliser le prix de base"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                <FormField
+                  control={variationForm.control}
+                  name="stock"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Stock initial</FormLabel>
+                      <FormControl>
+                        <Input type="number" min="0" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
 
-              <FormField
-                control={variationForm.control}
-                name="stock"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Stock initial</FormLabel>
-                    <FormControl>
-                      <Input type="number" min="0" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <DialogFooter>
+              <DialogFooter className="flex-shrink-0 mt-4 pt-4 border-t">
                 <Button
                   type="button"
                   variant="outline"

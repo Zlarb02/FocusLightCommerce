@@ -30,12 +30,21 @@
 }
 
 /* Override pour les boutons primary - pas de bleu */
+
 .dark .bg-primary {
-  background-color: #6b7280 !important; /* gray-500 */
+  background-color: #3a5fcf !important; /* bleu premium doux Focus */
+  color: #fff !important;
 }
 
 .dark .hover\:bg-primary:hover {
-  background-color: #9ca3af !important; /* gray-400 */
+  background-color: #5477e6 !important; /* bleu plus doux au hover */
+  color: #fff !important;
+}
+
+/* Correction du texte du bouton principal (ex: Acheter) en dark: toujours blanc, même si héritage cassé */
+.dark .bg-primary,
+.dark .bg-primary * {
+  color: #fff !important;
 }
 
 /* Suppression des ring colors bleues */

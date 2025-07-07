@@ -120,6 +120,12 @@
     "focus.warranty2years": "Garantie 2 ans",
     "focus.addedToCart": "Produit ajouté au panier !",
 
+    "focus.buyColor.bleu": "Acheter en bleue",
+    "focus.buyColor.rouge": "Acheter en rouge",
+    "focus.buyColor.orange": "Acheter en orange",
+    "focus.buyColor.blanc": "Acheter en blanche",
+    "focus.buyColor.default": "Acheter",
+
     "product.addToCart": "Ajouter au panier",
     "product.buyNow": "Acheter maintenant",
     "product.viewDetails": "Voir les détails",
@@ -761,6 +767,12 @@
     "focus.contactUs.text": "Need help?",
     "focus.warranty2years": "2-year warranty",
     "focus.addedToCart": "Product added to cart!",
+
+    "focus.buyColor.bleu": "Buy in blue",
+    "focus.buyColor.rouge": "Buy in red",
+    "focus.buyColor.orange": "Buy in orange",
+    "focus.buyColor.blanc": "Buy in white",
+    "focus.buyColor.default": "Buy",
 
     "product.addToCart": "Add to cart",
     "product.buyNow": "Buy now",

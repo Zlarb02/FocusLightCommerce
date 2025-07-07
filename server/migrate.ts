@@ -288,23 +288,30 @@ async function initializeDefaultData() {
         const variations = [
           {
             color: "Blanc",
-            imageUrl:
+            images: [
               "https://www.alto-lille.fr/uploads/fbf9e3c1-9afe-446f-9e3d-5966f078b4c0.png",
+              "https://www.alto-lille.fr/uploads/79b8fa12-a1a6-4527-9ab0-365d6ad22179.jpeg",
+            ],
           },
           {
             color: "Bleu",
-            imageUrl:
+            images: [
               "https://www.alto-lille.fr/uploads/6b611585-bb6c-411c-85bf-342fe95950c6.png",
+            ],
           },
           {
             color: "Rouge",
-            imageUrl:
+            images: [
               "https://www.alto-lille.fr/uploads/1f1cdf28-f233-4191-9c1a-f9d7e12b709f.png",
+              "https://www.alto-lille.fr/uploads/30233a9e-8c26-47ef-89c6-588683f68b7b.jpeg",
+            ],
           },
           {
             color: "Orange",
-            imageUrl:
+            images: [
               "https://www.alto-lille.fr/uploads/a8e085a1-8bc5-4c90-a738-151c7ce4d8d0.png",
+              "https://www.alto-lille.fr/uploads/8ccbd06d-02a6-49d2-b9ca-f64ceff88f9e.jpeg",
+            ],
           },
         ];
 
@@ -320,11 +327,13 @@ async function initializeDefaultData() {
           if (variationResult.rowCount && variationResult.rowCount > 0) {
             const variationId = variationResult.rows[0].id;
 
-            // Ajouter l'image de la variation
-            await db.execute(sql`
-              INSERT INTO variation_images (variation_id, url, "order")
-              VALUES (${variationId}, ${variation.imageUrl}, 0)
-            `);
+            // Ajouter toutes les images de la variation
+            for (let i = 0; i < variation.images.length; i++) {
+              await db.execute(sql`
+                INSERT INTO variation_images (variation_id, url, "order")
+                VALUES (${variationId}, ${variation.images[i]}, ${i})
+              `);
+            }
           }
         }
 

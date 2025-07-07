@@ -223,4 +223,82 @@
     backface-visibility: hidden;
     perspective: 1000px;
   }
+
+  /* Robustesse pour la hero section */
+  .hero-product-display {
+    min-height: 300px;
+    max-height: 400px;
+    overflow: hidden;
+  }
+
+  .hero-product-display img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    object-position: center;
+  }
+
+  /* Espacement sécurisé pour les éléments superposés */
+  .hero-overlay-element {
+    pointer-events: auto;
+    min-width: 44px;
+    min-height: 44px;
+    touch-action: manipulation;
+  }
+
+  /* Anti-débordement pour petits écrans */
+  @media (max-width: 480px) {
+    .hero-product-display {
+      min-height: 250px;
+      max-height: 300px;
+    }
+
+    .hero-overlay-element {
+      min-width: 40px;
+      min-height: 40px;
+    }
+  }
+
+  /* Animations fluides pour le slider automatique */
+  .auto-slide-indicator {
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 0.5;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+
+  /* Scrollbar hide pour les vignettes d'images */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Amélioration des vignettes d'images */
+  .image-thumbnail {
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+
+  .image-thumbnail:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .image-thumbnail.selected {
+    transform: scale(1.1);
+    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
+  }
 }

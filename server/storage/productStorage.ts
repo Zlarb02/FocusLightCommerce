@@ -46,7 +46,7 @@ export class ProductStorage {
           order: 0,
         },
         {
-          url: "https://www.alto-lille.fr/uploads/extra-blanc-2.png",
+          url: "https://www.alto-lille.fr/uploads/79b8fa12-a1a6-4527-9ab0-365d6ad22179.jpeg",
           order: 1,
         },
       ],
@@ -57,8 +57,14 @@ export class ProductStorage {
       variationValue: "Bleu",
       stock: 10,
       images: [
-        { url: "images/bleusurfond.jpeg", order: 0 },
-        { url: "images/bleu2.jpeg", order: 1 },
+        {
+          url: "https://www.alto-lille.fr/uploads/6b611585-bb6c-411c-85bf-342fe95950c6.png",
+          order: 0,
+        },
+        {
+          url: "https://www.alto-lille.fr/uploads/8534d188-dc95-4c1a-81ff-6038ce855f38.jpeg",
+          order: 1,
+        },
       ],
     });
     await this.createProductVariation({
@@ -71,7 +77,10 @@ export class ProductStorage {
           url: "https://www.alto-lille.fr/uploads/1f1cdf28-f233-4191-9c1a-f9d7e12b709f.png",
           order: 0,
         },
-        { url: "images/rouge2.jpeg", order: 1 },
+        {
+          url: "https://www.alto-lille.fr/uploads/30233a9e-8c26-47ef-89c6-588683f68b7b.jpeg",
+          order: 1,
+        },
       ],
     });
     await this.createProductVariation({
@@ -84,7 +93,10 @@ export class ProductStorage {
           url: "https://www.alto-lille.fr/uploads/a8e085a1-8bc5-4c90-a738-151c7ce4d8d0.png",
           order: 0,
         },
-        { url: "images/orange2.jpeg", order: 1 },
+        {
+          url: "https://www.alto-lille.fr/uploads/8ccbd06d-02a6-49d2-b9ca-f64ceff88f9e.jpeg",
+          order: 1,
+        },
       ],
     });
   }

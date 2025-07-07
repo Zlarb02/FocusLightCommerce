@@ -70,3 +70,21 @@ export const lampColors: Record<string, LampColor> = {
 export function getColorInfo(colorName: string): LampColor {
   return lampColors[colorName] || lampColors["Blanc"];
 }
+
+/**
+ * Filtre les images d'une variation en excluant la première image.
+ * La première image est réservée pour les affichages qui n'utilisent qu'une seule image.
+ * Cette fonction retourne les images pour les sliders et cards e-commerce.
+ *
+ * @param images - Tableau des images de la variation
+ * @returns Tableau des images excluant la première (pour sliders/cards)
+ */
+export function getSliderImages(images: Array<{ url: string; order: number }>) {
+  if (!images || images.length <= 1) {
+    return [];
+  }
+
+  // Trier les images par ordre et exclure la première
+  const sortedImages = [...images].sort((a, b) => a.order - b.order);
+  return sortedImages.slice(1); // Exclure la première image
+}

@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
+import { X, Maximize2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { Layout } from "@/components/Layout";
 import { LampColorSelector } from "@/components/LampColorSelector";
+import { EnhancedHeroProductDisplay } from "@/components/EnhancedHeroProductDisplay";
 import { ProductVariation, ProductWithVariations } from "@shared/schema";
 import { ProductCard } from "@/components/ProductCard";
+import { ECommerceProductCard } from "@/components/ECommerceProductCard";
 import { Button } from "@/components/ui/button";
 import { AnimatedAddToCartButton } from "@/components/AnimatedAddToCartButton";
 import { ToastContainer } from "@/components/EnhancedToast";
@@ -15,11 +18,12 @@ import {
 } from "@/components/ProductAddedIndicator";
 import { useEnhancedToast } from "@/hooks/useEnhancedToast";
 import { Leaf, Lightbulb, ShoppingBag, Trees } from "lucide-react";
-import { formatPrice, getColorInfo } from "@/lib/utils";
+import { formatPrice, getColorInfo, getSliderImages } from "@/lib/utils";
 import { useCart } from "@/hooks/useCart";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Separator } from "@/components/ui/separator";
+import { LampOnOffSwitch } from "@/components/LampOnOffSwitch";
 
 // Ordre pour le sélecteur de la section hero: bleu, rouge, orange, blanc
 const heroOrderMap: Record<string, number> = {
@@ -60,6 +64,16 @@ const sortVariationsForColorSection = (
 };
 
 export default function ShopFocus() {
+  // Pour la modal d'agrandissement d'image (avec navigation)
+  const [modalImage, setModalImage] = useState<{
+    images: string[];
+    index: number;
+    fromHero?: boolean;
+  } | null>(null);
+  // Pour suivre l'image courante de chaque variation (clé: variation.id)
+  const [currentImageIndexes, setCurrentImageIndexes] = useState<
+    Record<number, number>
+  >({});
   const { data: allProducts = [] } = useQuery<ProductWithVariations[]>({
     queryKey: ["/api/products"],
   });
@@ -120,7 +134,10 @@ export default function ShopFocus() {
         description: `${selectedProduct.name} coloris ${selectedVariation.variationValue}`,
         type: "cart",
         duration: 5000,
-        productImage: selectedVariation.images[0]?.url || "",
+        productImage:
+          selectedVariation.images && selectedVariation.images.length > 0
+            ? selectedVariation.images[0].url
+            : "",
         productName: `${selectedProduct.name} - ${selectedVariation.variationValue}`,
         quantity: 1,
       });
@@ -145,8 +162,91 @@ export default function ShopFocus() {
     <Layout>
       {/* Desktop margin wrapper */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Sélecteur de couleur compact - Visible uniquement sur mobile au-dessus du hero */}
+        <section
+          className="md:hidden bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-b border-gray-200/30 dark:border-gray-700/30"
+          style={{ paddingTop: "12px", paddingBottom: "12px" }}
+        >
+          <div className="container mx-auto px-6">
+            <div className="flex flex-col items-center gap-3">
+              <h3 className="text-base font-medium text-gray-900 dark:text-gray-100">
+                Couleurs disponibles :
+              </h3>
+              <div className="flex items-center gap-3 justify-center overflow-x-auto pb-2 px-3 pt-1">
+                {heroVariations.length > 0
+                  ? heroVariations.map((variation) => {
+                      const colorInfo = getColorInfo(variation.variationValue);
+                      const isSelected = selectedVariation?.id === variation.id;
+                      const primaryImage =
+                        variation.images && variation.images.length > 0
+                          ? variation.images[0]
+                          : undefined;
+
+                      return (
+                        <button
+                          key={variation.id}
+                          onClick={() => handleVariationSelect(variation)}
+                          className={`group relative w-12 h-12 transition-all duration-300 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden flex-shrink-0 ${
+                            isSelected
+                              ? "scale-105 shadow-lg border-2 border-gray-300 dark:border-gray-500"
+                              : "hover:scale-105 shadow-md hover:shadow-lg"
+                          } ${
+                            // Palette plus douce et premium pour les couleurs
+                            variation.variationValue === "Bleu"
+                              ? "bg-[#b7c7e6] dark:bg-[#3a4a6b]"
+                              : variation.variationValue === "Rouge"
+                              ? "bg-[#e6b7b7] dark:bg-[#6b3a3a]"
+                              : variation.variationValue === "Orange"
+                              ? "bg-[#e6ceb7] dark:bg-[#6b4a3a]"
+                              : colorInfo?.bgClass ||
+                                "bg-gray-50 dark:bg-gray-800"
+                          }`}
+                          aria-label={`Couleur ${variation.variationValue}`}
+                          title={variation.variationValue}
+                        >
+                          <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent"></div>
+                          {primaryImage ? (
+                            <img
+                              src={primaryImage.url}
+                              alt={`${selectedProduct?.name} - ${variation.variationValue}`}
+                              className="w-full h-full object-contain p-1.5 transition-transform duration-300 group-hover:scale-110"
+                              style={{
+                                objectPosition: "75% 65%",
+                                transform: "translate(8px, 2px) scale(1.04)",
+                                filter: isSelected
+                                  ? "drop-shadow(0 4px 16px rgba(0,0,0,0.10)) brightness(1.08)"
+                                  : "brightness(0.98)",
+                              }}
+                              loading="lazy"
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center text-xs font-medium text-gray-600 dark:text-gray-300">
+                              {variation.variationValue?.substring(0, 1)}
+                            </div>
+                          )}
+                          {isSelected && (
+                            <div
+                              className="absolute left-1 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full shadow-md border border-white dark:border-gray-900"
+                              style={{
+                                background: "#18181b",
+                                boxShadow:
+                                  "0 2px 8px 0 rgba(0,0,0,0.10), 0 0.5px 1.5px 0 rgba(0,0,0,0.08)",
+                              }}
+                            ></div>
+                          )}
+                        </button>
+                      );
+                    })
+                  : null}
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Hero Section - Épuré et minimaliste avec optimisations mobile */}
-        <section className="py-8 md:py-20 lg:py-24 animate fade-in-up">
+        <section className="py-2 md:py-8 lg:py-10 animate fade-in-up">
+          {/* Marge fixe réduite pour éviter le header seulement sur desktop */}
+          <div className="hidden md:block md:mt-8 lg:mt-10"></div>
           <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
             <div className="order-2 md:order-1 z-10 px-4 md:px-0">
               <h1
@@ -179,7 +279,7 @@ export default function ShopFocus() {
                   price={
                     selectedProduct ? formatPrice(selectedProduct.price) : ""
                   }
-                  className="w-full md:w-auto mobile-tap-highlight"
+                  className="w-full md:w-auto mobile-tap-highlight bg-black text-white dark:bg-[#3a5fcf] dark:text-white dark:hover:bg-[#5477e6] dark:focus:bg-[#5477e6] transition-all"
                 />
                 <Button
                   variant="outline"
@@ -189,7 +289,7 @@ export default function ShopFocus() {
                       .getElementById("product-details")
                       ?.scrollIntoView({ behavior: "smooth" })
                   }
-                  className="w-full md:w-auto rounded-none border-foreground text-foreground hover:bg-foreground hover:text-background transition-all hover:translate-y-[-2px] mobile-tap-highlight"
+                  className="w-full md:w-auto rounded-none border-black text-black hover:bg-black hover:text-white dark:bg-transparent dark:text-white dark:border-white dark:hover:bg-white/10 dark:hover:text-white dark:focus:bg-white/10 transition-all hover:translate-y-[-2px] mobile-tap-highlight"
                   style={{ fontFamily: "var(--font-buttons)" }}
                 >
                   {t("product.viewDetails")}
@@ -203,75 +303,160 @@ export default function ShopFocus() {
             </div>
             <div className="order-1 md:order-2 relative flex justify-center items-center px-4 md:px-0">
               {selectedProduct && selectedVariation && (
-                <div className="relative w-full max-w-sm md:max-w-md h-[300px] md:h-[400px] flex items-center justify-center mobile-optimized">
-                  <ColorTransition
-                    colorKey={selectedVariation.variationValue}
-                    className="w-full h-full flex items-center justify-center"
-                  >
-                    <img
-                      src={selectedVariation.images[0]?.url || ""}
-                      alt={`Lampe FOCUS.01 coloris ${selectedVariation.variationValue}`}
-                      className="w-full max-w-[70%] mx-auto object-contain z-1 mobile-optimized"
-                      loading="eager"
-                    />
-                  </ColorTransition>
-
-                  {/* Indicateur produit ajouté - Optimisé pour mobile */}
-                  <ProductAddedIndicator
-                    productId={selectedVariation.id.toString()}
-                    show={isProductAdded(selectedVariation.id.toString())}
+                <div className="relative">
+                  <EnhancedHeroProductDisplay
+                    product={selectedProduct}
+                    selectedVariation={selectedVariation}
+                    onVariationSelect={handleVariationSelect}
+                    variations={heroVariations}
+                    isProductAdded={isProductAdded}
                   />
-
-                  {/* Sélecteur de couleur - Repositionné pour mobile */}
-                  <div className="absolute bottom-0 left-0 right-0 pb-4 md:pb-0">
-                    <LampColorSelector
-                      variations={heroVariations}
-                      productName={selectedProduct.name}
-                      onVariationSelect={handleVariationSelect}
-                      selectedVariationId={selectedVariation?.id}
-                      className="mobile-tap-highlight"
-                    />
-                  </div>
+                  {/* Bouton d'agrandissement pour le slider hero */}
+                  {(() => {
+                    const sliderImages =
+                      selectedVariation.images &&
+                      selectedVariation.images.length > 0
+                        ? getSliderImages(selectedVariation.images)
+                        : [];
+                    const images =
+                      sliderImages.length > 0
+                        ? sliderImages
+                        : selectedVariation.images || [];
+                    return images.length > 0 ? (
+                      <button
+                        type="button"
+                        className="absolute top-2 right-2 z-20 bg-white/80 dark:bg-gray-900/80 rounded-full p-1 shadow hover:bg-white dark:hover:bg-gray-800 transition"
+                        title="Agrandir l'image"
+                        onClick={() =>
+                          setModalImage({
+                            images: images.map((img) => img.url),
+                            index: 0,
+                            fromHero: true,
+                          })
+                        }
+                      >
+                        <Maximize2 className="w-5 h-5 text-gray-700 dark:text-gray-200" />
+                      </button>
+                    ) : null;
+                  })()}
                 </div>
               )}
             </div>
           </div>
         </section>
 
-        {/* Product Availability Notice - Style minimaliste avec optimisations mobile */}
-        <section className="py-6 md:py-8 animate fade-in-up delay-2">
-          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-4 md:p-8 mx-4 md:mx-0">
-            <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-6">
-              <div className="bg-primary/5 dark:bg-blue-400/10 p-3 md:p-4 mx-auto md:mx-0">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 md:h-6 md:w-6 text-[var(--color-text)] dark:text-blue-400"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={1.5}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-              </div>
-              <div className="text-center md:text-left">
-                <h3
-                  className="text-base md:text-lg font-medium mb-2 md:mb-3 dark:text-gray-100"
-                  style={{ fontFamily: "var(--font-titles)" }}
-                >
-                  {t("focus.availability.title")}
+        {/* SÉLECTEUR DE COULEUR - Design moderne et minimaliste - Masqué sur mobile */}
+        <section className="hidden md:block py-3 md:py-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-y border-gray-200/50 dark:border-gray-700/50 animate fade-in">
+          <div className="max-w-6xl mx-auto px-4">
+            <div className="flex flex-col items-center gap-2 md:gap-3">
+              <div className="text-center">
+                <h3 className="text-lg md:text-xl font-light text-gray-900 dark:text-gray-100 mb-1">
+                  Couleurs disponibles
                 </h3>
-                <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-sm md:text-base">
-                  {t("focus.availability.text")}
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  {heroVariations.length} variation
+                  {heroVariations.length > 1 ? "s" : ""}
                 </p>
+              </div>
+
+              <div className="flex items-center gap-3 md:gap-4 flex-wrap justify-center">
+                {heroVariations.length > 0 ? (
+                  heroVariations.map((variation) => {
+                    const colorInfo = getColorInfo(variation.variationValue);
+                    const isSelected = selectedVariation?.id === variation.id;
+                    const primaryImage =
+                      variation.images && variation.images.length > 0
+                        ? variation.images[0]
+                        : undefined;
+
+                    // Palette premium harmonisée (bleu, rouge, orange, blanc)
+                    let bgColor =
+                      colorInfo?.bgClass || "bg-gray-50 dark:bg-gray-800";
+                    if (variation.variationValue === "Bleu") {
+                      bgColor = "bg-[#b7c7e6] dark:bg-[#3a4a6b]";
+                    } else if (variation.variationValue === "Rouge") {
+                      bgColor = "bg-[#e6b7b7] dark:bg-[#6b3a3a]";
+                    } else if (variation.variationValue === "Orange") {
+                      bgColor = "bg-[#e6ceb7] dark:bg-[#6b4a3a]";
+                    }
+
+                    return (
+                      <button
+                        key={variation.id}
+                        onClick={() => handleVariationSelect(variation)}
+                        className={`group relative w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 transition-all duration-300 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden flex-shrink-0 ${
+                          isSelected
+                            ? "scale-105 shadow-lg border-2 border-gray-300 dark:border-gray-500"
+                            : "hover:scale-105 shadow-md hover:shadow-lg"
+                        } ${bgColor}`}
+                        aria-label={`Couleur ${variation.variationValue}`}
+                        title={variation.variationValue}
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent"></div>
+                        {primaryImage ? (
+                          <img
+                            src={primaryImage.url}
+                            alt={`${selectedProduct?.name} - ${variation.variationValue}`}
+                            className="w-full h-full object-contain p-2 transition-transform duration-300 group-hover:scale-110"
+                            style={{
+                              objectPosition: "75% 65%",
+                              transform: "translate(12px, 4px) scale(1.04)",
+                              filter: isSelected
+                                ? "drop-shadow(0 4px 16px rgba(0,0,0,0.10)) brightness(1.08)"
+                                : "brightness(0.98)",
+                            }}
+                            loading="lazy"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-xs md:text-sm font-medium text-gray-600 dark:text-gray-300">
+                            {variation.variationValue?.substring(0, 2)}
+                          </div>
+                        )}
+                        {isSelected && (
+                          <div
+                            className="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full shadow-md border border-white dark:border-gray-900"
+                            style={{
+                              background: "#18181b",
+                              boxShadow:
+                                "0 2px 8px 0 rgba(0,0,0,0.10), 0 0.5px 1.5px 0 rgba(0,0,0,0.08)",
+                            }}
+                          ></div>
+                        )}
+                      </button>
+                    );
+                  })
+                ) : (
+                  <div className="text-gray-500 dark:text-gray-400 text-center py-8">
+                    Aucune variation disponible
+                  </div>
+                )}
               </div>
             </div>
           </div>
         </section>
+
+        {/* Image d'illustration supplémentaire - Thème adaptatif */}
+        <section className="py-16 animate fade-in">
+          <div className="max-w-4xl mx-auto">
+            {/* Image pour le thème clair */}
+            <img
+              src="https://www.alto-lille.fr/uploads/a6fb36f6-9a3a-48c4-ac59-5fe29be8dbd5.jpeg"
+              alt="FOCUS.01 - Ambiance et utilisation"
+              className="w-full h-[300px] md:h-[400px] lg:h-[500px] object-cover rounded-lg shadow-lg block dark:hidden"
+            />
+            {/* Image pour le thème sombre */}
+            <img
+              src="https://www.alto-lille.fr/uploads/6ca98d66-62d6-4d50-9fa9-253eeae6c89e.jpeg"
+              alt="FOCUS.01 - Vision d'ensemble"
+              className="w-full h-[300px] md:h-[400px] lg:h-[500px] object-cover rounded-lg shadow-lg hidden dark:block"
+            />
+          </div>
+        </section>
+
+        {/* Switch on/off pour "Voir les lampes allumées/éteintes" */}
+        <div className="w-full flex justify-center mt-4">
+          <LampOnOffSwitch />
+        </div>
 
         {/* Product Details Section - Style plus minimaliste */}
         <section id="product-details" className="py-20 animate fade-in">
@@ -343,14 +528,19 @@ export default function ShopFocus() {
             </div>
 
             <div className="flex flex-col md:flex-row gap-16">
-              <div className="md:w-1/2 animate fade-in-right delay-4">
-                {selectedProduct && selectedVariation && (
-                  <img
-                    src={selectedVariation.images[0]?.url || ""}
-                    alt={`FOCUS.01 en détail`}
-                    className="w-full max-h-[500px] object-contain"
-                  />
-                )}
+              <div className="md:w-1/2 animate fade-in-right delay-4 flex flex-col items-center">
+                {/* Image pour le thème clair */}
+                <img
+                  src="https://www.alto-lille.fr/uploads/f0d658a0-e71f-462d-9210-31b276408bdd.jpeg"
+                  alt="FOCUS.01 - Caractéristiques et détails"
+                  className="w-full max-h-[500px] object-contain block dark:hidden mt-8"
+                />
+                {/* Image pour le thème sombre */}
+                <img
+                  src="https://www.alto-lille.fr/uploads/29ce9490-1000-4d95-8d92-cd5191e15b80.jpeg"
+                  alt="FOCUS.01 - Caractéristiques et détails (sombre)"
+                  className="w-full max-h-[500px] object-contain hidden dark:block mt-8"
+                />
               </div>
               <div className="md:w-1/2 animate fade-in-left delay-4">
                 <h3
@@ -507,7 +697,7 @@ export default function ShopFocus() {
             {t("focus.colorSelection")}
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+          <div className="grid grid-cols-1 min-[481px]:grid-cols-2 lg:grid-cols-4 gap-10">
             {products.length > 0 &&
               colorSectionVariations.map((variation, index) => {
                 // Trouver le produit parent pour cette variation
@@ -517,67 +707,154 @@ export default function ShopFocus() {
 
                 if (!parentProduct) return null;
 
+                // Reproduire la logique d'image affichée dans ECommerceProductCard
+                // (sliderImages.length > 0 ? sliderImages : variation.images)
+                const sliderImages =
+                  variation.images && variation.images.length > 0
+                    ? getSliderImages(variation.images)
+                    : [];
+                const images =
+                  sliderImages.length > 0
+                    ? sliderImages
+                    : variation.images || [];
+                const currentImageIndex =
+                  currentImageIndexes[variation.id] ?? 0;
+                const handleImageIndexChange = (newIndex: number) => {
+                  setCurrentImageIndexes((prev) => ({
+                    ...prev,
+                    [variation.id]: newIndex,
+                  }));
+                };
                 return (
                   <div
                     key={variation.id}
                     className={`animate fade-in-up delay-${index + 1}`}
                   >
-                    <ProductCard
-                      product={parentProduct}
-                      variation={variation}
-                    />
+                    <div className="relative group">
+                      <ECommerceProductCard
+                        product={parentProduct}
+                        variation={variation}
+                        currentImageIndex={currentImageIndex}
+                        setCurrentImageIndex={handleImageIndexChange}
+                      />
+                      {images.length > 0 && (
+                        <button
+                          type="button"
+                          className="absolute top-2 right-2 z-20 bg-white/80 dark:bg-gray-900/80 rounded-full p-1 shadow hover:bg-white dark:hover:bg-gray-800 transition"
+                          title="Agrandir l'image"
+                          onClick={() =>
+                            setModalImage({
+                              images: images.map((img) => img.url),
+                              index: currentImageIndex,
+                            })
+                          }
+                        >
+                          <Maximize2 className="w-5 h-5 text-gray-700 dark:text-gray-200" />
+                        </button>
+                      )}
+                    </div>
                   </div>
                 );
               })}
           </div>
+          {/* Modal d'agrandissement d'image (placée globalement, hors de la map) */}
+          {modalImage && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm animate fade-in">
+              <button
+                className="absolute top-4 right-4 bg-white/90 dark:bg-gray-900/90 rounded-full p-2 shadow-lg hover:bg-white dark:hover:bg-gray-800 transition z-50"
+                onClick={() => setModalImage(null)}
+                title="Fermer"
+                aria-label="Fermer"
+              >
+                <X className="w-6 h-6 text-gray-900 dark:text-gray-100" />
+              </button>
+              {/* Flèche gauche */}
+              {modalImage.images.length > 1 && (
+                <button
+                  className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 dark:bg-gray-900/80 rounded-full p-2 shadow-lg hover:bg-white dark:hover:bg-gray-800 transition z-50"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setModalImage(
+                      (prev) =>
+                        prev && {
+                          images: prev.images,
+                          index:
+                            (prev.index - 1 + prev.images.length) %
+                            prev.images.length,
+                        }
+                    );
+                  }}
+                  title="Image précédente"
+                  aria-label="Image précédente"
+                >
+                  <svg
+                    className="w-7 h-7 text-gray-900 dark:text-gray-100"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M15 19l-7-7 7-7"
+                    />
+                  </svg>
+                </button>
+              )}
+              {/* Image agrandie */}
+              <img
+                src={modalImage.images[modalImage.index]}
+                alt="Aperçu du produit"
+                className="max-w-[90vw] max-h-[90vh] rounded-xl shadow-2xl border-4 border-white dark:border-gray-900 animate fade-in"
+                onClick={() => setModalImage(null)}
+                style={{ cursor: "zoom-out" }}
+              />
+              {/* Flèche droite */}
+              {modalImage.images.length > 1 && (
+                <button
+                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 dark:bg-gray-900/80 rounded-full p-2 shadow-lg hover:bg-white dark:hover:bg-gray-800 transition z-50"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setModalImage(
+                      (prev) =>
+                        prev && {
+                          images: prev.images,
+                          index: (prev.index + 1) % prev.images.length,
+                        }
+                    );
+                  }}
+                  title="Image suivante"
+                  aria-label="Image suivante"
+                >
+                  <svg
+                    className="w-7 h-7 text-gray-900 dark:text-gray-100"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </button>
+              )}
+              {/* Compteur d'images */}
+              {modalImage.images.length > 1 && (
+                <div className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-white/90 dark:bg-gray-900/90 rounded-full px-4 py-1 text-sm font-medium text-gray-900 dark:text-gray-100 shadow">
+                  {modalImage.index + 1} / {modalImage.images.length}
+                </div>
+              )}
+            </div>
+          )}
         </section>
 
-        {/* Testimonials Section - Style design minimaliste */}
-        <section className="py-20 container mx-auto animate fade-in">
-          <h2
-            className="font-heading text-3xl md:text-4xl text-center mb-16"
-            style={{ fontFamily: "var(--font-titles)" }}
-          >
-            {t("focus.testimonials")}
-          </h2>
-
-          {/* Widget Trustpilot Démo */}
-          <div className="flex justify-center mb-20">
-            <div
-              className="trustpilot-widget"
-              data-locale="fr-FR"
-              data-template-id="5419b6a8b0d04a076446a9ad"
-              data-businessunit-id="46d6a890-c93c-4dee-9c45-5ccd4b33cdde"
-              data-style-height="240px"
-              data-style-width="100%"
-              data-theme="light"
-              data-min-review-count="1"
-              data-stars="1,2,3,4,5"
-            >
-              <a
-                href="https://fr.trustpilot.com/review/trustpilot.com"
-                target="_blank"
-                rel="noopener"
-              >
-                Trustpilot
-              </a>
-            </div>
-            {/* Script pour charger le widget Trustpilot */}
-            <script
-              type="text/jsx"
-              dangerouslySetInnerHTML={{
-                __html: `
-                  (function(w,d,s,r,n){w.TrustpilotObject=n;w[n]=w[n]||function(){(w[n].q=w[n].q||[]).push(arguments)};
-                  a=d.createElement(s);a.async=1;a.src=r;a.type='text/java'+s;
-                  b=d.getElementsByTagName(s)[0];b.parentNode.insertBefore(a,b)})
-                  (window,document,'script','https://widget.trustpilot.com/bootstrap/v5.js','tp');
-                  tp('register', '46d6a890-c93c-4dee-9c45-5ccd4b33cdde');
-                `,
-              }}
-            />
-          </div>
-
-          <div className="flex flex-wrap justify-center items-center gap-10 md:gap-20 animate fade-in-up delay-4">
+        {/* Avantages Section - Design minimaliste */}
+        <section className="py-16 animate fade-in">
+          <div className="flex flex-wrap justify-center items-center gap-10 md:gap-20">
             <div className="text-center">
               <div className="w-14 h-14 flex items-center justify-center mx-auto mb-3">
                 <Leaf className="text-green-600 h-5 w-5" />
@@ -637,6 +914,63 @@ export default function ShopFocus() {
                 </svg>
               </div>
               <p className="font-medium text-sm">{t("focus.return30")}</p>
+            </div>
+          </div>
+        </section>
+
+        {/* Testimonials Section - Avis Google Elfsight */}
+        <section className="py-20 container mx-auto animate fade-in">
+          <h2
+            className="font-heading text-3xl md:text-4xl text-center mb-16"
+            style={{ fontFamily: "var(--font-titles)" }}
+          >
+            {t("focus.testimonials")}
+          </h2>
+
+          {/* Elfsight Google Reviews Widget */}
+          <div className="max-w-6xl mx-auto">
+            <script
+              src="https://static.elfsight.com/platform/platform.js"
+              async
+            ></script>
+            <div
+              className="elfsight-app-4e4b87d4-745d-4e46-ab59-bc0b36f7d8ad"
+              data-elfsight-app-lazy
+            ></div>
+          </div>
+        </section>
+
+        {/* Product Availability Notice - Style minimaliste avec optimisations mobile */}
+        <section className="py-6 md:py-8 animate fade-in-up delay-2">
+          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-4 md:p-8 mx-4 md:mx-0">
+            <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-6">
+              <div className="bg-primary/5 dark:bg-blue-400/10 p-3 md:p-4 mx-auto md:mx-0">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5 md:h-6 md:w-6 text-[var(--color-text)] dark:text-blue-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={1.5}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </div>
+              <div className="text-center md:text-left">
+                <h3
+                  className="text-base md:text-lg font-medium mb-2 md:mb-3 dark:text-gray-100"
+                  style={{ fontFamily: "var(--font-titles)" }}
+                >
+                  {t("focus.availability.title")}
+                </h3>
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-sm md:text-base">
+                  {t("focus.availability.text")}
+                </p>
+              </div>
             </div>
           </div>
         </section>
