@@ -495,11 +495,11 @@
           transform: scale(1.05);
         }
 
-        /* Image Sea-Clé - recadrage horizontal optimisé + performance */
+        /* Image Sea-cle - recadrage horizontal optimisé + performance */
         .design-image-secondary img {
           object-fit: cover;
           object-position: center center;
-          transition: transform 0.4s ease; /* Transition plus rapide pour Sea-Clé */
+          transition: transform 0.4s ease; /* Transition plus rapide pour Sea-cle */
         }
 
         .design-image-secondary {
@@ -1716,6 +1716,8 @@
         overflow-y: auto;
         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
         border-right: 1px solid rgba(0, 0, 0, 0.08);
+        display: flex;
+        flex-direction: column;
       }
 
       .mobile-menu-overlay.active .mobile-menu-sidebar {
@@ -1810,6 +1812,7 @@
 
       .mobile-menu-nav {
         padding: 24px;
+        flex: 1;
       }
 
       .mobile-menu-section {
@@ -1930,6 +1933,151 @@
 
       .dark-mode .mobile-menu-separator {
         background: #374151;
+      }
+
+      /* Styles pour les paramètres du menu - Design Layout.tsx */
+      .mobile-menu-setting-item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px 0;
+        border-bottom: 1px solid #f3f4f6;
+      }
+
+      .dark-mode .mobile-menu-setting-item {
+        border-bottom: 1px solid #374151;
+      }
+
+      .mobile-menu-setting-item:last-child {
+        border-bottom: none;
+      }
+
+      /* Container pour le switch de langue avec labels FR/EN */
+      .language-switch-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        width: 100%;
+      }
+
+      .language-label {
+        font-size: 14px;
+        font-weight: 500;
+        color: #9ca3af;
+        transition: color 0.2s ease;
+        min-width: 24px;
+        text-align: center;
+      }
+
+      .language-label.active {
+        color: #374151;
+        font-weight: 600;
+      }
+
+      .dark-mode .language-label {
+        color: #6b7280;
+      }
+
+      .dark-mode .language-label.active {
+        color: #e5e7eb;
+        font-weight: 600;
+      }
+
+      /* Container pour le switch de thème avec icônes */
+      .theme-switch-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        width: 100%;
+      }
+
+      .theme-icon {
+        font-size: 16px;
+        opacity: 0.5;
+        transition: opacity 0.2s ease;
+        min-width: 24px;
+        text-align: center;
+      }
+
+      .theme-icon.active {
+        opacity: 1;
+      }
+
+      /* Styles pour les switches - reproduisant le design Layout.tsx */
+      .switch-wrapper {
+        position: relative;
+      }
+
+      .switch-input {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .switch-label {
+        display: inline-flex;
+        align-items: center;
+        width: 44px;
+        height: 24px;
+        background-color: #e5e7eb;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+        position: relative;
+        border: 2px solid transparent;
+        padding: 2px;
+      }
+
+      .dark-mode .switch-label {
+        background-color: #4b5563;
+      }
+
+      .switch-input:checked + .switch-label {
+        background-color: #374151;
+      }
+
+      .dark-mode .switch-input:checked + .switch-label {
+        background-color: #6b7280;
+      }
+
+      .switch-thumb {
+        display: block;
+        width: 18px;
+        height: 18px;
+        background-color: white;
+        border-radius: 50%;
+        transition: transform 0.2s ease;
+        transform: translateX(0);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+
+      .switch-input:checked + .switch-label .switch-thumb {
+        transform: translateX(20px);
+      }
+
+      /* États focus et hover */
+      .switch-input:focus + .switch-label {
+        outline: 2px solid #6b7280;
+        outline-offset: 2px;
+      }
+
+      .switch-label:hover {
+        background-color: #d1d5db;
+      }
+
+      .dark-mode .switch-label:hover {
+        background-color: #6b7280;
+      }
+
+      .switch-input:checked + .switch-label:hover {
+        background-color: #4b5563;
+      }
+
+      .dark-mode .switch-input:checked + .switch-label:hover {
+        background-color: #7c8394;
       }
 
       /* Animation d'entrée améliorée pour le menu sombre */
@@ -2286,7 +2434,7 @@
                     stroke-linejoin="round"
                   />
                 </svg>
-                <span>Accueil</span>
+                <span id="home-menu">Accueil</span>
               </button>
             </div>
 
@@ -2294,7 +2442,9 @@
 
             <!-- Section Boutique -->
             <div class="mobile-menu-section">
-              <div class="mobile-menu-section-title">Boutique</div>
+              <div class="mobile-menu-section-title" id="shop-section-title">
+                Boutique
+              </div>
               <button
                 class="mobile-menu-item"
                 data-action="shop"
@@ -2328,7 +2478,7 @@
                     stroke-linejoin="round"
                   />
                 </svg>
-                <span>Boutique Focus</span>
+                <span id="focus-shop-menu">Boutique Focus</span>
               </button>
             </div>
 
@@ -2342,14 +2492,14 @@
                 data-action="design-en-action"
                 style="--delay: 2"
               >
-                <span>Design en action</span>
+                <span id="design-in-action-menu">Design en action</span>
               </button>
               <button
                 class="mobile-menu-item"
                 data-action="creations-sur-mesure"
                 style="--delay: 3"
               >
-                <span>Créations à la demande</span>
+                <span id="custom-creations-menu">Créations à la demande</span>
               </button>
             </div>
 
@@ -2357,14 +2507,64 @@
 
             <!-- Section À propos -->
             <div class="mobile-menu-section">
-              <div class="mobile-menu-section-title">À propos</div>
+              <div class="mobile-menu-section-title" id="about-section-title">
+                À propos
+              </div>
               <button
                 class="mobile-menu-item"
                 data-action="anatolle-collet"
                 style="--delay: 8"
               >
-                <span>Anatolle Collet</span>
+                <span id="who-am-i-menu">Qui suis-je</span>
               </button>
+            </div>
+
+            <div class="mobile-menu-separator"></div>
+
+            <!-- Section Paramètres -->
+            <div class="mobile-menu-section">
+              <div
+                class="mobile-menu-section-title"
+                id="settings-section-title"
+              >
+                Paramètres
+              </div>
+
+              <!-- Toggle Langue avec labels FR/EN -->
+              <div class="mobile-menu-setting-item">
+                <div class="language-switch-container">
+                  <span class="language-label" id="fr-label">FR</span>
+                  <div class="switch-wrapper">
+                    <input
+                      type="checkbox"
+                      id="menu-lang-switch"
+                      class="switch-input"
+                    />
+                    <label for="menu-lang-switch" class="switch-label">
+                      <span class="switch-thumb"></span>
+                    </label>
+                  </div>
+                  <span class="language-label" id="en-label">EN</span>
+                </div>
+              </div>
+
+              <!-- Toggle Thème avec icônes soleil/lune -->
+              <div class="mobile-menu-setting-item">
+                <div class="theme-switch-container">
+                  <span class="theme-icon">☀️</span>
+                  <div class="switch-wrapper">
+                    <input
+                      type="checkbox"
+                      id="menu-theme-switch"
+                      class="switch-input"
+                    />
+                    <label for="menu-theme-switch" class="switch-label">
+                      <span class="switch-thumb"></span>
+                    </label>
+                  </div>
+                  <span class="theme-icon">🌙</span>
+                </div>
+              </div>
             </div>
           </nav>
 
@@ -2479,11 +2679,13 @@
                 alt="Vinyle Low-Tech"
               />
             </div>
-            <div class="section-title">Design en action</div>
+            <div class="section-title" id="design-in-action-title">
+              Design en action
+            </div>
             <div class="section-image design-image-secondary">
               <img
                 src="https://www.alto-lille.fr/uploads/sea-cle.jpg"
-                alt="Création Sea-Clé"
+                alt="Création Sea-cle"
               />
             </div>
           </div>
@@ -2499,7 +2701,9 @@
                 alt="Lampadaire sur mesure"
               />
             </div>
-            <div class="section-title">Créations à la demande</div>
+            <div class="section-title" id="custom-creations-title">
+              Créations à la demande
+            </div>
             <div class="section-image creation-image-secondary">
               <img
                 src="https://www.alto-lille.fr/uploads/ca4d1b96-c00f-4992-b23d-5a7cdaafde05.png"
@@ -2521,7 +2725,7 @@
             alt="Design en action"
           />
           <div class="desktop-link-overlay">
-            <span>Design en action</span>
+            <span id="design-in-action-desktop">Design en action</span>
           </div>
         </div>
         <div
@@ -2533,7 +2737,7 @@
             alt="Créations à la demande"
           />
           <div class="desktop-link-overlay">
-            <span>Créations à la demande</span>
+            <span id="custom-creations-desktop">Créations à la demande</span>
           </div>
         </div>
       </div>
@@ -3346,6 +3550,9 @@
         // Mettre à jour les badges EcoIndex
         updateEcoIndexBadges();
 
+        // Mettre à jour les toggles du menu
+        updateMenuToggles();
+
         // Émettre un événement personnalisé pour l'application React
         window.dispatchEvent(
           new CustomEvent("themeChange", {
@@ -3359,7 +3566,7 @@
         const newTheme = event.detail.theme;
 
         // Éviter la boucle infinie en vérifiant si l'événement vient de React
-        if (event.target !== window || !event.detail.fromReact) {
+        if (!event.detail.fromReact) {
           return;
         }
 
@@ -3411,6 +3618,14 @@
           scroll: "Produit disponible à la vente",
           scrollAction: "Scroll vers le bas",
           footer: "© 2025 Alto Lille - Tous droits réservés",
+          designInAction: "Design en action",
+          customCreations: "Créations à la demande",
+          home: "Accueil",
+          shop: "Boutique",
+          focusShop: "Boutique Focus",
+          about: "À propos",
+          whoAmI: "Qui suis-je",
+          settings: "Paramètres",
         },
         en: {
           cap0: "Eco-friendly PLA",
@@ -3423,6 +3638,14 @@
           scroll: "Product available for purchase",
           scrollAction: "Scroll down",
           footer: "© 2025 Alto Lille - All rights reserved",
+          designInAction: "Design in action",
+          customCreations: "Custom creations",
+          home: "Home",
+          shop: "Shop",
+          focusShop: "Focus Shop",
+          about: "About",
+          whoAmI: "Who am I",
+          settings: "Settings",
         },
       };
 
@@ -3452,7 +3675,73 @@
         document.querySelector("#scroll-icon .scroll-action").textContent =
           t.scrollAction;
         document.querySelector("footer").textContent = t.footer;
+
+        // Traductions pour le menu
+        document.getElementById("home-menu").textContent = t.home;
+        document.getElementById("shop-section-title").textContent = t.shop;
+        document.getElementById("focus-shop-menu").textContent = t.focusShop;
+        document.getElementById("about-section-title").textContent = t.about;
+        document.getElementById("who-am-i-menu").textContent = t.whoAmI;
+        document.getElementById("settings-section-title").textContent =
+          t.settings;
+
+        // Traductions pour Design en action et Créations à la demande
+        document.getElementById("design-in-action-menu").textContent =
+          t.designInAction;
+        document.getElementById("custom-creations-menu").textContent =
+          t.customCreations;
+        document.getElementById("design-in-action-title").textContent =
+          t.designInAction;
+        document.getElementById("custom-creations-title").textContent =
+          t.customCreations;
+        document.getElementById("design-in-action-desktop").textContent =
+          t.designInAction;
+        document.getElementById("custom-creations-desktop").textContent =
+          t.customCreations;
+
+        // Synchroniser les toggles du menu avec les valeurs actuelles
+        updateMenuToggles();
       }
+
+      // Fonction pour mettre à jour les toggles du menu
+      function updateMenuToggles() {
+        const currentLang = localStorage.getItem("lang") || "fr";
+        const isDarkMode = document.body.classList.contains("dark-mode");
+
+        // Mettre à jour le switch de langue
+        const langSwitch = document.getElementById("menu-lang-switch");
+        const frLabel = document.getElementById("fr-label");
+        const enLabel = document.getElementById("en-label");
+
+        if (langSwitch && frLabel && enLabel) {
+          langSwitch.checked = currentLang === "en";
+          frLabel.classList.toggle("active", currentLang === "fr");
+          enLabel.classList.toggle("active", currentLang === "en");
+        }
+
+        // Mettre à jour le switch de thème
+        const themeSwitch = document.getElementById("menu-theme-switch");
+        const themeIcons = document.querySelectorAll(".theme-icon");
+
+        if (themeSwitch && themeIcons.length === 2) {
+          themeSwitch.checked = isDarkMode;
+          themeIcons[0].classList.toggle("active", !isDarkMode); // Soleil
+          themeIcons[1].classList.toggle("active", isDarkMode); // Lune
+        }
+      }
+
+      // Synchroniser les switches du menu avec les toggles principaux
+      document
+        .getElementById("menu-lang-switch")
+        .addEventListener("change", function () {
+          document.getElementById("lang-toggle-btn").click();
+        });
+
+      document
+        .getElementById("menu-theme-switch")
+        .addEventListener("change", function () {
+          document.getElementById("theme-toggle-btn").click();
+        });
 
       // Écouter les changements de langue
       langToggleBtn.addEventListener("click", function () {
@@ -3469,6 +3758,16 @@
             detail: { language: newLang, fromLanding: true },
           })
         );
+      });
+
+      // Écouter les changements de langue venant de l'application React
+      window.addEventListener("languageChange", function (event) {
+        if (event.detail.fromReact) {
+          const newLang = event.detail.language;
+          localStorage.setItem("lang", newLang);
+          updateLangIcon(newLang === "en");
+          applyLanguage(newLang);
+        }
       }); // Exécuter au chargement initial
       document.addEventListener("DOMContentLoaded", function () {
         handleNavigation();

@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { formatPrice } from "@/lib/utils";
+import { formatPrice, translateColor } from "@/lib/utils";
 import { ProductWithSelectedVariation } from "@shared/schema";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import { useCart } from "@/hooks/useCart";
@@ -61,7 +61,10 @@ export function CartItem({ item }: CartItemProps) {
           {product.variationType === "color"
             ? t("cart.colorVariation")
             : product.variationType}
-          : {product.variationValue}
+          :{" "}
+          {product.variationType === "color"
+            ? translateColor(product.variationValue, t)
+            : product.variationValue}
         </p>
         <div className="flex justify-between items-center mt-2">
           <div className="flex items-center border border-gray-200 dark:border-gray-600 rounded cart-quantity-controls">

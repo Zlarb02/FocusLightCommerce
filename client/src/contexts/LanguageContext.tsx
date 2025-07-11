@@ -43,6 +43,7 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
     localStorage.setItem("lang", language);
 
     if (typeof window !== "undefined") {
+      // Synchronisation avec les toggles existants (Layout.tsx)
       const langToggle = document.getElementById(
         "lang-toggle"
       ) as HTMLInputElement | null;
@@ -50,8 +51,42 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
 
       if (langToggle) langToggle.checked = language === "en";
       if (langLabel) langLabel.textContent = language === "en" ? "EN" : "FR";
+
+      // Synchronisation avec index.html
+      const langIcon = document.getElementById("lang-icon");
+      if (langIcon) {
+        langIcon.textContent = language === "en" ? "FR" : "EN";
+      }
+
+      // Émettre un événement pour la landing page
+      window.dispatchEvent(
+        new CustomEvent("languageChange", {
+          detail: { language, fromReact: true },
+        })
+      );
     }
   }, [language]);
+
+  // Écouter les changements de langue venant de la landing page
+  useEffect(() => {
+    const handleLanguageChange = (event: CustomEvent) => {
+      if (event.detail.fromLanding) {
+        setLanguage(event.detail.language);
+      }
+    };
+
+    window.addEventListener(
+      "languageChange",
+      handleLanguageChange as EventListener
+    );
+
+    return () => {
+      window.removeEventListener(
+        "languageChange",
+        handleLanguageChange as EventListener
+      );
+    };
+  }, []);
 
   // Fonction de traduction avec fallback fr
   const t = (key: string): string => {

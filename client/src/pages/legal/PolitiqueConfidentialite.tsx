@@ -1,203 +1,189 @@
-import ProjectLayoutUnified from "@/components/ProjectLayoutUnified";
+import { Layout } from "@/components/Layout";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function PolitiqueConfidentialite() {
+  const { t } = useLanguage();
+
   return (
-    <ProjectLayoutUnified
-      title="Politique de confidentialité"
-      currentProject="PolitiqueConfidentialite"
-    >
-      <div className="max-w-4xl mx-auto">
+    <Layout>
+      <div className="max-w-4xl mx-auto px-4 py-8">
         <h1
-          className="text-3xl font-bold mb-8"
+          className="text-3xl font-bold mb-8 text-gray-900 dark:text-gray-100"
           style={{ fontFamily: "var(--font-titles)" }}
         >
-          Politique de confidentialité
+          {t("privacy.title")}
         </h1>
 
-        <div className="prose prose-lg max-w-none">
+        <div className="prose prose-lg max-w-none dark:prose-invert">
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4">Introduction</h2>
-            <p>
-              Alto Lille s'engage à protéger votre vie privée. Cette politique
-              de confidentialité explique comment nous collectons, utilisons et
-              protégeons vos informations personnelles lorsque vous utilisez
-              notre site web.
+            <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+              {t("privacy.intro.title")}
+            </h2>
+            <p className="text-gray-700 dark:text-gray-300">
+              {t("privacy.intro.text")}
             </p>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4">Données collectées</h2>
-            <h3 className="text-xl font-medium mb-3">
-              Données que vous nous fournissez
+            <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+              {t("privacy.data.title")}
+            </h2>
+            <h3 className="text-xl font-medium mb-3 text-gray-900 dark:text-gray-100">
+              {t("privacy.data.provided.title")}
             </h3>
-            <ul className="list-disc pl-6 mb-4">
-              <li>Nom et prénom</li>
-              <li>Adresse email</li>
-              <li>Adresse postale de livraison</li>
-              <li>
-                Numéro de téléphone (optionnel, pour le suivi de livraison)
-              </li>
-              <li>
-                Informations de paiement (traitées de manière sécurisée par
-                Stripe, jamais stockées sur nos serveurs)
-              </li>
+            <ul className="list-disc pl-6 mb-4 text-gray-700 dark:text-gray-300">
+              <li>{t("privacy.data.provided.name")}</li>
+              <li>{t("privacy.data.provided.email")}</li>
+              <li>{t("privacy.data.provided.address")}</li>
+              <li>{t("privacy.data.provided.phone")}</li>
+              <li>{t("privacy.data.provided.payment")}</li>
             </ul>
 
-            <h3 className="text-xl font-medium mb-3">
-              Données collectées automatiquement
+            <h3 className="text-xl font-medium mb-3 text-gray-900 dark:text-gray-100">
+              {t("privacy.data.auto.title")}
             </h3>
-            <ul className="list-disc pl-6 mb-4">
-              <li>Adresse IP</li>
-              <li>Type de navigateur et version</li>
-              <li>Pages visitées et temps passé sur le site</li>
-              <li>Données de géolocalisation approximative (pays/région)</li>
+            <ul className="list-disc pl-6 mb-4 text-gray-700 dark:text-gray-300">
+              <li>{t("privacy.data.auto.ip")}</li>
+              <li>{t("privacy.data.auto.browser")}</li>
+              <li>{t("privacy.data.auto.pages")}</li>
+              <li>{t("privacy.data.auto.location")}</li>
             </ul>
 
-            <div className="bg-green-50 p-4 rounded-lg mt-4">
-              <h4 className="font-medium text-green-800 mb-2">
-                🔒 Principe de minimisation
+            <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg mt-4">
+              <h4 className="font-medium text-green-800 dark:text-green-200 mb-2">
+                {t("privacy.data.principle.title")}
               </h4>
-              <p className="text-green-700 text-sm">
-                Nous ne collectons que les données strictement nécessaires à la
-                réalisation de votre commande. Aucun compte utilisateur n'est
-                créé, ce qui limite considérablement les données personnelles
-                traitées.
+              <p className="text-green-700 dark:text-green-300 text-sm">
+                {t("privacy.data.principle.text")}
               </p>
             </div>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4">
-              Utilisation des données
+            <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+              {t("privacy.usage.title")}
             </h2>
-            <p>Nous utilisons vos données personnelles pour :</p>
-            <ul className="list-disc pl-6 mb-4">
-              <li>Traiter vos commandes et assurer la livraison</li>
-              <li>
-                Vous contacter concernant vos commandes (suivi, livraison)
-              </li>
-              <li>Fournir un service client et support technique</li>
-              <li>Améliorer notre site web et nos services</li>
-              <li>Respecter nos obligations légales</li>
+            <p className="text-gray-700 dark:text-gray-300">
+              {t("privacy.usage.intro")}
+            </p>
+            <ul className="list-disc pl-6 mb-4 text-gray-700 dark:text-gray-300">
+              <li>{t("privacy.usage.orders")}</li>
+              <li>{t("privacy.usage.contact")}</li>
+              <li>{t("privacy.usage.support")}</li>
+              <li>{t("privacy.usage.improve")}</li>
+              <li>{t("privacy.usage.legal")}</li>
             </ul>
-            <p className="text-sm text-gray-600 mt-4">
-              <strong>Note :</strong> Nous ne créons pas de comptes clients. Vos
-              données sont uniquement utilisées pour le traitement de votre
-              commande et supprimées conformément à la réglementation.
+            <p className="text-sm text-gray-600 dark:text-gray-400 mt-4">
+              <strong>Note :</strong> {t("privacy.usage.note")}
             </p>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4">Partage des données</h2>
-            <p>
-              Nous ne vendons, n'échangeons ni ne louons vos informations
-              personnelles à des tiers. Nous pouvons partager vos données avec :
-            </p>
-            <ul className="list-disc pl-6 mb-4">
-              <li>
-                Nos prestataires de services (Stripe pour le paiement, Mondial
-                Relay pour la livraison, hébergement)
-              </li>
-              <li>Les autorités légales si requis par la loi</li>
-            </ul>
-            <p className="text-sm text-gray-600">
-              <strong>Hébergement sécurisé :</strong> Les données sensibles sont
-              stockées sur nos serveurs VPS OVH situés en France, garantissant
-              la conformité RGPD et la protection de vos données.
-            </p>
-          </section>
-
-          <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4">Cookies</h2>
-            <p>
-              Notre site utilise des cookies pour améliorer votre expérience de
-              navigation. Les cookies sont de petits fichiers stockés sur votre
-              appareil qui nous aident à :
-            </p>
-            <ul className="list-disc pl-6 mb-4">
-              <li>Mémoriser vos préférences</li>
-              <li>Analyser l'utilisation du site</li>
-              <li>Personnaliser le contenu</li>
-            </ul>
-            <p>
-              Vous pouvez désactiver les cookies dans les paramètres de votre
-              navigateur, mais cela peut affecter le fonctionnement du site.
-            </p>
-          </section>
-
-          <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4">
-              Sécurité des données
+            <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+              {t("privacy.sharing.title")}
             </h2>
-            <p>
-              Nous mettons en place des mesures de sécurité appropriées pour
-              protéger vos données personnelles contre l'accès non autorisé, la
-              modification, la divulgation ou la destruction.
+            <p className="text-gray-700 dark:text-gray-300">
+              {t("privacy.sharing.intro")}
             </p>
-          </section>
-
-          <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4">Vos droits</h2>
-            <p>Conformément au RGPD, vous avez le droit de :</p>
-            <ul className="list-disc pl-6 mb-4">
-              <li>Accéder à vos données personnelles</li>
-              <li>Rectifier vos données inexactes</li>
-              <li>Supprimer vos données (droit à l'oubli)</li>
-              <li>Limiter le traitement de vos données</li>
-              <li>Vous opposer au traitement</li>
-              <li>Recevoir vos données dans un format portable</li>
+            <ul className="list-disc pl-6 mb-4 text-gray-700 dark:text-gray-300">
+              <li>{t("privacy.sharing.providers")}</li>
+              <li>{t("privacy.sharing.legal")}</li>
             </ul>
-            <p>
-              Pour exercer ces droits, contactez-nous à : altolille@gmail.com
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              <strong>Hébergement sécurisé :</strong>{" "}
+              {t("privacy.sharing.hosting")}
             </p>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4">
-              Conservation des données
+            <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+              {t("privacy.cookies.title")}
             </h2>
-            <p>
-              Nous conservons vos données personnelles uniquement pendant la
-              durée nécessaire au traitement de votre commande et au suivi
-              post-vente (garantie), soit maximum 2 ans après livraison, ou
-              selon les exigences légales (comptabilité : 10 ans).
+            <p className="text-gray-700 dark:text-gray-300">
+              {t("privacy.cookies.intro")}
             </p>
-            <p className="text-sm text-gray-600 mt-2">
-              Sans création de compte client, vos données ne sont pas conservées
-              à des fins commerciales au-delà du traitement de votre commande.
-            </p>
-          </section>
-
-          <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4">Modifications</h2>
-            <p>
-              Nous nous réservons le droit de modifier cette politique de
-              confidentialité à tout moment. Les modifications seront publiées
-              sur cette page avec la date de mise à jour.
+            <ul className="list-disc pl-6 mb-4 text-gray-700 dark:text-gray-300">
+              <li>{t("privacy.cookies.preferences")}</li>
+              <li>{t("privacy.cookies.analytics")}</li>
+              <li>{t("privacy.cookies.personalize")}</li>
+            </ul>
+            <p className="text-gray-700 dark:text-gray-300">
+              {t("privacy.cookies.disable")}
             </p>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4">Contact</h2>
-            <p>
-              Pour toute question concernant cette politique de confidentialité,
-              contactez-nous :
+            <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+              {t("privacy.security.title")}
+            </h2>
+            <p className="text-gray-700 dark:text-gray-300">
+              {t("privacy.security.text")}
             </p>
-            <p>
-              <strong>Email :</strong> altolille@gmail.com
+          </section>
+
+          <section className="mb-8">
+            <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+              {t("privacy.rights.title")}
+            </h2>
+            <p className="text-gray-700 dark:text-gray-300">
+              {t("privacy.rights.intro")}
+            </p>
+            <ul className="list-disc pl-6 mb-4 text-gray-700 dark:text-gray-300">
+              <li>{t("privacy.rights.access")}</li>
+              <li>{t("privacy.rights.rectify")}</li>
+              <li>{t("privacy.rights.delete")}</li>
+              <li>{t("privacy.rights.limit")}</li>
+              <li>{t("privacy.rights.oppose")}</li>
+              <li>{t("privacy.rights.portable")}</li>
+            </ul>
+            <p className="text-gray-700 dark:text-gray-300">
+              {t("privacy.rights.contact")}
+            </p>
+          </section>
+
+          <section className="mb-8">
+            <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+              {t("privacy.retention.title")}
+            </h2>
+            <p className="text-gray-700 dark:text-gray-300">
+              {t("privacy.retention.text1")}
+            </p>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+              {t("privacy.retention.text2")}
+            </p>
+          </section>
+
+          <section className="mb-8">
+            <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+              {t("privacy.modifications.title")}
+            </h2>
+            <p className="text-gray-700 dark:text-gray-300">
+              {t("privacy.modifications.text")}
+            </p>
+          </section>
+
+          <section className="mb-8">
+            <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+              {t("privacy.contact.title")}
+            </h2>
+            <p className="text-gray-700 dark:text-gray-300">
+              {t("privacy.contact.intro")}
+            </p>
+            <p className="text-gray-700 dark:text-gray-300">
+              <strong>{t("privacy.contact.email")}</strong> altolille@gmail.com
               <br />
-              <strong>Adresse :</strong> 95 rue Pierre Ledent, 62170
-              Montreuil-sur-Mer, France
+              <strong>{t("privacy.contact.address")}</strong> 95 rue Pierre
+              Ledent, 62170 Montreuil-sur-Mer, France
               <br />
-              <strong>Téléphone :</strong> +33 782 086 690
+              <strong>{t("privacy.contact.phone")}</strong> +33 782 086 690
             </p>
           </section>
 
-          <p className="text-sm text-gray-600 mt-8">
-            Dernière mise à jour : 1er juin 2025
+          <p className="text-sm text-gray-600 dark:text-gray-400 mt-8">
+            {t("privacy.lastUpdate")}
           </p>
         </div>
       </div>
-    </ProjectLayoutUnified>
+    </Layout>
   );
 }

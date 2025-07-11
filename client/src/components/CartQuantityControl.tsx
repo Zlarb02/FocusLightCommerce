@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useCart } from "@/hooks/useCart";
 import { ProductVariation, ProductWithVariations } from "@shared/schema";
 import { formatPrice } from "@/lib/utils";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { Plus, Minus, ShoppingCart } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 
@@ -18,6 +19,7 @@ export function CartQuantityControl({
   className,
 }: CartQuantityControlProps) {
   const { items, addItem, updateQuantity, removeItem } = useCart();
+  const { t } = useLanguage();
 
   // Trouver l'article dans le panier pour cette variation spécifique
   const cartItem = items.find((item) => item.product.id === variation.id);
@@ -64,7 +66,7 @@ export function CartQuantityControl({
           disabled={variation.stock <= 0}
         >
           <ShoppingCart className="h-4 w-4" />
-          Ajouter au panier - {formatPrice(displayPrice)}
+          {t("shop.focus.addToCart")} - {formatPrice(displayPrice)}
         </Button>
       </motion.div>
     );

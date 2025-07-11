@@ -1,12 +1,12 @@
-import ProjectLayoutUnified from "@/components/ProjectLayoutUnified";
+import { Layout } from "@/components/Layout";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function FAQ() {
   const { t } = useLanguage();
 
   return (
-    <ProjectLayoutUnified title={t("faq.title")} currentProject="">
-      <div className="max-w-4xl mx-auto">
+    <Layout>
+      <div className="max-w-4xl mx-auto px-4 py-8">
         {/* En-tête */}
         <div className="text-center mb-12">
           <h1
@@ -15,7 +15,7 @@ export default function FAQ() {
           >
             {t("faq.title")}
           </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
             {t("faq.subtitle")}
           </p>
         </div>
@@ -25,36 +25,36 @@ export default function FAQ() {
           {/* Produits */}
           <section>
             <h2
-              className="text-2xl font-semibold text-[var(--color-text)] mb-6 pb-2 border-b border-gray-200"
+              className="text-2xl font-semibold text-[var(--color-text)] mb-6 pb-2 border-b border-gray-200 dark:border-gray-700"
               style={{ fontFamily: "var(--font-titles)" }}
             >
               {t("faq.products.title")}
             </h2>
 
             <div className="space-y-6">
-              <div className="bg-gray-50 p-6 rounded-lg">
+              <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg">
                 <h3 className="text-lg font-medium text-[var(--color-text)] mb-3">
                   {t("faq.products.materials.title")}
                 </h3>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
                   {t("faq.products.materials.answer")}
                 </p>
               </div>
 
-              <div className="bg-gray-50 p-6 rounded-lg">
+              <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg">
                 <h3 className="text-lg font-medium text-[var(--color-text)] mb-3">
                   {t("faq.products.consumption.title")}
                 </h3>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
                   {t("faq.products.consumption.answer")}
                 </p>
               </div>
 
-              <div className="bg-gray-50 p-6 rounded-lg">
+              <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg">
                 <h3 className="text-lg font-medium text-[var(--color-text)] mb-3">
                   {t("faq.products.durability.title")}
                 </h3>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
                   {t("faq.products.durability.answer")}
                 </p>
               </div>
@@ -64,165 +64,137 @@ export default function FAQ() {
           {/* Commande et livraison */}
           <section>
             <h2
-              className="text-2xl font-semibold text-[var(--color-text)] mb-6 pb-2 border-b border-gray-200"
+              className="text-2xl font-semibold text-[var(--color-text)] mb-6 pb-2 border-b border-gray-200 dark:border-gray-700"
               style={{ fontFamily: "var(--font-titles)" }}
             >
               {t("faq.delivery.title")}
             </h2>
 
             <div className="space-y-6">
-              <div className="bg-gray-50 p-6 rounded-lg">
+              <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg">
                 <h3 className="text-lg font-medium text-[var(--color-text)] mb-3">
                   {t("faq.delivery.time.title")}
                 </h3>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
                   {t("faq.delivery.time.answer")}
                 </p>
               </div>
 
-              <div className="bg-gray-50 p-6 rounded-lg">
+              <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg">
                 <h3 className="text-lg font-medium text-[var(--color-text)] mb-3">
                   {t("faq.delivery.cost.title")}
                 </h3>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
                   {t("faq.delivery.cost.answer")}
                 </p>
               </div>
 
-              <div className="bg-gray-50 p-6 rounded-lg">
+              <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg">
                 <h3 className="text-lg font-medium text-[var(--color-text)] mb-3">
                   {t("faq.delivery.tracking.title")}
                 </h3>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
                   {t("faq.delivery.tracking.answer")}
                 </p>
               </div>
             </div>
           </section>
 
-          {/* Retours et garantie */}
+          {/* SAV et garantie */}
           <section>
             <h2
-              className="text-2xl font-semibold text-[var(--color-text)] mb-6 pb-2 border-b border-gray-200"
+              className="text-2xl font-semibold text-[var(--color-text)] mb-6 pb-2 border-b border-gray-200 dark:border-gray-700"
               style={{ fontFamily: "var(--font-titles)" }}
             >
-              {t("faq.warranty.title")}
+              {t("faq.support.title")}
             </h2>
 
             <div className="space-y-6">
-              <div className="bg-gray-50 p-6 rounded-lg">
+              <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg">
                 <h3 className="text-lg font-medium text-[var(--color-text)] mb-3">
-                  {t("faq.warranty.duration.title")}
+                  {t("faq.support.warranty.title")}
                 </h3>
-                <p className="text-gray-600 leading-relaxed">
-                  {t("faq.warranty.duration.answer")}
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                  {t("faq.support.warranty.answer")}
                 </p>
               </div>
 
-              <div className="bg-gray-50 p-6 rounded-lg">
+              <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg">
                 <h3 className="text-lg font-medium text-[var(--color-text)] mb-3">
-                  {t("faq.warranty.claim.title")}
+                  {t("faq.support.returns.title")}
                 </h3>
-                <p className="text-gray-600 leading-relaxed">
-                  {t("faq.warranty.claim.answer")}
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                  {t("faq.support.returns.answer")}
                 </p>
               </div>
             </div>
           </section>
 
-          {/* Paiement et sécurité */}
+          {/* Technique */}
           <section>
             <h2
-              className="text-2xl font-semibold text-[var(--color-text)] mb-6 pb-2 border-b border-gray-200"
+              className="text-2xl font-semibold text-[var(--color-text)] mb-6 pb-2 border-b border-gray-200 dark:border-gray-700"
               style={{ fontFamily: "var(--font-titles)" }}
             >
-              {t("faq.payment.title")}
+              {t("faq.technical.title")}
             </h2>
 
             <div className="space-y-6">
-              <div className="bg-gray-50 p-6 rounded-lg">
+              <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg">
                 <h3 className="text-lg font-medium text-[var(--color-text)] mb-3">
-                  {t("faq.payment.methods.title")}
+                  {t("faq.technical.installation.title")}
                 </h3>
-                <p className="text-gray-600 leading-relaxed">
-                  {t("faq.payment.methods.answer")}
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                  {t("faq.technical.installation.answer")}
                 </p>
               </div>
 
-              <div className="bg-gray-50 p-6 rounded-lg">
+              <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg">
                 <h3 className="text-lg font-medium text-[var(--color-text)] mb-3">
-                  {t("faq.payment.security.title")}
+                  {t("faq.technical.maintenance.title")}
                 </h3>
-                <p className="text-gray-600 leading-relaxed">
-                  {t("faq.payment.security.answer")}
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                  {t("faq.technical.maintenance.answer")}
                 </p>
               </div>
             </div>
           </section>
 
           {/* Contact */}
-          <section className="bg-[var(--color-bg-light)] p-8 rounded-lg">
-            <h2
-              className="text-2xl font-semibold text-[var(--color-text)] mb-4"
-              style={{ fontFamily: "var(--font-titles)" }}
-            >
-              {t("faq.contact.title")}
-            </h2>
-            <p className="text-gray-600 mb-6">{t("faq.contact.subtitle")}</p>
-
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="flex items-center">
+          <section className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
+            <div className="text-center">
+              <h2
+                className="text-2xl font-semibold text-[var(--color-text)] mb-4"
+                style={{ fontFamily: "var(--font-titles)" }}
+              >
+                {t("faq.contact.title")}
+              </h2>
+              <p className="text-gray-600 dark:text-gray-300 mb-6">
+                {t("faq.contact.subtitle")}
+              </p>
+              <a
+                href="mailto:altolille@gmail.com"
+                className="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200"
+              >
                 <svg
-                  className="h-5 w-5 text-[var(--color-text)] mr-3"
+                  className="w-5 h-5 mr-2"
                   fill="none"
-                  viewBox="0 0 24 24"
                   stroke="currentColor"
+                  viewBox="0 0 24 24"
                 >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={2}
-                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                    d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                   />
                 </svg>
-                <div>
-                  <p className="font-medium text-[var(--color-text)]">
-                    {t("faq.contact.email")}
-                  </p>
-                  <a
-                    href="mailto:altolille@gmail.com"
-                    className="text-gray-600 hover:text-[var(--color-text)] transition"
-                  >
-                    altolille@gmail.com
-                  </a>
-                </div>
-              </div>
-
-              <div className="flex items-center">
-                <svg
-                  className="h-5 w-5 text-[var(--color-text)] mr-3"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-                  />
-                </svg>
-                <div>
-                  <p className="font-medium text-[var(--color-text)]">
-                    {t("faq.contact.phone")}
-                  </p>
-                  <p className="text-gray-600">+33 782 086 690</p>
-                </div>
-              </div>
+                {t("faq.contact.email")}
+              </a>
             </div>
           </section>
         </div>
       </div>
-    </ProjectLayoutUnified>
+    </Layout>
   );
 }

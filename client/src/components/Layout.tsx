@@ -219,7 +219,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                     fontWeight: "600",
                   }}
                 >
-                  Boutique
+                  {t("nav.shopSection")}
                 </div>
                 <div className="space-y-1">
                   <button
@@ -247,7 +247,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                       <line x1="3" y1="6" x2="21" y2="6" />
                       <path d="M16 10a4 4 0 0 1-8 0" />
                     </svg>
-                    <span>Boutique Focus</span>
+                    <span>{t("nav.shopFocus")}</span>
                   </button>
                 </div>
               </div>
@@ -279,7 +279,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                       fontWeight: "500",
                     }}
                   >
-                    <span>Design en action</span>
+                    <span>{t("nav.designInAction")}</span>
                   </button>
 
                   <button
@@ -294,7 +294,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                       fontWeight: "500",
                     }}
                   >
-                    <span>Créations à la demande</span>
+                    <span>{t("nav.customCreations")}</span>
                   </button>
                 </div>
               </div>

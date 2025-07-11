@@ -72,6 +72,21 @@ export function getColorInfo(colorName: string): LampColor {
 }
 
 /**
+ * Traduit le nom d'une couleur selon la langue actuelle
+ * @param colorName - Nom de la couleur en français (Bleu, Rouge, Orange, Blanc)
+ * @param t - Fonction de traduction du contexte LanguageContext
+ * @returns Nom de la couleur traduit
+ */
+export function translateColor(
+  colorName: string,
+  t: (key: string) => string
+): string {
+  const colorKey = colorName.toLowerCase();
+  const translationKey = `colors.${colorKey}`;
+  return t(translationKey);
+}
+
+/**
  * Filtre les images d'une variation en excluant la première image.
  * La première image est réservée pour les affichages qui n'utilisent qu'une seule image.
  * Cette fonction retourne les images pour les sliders et cards e-commerce.

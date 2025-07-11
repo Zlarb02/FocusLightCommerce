@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ShoppingBag, Check, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface AnimatedAddToCartButtonProps {
   onClick: () => void;
@@ -25,6 +26,7 @@ export function AnimatedAddToCartButton({
   const [isAdding, setIsAdding] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
   const isMobile = useIsMobile();
+  const { t } = useLanguage();
 
   const handleClick = async () => {
     if (disabled || isAdding) return;
@@ -124,7 +126,8 @@ export function AnimatedAddToCartButton({
                 className="flex items-center"
               >
                 <ShoppingBag className="mr-2 h-4 w-4" />
-                {children || `Acheter${price ? ` - ${price}` : ""}`}
+                {children ||
+                  `${t("shop.focus.buy")}${price ? ` - ${price}` : ""}`}
               </motion.div>
             )}
           </AnimatePresence>

@@ -1,74 +1,86 @@
-import ProjectLayoutUnified from "@/components/ProjectLayoutUnified";
+import { Layout } from "@/components/Layout";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function MentionsLegales() {
+  const { t } = useLanguage();
+
   return (
-    <ProjectLayoutUnified
-      title="Mentions légales"
-      currentProject="MentionsLegales"
-    >
-      <div className="max-w-4xl mx-auto">
+    <Layout>
+      <div className="max-w-4xl mx-auto px-4 py-8">
         <h1
-          className="text-3xl font-bold mb-8"
+          className="text-3xl font-bold mb-8 text-gray-900 dark:text-gray-100"
           style={{ fontFamily: "var(--font-titles)" }}
         >
-          Mentions légales
+          {t("mentions.title")}
         </h1>
 
-        <div className="prose prose-lg max-w-none">
+        <div className="prose prose-lg max-w-none dark:prose-invert">
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4">Éditeur du site</h2>
-            <p>
-              <strong>Alto Lille</strong>
-              <br />
-              95 rue Pierre Ledent
-              <br />
-              62170 Montreuil-sur-Mer
-              <br />
-              France
-            </p>
-            <p>
-              <strong>Email :</strong> altolille@gmail.com
-              <br />
-              <strong>Téléphone :</strong> +33 782 086 690
-            </p>
-          </section>
-
-          <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4">
-              Directeur de publication
+            <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+              {t("mentions.editor.title")}
             </h2>
-            <p>Alto Lille</p>
-          </section>
-
-          <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4">Hébergement</h2>
-            <h3 className="text-lg font-medium mb-2">Site web</h3>
-            <p>
-              Interface utilisateur hébergée par Vercel Inc.
+            <p className="text-gray-700 dark:text-gray-300">
+              <strong>{t("mentions.editor.company")}</strong>
               <br />
-              340 S Lemon Ave #4133
+              {t("mentions.editor.address")}
               <br />
-              Walnut, CA 91789
+              {t("mentions.editor.postal")}
               <br />
-              États-Unis
+              {t("mentions.editor.country")}
             </p>
-
-            <h3 className="text-lg font-medium mb-2 mt-4">Données et API</h3>
-            <p>
-              Serveur backend et base de données hébergés par OVH SAS
+            <p className="text-gray-700 dark:text-gray-300">
+              <strong>{t("mentions.editor.email")}</strong> altolille@gmail.com
               <br />
-              2 rue Kellermann
-              <br />
-              59100 Roubaix
-              <br />
-              France
+              <strong>{t("mentions.editor.phone")}</strong> +33 782 086 690
             </p>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4">Développement</h2>
-            <p>
-              Site développé par Etienne Pogoda
+            <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+              {t("mentions.director.title")}
+            </h2>
+            <p className="text-gray-700 dark:text-gray-300">
+              {t("mentions.director.name")}
+            </p>
+          </section>
+
+          <section className="mb-8">
+            <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+              {t("mentions.hosting.title")}
+            </h2>
+            <h3 className="text-lg font-medium mb-2 text-gray-900 dark:text-gray-100">
+              {t("mentions.hosting.website.title")}
+            </h3>
+            <p className="text-gray-700 dark:text-gray-300">
+              {t("mentions.hosting.website.text")}
+              <br />
+              {t("mentions.hosting.website.address")}
+              <br />
+              {t("mentions.hosting.website.city")}
+              <br />
+              {t("mentions.hosting.website.country")}
+            </p>
+
+            <h3 className="text-lg font-medium mb-2 mt-4 text-gray-900 dark:text-gray-100">
+              {t("mentions.hosting.data.title")}
+            </h3>
+            <p className="text-gray-700 dark:text-gray-300">
+              {t("mentions.hosting.data.text")}
+              <br />
+              {t("mentions.hosting.data.address")}
+              <br />
+              {t("mentions.hosting.data.city")}
+              <br />
+              {t("mentions.hosting.data.country")}
+            </p>
+          </section>
+
+          <section className="mb-8">
+            <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+              {t("mentions.development.title")}
+            </h2>
+            <p className="text-gray-700 dark:text-gray-300">
+              {t("mentions.development.text")}
               <br />
               <a
                 href="https://pogodev.com"
@@ -82,61 +94,48 @@ export default function MentionsLegales() {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4">
-              Propriété intellectuelle
+            <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+              {t("mentions.intellectual.title")}
             </h2>
-            <p>
-              L'ensemble de ce site relève de la législation française et
-              internationale sur le droit d'auteur et la propriété
-              intellectuelle. Tous les droits de reproduction sont réservés, y
-              compris pour les documents téléchargeables et les représentations
-              iconographiques et photographiques.
+            <p className="text-gray-700 dark:text-gray-300">
+              {t("mentions.intellectual.text1")}
             </p>
-            <p>
-              La reproduction de tout ou partie de ce site sur un support
-              électronique quel qu'il soit est formellement interdite sauf
-              autorisation expresse du directeur de la publication.
+            <p className="text-gray-700 dark:text-gray-300">
+              {t("mentions.intellectual.text2")}
             </p>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4">Responsabilité</h2>
-            <p>
-              Les informations contenues sur ce site sont aussi précises que
-              possible et le site remis à jour à différentes périodes de
-              l'année, mais peut toutefois contenir des inexactitudes ou des
-              omissions.
+            <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+              {t("mentions.responsibility.title")}
+            </h2>
+            <p className="text-gray-700 dark:text-gray-300">
+              {t("mentions.responsibility.text1")}
             </p>
-            <p>
-              Si vous constatez une lacune, erreur ou ce qui parait être un
-              dysfonctionnement, merci de bien vouloir le signaler par email, à
-              l'adresse altolille@gmail.com, en décrivant le problème de la
-              façon la plus précise possible.
+            <p className="text-gray-700 dark:text-gray-300">
+              {t("mentions.responsibility.text2")}
             </p>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4">Liens hypertextes</h2>
-            <p>
-              Les liens hypertextes mis en place dans le cadre du présent site
-              internet en direction d'autres ressources présentes sur le réseau
-              Internet ne sauraient engager la responsabilité d'Alto Lille.
+            <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+              {t("mentions.links.title")}
+            </h2>
+            <p className="text-gray-700 dark:text-gray-300">
+              {t("mentions.links.text")}
             </p>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4">Droit applicable</h2>
-            <p>
-              Tant le présent site que les modalités et conditions de son
-              utilisation sont régis par le droit français, quel que soit le
-              lieu d'utilisation. En cas de contestation éventuelle, et après
-              l'échec de toute tentative de recherche d'une solution amiable,
-              les tribunaux français seront seuls compétents pour connaître de
-              ce litige.
+            <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+              {t("mentions.law.title")}
+            </h2>
+            <p className="text-gray-700 dark:text-gray-300">
+              {t("mentions.law.text")}
             </p>
           </section>
         </div>
       </div>
-    </ProjectLayoutUnified>
+    </Layout>
   );
 }

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 /**
  * Un switch "on/off" qui change le mode sombre/clair, avec un texte qui change selon le thème.
@@ -7,6 +8,7 @@ import { useEffect, useState } from "react";
 export function LampOnOffSwitch() {
   // Pour détecter le thème actuel (dark ou light)
   const [isDark, setIsDark] = useState(false);
+  const { t } = useLanguage();
 
   useEffect(() => {
     // Vérifie le thème initial
@@ -39,7 +41,9 @@ export function LampOnOffSwitch() {
     <div className="flex flex-col items-center gap-2 w-full">
       <div className="flex items-center gap-4 bg-white/95 dark:bg-gray-900/95 border border-blue-300 dark:border-yellow-300 rounded-xl px-6 py-2 shadow-xl">
         <span className="text-xl font-bold dark:text-yellow-300 text-blue-700 drop-shadow-sm">
-          {isDark ? "Voir les lampes éteintes" : "Voir les lampes allumées"}
+          {isDark
+            ? t("shop.focus.lampSwitch.seeOff")
+            : t("shop.focus.lampSwitch.seeOn")}
         </span>
         <button
           onClick={toggleTheme}

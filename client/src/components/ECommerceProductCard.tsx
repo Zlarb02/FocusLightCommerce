@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ProductVariation, ProductWithVariations } from "@shared/schema";
-import { formatPrice, getSliderImages } from "@/lib/utils";
+import { formatPrice, getSliderImages, translateColor } from "@/lib/utils";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ProductQuantityCounter } from "./ProductQuantityCounter";
 
@@ -103,7 +103,7 @@ export function ECommerceProductCard(props: ECommerceProductCardProps) {
           {product.name}
         </h3>
         <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 capitalize">
-          {t("product.color")}: {variation.variationValue}
+          {t("product.color")}: {translateColor(variation.variationValue, t)}
         </p>
 
         {/* Price and Counter Section */}

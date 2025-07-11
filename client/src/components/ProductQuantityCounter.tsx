@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useCart } from "@/hooks/useCart";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { ProductVariation } from "@shared/schema";
 import { Plus, Minus } from "lucide-react";
 
@@ -21,6 +22,7 @@ export function ProductQuantityCounter({
   className = "",
 }: ProductQuantityCounterProps) {
   const { items, addItem, removeItem, updateQuantity } = useCart();
+  const { t } = useLanguage();
   const [quantity, setQuantity] = useState(0);
 
   // Trouver la quantité actuelle du produit dans le panier
@@ -73,7 +75,7 @@ export function ProductQuantityCounter({
         className={`bg-primary hover:bg-primary/90 dark:bg-[#3a5fcf] dark:hover:bg-[#5477e6] text-white px-6 py-2.5 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 font-medium shadow-sm hover:shadow-md transform hover:scale-105 ${className}`}
       >
         <Plus className="w-4 h-4" />
-        <span className="text-sm">Ajouter au panier</span>
+        <span className="text-sm">{t("shop.focus.addToCart")}</span>
       </button>
     );
   }

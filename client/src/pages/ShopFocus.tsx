@@ -170,7 +170,7 @@ export default function ShopFocus() {
           <div className="container mx-auto px-6">
             <div className="flex flex-col items-center gap-3">
               <h3 className="text-base font-medium text-gray-900 dark:text-gray-100">
-                Couleurs disponibles :
+                {t("shop.focus.colorsAvailable")} :
               </h3>
               <div className="flex items-center gap-3 justify-center overflow-x-auto pb-2 px-3 pt-1">
                 {heroVariations.length > 0
@@ -351,7 +351,7 @@ export default function ShopFocus() {
             <div className="flex flex-col items-center gap-2 md:gap-3">
               <div className="text-center">
                 <h3 className="text-lg md:text-xl font-light text-gray-900 dark:text-gray-100 mb-1">
-                  Couleurs disponibles
+                  {t("shop.focus.colorsAvailable")}
                 </h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
                   {heroVariations.length} variation
@@ -931,7 +931,7 @@ export default function ShopFocus() {
           <div
             className="elfsight-app-4e4b87d4-745d-4e46-ab59-bc0b36f7d8ad relative overflow-visible"
             data-elfsight-app-lazy
-            style={{ margin: '0 -40px', padding: 0 }}
+            style={{ margin: "0 -40px", padding: 0 }}
           />
           {/* Masquage du titre et du badge via CSS-in-JS (sans !important) */}
           <style>{`

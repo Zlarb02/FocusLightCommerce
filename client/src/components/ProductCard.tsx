@@ -1,10 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { formatPrice, getColorInfo } from "@/lib/utils";
+import { formatPrice, getColorInfo, translateColor } from "@/lib/utils";
 import { ProductVariation, ProductWithVariations } from "@shared/schema";
 import { useState } from "react";
 import { useCart } from "@/hooks/useCart";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { Check, Plus } from "lucide-react";
 import { CartQuantityControl } from "@/components/CartQuantityControl";
 import { ProductAddedIndicator } from "@/components/ProductAddedIndicator";
@@ -17,6 +18,7 @@ interface ProductCardProps {
 export function ProductCard({ product, variation }: ProductCardProps) {
   const { addItem, items } = useCart();
   const { toast } = useToast();
+  const { t } = useLanguage();
   const [isAdding, setIsAdding] = useState(false);
 
   // Vérifier si cette variation est dans le panier
@@ -37,7 +39,10 @@ export function ProductCard({ product, variation }: ProductCardProps) {
 
     toast({
       title: "Produit ajouté au panier",
-      description: `${product.name} (${variation.variationValue}) a été ajouté au panier`,
+      description: `${product.name} (${translateColor(
+        variation.variationValue,
+        t
+      )}) a été ajouté au panier`,
     });
 
     setTimeout(() => {
@@ -62,7 +67,7 @@ export function ProductCard({ product, variation }: ProductCardProps) {
       </div>
       <CardContent className="pt-6 bg-white dark:bg-gray-800">
         <h3 className="font-heading font-bold text-lg mb-2 text-gray-900 dark:text-gray-100">
-          {product.name} - {variation.variationValue}
+          {product.name} - {translateColor(variation.variationValue, t)}
         </h3>
         <p className="text-gray-600 dark:text-gray-400 mb-4 text-sm leading-relaxed">
           Élégance intemporelle qui s'intègre à tous les intérieurs

@@ -9,66 +9,60 @@ export default function CreationsSurMesure() {
   const customCreations = [
     {
       id: "lampadaire-sur-mesure",
-      title: "Lampadaire sur Mesure",
-      description:
-        "Lampadaire unique conçu sur demande particulière, alliant design contemporain et fonctionnalité optimale pour un éclairage d'ambiance exceptionnel.",
+      title: t("customCreations.lampadaire.title"),
+      description: t("customCreations.lampadaire.description"),
       image:
         "https://www.alto-lille.fr/uploads/c5e2d6c0-e84d-4409-9349-0c3582bf0d6c.png",
       features: [
-        "Design unique et personnalisé",
-        "Éclairage LED haute qualité",
-        "Hauteur et intensité ajustables",
-        "Matériaux durables et écoresponsables",
-        "Fabrication artisanale française",
+        t("customCreations.lampadaire.features.design"),
+        t("customCreations.lampadaire.features.led"),
+        t("customCreations.lampadaire.features.adjustable"),
+        t("customCreations.lampadaire.features.materials"),
+        t("customCreations.lampadaire.features.french"),
       ],
-      specs:
-        "Hauteur : 165cm • Base : 35cm diamètre • Puissance : 20W LED • Température : 2700K-4000K",
-      price: "À partir de 850€",
-      story:
-        "Cette création unique a été développée suite à la demande spécifique d'un client recherchant un éclairage d'exception pour son salon. Le défi était de créer une pièce à la fois fonctionnelle et artistique, capable de s'intégrer parfaitement dans un intérieur contemporain.",
+      specs: t("customCreations.lampadaire.specs"),
+      price: t("customCreations.lampadaire.price"),
+      story: t("customCreations.lampadaire.story"),
     },
     {
       id: "lampe-murale-sur-mesure",
-      title: "Lampe Murale sur Mesure",
-      description:
-        "Applique murale exclusive réalisée pour un projet d'architecture d'intérieur, offrant un éclairage ciblé et une esthétique raffinée.",
+      title: t("customCreations.lampemurale.title"),
+      description: t("customCreations.lampemurale.description"),
       image:
         "https://www.alto-lille.fr/uploads/ca4d1b96-c00f-4992-b23d-5a7cdaafde05.png",
       features: [
-        "Installation murale optimisée",
-        "Éclairage directionnel précis",
-        "Finitions haut de gamme",
-        "Design minimaliste et élégant",
-        "Commande tactile intuitive",
+        t("customCreations.lampemurale.features.installation"),
+        t("customCreations.lampemurale.features.directional"),
+        t("customCreations.lampemurale.features.finishes"),
+        t("customCreations.lampemurale.features.design"),
+        t("customCreations.lampemurale.features.touch"),
       ],
-      specs:
-        "Dimensions : 45x25x18cm • Puissance : 12W LED • Angle d'éclairage : 120° • Gradation : 5%-100%",
-      price: "À partir de 420€",
-      story:
-        "Née d'une collaboration avec un architecte d'intérieur, cette lampe murale répond à des exigences techniques précises tout en apportant une touche design unique. Elle illustre parfaitement notre capacité à transformer une contrainte en opportunité créative.",
+      specs: t("customCreations.lampemurale.specs"),
+      price: t("customCreations.lampemurale.price"),
+      story: t("customCreations.lampemurale.story"),
     },
   ];
 
   const process = [
     {
       step: "1",
-      title: "Consultation",
-      description: "Échange sur vos besoins, contraintes et vision esthétique",
+      title: t("customCreations.process.consultation.title"),
+      description: t("customCreations.process.consultation.description"),
     },
     {
       step: "2",
-      title: "Conception",
-      description: "Création de croquis et modélisation 3D de votre projet",
+      title: t("customCreations.process.conception.title"),
+      description: t("customCreations.process.conception.description"),
     },
     {
       step: "3",
-      title: "Validation",
-      description: "Ajustements et validation du design final avec devis",
+      title: t("customCreations.process.validation.title"),
+      description: t("customCreations.process.validation.description"),
     },
     {
       step: "4",
-      title: "Réalisation",
-      description: "Fabrication artisanale avec suivi régulier d'avancement",
+      title: t("customCreations.process.realization.title"),
+      description: t("customCreations.process.realization.description"),
     },
   ];
 
@@ -82,21 +76,20 @@ export default function CreationsSurMesure() {
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32">
             <div className="text-center">
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6">
-                Créations à la{" "}
+                {t("customCreations.hero.title")}{" "}
                 <span className="text-amber-600 dark:text-amber-400">
-                  Demande
+                  {/* Le mot "Demande" est inclus dans la traduction */}
                 </span>
               </h1>
               <p className="text-xl sm:text-2xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-8">
-                Des luminaires uniques conçus spécialement pour vos projets
-                d'architecture et d'aménagement
+                {t("customCreations.hero.subtitle")}
               </p>
               <div className="flex items-center justify-center gap-2 text-amber-600 dark:text-amber-400 mb-6">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="h-5 w-5 fill-current" />
                 ))}
                 <span className="ml-2 text-gray-600 dark:text-gray-300">
-                  Créations 100% sur mesure
+                  {t("customCreations.hero.guarantee")}
                 </span>
               </div>
             </div>
@@ -108,11 +101,10 @@ export default function CreationsSurMesure() {
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                Nos Réalisations Spéciales
+                {t("customCreations.realizationsSection.title")}
               </h2>
               <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-                Découvrez quelques-unes de nos créations sur mesure réalisées
-                pour des clients exigeants
+                {t("customCreations.realizationsSection.subtitle")}
               </p>
             </div>
 
@@ -160,7 +152,7 @@ export default function CreationsSurMesure() {
                     {/* Specs */}
                     <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3 mb-4">
                       <p className="text-xs text-gray-500 dark:text-gray-400 font-medium mb-1">
-                        SPÉCIFICATIONS
+                        {t("customCreations.common.specifications")}
                       </p>
                       <p className="text-sm text-gray-700 dark:text-gray-300">
                         {creation.specs}
@@ -170,7 +162,7 @@ export default function CreationsSurMesure() {
                     {/* Story */}
                     <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3">
                       <p className="text-xs text-amber-600 dark:text-amber-400 font-medium mb-1">
-                        HISTOIRE DE LA CRÉATION
+                        {t("customCreations.common.story")}
                       </p>
                       <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
                         {creation.story}
@@ -188,11 +180,10 @@ export default function CreationsSurMesure() {
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                Notre Processus de Création
+                {t("customCreations.process.title")}
               </h2>
               <p className="text-lg text-gray-600 dark:text-gray-300">
-                De l'idée à la réalisation, nous vous accompagnons à chaque
-                étape
+                {t("customCreations.process.subtitle")}
               </p>
             </div>
 
@@ -223,12 +214,10 @@ export default function CreationsSurMesure() {
         <section className="py-20 bg-gradient-to-r from-amber-600 to-orange-600">
           <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
             <h2 className="text-3xl lg:text-4xl font-bold text-white mb-6">
-              Un projet d'éclairage sur mesure ?
+              {t("customCreations.cta.title")}
             </h2>
             <p className="text-xl text-amber-100 mb-8 max-w-2xl mx-auto">
-              Contactez-nous pour discuter de votre projet et recevoir un devis
-              personnalisé. Chaque création est unique et adaptée à vos besoins
-              spécifiques.
+              {t("customCreations.cta.subtitle")}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -242,28 +231,28 @@ export default function CreationsSurMesure() {
                 }
               >
                 <Mail className="mr-2 h-4 w-4" />
-                Demander un devis
+                {t("customCreations.cta.quote")}
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
 
               <Button
                 variant="outline"
                 size="lg"
-                className="border-white text-white hover:bg-white hover:text-amber-600 group"
+                className="border-white text-white hover:bg-white hover:text-amber-600 bg-transparent group"
                 onClick={() => (window.location.href = "tel:+33782086690")}
               >
                 <Phone className="mr-2 h-4 w-4" />
-                +33 7 82 08 66 90
+                {t("customCreations.cta.phone")}
               </Button>
             </div>
 
             <div className="mt-8 pt-8 border-t border-amber-500/30">
               <p className="text-amber-100 text-sm">
-                <strong>Délai de réalisation :</strong> 3 à 6 semaines selon la
-                complexité du projet
+                <strong>{t("customCreations.cta.delivery")}</strong>{" "}
+                {t("customCreations.cta.deliveryTime")}
                 <br />
-                <strong>Garantie :</strong> 2 ans sur tous nos luminaires sur
-                mesure
+                <strong>{t("customCreations.cta.warranty")}</strong>{" "}
+                {t("customCreations.cta.warrantyTime")}
               </p>
             </div>
           </div>

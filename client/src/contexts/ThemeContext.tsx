@@ -54,6 +54,12 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
       document.documentElement.classList.remove("dark");
     }
 
+    // Synchroniser l'icône de theme dans index.html
+    const themeIcon = document.getElementById("theme-icon");
+    if (themeIcon) {
+      themeIcon.textContent = newTheme === "dark" ? "☀️" : "🌙";
+    }
+
     // Émettre un événement personnalisé pour synchroniser avec la landing page
     window.dispatchEvent(
       new CustomEvent("themeChange", {
@@ -91,6 +97,9 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
 
     // Écouter les événements personnalisés de la landing page
     const handleThemeChange = (e: CustomEvent) => {
+      // Éviter la boucle infinie en vérifiant la source
+      if (e.detail.fromReact) return;
+
       const newTheme = e.detail.theme;
       if (newTheme === "dark" || newTheme === "light") {
         // Éviter la boucle infinie en vérifiant si le thème a vraiment changé
