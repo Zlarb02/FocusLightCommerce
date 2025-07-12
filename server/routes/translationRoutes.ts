@@ -2,7 +2,7 @@ import { Router, Request, Response } from "express";
 import { z } from "zod";
 import fs from "fs";
 import path from "path";
-import { handleError } from "../middleware/middlewares.js";
+import { handleError, requireAuth } from "../middleware/middlewares.js";
 
 const router = Router();
 
@@ -28,10 +28,9 @@ const updateBulkTranslationsSchema = z.array(
 );
 
 // Chemin vers le fichier de traductions
-const TRANSLATIONS_PATH = path.join(
-  process.cwd(),
-  "../client/src/contexts/translations.json"
-);
+const TRANSLATIONS_PATH = process.env.NODE_ENV === 'production' 
+  ? path.join(process.cwd(), "data", "translations.json")
+  : path.join(process.cwd(), "../client/src/contexts/translations.json");
 
 // Fonction utilitaire pour lire les traductions
 function readTranslations() {
@@ -47,14 +46,23 @@ function readTranslations() {
 // Fonction utilitaire pour écrire les traductions
 function writeTranslations(translations: any) {
   try {
+    // Vérifier que le répertoire existe
+    const dir = path.dirname(TRANSLATIONS_PATH);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+
     fs.writeFileSync(
       TRANSLATIONS_PATH,
       JSON.stringify(translations, null, 2),
       "utf8"
     );
+    console.log(`Traductions écrites avec succès : ${TRANSLATIONS_PATH}`);
     return true;
   } catch (error) {
     console.error("Erreur lors de l'écriture des traductions:", error);
+    console.error("Chemin:", TRANSLATIONS_PATH);
+    console.error("Permissions:", fs.constants.W_OK);
     return false;
   }
 }
@@ -257,6 +265,10 @@ const updateFullTranslationsHandler = async (
       return;
     }
 
+    // Log de la taille pour debug
+    const jsonSize = JSON.stringify(newTranslations).length;
+    console.log(`Mise à jour traductions: ${jsonSize} bytes`);
+
     // Headers pour gros payloads
     res.setHeader("Content-Type", "application/json");
     
@@ -268,6 +280,7 @@ const updateFullTranslationsHandler = async (
       res.status(500).json({ error: "Erreur lors de l'écriture du fichier" });
     }
   } catch (error) {
+    console.error("Erreur updateFullTranslations:", error);
     handleError(res, error);
   }
 };
@@ -353,16 +366,16 @@ const searchTranslationsHandler = async (
   }
 };
 
-// Routes
-router.get("/", getAllTranslationsHandler);
-router.get("/full", getFullTranslationsHandler);
-router.get("/stats", getTranslationStatsHandler);
-router.put("/single", updateSingleTranslationHandler);
-router.put("/bulk", updateBulkTranslationsHandler);
-router.post("/", addTranslationHandler);
-router.delete("/:key", deleteTranslationHandler);
-router.put("/full", updateFullTranslationsHandler);
-router.get("/search", searchTranslationsHandler);
+// Routes (protégées par authentification)
+router.get("/", requireAuth, getAllTranslationsHandler);
+router.get("/full", requireAuth, getFullTranslationsHandler);
+router.get("/stats", requireAuth, getTranslationStatsHandler);
+router.put("/single", requireAuth, updateSingleTranslationHandler);
+router.put("/bulk", requireAuth, updateBulkTranslationsHandler);
+router.post("/", requireAuth, addTranslationHandler);
+router.delete("/:key", requireAuth, deleteTranslationHandler);
+router.put("/full", requireAuth, updateFullTranslationsHandler);
+router.get("/search", requireAuth, searchTranslationsHandler);
 
 // Routes publiques (pas d'authentification requise)
 router.get("/public", async (req: Request, res: Response) => {

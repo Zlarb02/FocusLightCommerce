@@ -2,7 +2,7 @@ import { Router, Request, Response } from "express";
 import { z } from "zod";
 import fs from "fs";
 import path from "path";
-import { handleError } from "../middleware/middlewares.js";
+import { handleError, requireAuth } from "../middleware/middlewares.js";
 
 const router = Router();
 
@@ -25,10 +25,9 @@ const addIllustrationSchema = z.object({
 });
 
 // Chemin vers le fichier d'illustrations
-const ILLUSTRATIONS_PATH = path.join(
-  process.cwd(),
-  "../client/src/contexts/illustrations.json"
-);
+const ILLUSTRATIONS_PATH = process.env.NODE_ENV === 'production' 
+  ? path.join(process.cwd(), "data", "illustrations.json")
+  : path.join(process.cwd(), "../client/src/contexts/illustrations.json");
 
 // Fonction utilitaire pour lire les illustrations
 function readIllustrations() {
@@ -44,14 +43,23 @@ function readIllustrations() {
 // Fonction utilitaire pour écrire les illustrations
 function writeIllustrations(illustrations: any) {
   try {
+    // Vérifier que le répertoire existe
+    const dir = path.dirname(ILLUSTRATIONS_PATH);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+
     fs.writeFileSync(
       ILLUSTRATIONS_PATH,
       JSON.stringify(illustrations, null, 2),
       "utf8"
     );
+    console.log(`Illustrations écrites avec succès : ${ILLUSTRATIONS_PATH}`);
     return true;
   } catch (error) {
     console.error("Erreur lors de l'écriture des illustrations:", error);
+    console.error("Chemin:", ILLUSTRATIONS_PATH);
+    console.error("Permissions:", fs.constants.W_OK);
     return false;
   }
 }
@@ -278,11 +286,16 @@ const updateFullIllustrationsHandler = async (
   try {
     const newIllustrations = req.body;
 
-    // Validation basique
+    // Validation basique (pas de validation Zod stricte pour le JSON complet)
     if (!newIllustrations || typeof newIllustrations !== "object") {
       res.status(400).json({ error: "Format de données invalide" });
       return;
     }
+
+    // Log de la taille pour debug
+    const jsonSize = JSON.stringify(newIllustrations).length;
+    console.log(`Mise à jour illustrations: ${jsonSize} bytes`);
+    console.log("Clés reçues:", Object.keys(newIllustrations));
 
     // Headers pour gros payloads
     res.setHeader("Content-Type", "application/json");
@@ -295,17 +308,18 @@ const updateFullIllustrationsHandler = async (
       res.status(500).json({ error: "Erreur lors de l'écriture du fichier" });
     }
   } catch (error) {
+    console.error("Erreur updateFullIllustrations:", error);
     handleError(res, error);
   }
 };
 
-// Routes
-router.get("/", getAllIllustrationsHandler);
-router.get("/:key", getIllustrationHandler);
-router.put("/:key", updateIllustrationHandler);
-router.post("/", addIllustrationHandler);
-router.delete("/:key", deleteIllustrationHandler);
-router.put("/full", updateFullIllustrationsHandler);
+// Routes (protégées par authentification)
+router.get("/", requireAuth, getAllIllustrationsHandler);
+router.get("/:key", requireAuth, getIllustrationHandler);
+router.put("/:key", requireAuth, updateIllustrationHandler);
+router.post("/", requireAuth, addIllustrationHandler);
+router.delete("/:key", requireAuth, deleteIllustrationHandler);
+router.put("/full", requireAuth, updateFullIllustrationsHandler);
 
 // Routes publiques (pas d'authentification requise)
 router.get("/public", async (req: Request, res: Response) => {
