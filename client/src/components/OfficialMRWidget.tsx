@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import type { RelayPoint } from "@/pages/checkout/ShippingNew";
+import type { RelayPoint } from "@/pages/checkout/Shipping";
 
 interface OfficialMRWidgetProps {
   postalCode: string;

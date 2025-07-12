@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Layout } from "@/components/Layout";
 import { useLocation } from "wouter";
 import { CustomerInfo } from "./CustomerInfo";
-import { Shipping } from "./ShippingNew";
+import { Shipping } from "./Shipping";
 import { Payment } from "./Payment";
 import { Confirmation } from "./Confirmation";
 import { useCart } from "@/hooks/useCart";

@@ -4,7 +4,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import Home from "@/pages/ShopFocus";
 import NotFound from "@/pages/not-found";
-import CheckoutNew from "@/pages/checkout/CheckoutNew";
+import CheckoutNew from "@/pages/checkout/Checkout";
 import { CartProvider } from "@/hooks/useCart";
 import { CheckoutProvider } from "@/hooks/useCheckout";
 import { useEffect, useState, Suspense, lazy } from "react";
@@ -16,6 +16,7 @@ import { LanguageProvider } from "@/contexts/LanguageContext";
 // Pages de projets autonomes
 const DesignEnAction = lazy(() => import("@/pages/DesignEnAction"));
 const CreationsSurMesure = lazy(() => import("@/pages/CreationsSurMesure"));
+const About = lazy(() => import("@/pages/About"));
 
 // Pages de gestion
 import GestionLogin from "./pages/gestion/Login";
@@ -120,6 +121,23 @@ function Router() {
         <Route path="/creations-sur-mesure">
           <Suspense fallback={<div className="loading">Chargement...</div>}>
             <CreationsSurMesure />
+          </Suspense>
+        </Route>
+
+        {/* Page à propos */}
+        <Route path="/about">
+          <Suspense fallback={<div className="loading">Chargement...</div>}>
+            <About />
+          </Suspense>
+        </Route>
+        <Route path="/a-propos">
+          <Suspense fallback={<div className="loading">Chargement...</div>}>
+            <About />
+          </Suspense>
+        </Route>
+        <Route path="/anatolle-collet">
+          <Suspense fallback={<div className="loading">Chargement...</div>}>
+            <About />
           </Suspense>
         </Route>
 

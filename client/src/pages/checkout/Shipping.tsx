@@ -1,58 +1,14 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { useCheckout } from "@/hooks/useCheckout";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { Customer } from "@shared/schema";
-import { MondialRelayWidget } from "@/components/MondialRelayWidget";
-import { Truck, Home, MapPin } from "lucide-react";
+import { OfficialMRWidget } from "@/components/OfficialMRWidget";
+import { MapPin, Package } from "lucide-react";
 
-const shippingSchema = z
-  .object({
-    deliveryMethod: z.enum(["home", "relay"]),
-    address: z.string().optional(),
-    postalCode: z.string().optional(),
-    city: z.string().optional(),
-    country: z.string().optional(),
-    relayPointId: z.string().optional(),
-  })
-  .refine(
-    (data) => {
-      if (data.deliveryMethod === "home") {
-        return data.address && data.postalCode && data.city && data.country;
-      }
-      if (data.deliveryMethod === "relay") {
-        return data.relayPointId;
-      }
-      return false;
-    },
-    {
-      message: "Veuillez remplir toutes les informations de livraison",
-    }
-  );
-
-type ShippingFormValues = z.infer<typeof shippingSchema>;
-
-interface RelayPoint {
+export interface RelayPoint {
   id: string;
   name: string;
   address: string;
@@ -69,123 +25,189 @@ interface ShippingProps {
 
 export function Shipping({ onNext, onBack }: ShippingProps) {
   const { customer, updateCustomer } = useCheckout();
+  const { t } = useLanguage();
+  const [selectedRelayPoint, setSelectedRelayPoint] =
+    useState<RelayPoint | null>(null);
+  const [postalCode, setPostalCode] = useState<string>("");
 
-  const form = useForm<ShippingFormValues>({
-    resolver: zodResolver(shippingSchema),
-    defaultValues: {
-      address: customer?.address || "",
-      postalCode: customer?.postalCode || "",
-      city: customer?.city || "",
-      country: customer?.country || "FR",
-    },
-  });
+  const handleRelayPointSelect = (relayPointData: any) => {
+    // Adapter les données du widget officiel vers notre format
+    const relayPoint: RelayPoint = {
+      id: relayPointData.id || relayPointData.ID,
+      name: relayPointData.name || relayPointData.Name,
+      address: relayPointData.address || relayPointData.Address,
+      city: relayPointData.city || relayPointData.City,
+      postalCode: relayPointData.postalCode || relayPointData.PostCode,
+      distance: relayPointData.distance || 0,
+      openingHours: relayPointData.openingHours || "",
+    };
 
-  const onSubmit = (data: ShippingFormValues) => {
-    updateCustomer(data as Partial<Customer>);
-    onNext();
+    setSelectedRelayPoint(relayPoint);
+  };
+
+  const handleSubmit = () => {
+    if (selectedRelayPoint) {
+      updateCustomer({
+        deliveryMethod: "relay",
+        relayPoint: selectedRelayPoint,
+        address: selectedRelayPoint.address,
+        postalCode: selectedRelayPoint.postalCode,
+        city: selectedRelayPoint.city,
+        country: "FR",
+      } as Partial<Customer>);
+
+      onNext();
+    }
+  };
+
+  const handleSearch = () => {
+    if (postalCode.trim()) {
+      // Mettre à jour le customer avec le code postal saisi
+      updateCustomer({
+        postalCode: postalCode,
+      } as Partial<Customer>);
+    }
   };
 
   return (
-    <div className="space-y-6">
-      <h2 className="font-heading font-bold text-xl md:text-2xl mb-4 md:mb-6">
-        Adresse de livraison
+    <div>
+      <h2 className="font-heading font-bold text-2xl mb-6 text-gray-900 dark:text-gray-100">
+        {t("checkout.shipping")}
       </h2>
 
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-4 md:space-y-6"
+      {/* Information sur le mode de livraison */}
+      <div className="border border-gray-200 dark:border-gray-600 rounded-lg p-6 mb-6 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20">
+        <div className="flex items-center gap-4">
+          <div className="bg-primary/10 dark:bg-primary/20 p-3 rounded-full">
+            <Package className="w-6 h-6 text-primary" />
+          </div>
+          <div>
+            <h3 className="font-semibold text-lg text-gray-900 dark:text-gray-100">
+              {t("shipping.relayPoint")}
+            </h3>
+            <p className="text-gray-600 dark:text-gray-400">
+              {t("shipping.relayPointDescription")}
+            </p>
+          </div>
+          <div className="ml-auto">
+            <span className="bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-200 px-3 py-1 rounded-full font-medium">
+              {t("shipping.free")}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Champ de saisie du code postal */}
+      <div className="border border-gray-200 dark:border-gray-600 rounded-lg p-4 mb-6">
+        <div className="flex items-center gap-2 mb-4">
+          <MapPin className="w-5 h-5 text-primary" />
+          <h3 className="font-medium text-gray-900 dark:text-gray-100">
+            {t("shipping.enterPostalCode")}
+          </h3>
+        </div>
+
+        <div className="flex gap-2">
+          <div className="flex-1">
+            <Label htmlFor="postalCode" className="sr-only">
+              {t("checkout.postalCode")}
+            </Label>
+            <Input
+              id="postalCode"
+              type="text"
+              placeholder={t("shipping.postalCodePlaceholder")}
+              value={postalCode}
+              onChange={(e) => setPostalCode(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  handleSearch();
+                }
+              }}
+              className="w-full"
+            />
+          </div>
+          <Button
+            variant="default"
+            className="flex-shrink-0"
+            onClick={handleSearch}
+          >
+            {t("shipping.search")}
+          </Button>
+        </div>
+      </div>
+
+      {/* Sélection du point relais */}
+      <div className="border border-gray-200 dark:border-gray-600 rounded-lg p-4 mb-6">
+        <div className="flex items-center gap-2 mb-4">
+          <MapPin className="w-5 h-5 text-primary" />
+          <h3 className="font-medium text-gray-900 dark:text-gray-100">
+            {t("shipping.chooseRelayPoint")}
+          </h3>
+        </div>
+
+        {postalCode ? (
+          <OfficialMRWidget
+            postalCode={postalCode}
+            onSelect={handleRelayPointSelect}
+          />
+        ) : (
+          <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+            <MapPin className="w-12 h-12 mx-auto mb-2 text-gray-300 dark:text-gray-600" />
+            <p>{t("shipping.enterPostalCodeFirst")}</p>
+            <p className="text-sm">{t("shipping.clickSearchToShowMap")}</p>
+          </div>
+        )}
+      </div>
+
+      {/* Point relais sélectionné */}
+      {selectedRelayPoint && (
+        <div className="border border-green-200 dark:border-green-800 rounded-lg p-4 mb-6 bg-green-50 dark:bg-green-900/20">
+          <div className="flex items-start gap-3">
+            <div className="bg-green-100 dark:bg-green-800 p-2 rounded-full mt-1">
+              <MapPin className="w-4 h-4 text-green-600 dark:text-green-200" />
+            </div>
+            <div className="flex-1">
+              <h4 className="font-medium text-green-800 dark:text-green-200">
+                {selectedRelayPoint.name}
+              </h4>
+              <p className="text-green-700 dark:text-green-300 text-sm">
+                {selectedRelayPoint.address}
+              </p>
+              <p className="text-green-700 dark:text-green-300 text-sm">
+                {selectedRelayPoint.postalCode} {selectedRelayPoint.city}
+              </p>
+              {selectedRelayPoint.distance > 0 && (
+                <p className="text-green-600 dark:text-green-400 text-xs mt-1">
+                  {t("shipping.distance")}{" "}
+                  {selectedRelayPoint.distance.toFixed(1)} km
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Boutons de navigation */}
+      <div className="pt-4 flex gap-4">
+        <Button
+          type="button"
+          variant="outline"
+          className="w-1/3"
+          onClick={onBack}
         >
-          <FormField
-            control={form.control}
-            name="address"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-sm md:text-base">Adresse</FormLabel>
-                <FormControl>
-                  <Input {...field} className="h-11 md:h-auto" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <FormField
-              control={form.control}
-              name="postalCode"
-              render={({ field }) => (
-                <FormItem className="sm:col-span-1">
-                  <FormLabel className="text-sm md:text-base">
-                    Code postal
-                  </FormLabel>
-                  <FormControl>
-                    <Input {...field} className="h-11 md:h-auto" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="city"
-              render={({ field }) => (
-                <FormItem className="sm:col-span-2">
-                  <FormLabel className="text-sm md:text-base">Ville</FormLabel>
-                  <FormControl>
-                    <Input {...field} className="h-11 md:h-auto" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          <FormField
-            control={form.control}
-            name="country"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-sm md:text-base">Pays</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger className="h-11 md:h-auto">
-                      <SelectValue placeholder="Sélectionner un pays" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="FR">France</SelectItem>
-                    <SelectItem value="BE">Belgique</SelectItem>
-                    <SelectItem value="CH">Suisse</SelectItem>
-                    <SelectItem value="LU">Luxembourg</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <div className="pt-4 md:pt-6 flex flex-col sm:flex-row gap-3 sm:gap-4">
-            <Button
-              type="button"
-              variant="outline"
-              className="w-full sm:w-1/3 h-12 md:h-auto text-base md:text-sm order-2 sm:order-1"
-              onClick={onBack}
-            >
-              Retour
-            </Button>
-            <Button
-              type="submit"
-              className="w-full sm:w-2/3 h-12 md:h-auto text-base md:text-sm order-1 sm:order-2"
-            >
-              Continuer
-            </Button>
-          </div>
-        </form>
-      </Form>
+          {t("button.back")}
+        </Button>
+        <Button
+          type="button"
+          className="w-2/3"
+          disabled={!selectedRelayPoint}
+          onClick={handleSubmit}
+        >
+          {selectedRelayPoint
+            ? t("checkout.continue")
+            : t("shipping.selectRelayPoint")}
+        </Button>
+      </div>
     </div>
   );
 }

@@ -315,7 +315,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                 </div>
                 <button
                   onClick={() => {
-                    setLocation("/anatolle-collet");
+                    setLocation("/about");
                     setMenuOpen(false);
                   }}
                   className="w-full flex items-center px-3 py-3 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100 rounded-lg transition-all duration-200 ease-out group mb-1 hover:translate-x-1"

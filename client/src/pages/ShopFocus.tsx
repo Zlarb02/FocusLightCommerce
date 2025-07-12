@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { X, Maximize2 } from "lucide-react";
+import { X, Maximize2, ArrowRight } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { Layout } from "@/components/Layout";
 import { LampColorSelector } from "@/components/LampColorSelector";
@@ -942,36 +942,60 @@ export default function ShopFocus() {
           `}</style>
         </section>
 
-        {/* Product Availability Notice - Style minimaliste avec optimisations mobile */}
+        {/* New Product Slider - Modern and Stylish */}
         <section className="py-6 md:py-8 animate fade-in-up delay-2">
-          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-4 md:p-8 mx-4 md:mx-0">
-            <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-6">
-              <div className="bg-primary/5 dark:bg-blue-400/10 p-3 md:p-4 mx-auto md:mx-0">
+          <div className="bg-gradient-to-r from-amber-50 via-orange-50 to-red-50 dark:from-amber-900/20 dark:via-orange-900/20 dark:to-red-900/20 border border-amber-200 dark:border-amber-700 rounded-xl p-6 md:p-8 mx-4 md:mx-0 overflow-hidden relative">
+            {/* Background decoration */}
+            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-amber-400/10 to-orange-400/10 rounded-full blur-2xl"></div>
+            <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-red-400/10 to-orange-400/10 rounded-full blur-xl"></div>
+
+            <div className="relative z-10 flex flex-col md:flex-row items-center gap-6 md:gap-8">
+              {/* Icon with animation */}
+              <div className="bg-gradient-to-br from-amber-500 to-orange-500 p-4 rounded-2xl shadow-lg animate-pulse">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 md:h-6 md:w-6 text-[var(--color-text)] dark:text-blue-400"
+                  className="h-8 w-8 text-white"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
-                  strokeWidth={1.5}
+                  strokeWidth={2}
                 >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    d="M13 10V3L4 14h7v7l9-11h-7z"
                   />
                 </svg>
               </div>
-              <div className="text-center md:text-left">
+
+              {/* Content */}
+              <div className="flex-1 text-center md:text-left">
                 <h3
-                  className="text-base md:text-lg font-medium mb-2 md:mb-3 dark:text-gray-100"
+                  className="text-xl md:text-2xl font-bold mb-2 text-gray-900 dark:text-white"
                   style={{ fontFamily: "var(--font-titles)" }}
                 >
-                  {t("focus.availability.title")}
+                  {t("focus.newProduct.title")}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-sm md:text-base">
-                  {t("focus.availability.text")}
+                <p className="text-gray-700 dark:text-gray-300 text-base md:text-lg mb-3">
+                  {t("focus.newProduct.subtitle")}
                 </p>
+                <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">
+                  {t("focus.newProduct.description")}
+                </p>
+              </div>
+
+              {/* CTA Button */}
+              <div className="flex-shrink-0">
+                <Button
+                  onClick={() =>
+                    (window.location.href = "/creations-sur-mesure")
+                  }
+                  className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white border-0 px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 group"
+                  size="lg"
+                >
+                  {t("focus.newProduct.cta")}
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
               </div>
             </div>
           </div>

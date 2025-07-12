@@ -1,12 +1,108 @@
 import { Layout } from "@/components/Layout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Mail, Phone, Star } from "lucide-react";
+import {
+  ArrowRight,
+  Mail,
+  Phone,
+  Star,
+  ChevronLeft,
+  ChevronRight,
+  Maximize2,
+  X,
+} from "lucide-react";
+import { useState } from "react";
 
 export default function CreationsSurMesure() {
   const { t } = useLanguage();
+  const [currentImageIndex, setCurrentImageIndex] = useState<{
+    [key: string]: number;
+  }>({});
+  const [modalImage, setModalImage] = useState<{
+    images: string[];
+    index: number;
+    title: string;
+  } | null>(null);
+
+  const nextImage = (creationId: string, totalImages: number) => {
+    setCurrentImageIndex((prev) => ({
+      ...prev,
+      [creationId]: ((prev[creationId] || 0) + 1) % totalImages,
+    }));
+  };
+
+  const prevImage = (creationId: string, totalImages: number) => {
+    setCurrentImageIndex((prev) => ({
+      ...prev,
+      [creationId]: ((prev[creationId] || 0) - 1 + totalImages) % totalImages,
+    }));
+  };
+
+  const goToImage = (creationId: string, index: number) => {
+    setCurrentImageIndex((prev) => ({
+      ...prev,
+      [creationId]: index,
+    }));
+  };
+
+  const openImageModal = (images: string[], index: number, title: string) => {
+    setModalImage({ images, index, title });
+  };
+
+  const closeImageModal = () => {
+    setModalImage(null);
+  };
+
+  const nextModalImage = () => {
+    if (modalImage) {
+      setModalImage({
+        ...modalImage,
+        index: (modalImage.index + 1) % modalImage.images.length,
+      });
+    }
+  };
+
+  const prevModalImage = () => {
+    if (modalImage) {
+      setModalImage({
+        ...modalImage,
+        index:
+          (modalImage.index - 1 + modalImage.images.length) %
+          modalImage.images.length,
+      });
+    }
+  };
 
   const customCreations = [
+    {
+      id: "lampadaire-focus-sur-pied",
+      title: t("customCreations.lampadaireFocus.title"),
+      description: t("customCreations.lampadaireFocus.description"),
+      images: [
+        "https://www.alto-lille.fr/uploads/1ebb8f8c-1206-4581-b9ae-c3cb6641aa97.JPEG",
+        "https://www.alto-lille.fr/uploads/1a786d6d-4866-444b-b5c6-e165ab45eb54.JPEG",
+        "https://www.alto-lille.fr/uploads/5dcd2a73-249b-4ed7-bf83-064f1c679932.JPEG",
+        "https://www.alto-lille.fr/uploads/d7c3b584-0de1-413d-84ed-316a57e4367d.JPEG",
+        "https://www.alto-lille.fr/uploads/11f4d848-62d7-44e5-a738-536d6ab6490e.JPEG",
+        "https://www.alto-lille.fr/uploads/13909521-1363-4a81-9177-5a64ac0918ef.JPEG",
+        "https://www.alto-lille.fr/uploads/e2f45c03-cdbf-438d-bb23-6a73ec91cdc5.JPEG",
+        "https://www.alto-lille.fr/uploads/8b94efef-0919-47e8-987c-5afc676b965c.JPEG",
+        "https://www.alto-lille.fr/uploads/864143f6-2415-4924-adee-6da2a71bb8d3.JPEG",
+        "https://www.alto-lille.fr/uploads/e1718e09-554f-43be-b355-91c0e91c52e3.JPEG",
+        "https://www.alto-lille.fr/uploads/993c6b33-19f9-4467-af0a-845485d53b1d.JPEG",
+        "https://www.alto-lille.fr/uploads/7e9b6d82-7b1e-460c-b9c0-ee7132714d3d.JPEG",
+      ],
+      features: [
+        t("customCreations.lampadaireFocus.features.design"),
+        t("customCreations.lampadaireFocus.features.materials"),
+        t("customCreations.lampadaireFocus.features.led"),
+        t("customCreations.lampadaireFocus.features.french"),
+        t("customCreations.lampadaireFocus.features.assembly"),
+      ],
+      specs: t("customCreations.lampadaireFocus.specs"),
+      price: t("customCreations.lampadaireFocus.price"),
+      story: t("customCreations.lampadaireFocus.story"),
+    },
     {
       id: "lampadaire-sur-mesure",
       title: t("customCreations.lampadaire.title"),
@@ -109,22 +205,116 @@ export default function CreationsSurMesure() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-              {customCreations.map((creation) => (
+              {customCreations.map((creation, index) => (
                 <div
                   key={creation.id}
-                  className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-500 group"
+                  className={`bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-500 group relative ${
+                    creation.id === "lampadaire-focus-sur-pied"
+                      ? "ring-2 ring-amber-500 ring-offset-2 ring-offset-gray-50 dark:ring-offset-gray-900"
+                      : ""
+                  }`}
                 >
-                  {/* Image */}
-                  <div className="relative h-64 overflow-hidden">
-                    <img
-                      src={creation.image}
-                      alt={creation.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                    <div className="absolute bottom-4 right-4 bg-amber-600 text-white px-3 py-1 rounded-full text-sm font-medium">
-                      {creation.price}
+                  {/* Badge "Nouveau" pour le lampadaire Focus */}
+                  {creation.id === "lampadaire-focus-sur-pied" && (
+                    <div className="absolute top-4 left-4 z-10 bg-gradient-to-r from-amber-500 to-orange-500 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg">
+                      {t("customCreations.lampadaireFocus.badge")}
                     </div>
+                  )}
+                  {/* Image ou Slider */}
+                  <div
+                    className="relative h-64 overflow-hidden cursor-pointer group"
+                    onClick={() => {
+                      if (creation.images) {
+                        openImageModal(
+                          creation.images,
+                          currentImageIndex[creation.id] || 0,
+                          creation.title
+                        );
+                      } else if (creation.image) {
+                        openImageModal([creation.image], 0, creation.title);
+                      }
+                    }}
+                  >
+                    {/* Bouton d'agrandissement */}
+                    <div className="absolute top-2 right-2 z-20 bg-black/50 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Maximize2 className="h-4 w-4" />
+                    </div>
+                    {creation.images ? (
+                      // Slider pour plusieurs images
+                      <>
+                        <div className="relative w-full h-full">
+                          <img
+                            src={
+                              creation.images[
+                                currentImageIndex[creation.id] || 0
+                              ]
+                            }
+                            alt={`${creation.title} - Image ${
+                              (currentImageIndex[creation.id] || 0) + 1
+                            }`}
+                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+
+                          {/* Contrôles du slider */}
+                          <button
+                            onClick={() =>
+                              prevImage(creation.id, creation.images!.length)
+                            }
+                            className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-all duration-200 opacity-0 group-hover:opacity-100"
+                          >
+                            <ChevronLeft className="h-4 w-4" />
+                          </button>
+                          <button
+                            onClick={() =>
+                              nextImage(creation.id, creation.images!.length)
+                            }
+                            className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-all duration-200 opacity-0 group-hover:opacity-100"
+                          >
+                            <ChevronRight className="h-4 w-4" />
+                          </button>
+
+                          {/* Indicateurs */}
+                          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
+                            {creation.images.map((_, index) => (
+                              <button
+                                key={index}
+                                onClick={() => goToImage(creation.id, index)}
+                                className={`w-2 h-2 rounded-full transition-all duration-200 ${
+                                  index ===
+                                  (currentImageIndex[creation.id] || 0)
+                                    ? "bg-white"
+                                    : "bg-white/50 hover:bg-white/75"
+                                }`}
+                              />
+                            ))}
+                          </div>
+
+                          {/* Compteur d'images */}
+                          <div className="absolute top-4 right-4 bg-black/50 text-white px-2 py-1 rounded-full text-xs">
+                            {(currentImageIndex[creation.id] || 0) + 1}/
+                            {creation.images.length}
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      // Image unique
+                      <>
+                        <img
+                          src={creation.image}
+                          alt={creation.title}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                      </>
+                    )}
+
+                    {/* Badge prix remplacé par un badge "Sur demande" (seulement si ce n'est pas le Focus sur pied qui a déjà un badge) */}
+                    {creation.id !== "lampadaire-focus-sur-pied" && (
+                      <div className="absolute bottom-4 right-4 bg-gradient-to-r from-gray-600 to-gray-700 text-white px-3 py-1 rounded-full text-sm font-medium">
+                        {t("customCreations.common.onDemand")}
+                      </div>
+                    )}
                   </div>
 
                   {/* Content */}
@@ -160,7 +350,7 @@ export default function CreationsSurMesure() {
                     </div>
 
                     {/* Story */}
-                    <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3">
+                    <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3 mb-4">
                       <p className="text-xs text-amber-600 dark:text-amber-400 font-medium mb-1">
                         {t("customCreations.common.story")}
                       </p>
@@ -168,6 +358,19 @@ export default function CreationsSurMesure() {
                         {creation.story}
                       </p>
                     </div>
+
+                    {/* CTA Button pour demander un devis */}
+                    <Button
+                      onClick={() =>
+                        (window.location.href = `mailto:altolille@gmail.com?subject=Demande de devis - ${creation.title}&body=Bonjour,%0D%0A%0D%0AJe suis intéressé(e) par votre création "${creation.title}" et souhaiterais recevoir un devis personnalisé.%0D%0A%0D%0AMerci de me recontacter pour discuter des détails.%0D%0A%0D%0ACordialement`)
+                      }
+                      className="w-full bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white border-0 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 group"
+                      size="lg"
+                    >
+                      <Mail className="mr-2 h-4 w-4" />
+                      {t("customCreations.common.requestQuote")}
+                      <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                    </Button>
                   </div>
                 </div>
               ))}
@@ -257,6 +460,63 @@ export default function CreationsSurMesure() {
             </div>
           </div>
         </section>
+
+        {/* Modal d'agrandissement d'image */}
+        {modalImage && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
+            <div className="relative max-w-[95vw] max-h-[95vh] flex items-center justify-center">
+              {/* Bouton fermer */}
+              <button
+                className="absolute top-4 right-4 bg-white/90 dark:bg-gray-900/90 rounded-full p-2 shadow-lg hover:bg-white dark:hover:bg-gray-800 transition z-50"
+                onClick={closeImageModal}
+                title="Fermer"
+                aria-label="Fermer"
+              >
+                <X className="w-6 h-6 text-gray-900 dark:text-gray-100" />
+              </button>
+
+              {/* Flèche gauche */}
+              {modalImage.images.length > 1 && (
+                <button
+                  className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 dark:bg-gray-900/80 rounded-full p-2 shadow-lg hover:bg-white dark:hover:bg-gray-800 transition z-50"
+                  onClick={prevModalImage}
+                  title="Image précédente"
+                  aria-label="Image précédente"
+                >
+                  <ChevronLeft className="w-7 h-7 text-gray-900 dark:text-gray-100" />
+                </button>
+              )}
+
+              {/* Image agrandie */}
+              <img
+                src={modalImage.images[modalImage.index]}
+                alt={`${modalImage.title} - Image ${modalImage.index + 1}`}
+                className="max-w-[90vw] max-h-[90vh] rounded-xl shadow-2xl border-4 border-white dark:border-gray-900"
+                onClick={closeImageModal}
+                style={{ cursor: "zoom-out" }}
+              />
+
+              {/* Flèche droite */}
+              {modalImage.images.length > 1 && (
+                <button
+                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 dark:bg-gray-900/80 rounded-full p-2 shadow-lg hover:bg-white dark:hover:bg-gray-800 transition z-50"
+                  onClick={nextModalImage}
+                  title="Image suivante"
+                  aria-label="Image suivante"
+                >
+                  <ChevronRight className="w-7 h-7 text-gray-900 dark:text-gray-100" />
+                </button>
+              )}
+
+              {/* Compteur d'images */}
+              {modalImage.images.length > 1 && (
+                <div className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-white/90 dark:bg-gray-900/90 rounded-full px-4 py-1 text-sm font-medium text-gray-900 dark:text-gray-100 shadow">
+                  {modalImage.index + 1} / {modalImage.images.length}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </Layout>
   );
