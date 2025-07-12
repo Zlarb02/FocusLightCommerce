@@ -284,18 +284,28 @@ const updateFullIllustrationsHandler = async (
   res: Response
 ): Promise<void> => {
   try {
+    console.log("=== DEBUG updateFullIllustrationsHandler ===");
+    console.log("req.body type:", typeof req.body);
+    
     const newIllustrations = req.body;
 
-    // Validation basique (pas de validation Zod stricte pour le JSON complet)
-    if (!newIllustrations || typeof newIllustrations !== "object") {
-      res.status(400).json({ error: "Format de données invalide" });
+    // Validation ultra-basique pour accepter tout JSON valide
+    if (newIllustrations === null || newIllustrations === undefined) {
+      console.log("❌ Body null ou undefined");
+      res.status(400).json({ error: "Aucune donnée reçue" });
+      return;
+    }
+
+    if (typeof newIllustrations !== "object") {
+      console.log("❌ Body n'est pas un objet:", typeof newIllustrations);
+      res.status(400).json({ error: "Format de données invalide - doit être un objet JSON" });
       return;
     }
 
     // Log de la taille pour debug
     const jsonSize = JSON.stringify(newIllustrations).length;
-    console.log(`Mise à jour illustrations: ${jsonSize} bytes`);
-    console.log("Clés reçues:", Object.keys(newIllustrations));
+    console.log(`✅ Données valides - Mise à jour illustrations: ${jsonSize} bytes`);
+    console.log("Nombre de clés:", Object.keys(newIllustrations).length);
 
     // Headers pour gros payloads
     res.setHeader("Content-Type", "application/json");
@@ -303,13 +313,15 @@ const updateFullIllustrationsHandler = async (
     const success = writeIllustrations(newIllustrations);
 
     if (success) {
+      console.log("✅ Écriture réussie");
       res.json({ message: "Fichier d'illustrations mis à jour avec succès" });
     } else {
+      console.log("❌ Écriture échouée");
       res.status(500).json({ error: "Erreur lors de l'écriture du fichier" });
     }
   } catch (error) {
-    console.error("Erreur updateFullIllustrations:", error);
-    handleError(res, error);
+    console.error("❌ Erreur dans updateFullIllustrationsHandler:", error);
+    res.status(500).json({ error: "Erreur serveur lors de la mise à jour" });
   }
 };
 
