@@ -36,9 +36,7 @@ import {
 import {
   Save,
   Search,
-  Plus,
   Edit,
-  Trash2,
   Languages,
   Download,
   Upload,
@@ -56,9 +54,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { queryClient, apiRequest } from "@/lib/queryClient";
 import {
   useIllustrations,
-  useAddIllustration,
   useUpdateIllustration,
-  useDeleteIllustration,
   type Illustration,
   type IllustrationEntry,
 } from "@/hooks/use-illustrations";
@@ -124,12 +120,6 @@ export default function Contenu() {
   );
   const [editingTranslation, setEditingTranslation] =
     useState<Translation | null>(null);
-  const [newTranslation, setNewTranslation] = useState({
-    key: "",
-    valueFr: "",
-    valueEn: "",
-  });
-  const [showAddDialog, setShowAddDialog] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [deleteKey, setDeleteKey] = useState<string | null>(null);
   const [pendingChanges, setPendingChanges] = useState<TranslationEntry[]>([]);
@@ -141,18 +131,11 @@ export default function Contenu() {
   const [imageCurrentPage, setImageCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [editingImage, setEditingImage] = useState<Illustration | null>(null);
-  const [newImage, setNewImage] = useState({
-    key: "",
-    title: "",
-    url: "",
-    description: "",
-    category: "general",
-    pages: [] as string[],
-  });
-  const [showAddImageDialog, setShowAddImageDialog] = useState(false);
   const [showEditImageDialog, setShowEditImageDialog] = useState(false);
-  const [deleteImageKey, setDeleteImageKey] = useState<string | null>(null);
   const [debouncedImageSearch, setDebouncedImageSearch] = useState("");
+  
+  // États pour le JSON des illustrations
+  const [rawIllustrationsJsonValue, setRawIllustrationsJsonValue] = useState("");
 
   // Hooks pour les illustrations
   const { data: illustrationsData, isLoading: illustrationsLoading } =
@@ -163,9 +146,7 @@ export default function Contenu() {
       selectedCategory === "all" ? "" : selectedCategory
     );
 
-  const addIllustrationMutation = useAddIllustration();
   const updateIllustrationMutation = useUpdateIllustration();
-  const deleteIllustrationMutation = useDeleteIllustration();
 
   // Debounce pour la recherche
   useEffect(() => {
@@ -224,6 +205,19 @@ export default function Contenu() {
     enabled: selectedTab === "json", // Ne charger que quand on est sur l'onglet JSON
   });
 
+  // Récupérer le JSON complet des illustrations
+  const { data: fullIllustrations } = useQuery({
+    queryKey: ["/api/illustrations/public/full"],
+    queryFn: async () => {
+      const response = await fetch("/api/illustrations/public/full");
+      if (!response.ok) {
+        throw new Error("Erreur lors du chargement du JSON complet des illustrations");
+      }
+      return response.json();
+    },
+    enabled: selectedTab === "json-images", // Ne charger que quand on est sur l'onglet JSON images
+  });
+
   // Mutation pour mettre à jour une traduction
   const updateSingleMutation = useMutation({
     mutationFn: async (data: TranslationEntry) => {
@@ -266,31 +260,6 @@ export default function Contenu() {
       toast({
         title: "Erreur",
         description: "Erreur lors de la mise à jour des traductions",
-        variant: "destructive",
-      });
-    },
-  });
-
-  // Mutation pour ajouter une traduction
-  const addMutation = useMutation({
-    mutationFn: async (data: { key: string; fr: string; en: string }) => {
-      return apiRequest("POST", "/api/translations", data);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/translations"] });
-      queryClient.invalidateQueries({ queryKey: ["/api/translations/stats"] });
-      setNewTranslation({ key: "", valueFr: "", valueEn: "" });
-      setShowAddDialog(false);
-      window.dispatchEvent(new CustomEvent("translationsUpdated"));
-      toast({
-        title: "Succès",
-        description: "Traduction ajoutée avec succès",
-      });
-    },
-    onError: () => {
-      toast({
-        title: "Erreur",
-        description: "Erreur lors de l'ajout de la traduction",
         variant: "destructive",
       });
     },
@@ -346,12 +315,42 @@ export default function Contenu() {
     },
   });
 
+  // Mutation pour mettre à jour le JSON complet des illustrations
+  const updateFullIllustrationsJsonMutation = useMutation({
+    mutationFn: async (data: any) => {
+      return apiRequest("PUT", "/api/illustrations/full", data);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/illustrations"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/illustrations/public/full"] });
+      window.dispatchEvent(new CustomEvent("illustrationsUpdated"));
+      toast({
+        title: "Succès",
+        description: "Fichier d'illustrations mis à jour avec succès",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Erreur",
+        description: "Erreur lors de la mise à jour du fichier d'illustrations",
+        variant: "destructive",
+      });
+    },
+  });
+
   // Initialiser le JSON brut quand les données sont chargées
   useEffect(() => {
     if (fullTranslations && selectedTab === "json") {
       setRawJsonValue(JSON.stringify(fullTranslations, null, 2));
     }
   }, [fullTranslations, selectedTab]);
+
+  // Initialiser le JSON des illustrations quand les données sont chargées
+  useEffect(() => {
+    if (fullIllustrations && selectedTab === "json-images") {
+      setRawIllustrationsJsonValue(JSON.stringify(fullIllustrations, null, 2));
+    }
+  }, [fullIllustrations, selectedTab]);
 
   // Filtrer les traductions selon la langue sélectionnée
   const filteredTranslations =
@@ -457,47 +456,6 @@ export default function Contenu() {
     setEditingTranslation(null);
   };
 
-  const handleAddTranslation = () => {
-    if (!newTranslation.key.trim()) return;
-
-    addMutation.mutate({
-      key: newTranslation.key,
-      fr: newTranslation.valueFr,
-      en: newTranslation.valueEn,
-    });
-  };
-
-  // Fonctions de gestion des illustrations
-  const handleAddIllustration = () => {
-    if (!newImage.key.trim() || !newImage.title.trim()) return;
-
-    addIllustrationMutation.mutate(newImage, {
-      onSuccess: () => {
-        toast({
-          title: "Succès",
-          description: "Illustration ajoutée avec succès",
-        });
-        setNewImage({
-          key: "",
-          title: "",
-          url: "",
-          description: "",
-          category: "general",
-          pages: [],
-        });
-        setShowAddImageDialog(false);
-      },
-      onError: (error: any) => {
-        toast({
-          title: "Erreur",
-          description:
-            error.message || "Erreur lors de l'ajout de l'illustration",
-          variant: "destructive",
-        });
-      },
-    });
-  };
-
   const handleEditIllustration = (illustration: Illustration) => {
     setEditingImage(illustration);
     setShowEditImageDialog(true);
@@ -526,26 +484,6 @@ export default function Contenu() {
     });
   };
 
-  const handleDeleteIllustration = (key: string) => {
-    deleteIllustrationMutation.mutate(key, {
-      onSuccess: () => {
-        toast({
-          title: "Succès",
-          description: "Illustration supprimée avec succès",
-        });
-        setDeleteImageKey(null);
-      },
-      onError: (error: any) => {
-        toast({
-          title: "Erreur",
-          description:
-            error.message || "Erreur lors de la suppression de l'illustration",
-          variant: "destructive",
-        });
-      },
-    });
-  };
-
   const handleSaveJsonChanges = () => {
     try {
       const parsedJson = JSON.parse(rawJsonValue);
@@ -554,6 +492,19 @@ export default function Contenu() {
       toast({
         title: "Erreur",
         description: "Le JSON n'est pas valide. Veuillez vérifier la syntaxe.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleSaveIllustrationsJsonChanges = () => {
+    try {
+      const parsedJson = JSON.parse(rawIllustrationsJsonValue);
+      updateFullIllustrationsJsonMutation.mutate(parsedJson);
+    } catch (error) {
+      toast({
+        title: "Erreur",
+        description: "Le JSON des illustrations n'est pas valide. Veuillez vérifier la syntaxe.",
         variant: "destructive",
       });
     }
@@ -723,8 +674,8 @@ export default function Contenu() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-6">
-                    {/* Contrôles de filtrage et ajout */}
-                    <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+                    {/* Contrôles de filtrage */}
+                    <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
                       <div className="flex flex-col sm:flex-row gap-2 flex-1">
                         <div className="relative flex-1">
                           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -749,10 +700,6 @@ export default function Contenu() {
                           <option value="en">Anglais uniquement</option>
                         </select>
                       </div>
-                      <Button onClick={() => setShowAddDialog(true)}>
-                        <Plus className="h-4 w-4 mr-2" />
-                        Ajouter
-                      </Button>
                     </div>
 
                     {/* Pagination info */}
@@ -906,16 +853,6 @@ export default function Contenu() {
                                     >
                                       <Edit className="h-4 w-4" />
                                     </Button>
-                                    <Button
-                                      variant="ghost"
-                                      size="icon"
-                                      onClick={() =>
-                                        setDeleteKey(translation.key)
-                                      }
-                                      className="h-8 w-8 text-red-600 hover:text-red-700"
-                                    >
-                                      <Trash2 className="h-4 w-4" />
-                                    </Button>
                                   </div>
                                 </TableCell>
                               </TableRow>
@@ -994,19 +931,18 @@ export default function Contenu() {
 
               {/* Mode JSON brut */}
               <TabsContent value="json" className="space-y-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Edit className="h-5 w-5" />
-                      Édition JSON brute
-                    </CardTitle>
-                    <p className="text-sm text-muted-foreground">
-                      Mode avancé : éditez directement le fichier JSON de
-                      traductions.
-                      <strong className="text-red-600">Attention</strong> : une
-                      syntaxe incorrecte peut casser le site.
-                    </p>
-                  </CardHeader>
+                <Card>              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Edit className="h-5 w-5" />
+                  Édition JSON brute
+                </CardTitle>
+                <p className="text-sm text-muted-foreground">
+                  Mode avancé : éditez directement le fichier JSON de
+                  traductions.
+                  <strong className="text-red-600"> Attention</strong> : une
+                  syntaxe incorrecte peut casser le site. Pour les gros fichiers (&gt;5MB), la sauvegarde peut prendre jusqu'à 30 secondes.
+                </p>
+              </CardHeader>
                   <CardContent className="space-y-4">
                     <Textarea
                       value={rawJsonValue}
@@ -1107,14 +1043,32 @@ export default function Contenu() {
               </CardContent>
             </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Image className="h-5 w-5" />
-                  Gestion des illustrations
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
+            <Tabs
+              defaultValue="editor"
+              value={selectedTab}
+              onValueChange={setSelectedTab}
+            >
+              <TabsList>
+                <TabsTrigger value="editor" className="flex items-center gap-2">
+                  <Image className="h-4 w-4" />
+                  Interface simple
+                </TabsTrigger>
+                <TabsTrigger value="json-images" className="flex items-center gap-2">
+                  <Edit className="h-4 w-4" />
+                  Mode JSON brut
+                </TabsTrigger>
+              </TabsList>
+
+              {/* Interface simple d'édition des images */}
+              <TabsContent value="editor" className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Image className="h-5 w-5" />
+                      Gestion des illustrations - Interface simple
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
                 {/* Contrôles de filtrage et ajout */}
                 <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
                   <div className="flex flex-col sm:flex-row gap-2 flex-1">
@@ -1140,10 +1094,6 @@ export default function Contenu() {
                       ))}
                     </select>
                   </div>
-                  <Button onClick={() => setShowAddImageDialog(true)}>
-                    <Plus className="h-4 w-4 mr-2" />
-                    Ajouter une illustration
-                  </Button>
                 </div>
 
                 {/* Pagination info */}
@@ -1211,13 +1161,6 @@ export default function Contenu() {
                     <p className="text-muted-foreground">
                       Aucune illustration trouvée.
                     </p>
-                    <Button
-                      onClick={() => setShowAddImageDialog(true)}
-                      className="mt-4"
-                    >
-                      <Plus className="h-4 w-4 mr-2" />
-                      Ajouter votre première illustration
-                    </Button>
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -1267,117 +1210,65 @@ export default function Contenu() {
                             >
                               <Edit className="h-3 w-3" />
                             </Button>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="h-7 px-2 text-red-600"
-                              onClick={() =>
-                                setDeleteImageKey(illustration.key)
-                              }
-                            >
-                              <Trash2 className="h-3 w-3" />
-                            </Button>
                           </div>
                         </CardContent>
                       </Card>
                     ))}
-
-                    {/* Card pour ajouter une nouvelle image */}
-                    <Card
-                      className="overflow-hidden border-dashed border-2 cursor-pointer hover:bg-gray-50 transition-colors"
-                      onClick={() => setShowAddImageDialog(true)}
-                    >
-                      <CardContent className="p-6 flex flex-col items-center justify-center text-center h-full min-h-[240px]">
-                        <Plus className="h-8 w-8 text-muted-foreground mb-2" />
-                        <p className="text-sm font-medium text-muted-foreground">
-                          Ajouter une illustration
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          Cliquez pour ajouter une nouvelle image
-                        </p>
-                      </CardContent>
-                    </Card>
                   </div>
                 )}
               </CardContent>
             </Card>
           </TabsContent>
-        </Tabs>
-      </div>
 
-      {/* Dialog d'ajout de traduction */}
-      <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Ajouter une nouvelle traduction</DialogTitle>
-            <DialogDescription>
-              Ajoutez une nouvelle clé de traduction avec ses valeurs en
-              français et en anglais.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium mb-2">
-                Clé de traduction
-              </label>
-              <Input
-                value={newTranslation.key}
-                onChange={(e) =>
-                  setNewTranslation((prev) => ({
-                    ...prev,
-                    key: e.target.value,
-                  }))
-                }
-                placeholder="ex: button.save"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-2">
-                Texte français
-              </label>
-              <Textarea
-                value={newTranslation.valueFr}
-                onChange={(e) =>
-                  setNewTranslation((prev) => ({
-                    ...prev,
-                    valueFr: e.target.value,
-                  }))
-                }
-                placeholder="Texte en français..."
-                className="min-h-[80px]"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-2">
-                Texte anglais
-              </label>
-              <Textarea
-                value={newTranslation.valueEn}
-                onChange={(e) =>
-                  setNewTranslation((prev) => ({
-                    ...prev,
-                    valueEn: e.target.value,
-                  }))
-                }
-                placeholder="Texte en anglais..."
-                className="min-h-[80px]"
-              />
-            </div>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setShowAddDialog(false)}>
-              Annuler
-            </Button>
-            <Button
-              onClick={handleAddTranslation}
-              disabled={!newTranslation.key.trim() || addMutation.isPending}
-            >
-              <Plus className="h-4 w-4 mr-2" />
-              Ajouter
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+          {/* Mode JSON brut pour les illustrations */}
+          <TabsContent value="json-images" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Edit className="h-5 w-5" />
+                  Édition JSON brute des illustrations
+                </CardTitle>
+                <p className="text-sm text-muted-foreground">
+                  Mode avancé : éditez directement le fichier JSON des
+                  illustrations.
+                  <strong className="text-red-600"> Attention</strong> : une
+                  syntaxe incorrecte peut casser l'affichage des images. Pour les gros fichiers (&gt;5MB), la sauvegarde peut prendre jusqu'à 30 secondes.
+                </p>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <Textarea
+                  value={rawIllustrationsJsonValue}
+                  onChange={(e) => setRawIllustrationsJsonValue(e.target.value)}
+                  className="min-h-[500px] font-mono text-sm"
+                  placeholder="Contenu JSON des illustrations..."
+                />
+                <div className="flex items-center gap-2 justify-end">
+                  <Button
+                    variant="outline"
+                    onClick={() =>
+                      setRawIllustrationsJsonValue(
+                        JSON.stringify(fullIllustrations, null, 2)
+                      )
+                    }
+                  >
+                    <RotateCcw className="h-4 w-4 mr-2" />
+                    Réinitialiser
+                  </Button>
+                  <Button
+                    onClick={handleSaveIllustrationsJsonChanges}
+                    disabled={updateFullIllustrationsJsonMutation.isPending}
+                  >
+                    <Save className="h-4 w-4 mr-2" />
+                    Sauvegarder JSON
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </TabsContent>
+    </Tabs>
+  </div>
 
       {/* Dialog d'édition de traduction */}
       <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
@@ -1460,105 +1351,6 @@ export default function Contenu() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-
-      {/* Dialog d'ajout d'illustration */}
-      <Dialog open={showAddImageDialog} onOpenChange={setShowAddImageDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Ajouter une nouvelle illustration</DialogTitle>
-            <DialogDescription>
-              Ajoutez une nouvelle illustration avec un titre, une description
-              et une URL.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium mb-2">
-                Clé unique
-              </label>
-              <Input
-                value={newImage.key}
-                onChange={(e) =>
-                  setNewImage((prev) => ({ ...prev, key: e.target.value }))
-                }
-                placeholder="ex: about.hero ou shop.banner1"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-2">
-                Titre de l'illustration
-              </label>
-              <Input
-                value={newImage.title}
-                onChange={(e) =>
-                  setNewImage((prev) => ({ ...prev, title: e.target.value }))
-                }
-                placeholder="ex: Image de produit"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-2">
-                URL de l'image
-              </label>
-              <Input
-                value={newImage.url}
-                onChange={(e) =>
-                  setNewImage((prev) => ({ ...prev, url: e.target.value }))
-                }
-                placeholder="URL directe de l'image"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-2">
-                Description (facultatif)
-              </label>
-              <Textarea
-                value={newImage.description}
-                onChange={(e) =>
-                  setNewImage((prev) => ({
-                    ...prev,
-                    description: e.target.value,
-                  }))
-                }
-                placeholder="Description de l'image..."
-                className="min-h-[80px]"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-2">
-                Catégorie
-              </label>
-              <select
-                value={newImage.category}
-                onChange={(e) =>
-                  setNewImage((prev) => ({ ...prev, category: e.target.value }))
-                }
-                className="px-3 py-2 border border-input bg-background rounded-md text-sm w-full"
-              >
-                <option value="general">Général</option>
-                <option value="products">Produits</option>
-                <option value="interface">Interface</option>
-                <option value="banners">Bannières</option>
-              </select>
-            </div>
-          </div>
-          <DialogFooter>
-            <Button
-              variant="outline"
-              onClick={() => setShowAddImageDialog(false)}
-            >
-              Annuler
-            </Button>
-            <Button
-              onClick={handleAddIllustration}
-              disabled={addIllustrationMutation.isPending}
-            >
-              <Plus className="h-4 w-4 mr-2" />
-              Ajouter
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
 
       {/* Dialog d'édition d'illustration */}
       <Dialog open={showEditImageDialog} onOpenChange={setShowEditImageDialog}>
@@ -1652,33 +1444,6 @@ export default function Contenu() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-
-      {/* Dialog de confirmation de suppression d'illustration */}
-      <AlertDialog
-        open={!!deleteImageKey}
-        onOpenChange={() => setDeleteImageKey(null)}
-      >
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Confirmer la suppression</AlertDialogTitle>
-            <AlertDialogDescription>
-              Êtes-vous sûr de vouloir supprimer cette illustration ? Cette
-              action est irréversible.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Annuler</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={() =>
-                deleteImageKey && handleDeleteIllustration(deleteImageKey)
-              }
-              className="bg-red-600 hover:bg-red-700"
-            >
-              Supprimer
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </DashboardLayout>
   );
 }

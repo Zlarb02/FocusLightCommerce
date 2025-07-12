@@ -270,11 +270,72 @@ const getIllustrationHandler = async (
   }
 };
 
+// Handler pour mettre à jour le JSON complet des illustrations
+const updateFullIllustrationsHandler = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const newIllustrations = req.body;
+
+    // Validation basique
+    if (!newIllustrations || typeof newIllustrations !== "object") {
+      res.status(400).json({ error: "Format de données invalide" });
+      return;
+    }
+
+    // Headers pour gros payloads
+    res.setHeader("Content-Type", "application/json");
+
+    const success = writeIllustrations(newIllustrations);
+
+    if (success) {
+      res.json({ message: "Fichier d'illustrations mis à jour avec succès" });
+    } else {
+      res.status(500).json({ error: "Erreur lors de l'écriture du fichier" });
+    }
+  } catch (error) {
+    handleError(res, error);
+  }
+};
+
 // Routes
 router.get("/", getAllIllustrationsHandler);
 router.get("/:key", getIllustrationHandler);
 router.put("/:key", updateIllustrationHandler);
 router.post("/", addIllustrationHandler);
 router.delete("/:key", deleteIllustrationHandler);
+router.put("/full", updateFullIllustrationsHandler);
+
+// Routes publiques (pas d'authentification requise)
+router.get("/public", async (req: Request, res: Response) => {
+  try {
+    const illustrations = readIllustrations();
+
+    // Retourner toutes les illustrations pour utilisation publique
+    res.json(illustrations);
+  } catch (error) {
+    handleError(res, error);
+  }
+});
+
+// Route publique pour téléchargement du JSON complet
+router.get("/public/full", async (req: Request, res: Response) => {
+  try {
+    const illustrations = readIllustrations();
+
+    // Augmenter la limite de taille pour les gros JSON
+    res.setHeader("Content-Type", "application/json");
+    res.setHeader(
+      "Content-Disposition",
+      'inline; filename="illustrations.json"'
+    );
+    res.setHeader("Content-Length", JSON.stringify(illustrations).length.toString());
+
+    res.json(illustrations);
+  } catch (error) {
+    handleError(res, error);
+  }
+});
 
 export default router;

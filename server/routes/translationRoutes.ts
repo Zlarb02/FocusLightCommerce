@@ -257,6 +257,9 @@ const updateFullTranslationsHandler = async (
       return;
     }
 
+    // Headers pour gros payloads
+    res.setHeader("Content-Type", "application/json");
+    
     const success = writeTranslations(newTranslations);
 
     if (success) {
@@ -360,5 +363,38 @@ router.post("/", addTranslationHandler);
 router.delete("/:key", deleteTranslationHandler);
 router.put("/full", updateFullTranslationsHandler);
 router.get("/search", searchTranslationsHandler);
+
+// Routes publiques (pas d'authentification requise)
+router.get("/public", async (req: Request, res: Response) => {
+  try {
+    const translations = readTranslations();
+
+    // Retourner seulement les traductions, pas les détails internes
+    res.json({
+      fr: translations.fr || {},
+      en: translations.en || {},
+    });
+  } catch (error) {
+    handleError(res, error);
+  }
+});
+
+// Route publique pour le JSON complet (utile pour téléchargement ou backup)
+router.get("/public/full", async (req: Request, res: Response) => {
+  try {
+    const translations = readTranslations();
+
+    // Augmenter la limite de taille pour les gros JSON
+    res.setHeader("Content-Type", "application/json");
+    res.setHeader("Content-Disposition", 'inline; filename="translations.json"');
+    
+    // Augmenter les limites pour les gros JSON
+    res.setHeader("Content-Length", JSON.stringify(translations).length.toString());
+    
+    res.json(translations);
+  } catch (error) {
+    handleError(res, error);
+  }
+});
 
 export default router;

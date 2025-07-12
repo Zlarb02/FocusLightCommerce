@@ -38,6 +38,10 @@ export async function apiRequest<T = any>(
   const baseUrl = getApiBaseUrl();
   const url = `${baseUrl}${endpoint}`;
 
+  // Timeout plus long pour les gros JSON (updates complets)
+  const isFullUpdate = endpoint.includes('/full') && (method === 'PUT' || method === 'POST');
+  const timeoutMs = isFullUpdate ? 30000 : 10000; // 30s pour full updates, 10s sinon
+
   const fetchOptions: RequestInit = {
     method,
     credentials: "include",
@@ -56,18 +60,32 @@ export async function apiRequest<T = any>(
     }
   }
 
-  const response = await fetch(url, fetchOptions);
+  // Créer un AbortController pour le timeout
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+  fetchOptions.signal = controller.signal;
 
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
+  try {
+    const response = await fetch(url, fetchOptions);
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    // Pour les réponses 204 No Content
+    if (response.status === 204) {
+      return null as unknown as T;
+    }
+
+    return response.json();
+  } catch (error) {
+    clearTimeout(timeoutId);
+    if (error instanceof Error && error.name === 'AbortError') {
+      throw new Error(`Timeout: La requête a pris plus de ${timeoutMs/1000}s`);
+    }
+    throw error;
   }
-
-  // Pour les réponses 204 No Content
-  if (response.status === 204) {
-    return null as unknown as T;
-  }
-
-  return response.json();
 }
 
 async function throwIfResNotOk(res: Response) {

@@ -82,18 +82,66 @@ export default function CreationsSurMesure() {
       title: t("customCreations.lampadaireFocus.title"),
       description: t("customCreations.lampadaireFocus.description"),
       images: [
-        { key: "surMesure.gallery1", fallback: "https://www.alto-lille.fr/uploads/1ebb8f8c-1206-4581-b9ae-c3cb6641aa97.JPEG" },
-        { key: "surMesure.gallery2", fallback: "https://www.alto-lille.fr/uploads/1a786d6d-4866-444b-b5c6-e165ab45eb54.JPEG" },
-        { key: "surMesure.gallery3", fallback: "https://www.alto-lille.fr/uploads/5dcd2a73-249b-4ed7-bf83-064f1c679932.JPEG" },
-        { key: "surMesure.gallery4", fallback: "https://www.alto-lille.fr/uploads/d7c3b584-0de1-413d-84ed-316a57e4367d.JPEG" },
-        { key: "surMesure.gallery5", fallback: "https://www.alto-lille.fr/uploads/11f4d848-62d7-44e5-a738-536d6ab6490e.JPEG" },
-        { key: "surMesure.gallery6", fallback: "https://www.alto-lille.fr/uploads/13909521-1363-4a81-9177-5a64ac0918ef.JPEG" },
-        { key: "surMesure.gallery7", fallback: "https://www.alto-lille.fr/uploads/e2f45c03-cdbf-438d-bb23-6a73ec91cdc5.JPEG" },
-        { key: "surMesure.gallery8", fallback: "https://www.alto-lille.fr/uploads/8b94efef-0919-47e8-987c-5afc676b965c.JPEG" },
-        { key: "surMesure.gallery9", fallback: "https://www.alto-lille.fr/uploads/864143f6-2415-4924-adee-6da2a71bb8d3.JPEG" },
-        { key: "surMesure.gallery10", fallback: "https://www.alto-lille.fr/uploads/e1718e09-554f-43be-b355-91c0e91c52e3.JPEG" },
-        { key: "surMesure.gallery11", fallback: "https://www.alto-lille.fr/uploads/993c6b33-19f9-4467-af0a-845485d53b1d.JPEG" },
-        { key: "surMesure.gallery12", fallback: "https://www.alto-lille.fr/uploads/7e9b6d82-7b1e-460c-b9c0-ee7132714d3d.JPEG" },
+        {
+          key: "surMesure.gallery1",
+          fallback:
+            "https://www.alto-lille.fr/uploads/1ebb8f8c-1206-4581-b9ae-c3cb6641aa97.JPEG",
+        },
+        {
+          key: "surMesure.gallery2",
+          fallback:
+            "https://www.alto-lille.fr/uploads/1a786d6d-4866-444b-b5c6-e165ab45eb54.JPEG",
+        },
+        {
+          key: "surMesure.gallery3",
+          fallback:
+            "https://www.alto-lille.fr/uploads/5dcd2a73-249b-4ed7-bf83-064f1c679932.JPEG",
+        },
+        {
+          key: "surMesure.gallery4",
+          fallback:
+            "https://www.alto-lille.fr/uploads/d7c3b584-0de1-413d-84ed-316a57e4367d.JPEG",
+        },
+        {
+          key: "surMesure.gallery5",
+          fallback:
+            "https://www.alto-lille.fr/uploads/11f4d848-62d7-44e5-a738-536d6ab6490e.JPEG",
+        },
+        {
+          key: "surMesure.gallery6",
+          fallback:
+            "https://www.alto-lille.fr/uploads/13909521-1363-4a81-9177-5a64ac0918ef.JPEG",
+        },
+        {
+          key: "surMesure.gallery7",
+          fallback:
+            "https://www.alto-lille.fr/uploads/e2f45c03-cdbf-438d-bb23-6a73ec91cdc5.JPEG",
+        },
+        {
+          key: "surMesure.gallery8",
+          fallback:
+            "https://www.alto-lille.fr/uploads/8b94efef-0919-47e8-987c-5afc676b965c.JPEG",
+        },
+        {
+          key: "surMesure.gallery9",
+          fallback:
+            "https://www.alto-lille.fr/uploads/864143f6-2415-4924-adee-6da2a71bb8d3.JPEG",
+        },
+        {
+          key: "surMesure.gallery10",
+          fallback:
+            "https://www.alto-lille.fr/uploads/e1718e09-554f-43be-b355-91c0e91c52e3.JPEG",
+        },
+        {
+          key: "surMesure.gallery11",
+          fallback:
+            "https://www.alto-lille.fr/uploads/993c6b33-19f9-4467-af0a-845485d53b1d.JPEG",
+        },
+        {
+          key: "surMesure.gallery12",
+          fallback:
+            "https://www.alto-lille.fr/uploads/7e9b6d82-7b1e-460c-b9c0-ee7132714d3d.JPEG",
+        },
       ],
       features: [
         t("customCreations.lampadaireFocus.features.design"),
@@ -112,7 +160,8 @@ export default function CreationsSurMesure() {
       description: t("customCreations.lampadaire.description"),
       image: {
         key: "surMesure.lampadaire",
-        fallback: "https://www.alto-lille.fr/uploads/c5e2d6c0-e84d-4409-9349-0c3582bf0d6c.png"
+        fallback:
+          "https://www.alto-lille.fr/uploads/c5e2d6c0-e84d-4409-9349-0c3582bf0d6c.png",
       },
       features: [
         t("customCreations.lampadaire.features.design"),
@@ -131,7 +180,8 @@ export default function CreationsSurMesure() {
       description: t("customCreations.lampemurale.description"),
       image: {
         key: "surMesure.lampemurale",
-        fallback: "https://www.alto-lille.fr/uploads/ca4d1b96-c00f-4992-b23d-5a7cdaafde05.png"
+        fallback:
+          "https://www.alto-lille.fr/uploads/ca4d1b96-c00f-4992-b23d-5a7cdaafde05.png",
       },
       features: [
         t("customCreations.lampemurale.features.installation"),
@@ -227,7 +277,7 @@ export default function CreationsSurMesure() {
                       {t("customCreations.lampadaireFocus.badge")}
                     </div>
                   )}
-                  
+
                   {/* Image ou Galerie */}
                   <div className="relative h-64 overflow-hidden">
                     {creation.images ? (
@@ -236,9 +286,9 @@ export default function CreationsSurMesure() {
                         title={creation.title}
                         currentIndex={currentImageIndex[creation.id] || 0}
                         onIndexChange={(index) => {
-                          setCurrentImageIndex(prev => ({
+                          setCurrentImageIndex((prev) => ({
                             ...prev,
-                            [creation.id]: index
+                            [creation.id]: index,
                           }));
                         }}
                         onImageClick={(url) => openImageModal(url)}
@@ -260,7 +310,7 @@ export default function CreationsSurMesure() {
                       {t("customCreations.common.onDemand")}
                     </div>
                   )}
-                  
+
                   {/* Content */}
                   <div className="p-6">
                     <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">

@@ -27,8 +27,9 @@ setupCors(app);
 /* ------------------------------------------------------------------ */
 /*  EXPRESS CORE                                                      */
 /* ------------------------------------------------------------------ */
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+// Augmenter la limite pour les gros JSON (traductions/illustrations)
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: false, limit: '10mb' }));
 
 // Logging de performance & réponse JSON condensée
 app.use((req, res, next) => {

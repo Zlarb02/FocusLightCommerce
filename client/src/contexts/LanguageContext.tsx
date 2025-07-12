@@ -5,20 +5,21 @@ import React, {
   useEffect,
   ReactNode,
 } from "react";
+import { apiRequest } from "../lib/queryClient";
 
-// Import des traductions depuis le fichier JSON
+// Import des traductions depuis le fichier JSON (fallback)
 import translationsData from "./translations.json";
 
 export type Language = "fr" | "en";
 
 // Type pour les traductions
 type Translations = Record<Language, Record<string, string>>;
-const translations: Translations = translationsData as Translations;
 
 interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
   t: (key: string) => string;
+  refreshTranslations: () => Promise<void>;
 }
 
 const LanguageContext = createContext<LanguageContextType | null>(null);
@@ -29,6 +30,21 @@ interface LanguageProviderProps {
 
 export function LanguageProvider({ children }: LanguageProviderProps) {
   const [language, setLanguage] = useState<Language>("fr");
+  const [translations, setTranslations] = useState<Translations>(
+    translationsData as Translations
+  );
+
+  // Fonction pour récupérer les traductions depuis l'API
+  const refreshTranslations = async () => {
+    try {
+      const newTranslations = await apiRequest("GET", "/api/translations/public");
+      setTranslations(newTranslations);
+      console.log("Traductions mises à jour depuis l'API");
+    } catch (error) {
+      console.warn("Impossible de récupérer les traductions depuis l'API, utilisation du fichier local", error);
+      // Garde les traductions existantes (fichier local)
+    }
+  };
 
   // Charger la langue depuis le localStorage au montage
   useEffect(() => {
@@ -36,6 +52,23 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
     if (savedLang === "fr" || savedLang === "en") {
       setLanguage(savedLang);
     }
+  }, []);
+
+  // Charger les traductions depuis l'API au montage
+  useEffect(() => {
+    refreshTranslations();
+  }, []);
+
+  // Écouter les événements de mise à jour des traductions
+  useEffect(() => {
+    const handleTranslationsUpdate = () => {
+      refreshTranslations();
+    };
+
+    window.addEventListener("translationsUpdated", handleTranslationsUpdate);
+    return () => {
+      window.removeEventListener("translationsUpdated", handleTranslationsUpdate);
+    };
   }, []);
 
   // Synchronisation DOM + localStorage
@@ -95,7 +128,7 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
   };
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+    <LanguageContext.Provider value={{ language, setLanguage, t, refreshTranslations }}>
       {children}
     </LanguageContext.Provider>
   );

@@ -6,19 +6,21 @@ interface DynamicImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   fallbackAlt?: string;
 }
 
-export function DynamicImage({ 
-  illustrationKey, 
-  fallbackSrc, 
+export function DynamicImage({
+  illustrationKey,
+  fallbackSrc,
   fallbackAlt,
   alt,
-  ...props 
+  ...props
 }: DynamicImageProps) {
   const { data: illustration, isLoading } = useIllustration(illustrationKey);
 
   if (isLoading) {
     return (
-      <div 
-        className={`bg-gray-200 dark:bg-gray-700 animate-pulse ${props.className || ''}`}
+      <div
+        className={`bg-gray-200 dark:bg-gray-700 animate-pulse ${
+          props.className || ""
+        }`}
         style={{ width: props.width, height: props.height }}
       />
     );

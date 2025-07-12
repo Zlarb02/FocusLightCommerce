@@ -15,12 +15,12 @@ interface GalleryProps {
   onImageClick: (fallbackUrl: string) => void;
 }
 
-export function CustomCreationGallery({ 
-  images, 
-  title, 
-  currentIndex, 
+export function CustomCreationGallery({
+  images,
+  title,
+  currentIndex,
   onIndexChange,
-  onImageClick 
+  onImageClick,
 }: GalleryProps) {
   const nextImage = () => {
     onIndexChange((currentIndex + 1) % images.length);
@@ -44,7 +44,7 @@ export function CustomCreationGallery({
           className="w-full h-full object-cover cursor-pointer hover:opacity-90 transition-opacity"
           onClick={() => onImageClick(currentImage.fallback)}
         />
-        
+
         {/* Overlay pour indiquer que c'est cliquable */}
         <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
           <div className="w-16 h-16 bg-white bg-opacity-0 group-hover:bg-opacity-20 rounded-full flex items-center justify-center transition-all duration-300 transform scale-0 group-hover:scale-100">

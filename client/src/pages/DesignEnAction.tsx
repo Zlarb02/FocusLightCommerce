@@ -32,7 +32,7 @@ export default function DesignEnAction() {
 
   // Get current slide URL dynamically
   const currentSlideIllustration = useIllustrationUrl(
-    slides[currentSlide]?.illustrationKey, 
+    slides[currentSlide]?.illustrationKey,
     slides[currentSlide]?.fallbackSrc
   );
 
@@ -194,7 +194,12 @@ export default function DesignEnAction() {
                     {/* Slider principal */}
                     <div
                       className="relative w-full h-full overflow-hidden rounded-r-2xl lg:rounded-r-none group cursor-pointer"
-                      onClick={() => setModalImage(currentSlideIllustration.url || slides[currentSlide].fallbackSrc)}
+                      onClick={() =>
+                        setModalImage(
+                          currentSlideIllustration.url ||
+                            slides[currentSlide].fallbackSrc
+                        )
+                      }
                     >
                       <div className="relative w-full h-full">
                         <SliderImage
@@ -340,7 +345,9 @@ export default function DesignEnAction() {
                             <DynamicImage
                               illustrationKey="designInAction.project1"
                               fallbackSrc="https://www.alto-lille.fr/uploads/8c4bf80d-6019-445c-9877-bbb91d3fe951.jpg"
-                              alt={t("projects.seacle.context.volunteersImage.alt")}
+                              alt={t(
+                                "projects.seacle.context.volunteersImage.alt"
+                              )}
                               className="w-full h-full object-cover"
                               style={{
                                 transform: "rotate(90deg)",
