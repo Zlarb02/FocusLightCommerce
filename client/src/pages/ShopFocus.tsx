@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { AnimatedAddToCartButton } from "@/components/AnimatedAddToCartButton";
 import { ToastContainer } from "@/components/EnhancedToast";
 import { ColorTransition } from "@/components/ColorTransition";
+import { DynamicImage } from "@/components/DynamicImage";
 import "./ShopFocus-dark-contrast.css";
 import {
   ProductAddedIndicator,
@@ -439,14 +440,16 @@ export default function ShopFocus() {
         <section className="py-16 animate fade-in">
           <div className="max-w-4xl mx-auto">
             {/* Image pour le thème clair */}
-            <img
-              src="https://www.alto-lille.fr/uploads/a6fb36f6-9a3a-48c4-ac59-5fe29be8dbd5.jpeg"
+            <DynamicImage
+              illustrationKey="shopFocus.ambiance1"
+              fallbackSrc="https://www.alto-lille.fr/uploads/a6fb36f6-9a3a-48c4-ac59-5fe29be8dbd5.jpeg"
               alt="FOCUS.01 - Ambiance et utilisation"
               className="w-full h-[300px] md:h-[400px] lg:h-[500px] object-cover rounded-lg shadow-lg block dark:hidden"
             />
             {/* Image pour le thème sombre */}
-            <img
-              src="https://www.alto-lille.fr/uploads/6ca98d66-62d6-4d50-9fa9-253eeae6c89e.jpeg"
+            <DynamicImage
+              illustrationKey="shopFocus.ambiance2"
+              fallbackSrc="https://www.alto-lille.fr/uploads/6ca98d66-62d6-4d50-9fa9-253eeae6c89e.jpeg"
               alt="FOCUS.01 - Vision d'ensemble"
               className="w-full h-[300px] md:h-[400px] lg:h-[500px] object-cover rounded-lg shadow-lg hidden dark:block"
             />
@@ -530,14 +533,16 @@ export default function ShopFocus() {
             <div className="flex flex-col md:flex-row gap-16">
               <div className="md:w-1/2 animate fade-in-right delay-4 flex flex-col items-center">
                 {/* Image pour le thème clair */}
-                <img
-                  src="https://www.alto-lille.fr/uploads/f0d658a0-e71f-462d-9210-31b276408bdd.jpeg"
+                <DynamicImage
+                  illustrationKey="shopFocus.lifestyle1"
+                  fallbackSrc="https://www.alto-lille.fr/uploads/f0d658a0-e71f-462d-9210-31b276408bdd.jpeg"
                   alt="FOCUS.01 - Caractéristiques et détails"
                   className="w-full max-h-[500px] object-contain block dark:hidden mt-8"
                 />
                 {/* Image pour le thème sombre */}
-                <img
-                  src="https://www.alto-lille.fr/uploads/29ce9490-1000-4d95-8d92-cd5191e15b80.jpeg"
+                <DynamicImage
+                  illustrationKey="shopFocus.lifestyle2"
+                  fallbackSrc="https://www.alto-lille.fr/uploads/29ce9490-1000-4d95-8d92-cd5191e15b80.jpeg"
                   alt="FOCUS.01 - Caractéristiques et détails (sombre)"
                   className="w-full max-h-[500px] object-contain hidden dark:block mt-8"
                 />

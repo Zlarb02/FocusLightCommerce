@@ -12,6 +12,8 @@ import orderRoutes from "./orderRoutes.js";
 import checkoutRoutes from "./checkoutRoutes.js";
 import mediaRoutes from "./mediaRoutes.js";
 import versionRoutes from "./versionRoutes.js";
+import translationRoutes from "./translationRoutes.js";
+import illustrationRoutes from "./illustrationRoutes.js";
 
 // Déclaration pour étendre les sessions Express
 declare module "express-session" {
@@ -93,6 +95,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.use("/api/checkout", checkoutRoutes);
   app.use("/api/medias", mediaRoutes);
   app.use("/api/versions", versionRoutes);
+  app.use("/api/translations", translationRoutes);
+  app.use("/api/illustrations", illustrationRoutes);
 
   return createServer(app);
 }

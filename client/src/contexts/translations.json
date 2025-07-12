@@ -15,7 +15,6 @@
     "nav.switchLanguage": "Changer de langue",
     "nav.shopSection": "Boutique",
     "nav.shopFocus": "Boutique Focus",
-
     "button.addToCart": "Ajouter au panier",
     "button.buyNow": "Acheter maintenant",
     "button.viewDetails": "Voir les détails",
@@ -32,7 +31,6 @@
     "button.confirm": "Confirmer",
     "button.send": "Envoyer",
     "button.contact": "Nous contacter",
-
     "cart.title": "Panier",
     "cart.empty": "Votre panier est vide",
     "cart.emptyDescription": "Ajoutez des produits pour commencer vos achats",
@@ -52,7 +50,6 @@
     "cart.continueShopping": "Continuer mes achats",
     "cart.proceedToCheckout": "Procéder au paiement",
     "cart.tax": "TVA",
-
     "shop.focus.title": "FOCUS.01",
     "shop.focus.subtitle": "Lampe d'appoint design et éco-responsable",
     "shop.focus.description": "La FOCUS.01 combine design minimaliste et éco-responsabilité. Fabriquée en PLA biosourcé et chêne français, elle apporte une lumière douce et chaleureuse à votre intérieur.",
@@ -64,7 +61,6 @@
     "shop.focus.selectColor": "Sélectionnez une couleur",
     "shop.focus.availability.title": "Disponibilité",
     "shop.focus.availability.text": "La FOCUS.01 est notre produit phare disponible immédiatement. Pour découvrir d'autres créations uniques et sur mesure, explorez notre collection complète de créations à la demande.",
-
     "shop.title": "Boutique",
     "shop.search": "Rechercher un produit...",
     "shop.filter": "Filtrer",
@@ -79,7 +75,6 @@
     "shop.general.price": "Prix",
     "shop.general.availability": "Disponibilité",
     "shop.general.search": "Rechercher un produit...",
-
     "shop.focus.colors": "Couleurs disponibles",
     "shop.focus.colorsAvailable": "Couleurs disponibles",
     "shop.focus.variations": "variations",
@@ -88,7 +83,6 @@
     "shop.focus.lampSwitch.seeOff": "Voir les lampes éteintes",
     "shop.focus.buy": "Acheter",
     "shop.focus.addToCart": "Ajouter au panier",
-
     "focus.title": "FOCUS.01",
     "focus.subtitle": "Lampe d'appoint design et éco-responsable",
     "focus.features.title": "Caractéristiques principales",
@@ -112,7 +106,6 @@
     "focus.colors": "Couleurs disponibles",
     "focus.availability.title": "Disponibilité",
     "focus.availability.text": "La FOCUS.01 est notre produit phare disponible immédiatement. Pour découvrir d'autres créations uniques et sur mesure, explorez notre collection complète de créations à la demande.",
-
     "focus.newProduct.title": "Nouveau produit disponible !",
     "focus.newProduct.subtitle": "Découvrez le lampadaire Focus sur pied",
     "focus.newProduct.description": "La version lampadaire de notre célèbre Focus, maintenant disponible sur commande",
@@ -135,13 +128,11 @@
     "focus.contactUs.text": "Besoin d'aide ?",
     "focus.warranty2years": "Garantie 2 ans",
     "focus.addedToCart": "Produit ajouté au panier !",
-
     "focus.buyColor.bleu": "Acheter en bleue",
     "focus.buyColor.rouge": "Acheter en rouge",
     "focus.buyColor.orange": "Acheter en orange",
     "focus.buyColor.blanc": "Acheter en blanche",
     "focus.buyColor.default": "Acheter",
-
     "product.addToCart": "Ajouter au panier",
     "product.buyNow": "Acheter maintenant",
     "product.viewDetails": "Voir les détails",
@@ -154,7 +145,6 @@
     "product.materials": "Matériaux",
     "product.orientation": "Orientation",
     "product.specifications": "Spécifications",
-
     "checkout.title": "Commande",
     "checkout.customerInfo": "Informations",
     "checkout.shipping": "Adresse de livraison",
@@ -183,7 +173,6 @@
     "checkout.back": "Retour",
     "checkout.selectCountry": "Sélectionner un pays",
     "checkout.fillShippingInfo": "Veuillez remplir toutes les informations de livraison",
-
     "validation.firstNameMinLength": "Le prénom doit comporter au moins 2 caractères",
     "validation.lastNameMinLength": "Le nom doit comporter au moins 2 caractères",
     "validation.emailInvalid": "L'email n'est pas valide",
@@ -192,7 +181,6 @@
     "validation.cityRequired": "La ville est requise",
     "validation.postalCodeInvalid": "Le code postal n'est pas valide",
     "validation.countryRequired": "Le pays est requis",
-
     "shipping.relayPoint": "Point Relais Mondial Relay",
     "shipping.relayPointDescription": "Livraison gratuite en 2-4 jours ouvrés • Disponible 14 jours • Horaires étendus",
     "shipping.free": "Gratuit",
@@ -204,7 +192,6 @@
     "shipping.clickSearchToShowMap": "puis cliquer sur \"Rechercher\" pour afficher la carte",
     "shipping.selectRelayPoint": "Sélectionnez un point relais",
     "shipping.distance": "À",
-
     "payment.error": "Erreur",
     "payment.customerInfoMissing": "Les informations client sont manquantes",
     "payment.errorTitle": "Erreur de paiement",
@@ -215,7 +202,6 @@
     "payment.cvv": "CVV",
     "payment.cardName": "Nom sur la carte",
     "payment.pay": "Payer",
-
     "validation.cardNumberMinLength": "Le numéro de carte doit comporter au moins 16 chiffres",
     "validation.cardNumberMaxLength": "Le numéro de carte ne doit pas dépasser 19 caractères",
     "validation.cardNumberInvalid": "Le numéro de carte n'est pas valide",
@@ -224,13 +210,11 @@
     "validation.cvvMaxLength": "Le CVV ne doit pas dépasser 4 chiffres",
     "validation.cvvInvalid": "Le CVV doit contenir uniquement des chiffres",
     "validation.cardNameRequired": "Le nom sur la carte est requis",
-
     "confirmation.thankYou": "Merci pour votre achat ! Votre commande a été reçue.",
     "confirmation.orderNumber": "Numéro de commande",
     "confirmation.emailSent": "Un email de confirmation a été envoyé à",
     "confirmation.questions": "Vous avez des questions ?",
     "confirmation.contactUs": "Contactez-nous",
-
     "projects.title": "Nos Projets",
     "projects.subtitle": "Découvrez nos créations design et innovantes",
     "projects.viewProject": "Voir le projet",
@@ -253,7 +237,6 @@
     "projects.portfolio": "Portfolio",
     "projects.whoami": "Qui suis-je",
     "projects.discover": "Découvrez plus de créations et projets dans notre boutique en ligne.",
-
     "projects.seacle.subtitle": "Ramasseur de déchets plastiques",
     "projects.seacle.description1": "Sea-cle est un concept innovant conçu pour révolutionner le ramassage des déchets plastiques sur les plages de sable. Cette approche permet aux associations environnementales de collecter efficacement les détritus sans effort physique excessif.",
     "projects.seacle.description2": "Conçu en partenariat avec Plastisem à partir des déchets plastiques récupérés sur les plages, Sea-cle incarne parfaitement l'économie circulaire : transformer le problème en solution. L'approche est pensée pour être utilisée autant par les enfants que par les adultes des associations.",
@@ -264,21 +247,17 @@
     "projects.seacle.innovation.title": "Innovation technique",
     "projects.seacle.innovation.text1": "Le défi était de taille : comment ramasser efficacement les déchets de toutes tailles sans se casser le dos ? Après avoir observé les associations au travail et testé plusieurs prototypes miniatures, j'ai eu un déclic. Au lieu de chercher un système complexe, j'ai misé sur la simplicité : un large filtre qui couvre plus de surface s'est révélé bien plus efficace qu'un mécanisme sophistiqué.",
     "projects.seacle.innovation.text2": "Le plus beau dans ce projet ? Sea-cle est fabriqué par <a href=\"https://plastisem.fr/\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-blue-600 dark:text-blue-400 hover:underline\">Plastisem</a> à partir des déchets plastiques ramassés sur les plages. C'est ça, l'économie circulaire en action : transformer le problème en solution ! Cette entreprise locale, qui fournit aussi le plastique pour nos imprimantes 3D, partage notre vision d'un design responsable et durable.",
-
     "projects.seacle.context.title": "Contexte d'utilisation",
     "projects.seacle.context.description": "Les associations comme <a href=\"https://www.rivagespropres.fr/\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-blue-600 dark:text-blue-400 hover:underline\">Rivages Propres</a> utilisent actuellement des outils basiques mais efficaces : gants, tamis et sacs poubelles. Sea-cle pourrait compléter cet équipement en offrant un meilleur confort de travail aux bénévoles tout en réduisant l'utilisation de sacs plastiques.",
     "projects.seacle.context.additionalText": "Sur les plages de la côte d'Opale, des dizaines de bénévoles de tous âges participent régulièrement aux opérations de nettoyage. Ces moments de solidarité environnementale sont essentiels pour préserver nos littoraux, mais peuvent s'avérer physiquement exigeants avec les outils traditionnels.",
     "projects.seacle.context.volunteersImage.alt": "Enfants bénévoles sur la plage prêts à ramasser les déchets",
     "projects.seacle.context.volunteersImage.caption": "Bénévoles de l'association Rivages Propres prêts pour le nettoyage",
-
     "projects.seacle.tools.title": "Outils actuels des associations",
     "projects.seacle.tools.gloves": "Gants de protection pour les bénévoles",
     "projects.seacle.tools.sieve": "Tamis pour filtrer le sable",
     "projects.seacle.tools.bags": "Sacs poubelles pour collecter les déchets",
-
     "projects.seacle.prototype.title": "Concept Sea-cle",
     "projects.seacle.prototype.description": "Les tests du concept Sea-cle sur la plage démontrent son potentiel à ramasser les déchets de toutes tailles. Une fois plein, le contenu pourrait être facilement vidé dans les bennes de collecte, optimisant ainsi le processus de nettoyage des plages.",
-
     "projects.seacle.benefits.title": "Bénéfices du projet",
     "projects.seacle.benefits.comfort": "Amélioration du confort de travail des bénévoles",
     "projects.seacle.benefits.efficiency": "Collecte plus efficace sur de grandes surfaces",
@@ -301,7 +280,6 @@
     "projects.seacle.slider.clickToEnlarge": "Cliquer pour agrandir",
     "projects.seacle.ergonomics.title": "Contexte d'usage",
     "projects.seacle.ergonomics.text": "La charrette accompagne les bénévoles sur toute l'étendue de la plage. Les déchets sont collectés et stockés dans des sacs, puis rassemblés dans la charrette pour optimiser le transport. Cet outil remplace les équipements traditionnels de ramassage, permettant aux bénévoles d'éviter les flexions répétées et de préserver leur dos lors des longues sessions de nettoyage.",
-
     "projects.focus01.subtitle": "Lampe de bureau",
     "projects.focus01.description1": "J'ai conçu ce projet pour lancer ma marque : Alto. C'est mon premier produit réalisé en totale autonomie grâce à l'impression 3D. Je me charge également du packaging et de la communication, créant ainsi une approche globale du design de produit.",
     "projects.focus01.description2": "La Focus.01 représente le premier produit de mon entreprise Alto Lille. Je distribue mes créations dans des dépôts-ventes spécialisés en décoration d'intérieur ainsi que sur notre site internet en cours de développement.",
@@ -331,7 +309,6 @@
     "projects.chaussures.cta.title": "Envie d'une paire unique ?",
     "projects.chaussures.cta.text": "Les commandes sur mesure sont ouvertes depuis 2020. Chaque projet est une collaboration unique entre l'artiste et le client pour créer LA paire qui vous ressemble.",
     "projects.chaussures.cta.contact": "Contact : custom@focuslight.fr",
-
     "projects.withoutSpeaker.subtitle": "Création innovante",
     "projects.withoutSpeaker.description1": "Without Speaker est une exploration audacieuse de l'expérience musicale dépouillée de sa dimension sonore. Cette installation interroge notre rapport à la musique à travers une approche sensorielle alternative, où le vinyle devient protagoniste d'une performance silencieuse.",
     "projects.withoutSpeaker.description2": "Ce projet low-tech questionne les codes de l'écoute musicale contemporaine en proposant une expérience contemplative où l'objet vinyle, libéré de sa fonction première, révèle sa beauté plastique et son potentiel poétique.",
@@ -354,7 +331,6 @@
     "projects.withoutSpeaker.experience.text2": "Cette installation invite à redécouvrir le plaisir de l'écoute intérieure, où l'imagination supplée l'absence physique du son pour créer une expérience musicale personnelle et intime.",
     "projects.withoutSpeaker.installation.title": "Without Speaker - Installation",
     "projects.withoutSpeaker.installation.subtitle": "Création expérimentale | 2024 | Série limitée",
-
     "projects.lowtechvynil.subtitle": "Lecteur vinyle Low tech",
     "projects.lowtechvynil.description1": "Without speaker est un lecteur vinyle et une enceinte qui permettent d'utiliser le moins d'énergie possible. Le son est créé grâce à la vibration du diamant sur le vinyle, cette vibration s'accentue dans la caisse de résonance pour créer le son.",
     "projects.lowtechvynil.description2": "Ce projet explore les principes de la low-tech appliqués à l'audio, privilégiant la simplicité mécanique à la complexité électronique. Une approche minimaliste qui révèle la beauté pure du son analogique.",
@@ -370,7 +346,6 @@
     "projects.lowtechvynil.usage.step3": "3. Écoute amplifiée naturellement",
     "projects.lowtechvynil.project.title": "Without speaker - 2022",
     "projects.lowtechvynil.project.subtitle": "Lecteur vinyle low-tech | Amplification naturelle",
-
     "projects.braderie.subtitle": "Week-end de création collective",
     "projects.braderie.description1": "La Braderie de l'Art de Roubaix est un événement unique qui transforme l'art en expérience collective. Durant ce week-end de création, les artistes doivent créer à partir de la matériauthèque mise à disposition, donnant naissance à des œuvres inattendues et spontanées.",
     "projects.braderie.description2": "Pour cette édition 2023, j'ai conçu un meuble pour chaîne hi-fi construit autour du mouvement dynamique qu'offre un pied de chaise de bureau. Cette pièce transforme un élément fonctionnel simple en sculpture utilitaire.",
@@ -384,7 +359,6 @@
     "projects.braderie.process.assembly": "• Assemblage et finalisation",
     "projects.braderie.philosophy.title": "Philosophie du projet",
     "projects.braderie.philosophy.text": "Ce projet illustre ma démarche de réinterprétation des objets du quotidien. Le mouvement devient ici métaphore de la musique, créant un dialogue entre forme et fonction.",
-
     "projects.waterfall.subtitle": "Applique murale",
     "projects.waterfall.description1": "Projet d'applique murale conçu spécialement pour l'exposition à la Design Week de Reykjavik. J'ai puisé l'inspiration dans les cascades islandaises pour créer cette pièce unique, en intégrant des assemblages modulaires facilitant le transport international.",
     "projects.waterfall.description2": "Cette applique murale capture l'essence de la nature islandaise à travers un jeu subtil de textures et de matériaux qui évoquent la fluidité de l'eau et la force brute des paysages nordiques.",
@@ -399,18 +373,14 @@
     "projects.waterfall.details.designer": "Designer : Collet Anatole",
     "projects.waterfall.details.date": "Date : 21/12/2023",
     "projects.waterfall.details.exhibition": "Exposition : Design Week Reykjavik",
-
     "projects.quiSuisJe.subtitle": "Créateur & Fondateur d'Alto Lille",
     "projects.quiSuisJe.description1": "Passionné par la création et l'innovation, je suis le fondateur d'Alto Lille, une marque qui unit artisanat traditionnel et design contemporain. Mon parcours m'a mené de l'exploration des matériaux à la création d'objets uniques qui racontent une histoire.",
     "projects.quiSuisJe.description2": "Chaque projet est une aventure, chaque création une réponse à un besoin esthétique et fonctionnel. Ma philosophie ? Créer des objets qui enrichissent le quotidien et révèlent la beauté dans la simplicité.",
-
     "customCreations.hero.title": "Créations à la Demande",
     "customCreations.hero.subtitle": "Des luminaires uniques conçus spécialement pour vos projets d'architecture et d'aménagement",
     "customCreations.hero.guarantee": "Créations 100% sur mesure",
-
     "customCreations.realizationsSection.title": "Nos Réalisations Spéciales",
     "customCreations.realizationsSection.subtitle": "Découvrez quelques-unes de nos créations sur mesure réalisées pour des clients exigeants",
-
     "customCreations.lampadaire.title": "Lampadaire sur Mesure",
     "customCreations.lampadaire.description": "Lampadaire unique conçu sur demande particulière, alliant design contemporain et fonctionnalité optimale pour un éclairage d'ambiance exceptionnel.",
     "customCreations.lampadaire.features.design": "Design unique et personnalisé",
@@ -421,7 +391,6 @@
     "customCreations.lampadaire.specs": "Hauteur : 165cm • Base : 35cm diamètre • Puissance : 20W LED • Température : 2700K-4000K",
     "customCreations.lampadaire.price": "",
     "customCreations.lampadaire.story": "Cette création unique a été développée suite à la demande spécifique d'un client recherchant un éclairage d'exception pour son salon. Le défi était de créer une pièce à la fois fonctionnelle et artistique, capable de s'intégrer parfaitement dans un intérieur contemporain.",
-
     "customCreations.lampemurale.title": "Lampe Murale sur Mesure",
     "customCreations.lampemurale.description": "Applique murale exclusive réalisée pour un projet d'architecture d'intérieur, offrant un éclairage ciblé et une esthétique raffinée.",
     "customCreations.lampemurale.features.installation": "Installation murale optimisée",
@@ -432,7 +401,6 @@
     "customCreations.lampemurale.specs": "Dimensions : 45x25x18cm • Puissance : 12W LED • Angle d'éclairage : 120° • Gradation : 5%-100%",
     "customCreations.lampemurale.price": "",
     "customCreations.lampemurale.story": "Née d'une collaboration avec un architecte d'intérieur, cette lampe murale répond à des exigences techniques précises tout en apportant une touche design unique. Elle illustre parfaitement notre capacité à transformer une contrainte en opportunité créative.",
-
     "customCreations.lampadaireFocus.title": "Lampadaire Focus sur Pied",
     "customCreations.lampadaireFocus.description": "La version lampadaire de notre célèbre lampe Focus, conçue pour offrir un éclairage d'ambiance élégant et fonctionnel dans votre espace de vie.",
     "customCreations.lampadaireFocus.features.design": "Design inspiré de la lampe Focus de bureau",
@@ -444,12 +412,10 @@
     "customCreations.lampadaireFocus.price": "",
     "customCreations.lampadaireFocus.story": "Suite au succès de notre lampe Focus de bureau, nous avons développé cette version sur pied pour répondre aux demandes de nos clients souhaitant décliner l'esthétique Focus dans un format lampadaire. Cette création combine l'ADN design de la Focus avec les exigences d'un éclairage sur pied fonctionnel et élégant.",
     "customCreations.lampadaireFocus.badge": "Nouveau • Sur commande",
-
     "customCreations.common.specifications": "SPÉCIFICATIONS",
     "customCreations.common.story": "HISTOIRE DE LA CRÉATION",
     "customCreations.common.onDemand": "Sur demande",
     "customCreations.common.requestQuote": "Demander un devis",
-
     "customCreations.process.title": "Notre Processus de Création",
     "customCreations.process.subtitle": "De l'idée à la réalisation, nous vous accompagnons à chaque étape",
     "customCreations.process.consultation.title": "Consultation",
@@ -460,7 +426,6 @@
     "customCreations.process.validation.description": "Ajustements et validation du design final avec devis",
     "customCreations.process.realization.title": "Réalisation",
     "customCreations.process.realization.description": "Fabrication artisanale avec suivi régulier d'avancement",
-
     "customCreations.cta.title": "Un projet d'éclairage sur mesure ?",
     "customCreations.cta.subtitle": "Contactez-nous pour discuter de votre projet et recevoir un devis personnalisé. Chaque création est unique et adaptée à vos besoins spécifiques.",
     "customCreations.cta.quote": "Demander un devis",
@@ -469,7 +434,6 @@
     "customCreations.cta.deliveryTime": "3 à 6 semaines selon la complexité du projet",
     "customCreations.cta.warranty": "Garantie :",
     "customCreations.cta.warrantyTime": "2 ans sur tous nos luminaires sur mesure",
-
     "designInAction.title": "Le design en action",
     "designInAction.subtitle": "Des projets qui reflètent véritablement notre créativité et notre engagement pour l’innovation",
     "designInAction.seacle.category": "Éco-conception",
@@ -486,7 +450,6 @@
     "designInAction.seacle.specs.dimensionsValue": "90 x 30 x 90 x 150 x 1,5 cm",
     "designInAction.seacle.specs.usage": "Contexte d’usage",
     "designInAction.seacle.specs.usageValue": "Associations environnementales, nettoyage des plages",
-
     "designInAction.withoutSpeaker.category": "Art expérimental",
     "designInAction.withoutSpeaker.title": "Without Speaker",
     "designInAction.withoutSpeaker.subtitle": "Création innovante",
@@ -501,11 +464,9 @@
     "designInAction.withoutSpeaker.specs.yearValue": "2024",
     "designInAction.withoutSpeaker.specs.operation": "Fonctionnement",
     "designInAction.withoutSpeaker.specs.operationValue": "Système d'entraînement mécanique",
-
     "designInAction.philosophy.title": "Notre philosophie du design",
     "designInAction.philosophy.description": "Chez Alto, nous pensons que le design doit être au service de l’esthétique, de la fonction et de l’impact environnemental positif. Chaque projet est une occasion d’explorer de nouvelles voies créatives tout en répondant aux enjeux contemporains.",
     "designInAction.philosophy.cta": "Découvrir nos créations",
-
     "common.loading": "Chargement...",
     "common.discoverOtherCreations": "Découvrir les autres créations",
     "dates.november2023": "Novembre 2023",
@@ -577,7 +538,6 @@
     "common.depth": "Profondeur",
     "common.length": "Longueur",
     "common.retry": "Réessayer",
-
     "footer.copyright": "© 2025 Alto Lille - Tous droits réservés",
     "footer.legal": "Mentions légales",
     "footer.privacy": "Politique de confidentialité",
@@ -594,13 +554,11 @@
     "footer.faq": "FAQ",
     "footer.follow": "Suivez-nous",
     "footer.rights": "© 2025 Alto Lille - Tous droits réservés",
-
     "services.title": "Services",
     "services.delivery": "Livraison",
     "services.returns": "Retours",
     "services.warranty": "Garantie",
     "services.support": "Support",
-
     "contact.title": "Nous contacter",
     "contact.address": "Adresse",
     "contact.phone": "Téléphone",
@@ -611,29 +569,23 @@
     "contact.subject": "Sujet",
     "contact.message": "Message",
     "contact.name": "Nom",
-
     "testimonials.title": "Témoignages",
     "testimonials.subtitle": "Ce que disent nos clients",
-
     "settings.title": "Paramètres",
     "settings.theme": "Thème",
     "settings.language": "Langue",
-
     "menu.home": "Accueil",
     "menu.shop": "Boutique",
     "menu.projects": "Projets",
     "menu.about": "À propos",
     "menu.settings": "Paramètres",
-
     "theme.light": "Clair",
     "theme.dark": "Sombre",
     "language.french": "Français",
     "language.english": "English",
-
     "legal.mentions.title": "Mentions légales",
     "legal.privacy.title": "Politique de confidentialité",
     "legal.terms.title": "Conditions Générales de Vente",
-
     "error.notFound": "Page non trouvée",
     "error.serverError": "Erreur serveur",
     "error.networkError": "Erreur réseau",
@@ -644,11 +596,9 @@
     "error.unknown": "Erreur inconnue",
     "error.404.title": "Page non trouvée",
     "error.404.message": "La page que vous recherchez n'existe pas.",
-
     "notFound.title": "Page non trouvée",
     "notFound.subtitle": "La page que vous recherchez n'existe pas",
     "notFound.goHome": "Retour à l'accueil",
-
     "faq.title": "Questions fréquentes",
     "faq.subtitle": "Retrouvez les réponses aux questions les plus courantes sur nos produits, la livraison et le service client.",
     "faq.products.title": "Nos produits",
@@ -679,7 +629,6 @@
     "faq.contact.subtitle": "Notre équipe est là pour vous aider. N'hésitez pas à nous contacter, nous vous répondrons dans les plus brefs délais.",
     "faq.contact.email": "Email",
     "faq.contact.phone": "Téléphone",
-
     "warranty.title": "Garantie",
     "warranty.subtitle": "Votre tranquillité d'esprit, notre engagement",
     "warranty.coverage.title": "Couverture de la garantie",
@@ -703,7 +652,6 @@
     "warranty.process.return.desc": "Selon le cas : retour gratuit du produit défectueux ou intervention sur site (région Lille uniquement).",
     "warranty.process.repair": "Réparation ou remplacement",
     "warranty.process.repair.desc": "Réparation dans notre atelier ou envoi d'un produit de remplacement neuf.",
-
     "returns.title": "Retours & Échanges",
     "returns.subtitle": "Politique de retour simple et transparente",
     "returns.conditions.title": "Conditions de retour",
@@ -733,7 +681,6 @@
     "returns.fees.charged.changeofmind": "Changement d'avis",
     "returns.fees.charged.under100": "Commande inférieure à 100€",
     "returns.fees.charged.amount": "Frais : 9,90€ déduits du remboursement",
-
     "delivery.title": "Livraison",
     "delivery.subtitle": "Informations complètes sur nos options de livraison",
     "delivery.zones.title": "Zones de livraison",
@@ -759,7 +706,6 @@
     "delivery.international.carrier": "Transporteur : Mondial Relay International",
     "delivery.international.tracking": "Numéro de suivi fourni",
     "delivery.international.customs": "Droits de douane : À la charge du destinataire",
-
     "quiSuisJe.vision.creativity": "Créativité",
     "quiSuisJe.vision.creativity.desc": "Explorer sans cesse de nouvelles formes, matériaux et techniques pour créer des objets qui surprennent et inspirent.",
     "quiSuisJe.vision.innovation": "Innovation",
@@ -796,17 +742,14 @@
     "quiSuisJe.mission.text": "Créer des objets beaux, fonctionnels et respectueux de l'environnement qui améliorent le quotidien de chacun.",
     "quiSuisJe.vision.quote": "Je crois que les objets ont une âme et que le design peut transformer notre rapport au quotidien. Chaque création d'Alto Lille porte cette conviction.",
     "quiSuisJe.vision.text": "Mon objectif est de développer Alto Lille comme une référence dans le design d'objets du quotidien, en privilégiant toujours la qualité, l'authenticité et l'innovation responsable.",
-
     "about.hero.title": "Salut ! Moi c'est Anatole",
     "about.hero.subtitle": "Fondateur d'Alto Lille, designer et fabricant de lampes",
     "about.hero.passion": "Passionné par la création et l'artisanat français",
-
     "about.story.title": "Mon histoire",
     "about.story.intro": "Bonjour ! Je m'appelle Anatole Collet et j'ai 24 ans. Après des études en design produit, j'ai lancé Alto Lille avec une idée simple : créer des objets beaux et utiles, fabriqués localement avec des matériaux respectueux de l'environnement.",
     "about.story.beginning": "Tout a commencé dans ma chambre d'étudiant avec ma première imprimante 3D. J'expérimentais, je ratais, je recommençais... jusqu'à créer ma première lampe Focus. Ce petit objet m'a donné envie de continuer et de partager ma passion pour le design et l'artisanat.",
     "about.story.philosophy": "Aujourd'hui, chaque lampe que je crée dans mon atelier lillois raconte une histoire. Je privilégie les matériaux durables comme le PLA biosourcé et le chêne français, car je crois qu'on peut créer de beaux objets sans abîmer notre planète.",
     "about.story.future": "Mon rêve ? Que mes créations trouvent leur place dans vos intérieurs et qu'elles vous accompagnent longtemps. Parce qu'au final, ce qui me motive le plus, c'est de savoir que mes lampes éclairent vos moments précieux.",
-
     "about.values.title": "Ce qui me guide",
     "about.values.subtitle": "Les valeurs qui m'animent au quotidien dans mon travail",
     "about.values.creativity.title": "Créativité",
@@ -815,17 +758,14 @@
     "about.values.sustainability.description": "Je choisis mes matériaux avec soin : PLA biosourcé, bois français, emballages recyclables. Notre planète mérite cette attention.",
     "about.values.proximity.title": "Proximité",
     "about.values.proximity.description": "De la conception à la fabrication, tout se passe à Lille. J'aime cette relation directe avec mes clients et cette production locale.",
-
     "about.workshop.title": "Mon atelier",
     "about.workshop.description": "C'est dans mon petit atelier lillois que naissent toutes mes créations. Entre imprimantes 3D, outils de menuiserie et prototypes en cours, c'est mon terrain de jeu créatif. Chaque lampe est assemblée à la main avec le plus grand soin.",
     "about.workshop.quote": "« Un atelier, c'est là où les idées prennent forme et où l'artisanat retrouve ses lettres de noblesse. »",
-
     "about.contact.title": "On discute ?",
     "about.contact.subtitle": "J'adore échanger avec les personnes qui s'intéressent à mes créations. N'hésitez pas à me contacter !",
     "about.contact.email": "altolille@gmail.com",
     "about.contact.phone": "+33 7 82 08 66 90",
     "about.contact.availability": "Je réponds généralement sous 24h • Du lundi au vendredi",
-
     "cgv.title": "Conditions Générales de Vente",
     "cgv.article1.title": "Article 1 - Objet",
     "cgv.article1.text": "Les présentes conditions générales de vente s'appliquent, sans restriction ni réserve, à toutes les ventes de produits effectuées par Alto Lille aux acheteurs non professionnels (« consommateurs »), qui acceptent sans réserve ces conditions.",
@@ -873,7 +813,6 @@
     "cgv.article15.contact.email": "Email :",
     "cgv.article15.contact.phone": "Téléphone :",
     "cgv.lastUpdate": "Dernière mise à jour : 1er juin 2025",
-
     "mentions.title": "Mentions légales",
     "mentions.editor.title": "Éditeur du site",
     "mentions.editor.company": "Alto Lille",
@@ -907,9 +846,7 @@
     "mentions.links.text": "Les liens hypertextes mis en place dans le cadre du présent site internet en direction d'autres ressources présentes sur le réseau Internet ne sauraient engager la responsabilité d'Alto Lille.",
     "mentions.law.title": "Droit applicable",
     "mentions.law.text": "Tant le présent site que les modalités et conditions de son utilisation sont régis par le droit français, quel que soit le lieu d'utilisation. En cas de contestation éventuelle, et après l'échec de toute tentative de recherche d'une solution amiable, les tribunaux français seront seuls compétents pour connaître de ce litige.",
-
     "about.description": "Créateur industriel spécialisé dans le design d'objets du quotidien, Anatole Collet conçoit et fabrique des produits alliant esthétique, fonctionnalité et éco-responsabilité depuis son atelier d'Alto Lille.",
-
     "faq.support.title": "SAV et garantie",
     "faq.support.warranty.title": "Quelle est la garantie sur les produits ?",
     "faq.support.warranty.answer": "Tous nos produits bénéficient d'une garantie commerciale de 2 ans couvrant les défauts de fabrication dans des conditions normales d'utilisation, en plus de la garantie légale de conformité.",
@@ -920,15 +857,12 @@
     "faq.technical.installation.answer": "La FOCUS.01 se monte sans outils en quelques minutes. Un manuel illustré est fourni avec le produit. Il suffit d'assembler la base en chêne, d'insérer l'abat-jour en PLA et de brancher l'ampoule LED incluse.",
     "faq.technical.maintenance.title": "Comment entretenir ma lampe ?",
     "faq.technical.maintenance.answer": "Nettoyez l'abat-jour en PLA avec un chiffon légèrement humide. Pour la base en chêne, utilisez un produit d'entretien spécifique au bois. Évitez les produits chimiques agressifs.",
-
     "product.color": "Couleur",
     "product.images": "images",
-
     "colors.bleu": "Bleue",
     "colors.rouge": "Rouge",
     "colors.orange": "Orange",
     "colors.blanc": "Blanche",
-
     "livraison.title": "Livraison",
     "livraison.subtitle": "Informations complètes sur nos options de livraison",
     "livraison.zones.title": "Zones de livraison",
@@ -1011,7 +945,6 @@
     "livraison.contact.phone": "📞 Téléphone : +33 782 086 690",
     "livraison.contact.hours": "🕒 Horaires : Lundi au vendredi, 9h-18h",
     "livraison.notice": "💡 Bon à savoir : Nos délais de livraison sont donnés à titre indicatif. En période de forte affluence (fêtes, promotions), ces délais peuvent être légèrement allongés. Nous vous tiendrons informé de tout retard éventuel.",
-
     "retours.title": "Retours et échanges",
     "retours.subtitle": "Politique de retour et conditions d'échange",
     "retours.withdrawal.title": "Droit de rétractation",
@@ -1085,7 +1018,6 @@
     "retours.contact.hours": "🕒 Horaires : Lundi au vendredi, 9h-18h",
     "retours.contact.emailSubject": "Objet email : \"Demande de retour - Commande n°[votre numéro]\"",
     "retours.commitment": "💚 Notre engagement : Votre satisfaction est notre priorité. Nous mettons tout en œuvre pour traiter vos retours dans les meilleurs délais et vous offrir une expérience client exceptionnelle.",
-
     "garantie.title": "Garantie et SAV",
     "garantie.subtitle": "Informations détaillées sur nos garanties",
     "garantie.commitment.title": "Notre engagement qualité",
@@ -1181,7 +1113,6 @@
     "garantie.contact.workshop": "📍 Atelier : 95 rue Pierre Ledent, 62170 Montreuil-sur-Mer",
     "garantie.contact.emailSubject": "Objet email : \"SAV - Garantie - Commande n°[votre numéro]\"",
     "garantie.promise": "💚 Notre promesse : Votre satisfaction est notre priorité absolue. Si vous n'êtes pas entièrement satisfait de votre produit Alto Lille, nous ferons tout notre possible pour trouver une solution adaptée.",
-
     "privacy.title": "Politique de confidentialité",
     "privacy.intro.title": "Introduction",
     "privacy.intro.text": "Alto Lille s'engage à protéger votre vie privée. Cette politique de confidentialité explique comment nous collectons, utilisons et protégeons vos informations personnelles lorsque vous utilisez notre site web.",
@@ -1241,7 +1172,6 @@
     "privacy.contact.phone": "Téléphone :",
     "privacy.lastUpdate": "Dernière mise à jour : 1er juin 2025"
   },
-
   "en": {
     "nav.home": "Home",
     "nav.shop": "Shop",
@@ -1258,7 +1188,6 @@
     "nav.customCreations": "Custom Creations",
     "nav.shopSection": "Shop",
     "nav.shopFocus": "Focus Shop",
-
     "button.addToCart": "Add to cart",
     "button.buyNow": "Buy now",
     "button.viewDetails": "View details",
@@ -1275,7 +1204,6 @@
     "button.confirm": "Confirm",
     "button.send": "Send",
     "button.contact": "Contact us",
-
     "cart.title": "Cart",
     "cart.empty": "Your cart is empty",
     "cart.emptyDescription": "Add products to start shopping",
@@ -1295,7 +1223,6 @@
     "cart.continueShopping": "Continue shopping",
     "cart.proceedToCheckout": "Proceed to checkout",
     "cart.tax": "Tax",
-
     "shop.focus.title": "FOCUS.01",
     "shop.focus.subtitle": "Design and eco-responsible accent lamp",
     "shop.focus.description": "The FOCUS.01 combines minimalist design and eco-responsibility. Made from bio-sourced PLA and French oak, it brings soft and warm light to your interior.",
@@ -1315,7 +1242,6 @@
     "shop.focus.lampSwitch.seeOff": "See lamps off",
     "shop.focus.buy": "Buy",
     "shop.focus.addToCart": "Add to cart",
-
     "shop.title": "Shop",
     "shop.search": "Search for a product...",
     "shop.filter": "Filter",
@@ -1330,7 +1256,6 @@
     "shop.general.price": "Price",
     "shop.general.availability": "Availability",
     "shop.general.search": "Search for a product...",
-
     "focus.title": "FOCUS.01",
     "focus.subtitle": "Design and eco-responsible accent lamp",
     "focus.features.title": "Main features",
@@ -1372,13 +1297,11 @@
     "focus.contactUs.text": "Need help?",
     "focus.warranty2years": "2-year warranty",
     "focus.addedToCart": "Product added to cart!",
-
     "focus.buyColor.bleu": "Buy in blue",
     "focus.buyColor.rouge": "Buy in red",
     "focus.buyColor.orange": "Buy in orange",
     "focus.buyColor.blanc": "Buy in white",
     "focus.buyColor.default": "Buy",
-
     "product.addToCart": "Add to cart",
     "product.buyNow": "Buy now",
     "product.viewDetails": "View details",
@@ -1391,7 +1314,6 @@
     "product.materials": "Materials",
     "product.orientation": "Orientation",
     "product.specifications": "Specifications",
-
     "checkout.title": "Checkout",
     "checkout.customerInfo": "Information",
     "checkout.shipping": "Shipping address",
@@ -1416,7 +1338,6 @@
     "checkout.return30Days": "30-day return",
     "checkout.placeOrder": "Place order",
     "checkout.processing": "Processing...",
-
     "projects.title": "Our Projects",
     "projects.subtitle": "Discover our design and innovative creations",
     "projects.viewProject": "View project",
@@ -1439,7 +1360,6 @@
     "projects.portfolio": "Portfolio",
     "projects.whoami": "Who am I",
     "projects.discover": "Discover more creations and projects in our online shop.",
-
     "projects.seacle.subtitle": "Plastic waste collector",
     "projects.seacle.description1": "Sea-cle is a diploma project designed to revolutionize the collection of plastic waste on sandy beaches. This innovative tool allows environmental associations to efficiently collect debris without excessive physical effort.",
     "projects.seacle.description2": "Manufactured by Plastisem from plastic waste recovered from beaches, Sea-cle perfectly embodies the circular economy: transforming the problem into a solution. The tool is designed to be used by both children and adults from associations.",
@@ -1450,21 +1370,17 @@
     "projects.seacle.innovation.title": "Technical innovation",
     "projects.seacle.innovation.text1": "The challenge was real: how to efficiently collect waste of all sizes without breaking your back? After observing associations at work and testing several miniature prototypes, I had a breakthrough. Instead of looking for a complex system, I bet on simplicity: a wide filter that covers more surface area turned out to be much more effective than a sophisticated mechanism.",
     "projects.seacle.innovation.text2": "The beautiful thing about this project? Sea-cle is made by <a href=\"https://plastisem.fr/\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-blue-600 dark:text-blue-400 hover:underline\">Plastisem</a> from plastic waste collected on beaches. That's the circular economy in action: turning the problem into the solution! This local company, which also supplies plastic for our 3D printers, shares our vision of responsible and sustainable design.",
-
     "projects.seacle.context.title": "Usage context",
     "projects.seacle.context.description": "Associations like <a href=\"https://www.rivagespropres.fr/\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-blue-600 dark:text-blue-400 hover:underline\">Rivages Propres</a> currently use basic but effective tools: gloves, sieves and garbage bags. Sea-cle complements this equipment by offering better working comfort to volunteers while reducing the use of plastic bags.",
     "projects.seacle.context.additionalText": "On the beaches of the Opal Coast, dozens of volunteers of all ages regularly participate in cleaning operations. These moments of environmental solidarity are essential for preserving our coastlines, but can be physically demanding with traditional tools.",
     "projects.seacle.context.volunteersImage.alt": "Volunteer children on the beach ready to collect waste",
     "projects.seacle.context.volunteersImage.caption": "Rivages Propres association volunteers ready for cleaning",
-
     "projects.seacle.tools.title": "Current association tools",
     "projects.seacle.tools.gloves": "Protection gloves for volunteers",
     "projects.seacle.tools.sieve": "Sieve to filter sand",
     "projects.seacle.tools.bags": "Garbage bags to collect waste",
-
     "projects.seacle.prototype.title": "Sea-cle in action",
     "projects.seacle.prototype.description": "The Sea-cle prototype dragged on the beach demonstrates its efficiency in collecting waste of all sizes. Once full, the contents are easily emptied into collection containers, thus optimizing the beach cleaning process.",
-
     "projects.seacle.benefits.title": "Project benefits",
     "projects.seacle.benefits.comfort": "Improved working comfort for volunteers",
     "projects.seacle.benefits.efficiency": "More efficient collection over large areas",
@@ -1488,8 +1404,6 @@
     "projects.seacle.slider.image3.alt": "Technical diagram of Sea-cle",
     "projects.seacle.slider.image3.caption": "Technical and functional design of Sea-cle",
     "projects.seacle.slider.clickToEnlarge": "Click to enlarge",
-    "projects.seacle.economy.process.title": "The virtuous Plastisem cycle",
-
     "projects.focus01.subtitle": "Desk lamp",
     "projects.focus01.description1": "I designed this project to launch my brand: Alto. It's my first product made in complete autonomy thanks to 3D printing. I also handle packaging and communication, creating a comprehensive approach to product design.",
     "projects.focus01.description2": "The Focus.01 represents the first product of my company Alto Lille. I distribute my creations in consignment stores specializing in interior decoration as well as on our website under development.",
@@ -1507,7 +1421,6 @@
     "projects.focus01.specs.switch": "• Integrated switch",
     "projects.focus01.specs.designer": "• Designer: Anatole Collet / 2024",
     "projects.focus01.specs.colors": "• 4 colors available",
-
     "projects.chaussures.subtitle": "Create unique shoes from a basic shoe",
     "projects.chaussures.description1": "The 'Custom Shoes' project is an extra-curricular project that consists of creating unique shoes from a basic shoe at the request of clients. I do painting work and add or remove overlays.",
     "projects.chaussures.description2": "Each pair thus becomes a unique piece, true walking works of art that allow everyone to express their personality through their steps. More than a simple accessory, these shoes tell a story.",
@@ -1527,7 +1440,6 @@
     "projects.chaussures.models.urbanFlow": "Urban Flow",
     "projects.chaussures.models.natureSpirit": "Nature Spirit",
     "projects.chaussures.models.abstractVision": "Abstract Vision",
-
     "projects.withoutSpeaker.subtitle": "Innovative creation",
     "projects.withoutSpeaker.description1": "Without Speaker is a bold exploration of the musical experience stripped of its sound dimension. This installation questions our relationship with music through an alternative sensory approach, where vinyl becomes the protagonist of a silent performance.",
     "projects.withoutSpeaker.description2": "This low-tech project questions the codes of contemporary musical listening by offering a contemplative experience where the vinyl object, freed from its primary function, reveals its plastic beauty and poetic potential.",
@@ -1550,7 +1462,6 @@
     "projects.withoutSpeaker.experience.text2": "This installation invites you to rediscover the pleasure of inner listening, where imagination compensates for the physical absence of sound to create a personal and intimate musical experience.",
     "projects.withoutSpeaker.installation.title": "Without Speaker - Installation",
     "projects.withoutSpeaker.installation.subtitle": "Experimental creation | 2024 | Limited series",
-
     "projects.lowtechvynil.subtitle": "Low tech vinyl player",
     "projects.lowtechvynil.description1": "Without speaker is a vinyl player and speaker that allow you to use as little energy as possible. The sound is created through the vibration of the diamond on the vinyl, this vibration is accentuated in the resonance box to create the sound.",
     "projects.lowtechvynil.description2": "This project explores low-tech principles applied to audio, favoring mechanical simplicity over electronic complexity. A minimalist approach that reveals the pure beauty of analog sound.",
@@ -1566,7 +1477,6 @@
     "projects.lowtechvynil.usage.step3": "3. Naturally amplified listening",
     "projects.lowtechvynil.project.title": "Without speaker - 2022",
     "projects.lowtechvynil.project.subtitle": "Low-tech vinyl player | Natural amplification",
-
     "projects.braderie.subtitle": "Collective creation weekend",
     "projects.braderie.description1": "The Braderie de l'Art in Roubaix is a unique event that transforms art into a collective experience. During this creative weekend, artists must create from the material library made available, giving birth to unexpected and spontaneous works.",
     "projects.braderie.description2": "For this 2023 edition, I designed a piece of furniture for hi-fi systems built around the dynamic movement offered by an office chair base. This piece transforms a simple functional element into a utilitarian sculpture.",
@@ -1580,7 +1490,6 @@
     "projects.braderie.process.assembly": "• Assembly and finalization",
     "projects.braderie.philosophy.title": "Project philosophy",
     "projects.braderie.philosophy.text": "This project illustrates my approach to reinterpreting everyday objects. Movement here becomes a metaphor for music, creating a dialogue between form and function.",
-
     "projects.waterfall.subtitle": "Wall light",
     "projects.waterfall.description1": "Wall light project designed specifically for the exhibition at Reykjavik Design Week. I drew inspiration from Icelandic waterfalls to create this unique piece, integrating modular assemblies facilitating international transport.",
     "projects.waterfall.description2": "This wall light captures the essence of Icelandic nature through a subtle play of textures and materials that evoke the fluidity of water and the raw force of Nordic landscapes.",
@@ -1595,18 +1504,14 @@
     "projects.waterfall.details.designer": "Designer: Collet Anatole",
     "projects.waterfall.details.date": "Date: 21/12/2023",
     "projects.waterfall.details.exhibition": "Exhibition: Design Week Reykjavik",
-
     "projects.quiSuisJe.subtitle": "Creator & Founder of Alto Lille",
     "projects.quiSuisJe.description1": "Passionate about creation and innovation, I am the founder of Alto Lille, a brand that unites traditional craftsmanship and contemporary design. My journey led me from exploring materials to creating unique objects that tell a story.",
     "projects.quiSuisJe.description2": "Each project is an adventure, each creation a response to an aesthetic and functional need. My philosophy? Create objects that enrich daily life and reveal beauty in simplicity.",
-
     "customCreations.hero.title": "Custom Creations",
     "customCreations.hero.subtitle": "Unique lighting solutions designed specifically for your architecture and interior design projects",
     "customCreations.hero.guarantee": "100% custom creations",
-
     "customCreations.realizationsSection.title": "Our Special Realizations",
     "customCreations.realizationsSection.subtitle": "Discover some of our custom creations made for demanding clients",
-
     "customCreations.lampadaire.title": "Custom Floor Lamp",
     "customCreations.lampadaire.description": "Unique floor lamp designed on special request, combining contemporary design and optimal functionality for exceptional ambient lighting.",
     "customCreations.lampadaire.features.design": "Unique and personalized design",
@@ -1617,7 +1522,6 @@
     "customCreations.lampadaire.specs": "Height: 165cm • Base: 35cm diameter • Power: 20W LED • Temperature: 2700K-4000K",
     "customCreations.lampadaire.price": "",
     "customCreations.lampadaire.story": "This unique creation was developed following the specific request of a client looking for exceptional lighting for their living room. The challenge was to create a piece that was both functional and artistic, capable of integrating perfectly into a contemporary interior.",
-
     "customCreations.lampemurale.title": "Custom Wall Lamp",
     "customCreations.lampemurale.description": "Exclusive wall sconce made for an interior architecture project, offering targeted lighting and refined aesthetics.",
     "customCreations.lampemurale.features.installation": "Optimized wall installation",
@@ -1628,7 +1532,6 @@
     "customCreations.lampemurale.specs": "Dimensions: 45x25x18cm • Power: 12W LED • Lighting angle: 120° • Dimming: 5%-100%",
     "customCreations.lampemurale.price": "",
     "customCreations.lampemurale.story": "Born from a collaboration with an interior architect, this wall lamp meets precise technical requirements while bringing a unique design touch. It perfectly illustrates our ability to transform a constraint into a creative opportunity.",
-
     "customCreations.lampadaireFocus.title": "Focus Floor Lamp",
     "customCreations.lampadaireFocus.description": "The floor lamp version of our famous Focus lamp, designed to provide elegant and functional ambient lighting in your living space.",
     "customCreations.lampadaireFocus.features.design": "Design inspired by the Focus desk lamp",
@@ -1640,12 +1543,10 @@
     "customCreations.lampadaireFocus.price": "",
     "customCreations.lampadaireFocus.story": "Following the success of our Focus desk lamp, we developed this floor version to meet the requests of our clients wishing to extend the Focus aesthetic in a floor lamp format. This creation combines the Focus design DNA with the requirements of functional and elegant floor lighting.",
     "customCreations.lampadaireFocus.badge": "New • Made to order",
-
     "customCreations.common.specifications": "SPECIFICATIONS",
     "customCreations.common.story": "CREATION STORY",
     "customCreations.common.onDemand": "On demand",
     "customCreations.common.requestQuote": "Request a quote",
-
     "customCreations.process.title": "Our Creation Process",
     "customCreations.process.subtitle": "From idea to realization, we accompany you at every step",
     "customCreations.process.consultation.title": "Consultation",
@@ -1656,7 +1557,6 @@
     "customCreations.process.validation.description": "Adjustments and validation of the final design with quote",
     "customCreations.process.realization.title": "Realization",
     "customCreations.process.realization.description": "Artisanal manufacturing with regular progress updates",
-
     "customCreations.cta.title": "A custom lighting project?",
     "customCreations.cta.subtitle": "Contact us to discuss your project and receive a personalized quote. Each creation is unique and adapted to your specific needs.",
     "customCreations.cta.quote": "Request a quote",
@@ -1665,7 +1565,6 @@
     "customCreations.cta.deliveryTime": "3 to 6 weeks depending on project complexity",
     "customCreations.cta.warranty": "Warranty:",
     "customCreations.cta.warrantyTime": "2 years on all our custom lighting",
-
     "designInAction.title": "Design in Action",
     "designInAction.subtitle": "Projects that are a real reflection of our creativity and commitment to innovation",
     "designInAction.seacle.category": "Eco-design",
@@ -1682,7 +1581,6 @@
     "designInAction.seacle.specs.dimensionsValue": "90 x 30 x 90 x 150 x 1,5 cm",
     "designInAction.seacle.specs.usage": "Usage context",
     "designInAction.seacle.specs.usageValue": "Environmental associations, beach cleaning",
-
     "designInAction.withoutSpeaker.category": "Experimental art",
     "designInAction.withoutSpeaker.title": "Without Speaker",
     "designInAction.withoutSpeaker.subtitle": "Innovative creation",
@@ -1697,11 +1595,9 @@
     "designInAction.withoutSpeaker.specs.yearValue": "2024",
     "designInAction.withoutSpeaker.specs.operation": "Operation",
     "designInAction.withoutSpeaker.specs.operationValue": "Mechanical drive system",
-
     "designInAction.philosophy.title": "Our Design Philosophy",
     "designInAction.philosophy.description": "At Alto, we believe that design must serve aesthetics, function and positive environmental impact. Each project is an opportunity to explore new creative paths while responding to contemporary challenges.",
     "designInAction.philosophy.cta": "Discover our creations",
-
     "common.loading": "Loading...",
     "common.discoverOtherCreations": "Discover other creations",
     "dates.november2023": "November 2023",
@@ -1773,7 +1669,6 @@
     "common.depth": "Depth",
     "common.length": "Length",
     "common.retry": "Retry",
-
     "footer.copyright": "© 2025 Alto Lille - All rights reserved",
     "footer.legal": "Legal notices",
     "footer.privacy": "Privacy policy",
@@ -1790,13 +1685,11 @@
     "footer.faq": "FAQ",
     "footer.follow": "Follow us",
     "footer.rights": "© 2025 Alto Lille - All rights reserved",
-
     "services.title": "Services",
     "services.delivery": "Delivery",
     "services.returns": "Returns",
     "services.warranty": "Warranty",
     "services.support": "Support",
-
     "contact.title": "Contact us",
     "contact.address": "Address",
     "contact.phone": "Phone",
@@ -1807,29 +1700,23 @@
     "contact.subject": "Subject",
     "contact.message": "Message",
     "contact.name": "Name",
-
     "testimonials.title": "Testimonials",
     "testimonials.subtitle": "What our clients say",
-
     "settings.title": "Settings",
     "settings.theme": "Theme",
     "settings.language": "Language",
-
     "menu.home": "Home",
     "menu.shop": "Shop",
     "menu.projects": "Projects",
     "menu.about": "About",
     "menu.settings": "Settings",
-
     "theme.light": "Light",
     "theme.dark": "Dark",
     "language.french": "Français",
     "language.english": "English",
-
     "legal.mentions.title": "Legal notices",
     "legal.privacy.title": "Privacy policy",
     "legal.terms.title": "Terms of Sale",
-
     "error.notFound": "Page not found",
     "error.serverError": "Server error",
     "error.networkError": "Network error",
@@ -1840,11 +1727,9 @@
     "error.unknown": "Unknown error",
     "error.404.title": "Page not found",
     "error.404.message": "The page you are looking for does not exist.",
-
     "notFound.title": "Page not found",
     "notFound.subtitle": "The page you are looking for does not exist",
     "notFound.goHome": "Back to home",
-
     "faq.title": "Frequently Asked Questions",
     "faq.subtitle": "Find answers to the most common questions about our products, delivery and customer service.",
     "faq.products.title": "Our products",
@@ -1875,7 +1760,6 @@
     "faq.contact.subtitle": "Our team is here to help. Don't hesitate to contact us, we will respond as soon as possible.",
     "faq.contact.email": "Email",
     "faq.contact.phone": "Phone",
-
     "warranty.title": "Warranty",
     "warranty.subtitle": "Your peace of mind, our commitment",
     "warranty.coverage.title": "Warranty coverage",
@@ -1899,7 +1783,6 @@
     "warranty.process.return.desc": "Depending on the case: free return of defective product or on-site intervention (Lille region only).",
     "warranty.process.repair": "Repair or replacement",
     "warranty.process.repair.desc": "Repair in our workshop or sending a new replacement product.",
-
     "returns.title": "Returns & Exchanges",
     "returns.subtitle": "Simple and transparent return policy",
     "returns.conditions.title": "Return conditions",
@@ -1929,7 +1812,6 @@
     "returns.fees.charged.changeofmind": "Change of mind",
     "returns.fees.charged.under100": "Order under €100",
     "returns.fees.charged.amount": "Fee: €9.90 deducted from refund",
-
     "delivery.title": "Delivery",
     "delivery.subtitle": "Complete information about our delivery options",
     "delivery.zones.title": "Delivery zones",
@@ -1955,7 +1837,6 @@
     "delivery.international.carrier": "Carrier: Mondial Relay International",
     "delivery.international.tracking": "Tracking number provided",
     "delivery.international.customs": "Customs duties: At the recipient's expense",
-
     "quiSuisJe.vision.creativity": "Creativity",
     "quiSuisJe.vision.creativity.desc": "Constantly exploring new forms, materials and techniques to create objects that surprise and inspire.",
     "quiSuisJe.vision.innovation": "Innovation",
@@ -1992,17 +1873,14 @@
     "quiSuisJe.mission.text": "Create beautiful, functional and environmentally respectful objects that improve everyone's daily life.",
     "quiSuisJe.vision.quote": "I believe that objects have a soul and that design can transform our relationship with everyday life. Each Alto Lille creation carries this conviction.",
     "quiSuisJe.vision.text": "My goal is to develop Alto Lille as a reference in the design of everyday objects, always prioritizing quality, authenticity and responsible innovation.",
-
     "about.hero.title": "Hi! I'm Anatole",
     "about.hero.subtitle": "Founder of Alto Lille, designer and lamp maker",
     "about.hero.passion": "Passionate about creation and French craftsmanship",
-
     "about.story.title": "My story",
     "about.story.intro": "Hello! My name is Anatole Collet and I'm 24 years old. After studying product design, I launched Alto Lille with a simple idea: create beautiful and useful objects, made locally with environmentally friendly materials.",
     "about.story.beginning": "It all started in my student room with my first 3D printer. I experimented, I failed, I started again... until I created my first Focus lamp. This little object made me want to continue and share my passion for design and craftsmanship.",
     "about.story.philosophy": "Today, each lamp I create in my Lille workshop tells a story. I favor sustainable materials like biosourced PLA and French oak, because I believe we can create beautiful objects without harming our planet.",
     "about.story.future": "My dream? That my creations find their place in your interiors and accompany you for a long time. Because in the end, what motivates me most is knowing that my lamps illuminate your precious moments.",
-
     "about.values.title": "What guides me",
     "about.values.subtitle": "The values that drive me daily in my work",
     "about.values.creativity.title": "Creativity",
@@ -2011,17 +1889,14 @@
     "about.values.sustainability.description": "I choose my materials carefully: biosourced PLA, French wood, recyclable packaging. Our planet deserves this attention.",
     "about.values.proximity.title": "Proximity",
     "about.values.proximity.description": "From design to manufacturing, everything happens in Lille. I love this direct relationship with my customers and this local production.",
-
     "about.workshop.title": "My workshop",
     "about.workshop.description": "It's in my small Lille workshop that all my creations are born. Between 3D printers, woodworking tools and prototypes in progress, it's my creative playground. Each lamp is hand-assembled with the greatest care.",
     "about.workshop.quote": "« A workshop is where ideas take shape and where craftsmanship regains its nobility. »",
-
     "about.contact.title": "Let's chat?",
     "about.contact.subtitle": "I love talking with people who are interested in my creations. Don't hesitate to contact me!",
     "about.contact.email": "altolille@gmail.com",
     "about.contact.phone": "+33 7 82 08 66 90",
     "about.contact.availability": "I usually respond within 24h • Monday to Friday",
-
     "cgv.title": "Terms and Conditions of Sale",
     "cgv.article1.title": "Article 1 - Purpose",
     "cgv.article1.text": "These general terms and conditions of sale apply, without restriction or reservation, to all sales of products carried out by Alto Lille to non-professional buyers (\"consumers\"), who accept these conditions without reservation.",
@@ -2069,7 +1944,6 @@
     "cgv.article15.contact.email": "Email:",
     "cgv.article15.contact.phone": "Phone:",
     "cgv.lastUpdate": "Last updated: June 1, 2025",
-
     "mentions.title": "Legal Notice",
     "mentions.editor.title": "Site Publisher",
     "mentions.editor.company": "Alto Lille",
@@ -2103,9 +1977,7 @@
     "mentions.links.text": "The hyperlinks set up within the framework of this website towards other resources present on the Internet cannot engage the responsibility of Alto Lille.",
     "mentions.law.title": "Applicable Law",
     "mentions.law.text": "Both this site and the terms and conditions of its use are governed by French law, regardless of the place of use. In the event of possible dispute, and after the failure of any attempt to find an amicable solution, French courts will have sole jurisdiction to hear this dispute.",
-
     "about.description": "Industrial designer specialized in everyday object design, Anatole Collet designs and manufactures products combining aesthetics, functionality and eco-responsibility from his Alto Lille workshop.",
-
     "faq.support.title": "Support and warranty",
     "faq.support.warranty.title": "What is the warranty on products?",
     "faq.support.warranty.answer": "All our products benefit from a 2-year commercial warranty covering manufacturing defects under normal conditions of use, in addition to the legal warranty of conformity.",
@@ -2116,15 +1988,12 @@
     "faq.technical.installation.answer": "The FOCUS.01 is assembled without tools in a few minutes. An illustrated manual is provided with the product. Simply assemble the oak base, insert the PLA lampshade and plug in the included LED bulb.",
     "faq.technical.maintenance.title": "How to maintain my lamp?",
     "faq.technical.maintenance.answer": "Clean the PLA lampshade with a slightly damp cloth. For the oak base, use a wood-specific care product. Avoid aggressive chemicals.",
-
     "product.color": "Color",
     "product.images": "images",
-
     "colors.bleu": "Blue",
     "colors.rouge": "Red",
     "colors.orange": "Orange",
     "colors.blanc": "White",
-
     "livraison.title": "Delivery",
     "livraison.subtitle": "Complete information about our delivery options",
     "livraison.zones.title": "Delivery zones",
@@ -2207,7 +2076,6 @@
     "livraison.contact.phone": "📞 Phone: +33 782 086 690",
     "livraison.contact.hours": "🕒 Hours: Monday to Friday, 9am-6pm",
     "livraison.notice": "💡 Good to know: Our delivery times are given as an indication. During busy periods (holidays, promotions), these delays may be slightly extended. We will keep you informed of any potential delays.",
-
     "retours.title": "Returns and exchanges",
     "retours.subtitle": "Return policy and exchange conditions",
     "retours.withdrawal.title": "Right of withdrawal",
@@ -2281,15 +2149,14 @@
     "retours.contact.hours": "🕒 Hours: Monday to Friday, 9am-6pm",
     "retours.contact.emailSubject": "Email subject: \"Return request - Order #[your number]\"",
     "retours.commitment": "💚 Our commitment: Your satisfaction is our priority. We do everything possible to process your returns in the best time frame and offer you an exceptional customer experience.",
-
     "garantie.title": "Warranty and customer service",
     "garantie.subtitle": "Detailed information about our warranties",
     "garantie.commitment.title": "Our quality commitment",
     "garantie.commitment.description": "At Alto Lille, we pay particular attention to the quality of our products. Each lamp is designed and manufactured with care in our Lille workshop, using durable materials and proven artisanal techniques.",
-    "garantie.commercial.title": "Alto Lille commercial warranty",
-    "garantie.commercial.duration": "2 years on all our products",
-    "garantie.commercial.coverage": "This warranty covers manufacturing and material defects under normal conditions of use.",
-    "garantie.legal.title": "Legal warranties",
+    "garantie.commercial.title": "Commercial warranty",
+    "garantie.commercial.duration": "Duration: 2 years",
+    "garantie.commercial.coverage": "Coverage: Manufacturing defects",
+    "garantie.legal.title": "Legal warranty",
     "garantie.legal.description": "In addition to our commercial warranty, you benefit from all legal warranties:",
     "garantie.legal.conformity.title": "Conformity warranty",
     "garantie.legal.conformity.duration": "Duration: 2 years from delivery",
@@ -2315,7 +2182,7 @@
     "garantie.coverage.notCovered.modifications": "Unauthorized modifications or repairs",
     "garantie.coverage.notCovered.normalWear": "Normal wear (wood color variation, micro-scratches)",
     "garantie.coverage.notCovered.overvoltage": "Damage due to electrical overvoltage",
-    "garantie.process.title": "How to claim warranty",
+    "garantie.process.title": "Warranty procedure",
     "garantie.process.step1.title": "Contact our customer service",
     "garantie.process.step1.description": "Send an email to altolille@gmail.com with your order number, problem description and photos if possible.",
     "garantie.process.step2.title": "Remote diagnosis",
@@ -2370,21 +2237,16 @@
     "garantie.maintenance.precautions.humidity": "Do not expose to humidity",
     "garantie.maintenance.precautions.bulbSpecs": "Use only E14 bulbs max 60W",
     "garantie.maintenance.precautions.unplugBeforeCleaning": "Unplug before cleaning",
-    "garantie.contact.title": "Customer service contact",
+    "garantie.contact.title": "Warranty service",
     "garantie.contact.service": "🔧 Customer service: altolille@gmail.com",
-    "garantie.contact.phone": "📞 Phone: +33 782 086 690",
-    "garantie.contact.hours": "🕒 Hours: Monday to Friday, 9am-6pm",
+    "garantie.contact.phone": "Phone: +33 782 086 690",
+    "garantie.contact.hours": "Monday to Friday, 9 AM-6 PM",
     "garantie.contact.workshop": "📍 Workshop: 95 rue Pierre Ledent, 62170 Montreuil-sur-Mer",
     "garantie.contact.emailSubject": "Email subject: \"Customer service - Warranty - Order #[your number]\"",
     "garantie.promise": "💚 Our promise: Your satisfaction is our absolute priority. If you are not completely satisfied with your Alto Lille product, we will do everything possible to find a suitable solution.",
-    "garantie.subtitle": "Detailed information about our warranties",
-    "garantie.legal.title": "Legal warranty",
     "garantie.legal.conformity": "Conformity warranty: 2 years",
     "garantie.legal.defects": "Hidden defects warranty",
     "garantie.legal.text": "In accordance with the Consumer Code, all our products benefit from the legal warranty of conformity and the warranty against hidden defects.",
-    "garantie.commercial.title": "Commercial warranty",
-    "garantie.commercial.duration": "Duration: 2 years",
-    "garantie.commercial.coverage": "Coverage: Manufacturing defects",
     "garantie.commercial.conditions": "Under normal conditions of use",
     "garantie.commercial.text": "Alto Lille grants a 2-year commercial warranty on all its products, covering manufacturing defects under normal conditions of use.",
     "garantie.exclusions.title": "Exclusions",
@@ -2392,17 +2254,12 @@
     "garantie.exclusions.accident": "Accidental damage",
     "garantie.exclusions.wear": "Normal wear",
     "garantie.exclusions.modification": "Unauthorized modifications",
-    "garantie.process.title": "Warranty procedure",
     "garantie.process.step1": "1. Contact our customer service",
     "garantie.process.step2": "2. Describe the problem encountered",
     "garantie.process.step3": "3. Send photos if necessary",
     "garantie.process.step4": "4. We evaluate your request",
     "garantie.process.step5": "5. Repair, exchange or refund",
-    "garantie.contact.title": "Warranty service",
     "garantie.contact.email": "Email: altolille@gmail.com",
-    "garantie.contact.phone": "Phone: +33 782 086 690",
-    "garantie.contact.hours": "Monday to Friday, 9 AM-6 PM",
-
     "privacy.title": "Privacy Policy",
     "privacy.intro.title": "Introduction",
     "privacy.intro.text": "Alto Lille is committed to protecting your privacy. This privacy policy explains how we collect, use and protect your personal information when you use our website.",

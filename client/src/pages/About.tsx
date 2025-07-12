@@ -1,6 +1,7 @@
 import { Layout } from "@/components/Layout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
+import { DynamicImage } from "@/components/DynamicImage";
 import {
   Mail,
   Phone,
@@ -24,9 +25,10 @@ export default function About() {
               {/* Photo d'Anatole */}
               <div className="mb-8 flex justify-center">
                 <div className="relative">
-                  <img
-                    src="https://www.alto-lille.fr/uploads/6d140285-f1c2-4a80-bfde-d9848a4c5f92.jpg"
-                    alt="Anatole Collet - Fondateur d'Alto Lille"
+                  <DynamicImage
+                    illustrationKey="about.anatole"
+                    fallbackSrc="https://www.alto-lille.fr/uploads/6d140285-f1c2-4a80-bfde-d9848a4c5f92.jpg"
+                    fallbackAlt="Anatole Collet - Fondateur d'Alto Lille"
                     className="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover shadow-xl border-4 border-white dark:border-gray-700"
                   />
                   <div className="absolute -bottom-2 -right-2 bg-amber-500 text-white p-2 rounded-full shadow-lg">

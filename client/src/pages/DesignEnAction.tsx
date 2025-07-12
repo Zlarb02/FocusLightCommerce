@@ -1,5 +1,8 @@
 import { Layout } from "@/components/Layout";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { DynamicImage } from "@/components/DynamicImage";
+import { SliderImage } from "@/components/SliderImage";
+import { useIllustrationUrl } from "@/hooks/use-illustration-url";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState, useEffect } from "react";
 
@@ -11,18 +14,27 @@ export default function DesignEnAction() {
 
   const slides = [
     {
-      src: "https://www.alto-lille.fr/uploads/sea-cle.jpg",
+      illustrationKey: "designInAction.seacle1",
+      fallbackSrc: "https://www.alto-lille.fr/uploads/sea-cle.jpg",
       alt: t("projects.seacle.slider.image2.alt"),
       caption: t("projects.seacle.slider.image2.caption"),
       rotate: false,
     },
     {
-      src: "https://www.alto-lille.fr/uploads/2f869fa9-1d39-42d4-8413-8913ca9a8046.png",
+      illustrationKey: "designInAction.seacle2",
+      fallbackSrc:
+        "https://www.alto-lille.fr/uploads/2f869fa9-1d39-42d4-8413-8913ca9a8046.png",
       alt: t("projects.seacle.slider.image3.alt"),
       caption: t("projects.seacle.slider.image3.caption"),
       rotate: false,
     },
   ];
+
+  // Get current slide URL dynamically
+  const currentSlideIllustration = useIllustrationUrl(
+    slides[currentSlide]?.illustrationKey, 
+    slides[currentSlide]?.fallbackSrc
+  );
 
   // Auto-slider effect with progress
   useEffect(() => {
@@ -182,11 +194,12 @@ export default function DesignEnAction() {
                     {/* Slider principal */}
                     <div
                       className="relative w-full h-full overflow-hidden rounded-r-2xl lg:rounded-r-none group cursor-pointer"
-                      onClick={() => setModalImage(slides[currentSlide].src)}
+                      onClick={() => setModalImage(currentSlideIllustration.url || slides[currentSlide].fallbackSrc)}
                     >
                       <div className="relative w-full h-full">
-                        <img
-                          src={slides[currentSlide].src}
+                        <SliderImage
+                          illustrationKey={slides[currentSlide].illustrationKey}
+                          fallbackSrc={slides[currentSlide].fallbackSrc}
                           alt={slides[currentSlide].alt}
                           className="w-full h-full object-cover transition-all duration-500 group-hover:scale-105"
                           style={
@@ -324,11 +337,10 @@ export default function DesignEnAction() {
                       <div className="lg:col-span-1">
                         <div className="relative group">
                           <div className="aspect-[3/4] overflow-hidden rounded-xl shadow-lg bg-gray-100 dark:bg-gray-700">
-                            <img
-                              src="https://www.alto-lille.fr/uploads/8c4bf80d-6019-445c-9877-bbb91d3fe951.jpg"
-                              alt={t(
-                                "projects.seacle.context.volunteersImage.alt"
-                              )}
+                            <DynamicImage
+                              illustrationKey="designInAction.project1"
+                              fallbackSrc="https://www.alto-lille.fr/uploads/8c4bf80d-6019-445c-9877-bbb91d3fe951.jpg"
+                              alt={t("projects.seacle.context.volunteersImage.alt")}
                               className="w-full h-full object-cover"
                               style={{
                                 transform: "rotate(90deg)",
@@ -353,8 +365,9 @@ export default function DesignEnAction() {
                   </h4>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div className="text-center">
-                      <img
-                        src="https://www.alto-lille.fr/uploads/f5d04e1c-e453-4ee5-8b73-ac4435453b84.jpg"
+                      <DynamicImage
+                        illustrationKey="designInAction.gallery1"
+                        fallbackSrc="https://www.alto-lille.fr/uploads/f5d04e1c-e453-4ee5-8b73-ac4435453b84.jpg"
                         alt="Gants de protection"
                         className="w-full h-48 object-cover rounded-lg shadow-md mb-4 cursor-pointer hover:opacity-90 transition-opacity"
                         onClick={() =>
@@ -368,8 +381,9 @@ export default function DesignEnAction() {
                       </p>
                     </div>
                     <div className="text-center">
-                      <img
-                        src="https://www.alto-lille.fr/uploads/0e82ffea-51c2-4782-985a-e6733d240efc.jpg"
+                      <DynamicImage
+                        illustrationKey="designInAction.gallery2"
+                        fallbackSrc="https://www.alto-lille.fr/uploads/0e82ffea-51c2-4782-985a-e6733d240efc.jpg"
                         alt="Tamis pour filtrer le sable"
                         className="w-full h-48 object-cover rounded-lg shadow-md mb-4 cursor-pointer hover:opacity-90 transition-opacity"
                         onClick={() =>

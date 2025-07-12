@@ -1,500 +1,1684 @@
 import DashboardLayout from "./DashboardLayout";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { Save, Image, Trash2, Plus, Star } from "lucide-react";
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Save,
+  Search,
+  Plus,
+  Edit,
+  Trash2,
+  Languages,
+  Download,
+  Upload,
+  RotateCcw,
+  Check,
+  X,
+  AlertTriangle,
+  ChevronLeft,
+  ChevronRight,
+  BarChart3,
+  Image,
+  FileText,
+} from "lucide-react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { queryClient, apiRequest } from "@/lib/queryClient";
+import {
+  useIllustrations,
+  useAddIllustration,
+  useUpdateIllustration,
+  useDeleteIllustration,
+  type Illustration,
+  type IllustrationEntry,
+} from "@/hooks/use-illustrations";
 
-const homeContentSchema = z.object({
-  heroTitle: z.string().min(1, "Le titre est requis"),
-  heroSubtitle: z.string().min(1, "Le sous-titre est requis"),
-  featuresTitle: z.string().min(1, "Le titre est requis"),
-  featuresDescription: z.string().min(1, "La description est requise"),
-  testimonialsTitle: z.string().min(1, "Le titre est requis"),
-});
+interface Translation {
+  key: string;
+  fr: string;
+  en: string;
+}
 
-const socialLinksSchema = z.object({
-  facebook: z.string().url("L'URL n'est pas valide").or(z.string().length(0)),
-  instagram: z.string().url("L'URL n'est pas valide").or(z.string().length(0)),
-  twitter: z.string().url("L'URL n'est pas valide").or(z.string().length(0)),
-  linkedin: z.string().url("L'URL n'est pas valide").or(z.string().length(0)),
-});
+interface TranslationEntry {
+  key: string;
+  value: string;
+  language: "fr" | "en";
+}
 
-type HomeContentFormValues = z.infer<typeof homeContentSchema>;
-type SocialLinksFormValues = z.infer<typeof socialLinksSchema>;
+interface PaginatedResponse {
+  translations: Translation[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+    hasNextPage: boolean;
+    hasPrevPage: boolean;
+  };
+}
+
+interface TranslationStats {
+  totalKeys: number;
+  frTranslations: number;
+  enTranslations: number;
+  missingFr: number;
+  missingEn: number;
+}
+
+interface ImageItem {
+  key: string;
+  title: string;
+  url: string;
+  description?: string;
+  category: string;
+  pages: string[];
+}
+
+interface ImageEntry {
+  key: string;
+  title: string;
+  url: string;
+  description?: string;
+  category: string;
+}
 
 export default function Contenu() {
   const { toast } = useToast();
-  const [selectedTab, setSelectedTab] = useState("home");
-  const [bannerImages, setBannerImages] = useState([
-    {
-      id: 1,
-      title: "Bannière principale",
-      path: "/src/assets/images/banner1.jpg",
-    },
-    {
-      id: 2,
-      title: "Bannière produits",
-      path: "/src/assets/images/banner2.jpg",
-    },
-  ]);
-  const [testimonials, setTestimonials] = useState([
-    {
-      id: 1,
-      name: "Marie T.",
-      role: "Architecte d'intérieur",
-      content:
-        "Design épuré et matériaux de qualité. La lampe FOCUS.01 de Alto sublime parfaitement mon bureau et crée une ambiance de travail idéale.",
-      avatar: "",
-      rating: 5,
-    },
-    {
-      id: 2,
-      name: "Pierre L.",
-      role: "Designer",
-      content:
-        "J'adore le concept éco-responsable allié à un design minimaliste. La version bleue de la FOCUS.01 apporte une touche de couleur subtile à mon salon.",
-      avatar: "",
-      rating: 5,
-    },
-    {
-      id: 3,
-      name: "Sophie C.",
-      role: "Décoratrice",
-      content:
-        "Livraison rapide et emballage soigné. La lampe est encore plus belle en vrai que sur les photos. Un achat que je ne regrette pas !",
-      avatar: "",
-      rating: 4,
-    },
-  ]);
+  const [mainTab, setMainTab] = useState("textes");
+  const [selectedTab, setSelectedTab] = useState("editor");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize] = useState(50);
+  const [selectedLanguage, setSelectedLanguage] = useState<"all" | "fr" | "en">(
+    "all"
+  );
+  const [editingTranslation, setEditingTranslation] =
+    useState<Translation | null>(null);
+  const [newTranslation, setNewTranslation] = useState({
+    key: "",
+    valueFr: "",
+    valueEn: "",
+  });
+  const [showAddDialog, setShowAddDialog] = useState(false);
+  const [showEditDialog, setShowEditDialog] = useState(false);
+  const [deleteKey, setDeleteKey] = useState<string | null>(null);
+  const [pendingChanges, setPendingChanges] = useState<TranslationEntry[]>([]);
+  const [rawJsonValue, setRawJsonValue] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
 
-  const homeContentForm = useForm<HomeContentFormValues>({
-    resolver: zodResolver(homeContentSchema),
-    defaultValues: {
-      heroTitle: "Alto",
-      heroSubtitle:
-        "Lampe d'appoint FOCUS.01 éco-responsable aux lignes épurées, conçue par Anatole Collet",
-      featuresTitle: "Conception & Détails",
-      featuresDescription:
-        "Découvrez les caractéristiques uniques qui font de FOCUS.01 un choix durable et élégant pour votre intérieur.",
-      testimonialsTitle: "Ce qu'en disent nos clients",
-    },
+  // États pour la gestion des images
+  const [imageSearchQuery, setImageSearchQuery] = useState("");
+  const [imageCurrentPage, setImageCurrentPage] = useState(1);
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [editingImage, setEditingImage] = useState<Illustration | null>(null);
+  const [newImage, setNewImage] = useState({
+    key: "",
+    title: "",
+    url: "",
+    description: "",
+    category: "general",
+    pages: [] as string[],
+  });
+  const [showAddImageDialog, setShowAddImageDialog] = useState(false);
+  const [showEditImageDialog, setShowEditImageDialog] = useState(false);
+  const [deleteImageKey, setDeleteImageKey] = useState<string | null>(null);
+  const [debouncedImageSearch, setDebouncedImageSearch] = useState("");
+
+  // Hooks pour les illustrations
+  const { data: illustrationsData, isLoading: illustrationsLoading } =
+    useIllustrations(
+      imageCurrentPage,
+      12, // Afficher 12 images par page
+      debouncedImageSearch,
+      selectedCategory === "all" ? "" : selectedCategory
+    );
+
+  const addIllustrationMutation = useAddIllustration();
+  const updateIllustrationMutation = useUpdateIllustration();
+  const deleteIllustrationMutation = useDeleteIllustration();
+
+  // Debounce pour la recherche
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchQuery);
+      setCurrentPage(1); // Reset à la page 1 lors d'une nouvelle recherche
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
+  // Debounce pour la recherche d'images
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedImageSearch(imageSearchQuery);
+      setImageCurrentPage(1);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [imageSearchQuery]);
+
+  // Récupérer les statistiques
+  const { data: stats } = useQuery({
+    queryKey: ["/api/translations/stats"],
   });
 
-  const socialLinksForm = useForm<SocialLinksFormValues>({
-    resolver: zodResolver(socialLinksSchema),
-    defaultValues: {
-      facebook: "",
-      instagram: "À venir",
-      twitter: "",
-      linkedin: "",
-    },
-  });
-
-  const onSubmitHomeContent = (data: HomeContentFormValues) => {
-    // Dans un environnement réel, envoyez ces données à l'API
-    toast({
-      title: "Contenu mis à jour",
-      description:
-        "Le contenu de la page d'accueil a été mis à jour avec succès.",
-    });
-  };
-
-  const onSubmitSocialLinks = (data: SocialLinksFormValues) => {
-    // Dans un environnement réel, envoyez ces données à l'API
-    toast({
-      title: "Liens sociaux mis à jour",
-      description: "Les liens sociaux ont été mis à jour avec succès.",
-    });
-  };
-
-  const handleImageUpload = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    imageId?: number
-  ) => {
-    // Simuler l'upload d'image
-    const file = e.target.files?.[0];
-    if (file) {
-      toast({
-        title: "Image téléchargée",
-        description: `L'image ${file.name} a été téléchargée avec succès.`,
+  // Récupérer les traductions paginées
+  const { data: paginatedData, isLoading } = useQuery({
+    queryKey: ["/api/translations", currentPage, pageSize, debouncedSearch],
+    queryFn: async (): Promise<PaginatedResponse> => {
+      const params = new URLSearchParams({
+        page: currentPage.toString(),
+        limit: pageSize.toString(),
+        search: debouncedSearch,
       });
 
-      // Si c'est une mise à jour d'une image existante
-      if (imageId) {
-        setBannerImages(
-          bannerImages.map((img) =>
-            img.id === imageId
-              ? { ...img, path: URL.createObjectURL(file) }
-              : img
-          )
-        );
+      const response = await fetch(`/api/translations?${params}`);
+      if (!response.ok) {
+        throw new Error("Erreur lors du chargement des traductions");
       }
+
+      return response.json();
+    },
+  });
+
+  // Récupérer le JSON complet (pour le mode JSON uniquement)
+  const { data: fullTranslations } = useQuery({
+    queryKey: ["/api/translations/full"],
+    queryFn: async () => {
+      const response = await fetch("/api/translations/full");
+      if (!response.ok) {
+        throw new Error("Erreur lors du chargement du JSON complet");
+      }
+      return response.json();
+    },
+    enabled: selectedTab === "json", // Ne charger que quand on est sur l'onglet JSON
+  });
+
+  // Mutation pour mettre à jour une traduction
+  const updateSingleMutation = useMutation({
+    mutationFn: async (data: TranslationEntry) => {
+      return apiRequest("PUT", "/api/translations/single", data);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/translations"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/translations/stats"] });
+      window.dispatchEvent(new CustomEvent("translationsUpdated"));
+      toast({
+        title: "Succès",
+        description: "Traduction mise à jour avec succès",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Erreur",
+        description: "Erreur lors de la mise à jour de la traduction",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Mutation pour mise à jour en lot
+  const updateBulkMutation = useMutation({
+    mutationFn: async (data: TranslationEntry[]) => {
+      return apiRequest("PUT", "/api/translations/bulk", data);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/translations"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/translations/stats"] });
+      setPendingChanges([]);
+      window.dispatchEvent(new CustomEvent("translationsUpdated"));
+      toast({
+        title: "Succès",
+        description: "Traductions mises à jour avec succès",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Erreur",
+        description: "Erreur lors de la mise à jour des traductions",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Mutation pour ajouter une traduction
+  const addMutation = useMutation({
+    mutationFn: async (data: { key: string; fr: string; en: string }) => {
+      return apiRequest("POST", "/api/translations", data);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/translations"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/translations/stats"] });
+      setNewTranslation({ key: "", valueFr: "", valueEn: "" });
+      setShowAddDialog(false);
+      window.dispatchEvent(new CustomEvent("translationsUpdated"));
+      toast({
+        title: "Succès",
+        description: "Traduction ajoutée avec succès",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Erreur",
+        description: "Erreur lors de l'ajout de la traduction",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Mutation pour supprimer une traduction
+  const deleteMutation = useMutation({
+    mutationFn: async (key: string) => {
+      return apiRequest(
+        "DELETE",
+        `/api/translations/${encodeURIComponent(key)}`
+      );
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/translations"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/translations/stats"] });
+      setDeleteKey(null);
+      window.dispatchEvent(new CustomEvent("translationsUpdated"));
+      toast({
+        title: "Succès",
+        description: "Traduction supprimée avec succès",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Erreur",
+        description: "Erreur lors de la suppression de la traduction",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Mutation pour mise à jour complète via JSON
+  const updateFullJsonMutation = useMutation({
+    mutationFn: async (data: any) => {
+      return apiRequest("PUT", "/api/translations/full", data);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/translations"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/translations/stats"] });
+      window.dispatchEvent(new CustomEvent("translationsUpdated"));
+      toast({
+        title: "Succès",
+        description: "Fichier de traductions mis à jour avec succès",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Erreur",
+        description: "Erreur lors de la mise à jour du fichier de traductions",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Initialiser le JSON brut quand les données sont chargées
+  useEffect(() => {
+    if (fullTranslations && selectedTab === "json") {
+      setRawJsonValue(JSON.stringify(fullTranslations, null, 2));
+    }
+  }, [fullTranslations, selectedTab]);
+
+  // Filtrer les traductions selon la langue sélectionnée
+  const filteredTranslations =
+    paginatedData?.translations?.filter((translation) => {
+      if (selectedLanguage === "all") return true;
+      if (selectedLanguage === "fr") return translation.fr;
+      if (selectedLanguage === "en") return translation.en;
+      return true;
+    }) || [];
+
+  // Gérer les changements en attente
+  const handleTranslationChange = (
+    key: string,
+    language: "fr" | "en",
+    value: string
+  ) => {
+    setPendingChanges((prev) => {
+      const existing = prev.find(
+        (change) => change.key === key && change.language === language
+      );
+
+      if (existing) {
+        return prev.map((change) =>
+          change.key === key && change.language === language
+            ? { ...change, value }
+            : change
+        );
+      } else {
+        return [...prev, { key, language, value }];
+      }
+    });
+  };
+
+  // Obtenir la valeur actuelle d'une traduction (avec changements en attente)
+  const getCurrentValue = (key: string, language: "fr" | "en"): string => {
+    const pendingChange = pendingChanges.find(
+      (change) => change.key === key && change.language === language
+    );
+    if (pendingChange) {
+      return pendingChange.value;
+    }
+
+    const translation = filteredTranslations.find((t) => t.key === key);
+    return translation ? translation[language] : "";
+  };
+
+  // Vérifier si une traduction a des changements en attente
+  const hasPendingChanges = (key: string): boolean => {
+    return pendingChanges.some((change) => change.key === key);
+  };
+
+  const handleSavePendingChanges = () => {
+    if (pendingChanges.length > 0) {
+      updateBulkMutation.mutate(pendingChanges);
     }
   };
 
-  const handleDeleteTestimonial = (id: number) => {
-    setTestimonials(testimonials.filter((t) => t.id !== id));
-    toast({
-      title: "Témoignage supprimé",
-      description: "Le témoignage a été supprimé avec succès.",
+  const handleCancelPendingChanges = () => {
+    setPendingChanges([]);
+  };
+
+  const handleEditTranslation = (translation: Translation) => {
+    setEditingTranslation(translation);
+    setShowEditDialog(true);
+  };
+
+  const handleSaveEdit = () => {
+    if (!editingTranslation) return;
+
+    const changes: TranslationEntry[] = [];
+
+    const originalTranslation = filteredTranslations.find(
+      (t) => t.key === editingTranslation.key
+    );
+
+    if (
+      originalTranslation &&
+      editingTranslation.fr !== originalTranslation.fr
+    ) {
+      changes.push({
+        key: editingTranslation.key,
+        language: "fr",
+        value: editingTranslation.fr,
+      });
+    }
+
+    if (
+      originalTranslation &&
+      editingTranslation.en !== originalTranslation.en
+    ) {
+      changes.push({
+        key: editingTranslation.key,
+        language: "en",
+        value: editingTranslation.en,
+      });
+    }
+
+    if (changes.length > 0) {
+      updateBulkMutation.mutate(changes);
+    }
+
+    setShowEditDialog(false);
+    setEditingTranslation(null);
+  };
+
+  const handleAddTranslation = () => {
+    if (!newTranslation.key.trim()) return;
+
+    addMutation.mutate({
+      key: newTranslation.key,
+      fr: newTranslation.valueFr,
+      en: newTranslation.valueEn,
     });
   };
 
-  const addTestimonial = () => {
-    const newId = Math.max(...testimonials.map((t) => t.id), 0) + 1;
-    setTestimonials([
-      ...testimonials,
-      {
-        id: newId,
-        name: "Nouveau client",
-        role: "Profession",
-        content: "Témoignage du client...",
-        avatar: "",
-        rating: 5,
+  // Fonctions de gestion des illustrations
+  const handleAddIllustration = () => {
+    if (!newImage.key.trim() || !newImage.title.trim()) return;
+
+    addIllustrationMutation.mutate(newImage, {
+      onSuccess: () => {
+        toast({
+          title: "Succès",
+          description: "Illustration ajoutée avec succès",
+        });
+        setNewImage({
+          key: "",
+          title: "",
+          url: "",
+          description: "",
+          category: "general",
+          pages: [],
+        });
+        setShowAddImageDialog(false);
       },
-    ]);
-    toast({
-      title: "Témoignage ajouté",
-      description: "Un nouveau témoignage a été ajouté. Modifiez son contenu.",
+      onError: (error: any) => {
+        toast({
+          title: "Erreur",
+          description:
+            error.message || "Erreur lors de l'ajout de l'illustration",
+          variant: "destructive",
+        });
+      },
     });
   };
+
+  const handleEditIllustration = (illustration: Illustration) => {
+    setEditingImage(illustration);
+    setShowEditImageDialog(true);
+  };
+
+  const handleSaveIllustrationEdit = () => {
+    if (!editingImage) return;
+
+    updateIllustrationMutation.mutate(editingImage, {
+      onSuccess: () => {
+        toast({
+          title: "Succès",
+          description: "Illustration mise à jour avec succès",
+        });
+        setShowEditImageDialog(false);
+        setEditingImage(null);
+      },
+      onError: (error: any) => {
+        toast({
+          title: "Erreur",
+          description:
+            error.message || "Erreur lors de la mise à jour de l'illustration",
+          variant: "destructive",
+        });
+      },
+    });
+  };
+
+  const handleDeleteIllustration = (key: string) => {
+    deleteIllustrationMutation.mutate(key, {
+      onSuccess: () => {
+        toast({
+          title: "Succès",
+          description: "Illustration supprimée avec succès",
+        });
+        setDeleteImageKey(null);
+      },
+      onError: (error: any) => {
+        toast({
+          title: "Erreur",
+          description:
+            error.message || "Erreur lors de la suppression de l'illustration",
+          variant: "destructive",
+        });
+      },
+    });
+  };
+
+  const handleSaveJsonChanges = () => {
+    try {
+      const parsedJson = JSON.parse(rawJsonValue);
+      updateFullJsonMutation.mutate(parsedJson);
+    } catch (error) {
+      toast({
+        title: "Erreur",
+        description: "Le JSON n'est pas valide. Veuillez vérifier la syntaxe.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  if (isLoading && !paginatedData) {
+    return (
+      <DashboardLayout title="Contenu du site">
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+            <p>Chargement des traductions...</p>
+          </div>
+        </div>
+      </DashboardLayout>
+    );
+  }
 
   return (
-    <DashboardLayout title="Gestion du contenu">
-      <Tabs
-        defaultValue="home"
-        value={selectedTab}
-        onValueChange={setSelectedTab}
-      >
-        <TabsList className="mb-6">
-          <TabsTrigger value="home">Page d'accueil</TabsTrigger>
-          <TabsTrigger value="banners">Bannières</TabsTrigger>
-          <TabsTrigger value="testimonials">Témoignages</TabsTrigger>
-          <TabsTrigger value="social">Réseaux sociaux</TabsTrigger>
-        </TabsList>
-
-        {/* Page d'accueil */}
-        <TabsContent value="home">
-          <Card>
-            <CardContent className="pt-6">
-              <Form {...homeContentForm}>
-                <form
-                  onSubmit={homeContentForm.handleSubmit(onSubmitHomeContent)}
-                  className="space-y-6"
+    <DashboardLayout title="Contenu du site">
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold">Gestion du contenu</h1>
+            <p className="text-muted-foreground">
+              Gérez les textes et images de votre site web
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            {mainTab === "textes" && pendingChanges.length > 0 && (
+              <>
+                <Badge
+                  variant="outline"
+                  className="bg-yellow-50 text-yellow-700 border-yellow-200"
                 >
-                  <div className="space-y-4">
-                    <h3 className="font-medium text-lg mb-2">Section Hero</h3>
-                    <FormField
-                      control={homeContentForm.control}
-                      name="heroTitle"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Titre principal</FormLabel>
-                          <FormControl>
-                            <Input {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={homeContentForm.control}
-                      name="heroSubtitle"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Sous-titre</FormLabel>
-                          <FormControl>
-                            <Textarea {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-
-                  <div className="space-y-4">
-                    <h3 className="font-medium text-lg mb-2">
-                      Section Caractéristiques
-                    </h3>
-                    <FormField
-                      control={homeContentForm.control}
-                      name="featuresTitle"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Titre</FormLabel>
-                          <FormControl>
-                            <Input {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={homeContentForm.control}
-                      name="featuresDescription"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Description</FormLabel>
-                          <FormControl>
-                            <Textarea {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-
-                  <div className="space-y-4">
-                    <h3 className="font-medium text-lg mb-2">
-                      Section Témoignages
-                    </h3>
-                    <FormField
-                      control={homeContentForm.control}
-                      name="testimonialsTitle"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Titre</FormLabel>
-                          <FormControl>
-                            <Input {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-
-                  <Button type="submit" className="mt-6">
-                    <Save className="mr-2 h-4 w-4" /> Enregistrer les
-                    modifications
-                  </Button>
-                </form>
-              </Form>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* Bannières */}
-        <TabsContent value="banners">
-          <Card>
-            <CardContent className="pt-6 space-y-6">
-              <h3 className="font-medium text-lg">Images de bannières</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {bannerImages.map((image) => (
-                  <div
-                    key={image.id}
-                    className="border rounded-lg overflow-hidden"
-                  >
-                    <div className="bg-slate-100 h-48 flex items-center justify-center overflow-hidden">
-                      <img
-                        src={image.path}
-                        alt={image.title}
-                        className="object-cover w-full h-full"
-                      />
-                    </div>
-                    <div className="p-4">
-                      <h4 className="font-medium mb-2">{image.title}</h4>
-                      <div className="flex items-center gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          asChild
-                          className="flex-1"
-                        >
-                          <label>
-                            <Image className="mr-2 h-4 w-4" />
-                            Changer l'image
-                            <input
-                              type="file"
-                              className="hidden"
-                              accept="image/*"
-                              onChange={(e) => handleImageUpload(e, image.id)}
-                            />
-                          </label>
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* Témoignages */}
-        <TabsContent value="testimonials">
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-medium text-lg">Témoignages clients</h3>
-                <Button onClick={addTestimonial} size="sm">
-                  <Plus className="h-4 w-4 mr-2" />
-                  Ajouter
+                  {pendingChanges.length} changement
+                  {pendingChanges.length > 1 ? "s" : ""} en attente
+                </Badge>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleCancelPendingChanges}
+                  disabled={updateBulkMutation.isPending}
+                >
+                  <RotateCcw className="h-4 w-4 mr-2" />
+                  Annuler
                 </Button>
-              </div>
+                <Button
+                  size="sm"
+                  onClick={handleSavePendingChanges}
+                  disabled={updateBulkMutation.isPending}
+                >
+                  <Save className="h-4 w-4 mr-2" />
+                  Enregistrer
+                </Button>
+              </>
+            )}
+          </div>
+        </div>
 
-              <div className="space-y-6">
-                {testimonials.map((testimonial) => (
-                  <div key={testimonial.id} className="border rounded-lg p-4">
-                    <div className="flex justify-between items-start">
-                      <div className="flex items-center gap-3">
-                        <div className="h-12 w-12 bg-slate-200 rounded-full flex items-center justify-center">
-                          {testimonial.avatar ? (
-                            <img
-                              src={testimonial.avatar}
-                              alt={testimonial.name}
-                              className="h-full w-full object-cover rounded-full"
-                            />
+        {/* Onglets principaux */}
+        <Tabs defaultValue="textes" value={mainTab} onValueChange={setMainTab}>
+          <TabsList>
+            <TabsTrigger value="textes" className="flex items-center gap-2">
+              <FileText className="h-4 w-4" />
+              Textes
+            </TabsTrigger>
+            <TabsTrigger value="images" className="flex items-center gap-2">
+              <Image className="h-4 w-4" />
+              Images
+            </TabsTrigger>
+          </TabsList>
+
+          {/* Onglet Textes */}
+          <TabsContent value="textes" className="space-y-6">
+            {/* Statistiques */}
+            {stats && (stats as TranslationStats) ? (
+              <Card>
+                <CardContent className="pt-6">
+                  <div className="flex items-center gap-2 mb-4">
+                    <BarChart3 className="h-5 w-5 text-muted-foreground" />
+                    <h3 className="font-medium">
+                      Statistiques des traductions
+                    </h3>
+                  </div>
+                  <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                    <div className="text-center p-3 bg-blue-50 rounded-lg">
+                      <div className="text-2xl font-bold text-blue-600">
+                        {(stats as TranslationStats).totalKeys}
+                      </div>
+                      <div className="text-sm text-blue-600">Total clés</div>
+                    </div>
+                    <div className="text-center p-3 bg-green-50 rounded-lg">
+                      <div className="text-2xl font-bold text-green-600">
+                        {(stats as TranslationStats).frTranslations}
+                      </div>
+                      <div className="text-sm text-green-600">Français</div>
+                    </div>
+                    <div className="text-center p-3 bg-purple-50 rounded-lg">
+                      <div className="text-2xl font-bold text-purple-600">
+                        {(stats as TranslationStats).enTranslations}
+                      </div>
+                      <div className="text-sm text-purple-600">Anglais</div>
+                    </div>
+                    <div className="text-center p-3 bg-orange-50 rounded-lg">
+                      <div className="text-2xl font-bold text-orange-600">
+                        {(stats as TranslationStats).missingFr}
+                      </div>
+                      <div className="text-sm text-orange-600">FR manquant</div>
+                    </div>
+                    <div className="text-center p-3 bg-red-50 rounded-lg">
+                      <div className="text-2xl font-bold text-red-600">
+                        {(stats as TranslationStats).missingEn}
+                      </div>
+                      <div className="text-sm text-red-600">EN manquant</div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ) : null}
+
+            {/* Avertissement professionnel */}
+            <Card className="border-amber-200 bg-amber-50">
+              <CardContent className="pt-6">
+                <div className="flex items-start gap-3">
+                  <AlertTriangle className="h-5 w-5 text-amber-600 mt-0.5 flex-shrink-0" />
+                  <div className="space-y-2">
+                    <p className="font-medium text-amber-900">
+                      Information importante sur la cohérence des traductions
+                    </p>
+                    <p className="text-sm text-amber-800 leading-relaxed">
+                      Lors de la modification des textes, veillez à maintenir la
+                      cohérence entre les versions française et anglaise.
+                      Assurez-vous que le sens, le ton et les informations
+                      techniques restent identiques dans les deux langues. Les
+                      clés de traduction doivent être conservées et ne pas être
+                      modifiées arbitrairement.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Tabs
+              defaultValue="editor"
+              value={selectedTab}
+              onValueChange={setSelectedTab}
+            >
+              <TabsList>
+                <TabsTrigger value="editor" className="flex items-center gap-2">
+                  <Languages className="h-4 w-4" />
+                  Interface simple
+                </TabsTrigger>
+                <TabsTrigger value="json" className="flex items-center gap-2">
+                  <Edit className="h-4 w-4" />
+                  Mode JSON brut
+                </TabsTrigger>
+              </TabsList>
+
+              {/* Interface simple d'édition */}
+              <TabsContent value="editor" className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Languages className="h-5 w-5" />
+                      Gestion des traductions - Interface simple
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    {/* Contrôles de filtrage et ajout */}
+                    <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+                      <div className="flex flex-col sm:flex-row gap-2 flex-1">
+                        <div className="relative flex-1">
+                          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                          <Input
+                            placeholder="Rechercher une clé ou un texte..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="pl-10"
+                          />
+                        </div>
+                        <select
+                          value={selectedLanguage}
+                          onChange={(e) =>
+                            setSelectedLanguage(
+                              e.target.value as "all" | "fr" | "en"
+                            )
+                          }
+                          className="px-3 py-2 border border-input bg-background rounded-md text-sm"
+                        >
+                          <option value="all">Toutes les langues</option>
+                          <option value="fr">Français uniquement</option>
+                          <option value="en">Anglais uniquement</option>
+                        </select>
+                      </div>
+                      <Button onClick={() => setShowAddDialog(true)}>
+                        <Plus className="h-4 w-4 mr-2" />
+                        Ajouter
+                      </Button>
+                    </div>
+
+                    {/* Pagination info */}
+                    {paginatedData && (
+                      <div className="flex items-center justify-between text-sm text-muted-foreground">
+                        <div>
+                          Affichage de{" "}
+                          {(paginatedData.pagination.page - 1) *
+                            paginatedData.pagination.limit +
+                            1}{" "}
+                          à{" "}
+                          {Math.min(
+                            paginatedData.pagination.page *
+                              paginatedData.pagination.limit,
+                            paginatedData.pagination.total
+                          )}{" "}
+                          sur {paginatedData.pagination.total} traductions
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() =>
+                              setCurrentPage((prev) => Math.max(1, prev - 1))
+                            }
+                            disabled={
+                              !paginatedData.pagination.hasPrevPage || isLoading
+                            }
+                          >
+                            <ChevronLeft className="h-4 w-4" />
+                            Précédent
+                          </Button>
+                          <span className="px-3 py-1 bg-muted rounded">
+                            Page {paginatedData.pagination.page} sur{" "}
+                            {paginatedData.pagination.totalPages}
+                          </span>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setCurrentPage((prev) => prev + 1)}
+                            disabled={
+                              !paginatedData.pagination.hasNextPage || isLoading
+                            }
+                          >
+                            Suivant
+                            <ChevronRight className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Tableau des traductions */}
+                    <div className="border rounded-lg">
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead className="w-1/4">Clé</TableHead>
+                            <TableHead className="w-3/8">Français</TableHead>
+                            <TableHead className="w-3/8">Anglais</TableHead>
+                            <TableHead className="w-24 text-center">
+                              Actions
+                            </TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {isLoading ? (
+                            <TableRow>
+                              <TableCell
+                                colSpan={4}
+                                className="text-center py-8"
+                              >
+                                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary mx-auto mb-2"></div>
+                                Chargement...
+                              </TableCell>
+                            </TableRow>
+                          ) : filteredTranslations.length === 0 ? (
+                            <TableRow>
+                              <TableCell
+                                colSpan={4}
+                                className="text-center py-8 text-muted-foreground"
+                              >
+                                Aucune traduction trouvée.
+                              </TableCell>
+                            </TableRow>
                           ) : (
-                            <span className="font-medium text-sm">
-                              {testimonial.name.charAt(0)}
-                            </span>
+                            filteredTranslations.map((translation) => (
+                              <TableRow
+                                key={translation.key}
+                                className={
+                                  hasPendingChanges(translation.key)
+                                    ? "bg-yellow-50"
+                                    : ""
+                                }
+                              >
+                                <TableCell className="font-mono text-xs">
+                                  <div className="flex items-center gap-2">
+                                    {translation.key}
+                                    {hasPendingChanges(translation.key) && (
+                                      <Badge
+                                        variant="outline"
+                                        className="bg-yellow-100 text-yellow-700"
+                                      >
+                                        Modifié
+                                      </Badge>
+                                    )}
+                                  </div>
+                                </TableCell>
+                                <TableCell>
+                                  <Textarea
+                                    value={getCurrentValue(
+                                      translation.key,
+                                      "fr"
+                                    )}
+                                    onChange={(e) =>
+                                      handleTranslationChange(
+                                        translation.key,
+                                        "fr",
+                                        e.target.value
+                                      )
+                                    }
+                                    className="min-h-[60px] resize-none"
+                                    placeholder="Texte en français..."
+                                  />
+                                </TableCell>
+                                <TableCell>
+                                  <Textarea
+                                    value={getCurrentValue(
+                                      translation.key,
+                                      "en"
+                                    )}
+                                    onChange={(e) =>
+                                      handleTranslationChange(
+                                        translation.key,
+                                        "en",
+                                        e.target.value
+                                      )
+                                    }
+                                    className="min-h-[60px] resize-none"
+                                    placeholder="Texte en anglais..."
+                                  />
+                                </TableCell>
+                                <TableCell>
+                                  <div className="flex items-center gap-1">
+                                    <Button
+                                      variant="ghost"
+                                      size="icon"
+                                      onClick={() =>
+                                        handleEditTranslation(translation)
+                                      }
+                                      className="h-8 w-8"
+                                    >
+                                      <Edit className="h-4 w-4" />
+                                    </Button>
+                                    <Button
+                                      variant="ghost"
+                                      size="icon"
+                                      onClick={() =>
+                                        setDeleteKey(translation.key)
+                                      }
+                                      className="h-8 w-8 text-red-600 hover:text-red-700"
+                                    >
+                                      <Trash2 className="h-4 w-4" />
+                                    </Button>
+                                  </div>
+                                </TableCell>
+                              </TableRow>
+                            ))
+                          )}
+                        </TableBody>
+                      </Table>
+                    </div>
+
+                    {/* Pagination en bas */}
+                    {paginatedData &&
+                      paginatedData.pagination.totalPages > 1 && (
+                        <div className="flex items-center justify-center gap-2">
+                          <Button
+                            variant="outline"
+                            onClick={() => setCurrentPage(1)}
+                            disabled={currentPage === 1 || isLoading}
+                          >
+                            1
+                          </Button>
+                          {currentPage > 3 && <span className="px-2">...</span>}
+                          {Array.from({ length: 5 }, (_, i) => {
+                            const pageNum = currentPage - 2 + i;
+                            if (
+                              pageNum < 1 ||
+                              pageNum > paginatedData.pagination.totalPages
+                            )
+                              return null;
+                            if (
+                              pageNum === 1 ||
+                              pageNum === paginatedData.pagination.totalPages
+                            )
+                              return null;
+
+                            return (
+                              <Button
+                                key={pageNum}
+                                variant={
+                                  pageNum === currentPage
+                                    ? "default"
+                                    : "outline"
+                                }
+                                onClick={() => setCurrentPage(pageNum)}
+                                disabled={isLoading}
+                              >
+                                {pageNum}
+                              </Button>
+                            );
+                          })}
+                          {currentPage <
+                            paginatedData.pagination.totalPages - 2 && (
+                            <span className="px-2">...</span>
+                          )}
+                          {paginatedData.pagination.totalPages > 1 && (
+                            <Button
+                              variant="outline"
+                              onClick={() =>
+                                setCurrentPage(
+                                  paginatedData.pagination.totalPages
+                                )
+                              }
+                              disabled={
+                                currentPage ===
+                                  paginatedData.pagination.totalPages ||
+                                isLoading
+                              }
+                            >
+                              {paginatedData.pagination.totalPages}
+                            </Button>
                           )}
                         </div>
-                        <div>
-                          <Input
-                            value={testimonial.name}
-                            onChange={(e) => {
-                              const newTestimonials = [...testimonials];
-                              const index = newTestimonials.findIndex(
-                                (t) => t.id === testimonial.id
-                              );
-                              newTestimonials[index].name = e.target.value;
-                              setTestimonials(newTestimonials);
-                            }}
-                            className="text-sm font-medium mb-1 h-8"
-                          />
-                          <Input
-                            value={testimonial.role}
-                            onChange={(e) => {
-                              const newTestimonials = [...testimonials];
-                              const index = newTestimonials.findIndex(
-                                (t) => t.id === testimonial.id
-                              );
-                              newTestimonials[index].role = e.target.value;
-                              setTestimonials(newTestimonials);
-                            }}
-                            className="text-xs text-muted-foreground h-6"
-                          />
-                        </div>
-                      </div>
+                      )}
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              {/* Mode JSON brut */}
+              <TabsContent value="json" className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Edit className="h-5 w-5" />
+                      Édition JSON brute
+                    </CardTitle>
+                    <p className="text-sm text-muted-foreground">
+                      Mode avancé : éditez directement le fichier JSON de
+                      traductions.
+                      <strong className="text-red-600">Attention</strong> : une
+                      syntaxe incorrecte peut casser le site.
+                    </p>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <Textarea
+                      value={rawJsonValue}
+                      onChange={(e) => setRawJsonValue(e.target.value)}
+                      className="min-h-[500px] font-mono text-sm"
+                      placeholder="Contenu JSON des traductions..."
+                    />
+                    <div className="flex items-center gap-2 justify-end">
                       <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => handleDeleteTestimonial(testimonial.id)}
-                        className="text-red-500 hover:text-red-700"
+                        variant="outline"
+                        onClick={() =>
+                          setRawJsonValue(
+                            JSON.stringify(fullTranslations, null, 2)
+                          )
+                        }
                       >
-                        <Trash2 className="h-4 w-4" />
+                        <RotateCcw className="h-4 w-4 mr-2" />
+                        Réinitialiser
+                      </Button>
+                      <Button
+                        onClick={handleSaveJsonChanges}
+                        disabled={updateFullJsonMutation.isPending}
+                      >
+                        <Save className="h-4 w-4 mr-2" />
+                        Sauvegarder JSON
                       </Button>
                     </div>
-                    <div className="mt-3">
-                      <div className="flex gap-1 mb-2">
-                        {[1, 2, 3, 4, 5].map((rating) => (
-                          <Button
-                            key={rating}
-                            variant="ghost"
-                            size="sm"
-                            className="p-0 w-6 h-6"
-                            onClick={() => {
-                              const newTestimonials = [...testimonials];
-                              const index = newTestimonials.findIndex(
-                                (t) => t.id === testimonial.id
-                              );
-                              newTestimonials[index].rating = rating;
-                              setTestimonials(newTestimonials);
-                            }}
-                          >
-                            <Star
-                              className={`h-4 w-4 ${
-                                rating <= testimonial.rating
-                                  ? "fill-yellow-400 text-yellow-400"
-                                  : "text-gray-300"
-                              }`}
-                            />
-                          </Button>
-                        ))}
-                      </div>
-                      <Textarea
-                        value={testimonial.content}
-                        onChange={(e) => {
-                          const newTestimonials = [...testimonials];
-                          const index = newTestimonials.findIndex(
-                            (t) => t.id === testimonial.id
-                          );
-                          newTestimonials[index].content = e.target.value;
-                          setTestimonials(newTestimonials);
-                        }}
-                        className="resize-none h-24"
+                  </CardContent>
+                </Card>
+              </TabsContent>
+            </Tabs>
+          </TabsContent>
+
+          {/* Onglet Images */}
+          <TabsContent value="images" className="space-y-6">
+            {/* Statistiques des images */}
+            <Card>
+              <CardContent className="pt-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <Image className="h-5 w-5 text-muted-foreground" />
+                  <h3 className="font-medium">
+                    Statistiques des illustrations
+                  </h3>
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="text-center p-3 bg-blue-50 rounded-lg">
+                    <div className="text-2xl font-bold text-blue-600">
+                      {illustrationsData?.pagination.total || 0}
+                    </div>
+                    <div className="text-sm text-blue-600">
+                      Total illustrations
+                    </div>
+                  </div>
+                  <div className="text-center p-3 bg-purple-50 rounded-lg">
+                    <div className="text-2xl font-bold text-purple-600">
+                      {illustrationsData?.categories.length || 0}
+                    </div>
+                    <div className="text-sm text-purple-600">Catégories</div>
+                  </div>
+                  <div className="text-center p-3 bg-orange-50 rounded-lg">
+                    <div className="text-2xl font-bold text-orange-600">
+                      {illustrationsData?.illustrations.filter(
+                        (img) => img.category === "hero"
+                      ).length || 0}
+                    </div>
+                    <div className="text-sm text-orange-600">Images héro</div>
+                  </div>
+                  <div className="text-center p-3 bg-green-50 rounded-lg">
+                    <div className="text-2xl font-bold text-green-600">
+                      {illustrationsData?.illustrations.filter(
+                        (img) => img.category === "branding"
+                      ).length || 0}
+                    </div>
+                    <div className="text-sm text-green-600">Branding</div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Avertissement pour les images */}
+            <Card className="border-blue-200 bg-blue-50">
+              <CardContent className="pt-6">
+                <div className="flex items-start gap-3">
+                  <AlertTriangle className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                  <div className="space-y-2">
+                    <p className="font-medium text-blue-900">
+                      Information importante sur la gestion des illustrations
+                    </p>
+                    <p className="text-sm text-blue-800 leading-relaxed">
+                      Ces images d'illustration apparaissent dans les pages
+                      About, Design en Action, Sur-mesure et Shop Focus. Les
+                      modifications d'URL affectent directement l'affichage.
+                      Privilégiez les formats WebP optimisés et testez les URLs
+                      avant de les enregistrer.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Image className="h-5 w-5" />
+                  Gestion des illustrations
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {/* Contrôles de filtrage et ajout */}
+                <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+                  <div className="flex flex-col sm:flex-row gap-2 flex-1">
+                    <div className="relative flex-1">
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        placeholder="Rechercher une illustration..."
+                        value={imageSearchQuery}
+                        onChange={(e) => setImageSearchQuery(e.target.value)}
+                        className="pl-10"
                       />
+                    </div>
+                    <select
+                      value={selectedCategory}
+                      onChange={(e) => setSelectedCategory(e.target.value)}
+                      className="px-3 py-2 border border-input bg-background rounded-md text-sm"
+                    >
+                      <option value="all">Toutes les catégories</option>
+                      {illustrationsData?.categories.map((category) => (
+                        <option key={category} value={category}>
+                          {category.charAt(0).toUpperCase() + category.slice(1)}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <Button onClick={() => setShowAddImageDialog(true)}>
+                    <Plus className="h-4 w-4 mr-2" />
+                    Ajouter une illustration
+                  </Button>
+                </div>
+
+                {/* Pagination info */}
+                {illustrationsData && (
+                  <div className="flex items-center justify-between text-sm text-muted-foreground">
+                    <div>
+                      Affichage de{" "}
+                      {(illustrationsData.pagination.page - 1) *
+                        illustrationsData.pagination.limit +
+                        1}{" "}
+                      à{" "}
+                      {Math.min(
+                        illustrationsData.pagination.page *
+                          illustrationsData.pagination.limit,
+                        illustrationsData.pagination.total
+                      )}{" "}
+                      sur {illustrationsData.pagination.total} illustrations
+                    </div>
+                    <div className="flex items-center gap-2">
                       <Button
-                        size="sm"
                         variant="outline"
-                        className="mt-2"
-                        onClick={() => {
-                          toast({
-                            title: "Témoignage mis à jour",
-                            description:
-                              "Les modifications ont été enregistrées.",
-                          });
-                        }}
+                        size="sm"
+                        onClick={() =>
+                          setImageCurrentPage((prev) => Math.max(1, prev - 1))
+                        }
+                        disabled={
+                          !illustrationsData.pagination.hasPrevPage ||
+                          illustrationsLoading
+                        }
                       >
-                        <Save className="h-3 w-3 mr-1" /> Enregistrer
+                        <ChevronLeft className="h-4 w-4" />
+                        Précédent
+                      </Button>
+                      <span className="px-3 py-1 bg-muted rounded">
+                        Page {illustrationsData.pagination.page} sur{" "}
+                        {illustrationsData.pagination.totalPages}
+                      </span>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setImageCurrentPage((prev) => prev + 1)}
+                        disabled={
+                          !illustrationsData.pagination.hasNextPage ||
+                          illustrationsLoading
+                        }
+                      >
+                        Suivant
+                        <ChevronRight className="h-4 w-4" />
                       </Button>
                     </div>
                   </div>
-                ))}
+                )}
+
+                {/* Liste des images */}
+                {illustrationsLoading ? (
+                  <div className="flex items-center justify-center h-64">
+                    <div className="text-center">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+                      <p>Chargement des illustrations...</p>
+                    </div>
+                  </div>
+                ) : illustrationsData?.illustrations.length === 0 ? (
+                  <div className="text-center py-12">
+                    <Image className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                    <p className="text-muted-foreground">
+                      Aucune illustration trouvée.
+                    </p>
+                    <Button
+                      onClick={() => setShowAddImageDialog(true)}
+                      className="mt-4"
+                    >
+                      <Plus className="h-4 w-4 mr-2" />
+                      Ajouter votre première illustration
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {illustrationsData?.illustrations.map((illustration) => (
+                      <Card key={illustration.key} className="overflow-hidden">
+                        <div className="aspect-video bg-gray-100 overflow-hidden">
+                          <img
+                            src={illustration.url}
+                            alt={illustration.title}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.src = "/images/placeholder.jpg";
+                            }}
+                          />
+                        </div>
+                        <CardContent className="p-4">
+                          <div className="flex items-start justify-between mb-2">
+                            <div className="flex-1">
+                              <h4 className="font-medium text-sm">
+                                {illustration.title}
+                              </h4>
+                              <p className="text-xs text-muted-foreground mb-2">
+                                {illustration.description}
+                              </p>
+                            </div>
+                            <Badge variant="outline" className="ml-2">
+                              {illustration.category}
+                            </Badge>
+                          </div>
+                          <div className="text-xs text-muted-foreground mb-3">
+                            <p className="truncate">Clé: {illustration.key}</p>
+                            <p className="truncate">URL: {illustration.url}</p>
+                            {illustration.pages &&
+                              illustration.pages.length > 0 && (
+                                <p>Pages: {illustration.pages.join(", ")}</p>
+                              )}
+                          </div>
+                          <div className="flex gap-1">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-7 px-2"
+                              onClick={() =>
+                                handleEditIllustration(illustration)
+                              }
+                            >
+                              <Edit className="h-3 w-3" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-7 px-2 text-red-600"
+                              onClick={() =>
+                                setDeleteImageKey(illustration.key)
+                              }
+                            >
+                              <Trash2 className="h-3 w-3" />
+                            </Button>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+
+                    {/* Card pour ajouter une nouvelle image */}
+                    <Card
+                      className="overflow-hidden border-dashed border-2 cursor-pointer hover:bg-gray-50 transition-colors"
+                      onClick={() => setShowAddImageDialog(true)}
+                    >
+                      <CardContent className="p-6 flex flex-col items-center justify-center text-center h-full min-h-[240px]">
+                        <Plus className="h-8 w-8 text-muted-foreground mb-2" />
+                        <p className="text-sm font-medium text-muted-foreground">
+                          Ajouter une illustration
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          Cliquez pour ajouter une nouvelle image
+                        </p>
+                      </CardContent>
+                    </Card>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </div>
+
+      {/* Dialog d'ajout de traduction */}
+      <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Ajouter une nouvelle traduction</DialogTitle>
+            <DialogDescription>
+              Ajoutez une nouvelle clé de traduction avec ses valeurs en
+              français et en anglais.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium mb-2">
+                Clé de traduction
+              </label>
+              <Input
+                value={newTranslation.key}
+                onChange={(e) =>
+                  setNewTranslation((prev) => ({
+                    ...prev,
+                    key: e.target.value,
+                  }))
+                }
+                placeholder="ex: button.save"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">
+                Texte français
+              </label>
+              <Textarea
+                value={newTranslation.valueFr}
+                onChange={(e) =>
+                  setNewTranslation((prev) => ({
+                    ...prev,
+                    valueFr: e.target.value,
+                  }))
+                }
+                placeholder="Texte en français..."
+                className="min-h-[80px]"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">
+                Texte anglais
+              </label>
+              <Textarea
+                value={newTranslation.valueEn}
+                onChange={(e) =>
+                  setNewTranslation((prev) => ({
+                    ...prev,
+                    valueEn: e.target.value,
+                  }))
+                }
+                placeholder="Texte en anglais..."
+                className="min-h-[80px]"
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowAddDialog(false)}>
+              Annuler
+            </Button>
+            <Button
+              onClick={handleAddTranslation}
+              disabled={!newTranslation.key.trim() || addMutation.isPending}
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Ajouter
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Dialog d'édition de traduction */}
+      <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Modifier la traduction</DialogTitle>
+            <DialogDescription>
+              Clé :{" "}
+              <code className="bg-muted px-1 py-0.5 rounded">
+                {editingTranslation?.key}
+              </code>
+            </DialogDescription>
+          </DialogHeader>
+          {editingTranslation && (
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Texte français
+                </label>
+                <Textarea
+                  value={editingTranslation.fr}
+                  onChange={(e) =>
+                    setEditingTranslation((prev) =>
+                      prev ? { ...prev, fr: e.target.value } : null
+                    )
+                  }
+                  className="min-h-[80px]"
+                />
               </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Texte anglais
+                </label>
+                <Textarea
+                  value={editingTranslation.en}
+                  onChange={(e) =>
+                    setEditingTranslation((prev) =>
+                      prev ? { ...prev, en: e.target.value } : null
+                    )
+                  }
+                  className="min-h-[80px]"
+                />
+              </div>
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowEditDialog(false)}>
+              Annuler
+            </Button>
+            <Button
+              onClick={handleSaveEdit}
+              disabled={updateBulkMutation.isPending}
+            >
+              <Save className="h-4 w-4 mr-2" />
+              Enregistrer
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
-        {/* Réseaux sociaux */}
-        <TabsContent value="social">
-          <Card>
-            <CardContent className="pt-6">
-              <Form {...socialLinksForm}>
-                <form
-                  onSubmit={socialLinksForm.handleSubmit(onSubmitSocialLinks)}
-                  className="space-y-4"
+      {/* Dialog de confirmation de suppression */}
+      <AlertDialog open={!!deleteKey} onOpenChange={() => setDeleteKey(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Confirmer la suppression</AlertDialogTitle>
+            <AlertDialogDescription>
+              Êtes-vous sûr de vouloir supprimer la traduction pour la clé{" "}
+              <code className="bg-muted px-1 py-0.5 rounded">{deleteKey}</code>{" "}
+              ? Cette action est irréversible.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => deleteKey && deleteMutation.mutate(deleteKey)}
+              className="bg-red-600 hover:bg-red-700"
+            >
+              Supprimer
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Dialog d'ajout d'illustration */}
+      <Dialog open={showAddImageDialog} onOpenChange={setShowAddImageDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Ajouter une nouvelle illustration</DialogTitle>
+            <DialogDescription>
+              Ajoutez une nouvelle illustration avec un titre, une description
+              et une URL.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium mb-2">
+                Clé unique
+              </label>
+              <Input
+                value={newImage.key}
+                onChange={(e) =>
+                  setNewImage((prev) => ({ ...prev, key: e.target.value }))
+                }
+                placeholder="ex: about.hero ou shop.banner1"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">
+                Titre de l'illustration
+              </label>
+              <Input
+                value={newImage.title}
+                onChange={(e) =>
+                  setNewImage((prev) => ({ ...prev, title: e.target.value }))
+                }
+                placeholder="ex: Image de produit"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">
+                URL de l'image
+              </label>
+              <Input
+                value={newImage.url}
+                onChange={(e) =>
+                  setNewImage((prev) => ({ ...prev, url: e.target.value }))
+                }
+                placeholder="URL directe de l'image"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">
+                Description (facultatif)
+              </label>
+              <Textarea
+                value={newImage.description}
+                onChange={(e) =>
+                  setNewImage((prev) => ({
+                    ...prev,
+                    description: e.target.value,
+                  }))
+                }
+                placeholder="Description de l'image..."
+                className="min-h-[80px]"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">
+                Catégorie
+              </label>
+              <select
+                value={newImage.category}
+                onChange={(e) =>
+                  setNewImage((prev) => ({ ...prev, category: e.target.value }))
+                }
+                className="px-3 py-2 border border-input bg-background rounded-md text-sm w-full"
+              >
+                <option value="general">Général</option>
+                <option value="products">Produits</option>
+                <option value="interface">Interface</option>
+                <option value="banners">Bannières</option>
+              </select>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setShowAddImageDialog(false)}
+            >
+              Annuler
+            </Button>
+            <Button
+              onClick={handleAddIllustration}
+              disabled={addIllustrationMutation.isPending}
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Ajouter
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Dialog d'édition d'illustration */}
+      <Dialog open={showEditImageDialog} onOpenChange={setShowEditImageDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Modifier l'illustration</DialogTitle>
+            <DialogDescription>
+              Titre :{" "}
+              <code className="bg-muted px-1 py-0.5 rounded">
+                {editingImage?.title}
+              </code>
+            </DialogDescription>
+          </DialogHeader>
+          {editingImage && (
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Titre de l'illustration
+                </label>
+                <Input
+                  value={editingImage.title}
+                  onChange={(e) =>
+                    setEditingImage((prev) =>
+                      prev ? { ...prev, title: e.target.value } : null
+                    )
+                  }
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  URL de l'image
+                </label>
+                <Input
+                  value={editingImage.url}
+                  onChange={(e) =>
+                    setEditingImage((prev) =>
+                      prev ? { ...prev, url: e.target.value } : null
+                    )
+                  }
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Description (facultatif)
+                </label>
+                <Textarea
+                  value={editingImage.description}
+                  onChange={(e) =>
+                    setEditingImage((prev) =>
+                      prev ? { ...prev, description: e.target.value } : null
+                    )
+                  }
+                  className="min-h-[80px]"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Catégorie
+                </label>
+                <select
+                  value={editingImage.category}
+                  onChange={(e) =>
+                    setEditingImage((prev) =>
+                      prev ? { ...prev, category: e.target.value } : null
+                    )
+                  }
+                  className="px-3 py-2 border border-input bg-background rounded-md text-sm w-full"
                 >
-                  <FormField
-                    control={socialLinksForm.control}
-                    name="instagram"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Instagram</FormLabel>
-                        <FormControl>
-                          <Input placeholder="À venir" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  <option value="general">Général</option>
+                  <option value="products">Produits</option>
+                  <option value="interface">Interface</option>
+                  <option value="banners">Bannières</option>
+                </select>
+              </div>
+            </div>
+          )}
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setShowEditImageDialog(false)}
+            >
+              Annuler
+            </Button>
+            <Button
+              onClick={handleSaveIllustrationEdit}
+              disabled={updateIllustrationMutation.isPending}
+            >
+              <Save className="h-4 w-4 mr-2" />
+              Enregistrer
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
-                  <Button type="submit" className="mt-2">
-                    <Save className="mr-2 h-4 w-4" /> Enregistrer
-                  </Button>
-                </form>
-              </Form>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+      {/* Dialog de confirmation de suppression d'illustration */}
+      <AlertDialog
+        open={!!deleteImageKey}
+        onOpenChange={() => setDeleteImageKey(null)}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Confirmer la suppression</AlertDialogTitle>
+            <AlertDialogDescription>
+              Êtes-vous sûr de vouloir supprimer cette illustration ? Cette
+              action est irréversible.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() =>
+                deleteImageKey && handleDeleteIllustration(deleteImageKey)
+              }
+              className="bg-red-600 hover:bg-red-700"
+            >
+              Supprimer
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </DashboardLayout>
   );
 }
