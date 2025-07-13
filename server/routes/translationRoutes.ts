@@ -79,6 +79,13 @@ const getAllTranslationsHandler = async (
     const searchTerm = (search as string).toLowerCase();
 
     const translations = readTranslations();
+    
+    // Debug: Log pour vérifier les données lues
+    console.log("=== DEBUG getAllTranslationsHandler ===");
+    console.log("Fichier lu:", TRANSLATIONS_PATH);
+    console.log("Clés FR trouvées:", Object.keys(translations.fr || {}).length);
+    console.log("Clés EN trouvées:", Object.keys(translations.en || {}).length);
+    console.log("Quelques clés FR:", Object.keys(translations.fr || {}).slice(0, 5));
 
     // Convertir en tableau pour faciliter la pagination
     const translationsArray: Array<{ key: string; fr: string; en: string }> =
@@ -90,6 +97,8 @@ const getAllTranslationsHandler = async (
       ...Object.keys(frTranslations),
       ...Object.keys(enTranslations),
     ]);
+
+    console.log("Total clés uniques:", allKeys.size);
 
     allKeys.forEach((key) => {
       const frValue = frTranslations[key] || "";
@@ -113,6 +122,8 @@ const getAllTranslationsHandler = async (
     // Trier par clé
     translationsArray.sort((a, b) => a.key.localeCompare(b.key));
 
+    console.log("Traductions filtrées:", translationsArray.length);
+
     // Calculer la pagination
     const total = translationsArray.length;
     const totalPages = Math.ceil(total / limitNum);
@@ -120,6 +131,8 @@ const getAllTranslationsHandler = async (
     const endIndex = startIndex + limitNum;
 
     const paginatedTranslations = translationsArray.slice(startIndex, endIndex);
+
+    console.log("Traductions paginées:", paginatedTranslations.length);
 
     res.json({
       translations: paginatedTranslations,
@@ -133,6 +146,7 @@ const getAllTranslationsHandler = async (
       },
     });
   } catch (error) {
+    console.error("Erreur dans getAllTranslationsHandler:", error);
     handleError(res, error);
   }
 };
@@ -265,9 +279,27 @@ const updateFullTranslationsHandler = async (
       return;
     }
 
+    // Validation de la structure attendue
+    if (!newTranslations.fr || !newTranslations.en) {
+      res.status(400).json({ 
+        error: "Structure de données invalide: doit contenir 'fr' et 'en'",
+        received: Object.keys(newTranslations)
+      });
+      return;
+    }
+
+    if (typeof newTranslations.fr !== "object" || typeof newTranslations.en !== "object") {
+      res.status(400).json({ 
+        error: "Les propriétés 'fr' et 'en' doivent être des objets"
+      });
+      return;
+    }
+
     // Log de la taille pour debug
     const jsonSize = JSON.stringify(newTranslations).length;
     console.log(`Mise à jour traductions: ${jsonSize} bytes`);
+    console.log(`Clés FR: ${Object.keys(newTranslations.fr).length}`);
+    console.log(`Clés EN: ${Object.keys(newTranslations.en).length}`);
 
     // Headers pour gros payloads
     res.setHeader("Content-Type", "application/json");
@@ -291,8 +323,16 @@ const getFullTranslationsHandler = async (
 ): Promise<void> => {
   try {
     const translations = readTranslations();
+    
+    // Debug: Log pour vérifier les données lues
+    console.log("=== DEBUG getFullTranslationsHandler ===");
+    console.log("Fichier lu:", TRANSLATIONS_PATH);
+    console.log("Clés FR trouvées:", Object.keys(translations.fr || {}).length);
+    console.log("Clés EN trouvées:", Object.keys(translations.en || {}).length);
+    
     res.json(translations);
   } catch (error) {
+    console.error("Erreur dans getFullTranslationsHandler:", error);
     handleError(res, error);
   }
 };

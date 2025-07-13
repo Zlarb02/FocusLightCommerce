@@ -283,45 +283,38 @@ const updateFullIllustrationsHandler = async (
   req: Request,
   res: Response
 ): Promise<void> => {
+  console.log("=== DEBUG updateFullIllustrationsHandler ===");
+  console.log("req.body type:", typeof req.body);
+  
+  // Bypass complet de toute validation - accepter n'importe quoi
   try {
-    console.log("=== DEBUG updateFullIllustrationsHandler ===");
-    console.log("req.body type:", typeof req.body);
+    const body = req.body;
     
-    const newIllustrations = req.body;
-
-    // Validation ultra-basique pour accepter tout JSON valide
-    if (newIllustrations === null || newIllustrations === undefined) {
-      console.log("❌ Body null ou undefined");
-      res.status(400).json({ error: "Aucune donnée reçue" });
+    if (!body) {
+      console.log("❌ Pas de body");
+      res.status(400).json({ error: "Pas de données" });
       return;
     }
-
-    if (typeof newIllustrations !== "object") {
-      console.log("❌ Body n'est pas un objet:", typeof newIllustrations);
-      res.status(400).json({ error: "Format de données invalide - doit être un objet JSON" });
-      return;
-    }
-
-    // Log de la taille pour debug
-    const jsonSize = JSON.stringify(newIllustrations).length;
-    console.log(`✅ Données valides - Mise à jour illustrations: ${jsonSize} bytes`);
-    console.log("Nombre de clés:", Object.keys(newIllustrations).length);
-
-    // Headers pour gros payloads
-    res.setHeader("Content-Type", "application/json");
-
-    const success = writeIllustrations(newIllustrations);
-
+    
+    console.log("✅ Body reçu, taille:", JSON.stringify(body).length);
+    
+    // Tentative d'écriture directe
+    const success = writeIllustrations(body);
+    
     if (success) {
       console.log("✅ Écriture réussie");
-      res.json({ message: "Fichier d'illustrations mis à jour avec succès" });
+      res.status(200).json({ message: "OK" });
     } else {
       console.log("❌ Écriture échouée");
-      res.status(500).json({ error: "Erreur lors de l'écriture du fichier" });
+      res.status(500).json({ error: "Écriture échouée" });
     }
-  } catch (error) {
-    console.error("❌ Erreur dans updateFullIllustrationsHandler:", error);
-    res.status(500).json({ error: "Erreur serveur lors de la mise à jour" });
+    
+  } catch (err) {
+    console.error("❌ Exception:", err);
+    res.status(500).json({ 
+      error: "Exception", 
+      message: err instanceof Error ? err.message : String(err)
+    });
   }
 };
 
@@ -332,6 +325,26 @@ router.put("/:key", requireAuth, updateIllustrationHandler);
 router.post("/", requireAuth, addIllustrationHandler);
 router.delete("/:key", requireAuth, deleteIllustrationHandler);
 router.put("/full", requireAuth, updateFullIllustrationsHandler);
+
+// Route de test pour diagnostiquer le problème
+router.put("/test-full", requireAuth, (req: Request, res: Response) => {
+  try {
+    console.log("=== TEST ROUTE ===");
+    console.log("req.body:", req.body);
+    console.log("Type:", typeof req.body);
+    console.log("Keys:", Object.keys(req.body || {}));
+    
+    res.json({ 
+      message: "Test réussi", 
+      received: typeof req.body,
+      keys: Object.keys(req.body || {}),
+      bodyLength: JSON.stringify(req.body).length
+    });
+  } catch (error) {
+    console.error("Erreur test:", error);
+    res.status(500).json({ error: "Erreur test", details: error });
+  }
+});
 
 // Routes publiques (pas d'authentification requise)
 router.get("/public", async (req: Request, res: Response) => {

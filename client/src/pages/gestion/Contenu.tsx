@@ -298,8 +298,17 @@ export default function Contenu() {
       return apiRequest("PUT", "/api/translations/full", data);
     },
     onSuccess: () => {
+      // Invalidation agressive de toutes les requêtes liées aux traductions
       queryClient.invalidateQueries({ queryKey: ["/api/translations"] });
       queryClient.invalidateQueries({ queryKey: ["/api/translations/stats"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/translations/full"] });
+      
+      // Forcer le rechargement des données paginées
+      queryClient.refetchQueries({ queryKey: ["/api/translations"] });
+      
+      // Réinitialiser la page courante pour forcer un refresh
+      setCurrentPage(1);
+      
       window.dispatchEvent(new CustomEvent("translationsUpdated"));
       toast({
         title: "Succès",
