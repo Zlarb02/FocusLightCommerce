@@ -44,9 +44,9 @@ RUN chmod +x ./docker-entrypoint.sh
 # Créer le répertoire data pour les fichiers JSON en production
 RUN mkdir -p ./data
 
-# Copier les fichiers JSON initiaux s'ils existent, sinon créer des fichiers vides
-RUN echo '{"fr": {}, "en": {}}' > ./data/translations.json
-RUN echo '{}' > ./data/illustrations.json
+# Copier les fichiers JSON initiaux depuis le workspace local
+COPY ../data/translations.json ./data/translations.json
+COPY ../data/illustrations.json ./data/illustrations.json
 
 # Définir la variable d'environnement pour le port
 ENV PORT=5005

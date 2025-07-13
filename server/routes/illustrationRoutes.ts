@@ -25,9 +25,7 @@ const addIllustrationSchema = z.object({
 });
 
 // Chemin vers le fichier d'illustrations
-const ILLUSTRATIONS_PATH = process.env.NODE_ENV === 'production' 
-  ? path.join(process.cwd(), "data", "illustrations.json")
-  : path.join(process.cwd(), "../client/src/contexts/illustrations.json");
+const ILLUSTRATIONS_PATH = path.join(process.cwd(), "data", "illustrations.json");
 
 // Fonction utilitaire pour lire les illustrations
 function readIllustrations() {
@@ -283,38 +281,24 @@ const updateFullIllustrationsHandler = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  console.log("=== DEBUG updateFullIllustrationsHandler ===");
-  console.log("req.body type:", typeof req.body);
-  
-  // Bypass complet de toute validation - accepter n'importe quoi
   try {
     const body = req.body;
     
-    if (!body) {
-      console.log("❌ Pas de body");
-      res.status(400).json({ error: "Pas de données" });
+    if (!body || typeof body !== "object") {
+      res.status(400).json({ error: "Données invalides" });
       return;
     }
     
-    console.log("✅ Body reçu, taille:", JSON.stringify(body).length);
-    
-    // Tentative d'écriture directe
     const success = writeIllustrations(body);
     
     if (success) {
-      console.log("✅ Écriture réussie");
-      res.status(200).json({ message: "OK" });
+      res.json({ message: "Illustrations mises à jour avec succès" });
     } else {
-      console.log("❌ Écriture échouée");
-      res.status(500).json({ error: "Écriture échouée" });
+      res.status(500).json({ error: "Erreur lors de l'écriture" });
     }
     
   } catch (err) {
-    console.error("❌ Exception:", err);
-    res.status(500).json({ 
-      error: "Exception", 
-      message: err instanceof Error ? err.message : String(err)
-    });
+    res.status(500).json({ error: "Erreur serveur" });
   }
 };
 
@@ -325,26 +309,6 @@ router.put("/:key", requireAuth, updateIllustrationHandler);
 router.post("/", requireAuth, addIllustrationHandler);
 router.delete("/:key", requireAuth, deleteIllustrationHandler);
 router.put("/full", requireAuth, updateFullIllustrationsHandler);
-
-// Route de test pour diagnostiquer le problème
-router.put("/test-full", requireAuth, (req: Request, res: Response) => {
-  try {
-    console.log("=== TEST ROUTE ===");
-    console.log("req.body:", req.body);
-    console.log("Type:", typeof req.body);
-    console.log("Keys:", Object.keys(req.body || {}));
-    
-    res.json({ 
-      message: "Test réussi", 
-      received: typeof req.body,
-      keys: Object.keys(req.body || {}),
-      bodyLength: JSON.stringify(req.body).length
-    });
-  } catch (error) {
-    console.error("Erreur test:", error);
-    res.status(500).json({ error: "Erreur test", details: error });
-  }
-});
 
 // Routes publiques (pas d'authentification requise)
 router.get("/public", async (req: Request, res: Response) => {

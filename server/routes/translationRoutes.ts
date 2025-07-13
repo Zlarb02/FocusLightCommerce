@@ -28,9 +28,7 @@ const updateBulkTranslationsSchema = z.array(
 );
 
 // Chemin vers le fichier de traductions
-const TRANSLATIONS_PATH = process.env.NODE_ENV === 'production' 
-  ? path.join(process.cwd(), "data", "translations.json")
-  : path.join(process.cwd(), "../client/src/contexts/translations.json");
+const TRANSLATIONS_PATH = path.join(process.cwd(), "data", "translations.json");
 
 // Fonction utilitaire pour lire les traductions
 function readTranslations() {
@@ -79,13 +77,6 @@ const getAllTranslationsHandler = async (
     const searchTerm = (search as string).toLowerCase();
 
     const translations = readTranslations();
-    
-    // Debug: Log pour vérifier les données lues
-    console.log("=== DEBUG getAllTranslationsHandler ===");
-    console.log("Fichier lu:", TRANSLATIONS_PATH);
-    console.log("Clés FR trouvées:", Object.keys(translations.fr || {}).length);
-    console.log("Clés EN trouvées:", Object.keys(translations.en || {}).length);
-    console.log("Quelques clés FR:", Object.keys(translations.fr || {}).slice(0, 5));
 
     // Convertir en tableau pour faciliter la pagination
     const translationsArray: Array<{ key: string; fr: string; en: string }> =
@@ -97,8 +88,6 @@ const getAllTranslationsHandler = async (
       ...Object.keys(frTranslations),
       ...Object.keys(enTranslations),
     ]);
-
-    console.log("Total clés uniques:", allKeys.size);
 
     allKeys.forEach((key) => {
       const frValue = frTranslations[key] || "";
@@ -122,8 +111,6 @@ const getAllTranslationsHandler = async (
     // Trier par clé
     translationsArray.sort((a, b) => a.key.localeCompare(b.key));
 
-    console.log("Traductions filtrées:", translationsArray.length);
-
     // Calculer la pagination
     const total = translationsArray.length;
     const totalPages = Math.ceil(total / limitNum);
@@ -131,8 +118,6 @@ const getAllTranslationsHandler = async (
     const endIndex = startIndex + limitNum;
 
     const paginatedTranslations = translationsArray.slice(startIndex, endIndex);
-
-    console.log("Traductions paginées:", paginatedTranslations.length);
 
     res.json({
       translations: paginatedTranslations,
@@ -146,7 +131,6 @@ const getAllTranslationsHandler = async (
       },
     });
   } catch (error) {
-    console.error("Erreur dans getAllTranslationsHandler:", error);
     handleError(res, error);
   }
 };
@@ -295,15 +279,6 @@ const updateFullTranslationsHandler = async (
       return;
     }
 
-    // Log de la taille pour debug
-    const jsonSize = JSON.stringify(newTranslations).length;
-    console.log(`Mise à jour traductions: ${jsonSize} bytes`);
-    console.log(`Clés FR: ${Object.keys(newTranslations.fr).length}`);
-    console.log(`Clés EN: ${Object.keys(newTranslations.en).length}`);
-
-    // Headers pour gros payloads
-    res.setHeader("Content-Type", "application/json");
-    
     const success = writeTranslations(newTranslations);
 
     if (success) {
@@ -312,7 +287,6 @@ const updateFullTranslationsHandler = async (
       res.status(500).json({ error: "Erreur lors de l'écriture du fichier" });
     }
   } catch (error) {
-    console.error("Erreur updateFullTranslations:", error);
     handleError(res, error);
   }
 };
@@ -323,16 +297,8 @@ const getFullTranslationsHandler = async (
 ): Promise<void> => {
   try {
     const translations = readTranslations();
-    
-    // Debug: Log pour vérifier les données lues
-    console.log("=== DEBUG getFullTranslationsHandler ===");
-    console.log("Fichier lu:", TRANSLATIONS_PATH);
-    console.log("Clés FR trouvées:", Object.keys(translations.fr || {}).length);
-    console.log("Clés EN trouvées:", Object.keys(translations.en || {}).length);
-    
     res.json(translations);
   } catch (error) {
-    console.error("Erreur dans getFullTranslationsHandler:", error);
     handleError(res, error);
   }
 };
