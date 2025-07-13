@@ -64,7 +64,8 @@ export function useIllustration(key: string) {
   return useQuery({
     queryKey: ["/api/illustrations", key],
     queryFn: async (): Promise<Illustration> => {
-      const response = await fetch(`/api/illustrations/${key}`);
+      // Utiliser la route publique pour éviter les problèmes d'auth
+      const response = await fetch(`/api/illustrations/public/${key}`);
       if (!response.ok) {
         throw new Error("Erreur lors du chargement de l'illustration");
       }

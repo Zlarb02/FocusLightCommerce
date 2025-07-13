@@ -323,6 +323,32 @@ router.get("/public", async (req: Request, res: Response) => {
   }
 });
 
+// Route publique pour récupérer une illustration spécifique
+router.get("/public/:key", async (req: Request, res: Response) => {
+  try {
+    const { key } = req.params;
+    
+    if (!key) {
+      res.status(400).json({ error: "Clé d'illustration requise" });
+      return;
+    }
+
+    const illustrations = readIllustrations();
+
+    if (!illustrations[key]) {
+      res.status(404).json({ error: "Illustration non trouvée" });
+      return;
+    }
+
+    res.json({
+      key,
+      ...illustrations[key],
+    });
+  } catch (error) {
+    handleError(res, error);
+  }
+});
+
 // Route publique pour téléchargement du JSON complet
 router.get("/public/full", async (req: Request, res: Response) => {
   try {
