@@ -30,6 +30,7 @@ jobs:
 
       - name: Build and push Backend Docker image (multi-arch)
         uses: docker/build-push-action@v4
+        timeout-minutes: 30
         with:
           context: .
           file: ./server/Dockerfile
@@ -38,8 +39,13 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/focuslight-backend:${{ env.TAG }}
             ${{ secrets.DOCKERHUB_USERNAME }}/focuslight-backend:latest
-          cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/focuslight-backend:buildcache
-          cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/focuslight-backend:buildcache,mode=max
+          # Option 1: Pas de cache (plus fiable)
+          # cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/focuslight-backend:buildcache
+          # cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/focuslight-backend:buildcache,mode=max
+          
+          # Option 2: Cache GitHub Actions (plus fiable que registry)
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       - name: Deployment notification
         run: |
