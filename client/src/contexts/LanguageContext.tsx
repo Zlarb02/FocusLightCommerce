@@ -37,7 +37,9 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
   // Fonction pour récupérer les traductions depuis l'API
   const refreshTranslations = async () => {
     try {
-      const newTranslations = await apiRequest("GET", "/api/translations/public");
+      // Ajouter timestamp pour éviter le cache
+      const timestamp = Date.now();
+      const newTranslations = await apiRequest("GET", `/api/translations/public/full?t=${timestamp}`);
       setTranslations(newTranslations);
       console.log("Traductions mises à jour depuis l'API");
     } catch (error) {

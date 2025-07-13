@@ -304,11 +304,12 @@ const updateFullIllustrationsHandler = async (
 
 // Routes (protégées par authentification)
 router.get("/", requireAuth, getAllIllustrationsHandler);
+// Route spécifique AVANT les routes avec paramètres
+router.put("/full", requireAuth, updateFullIllustrationsHandler);
 router.get("/:key", requireAuth, getIllustrationHandler);
 router.put("/:key", requireAuth, updateIllustrationHandler);
 router.post("/", requireAuth, addIllustrationHandler);
 router.delete("/:key", requireAuth, deleteIllustrationHandler);
-router.put("/full", requireAuth, updateFullIllustrationsHandler);
 
 // Routes publiques (pas d'authentification requise)
 router.get("/public", async (req: Request, res: Response) => {

@@ -49,7 +49,9 @@ export function IllustrationsProvider({ children }: IllustrationsProviderProps) 
   // Fonction pour récupérer les illustrations depuis l'API
   const refreshIllustrations = async () => {
     try {
-      const newIllustrations = await apiRequest("GET", "/api/illustrations/public");
+      // Ajouter timestamp pour éviter le cache
+      const timestamp = Date.now();
+      const newIllustrations = await apiRequest("GET", `/api/illustrations/public/full?t=${timestamp}`);
       setIllustrations(newIllustrations);
       console.log("Illustrations mises à jour depuis l'API");
     } catch (error) {

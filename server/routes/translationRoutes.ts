@@ -384,31 +384,80 @@ router.put("/full", requireAuth, updateFullTranslationsHandler);
 router.get("/search", requireAuth, searchTranslationsHandler);
 
 // Routes publiques (pas d'authentification requise)
+// Seule route publique nécessaire : pagination pour l'interface simple
 router.get("/public", async (req: Request, res: Response) => {
   try {
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 50;
+    const search = (req.query.search as string) || "";
+
+    const pageNum = Math.max(1, page);
+    const limitNum = Math.min(Math.max(1, limit), 100); // Maximum 100 éléments par page
+    const searchTerm = search.toLowerCase();
+
     const translations = readTranslations();
 
-    // Retourner seulement les traductions, pas les détails internes
+    // Créer un tableau de toutes les traductions avec recherche
+    const translationsArray: any[] = [];
+    const allKeys = new Set([
+      ...Object.keys(translations.fr || {}),
+      ...Object.keys(translations.en || {}),
+    ]);
+
+    allKeys.forEach((key) => {
+      const frValue = translations.fr?.[key] || "";
+      const enValue = translations.en?.[key] || "";
+
+      // Filtrer par recherche si un terme est fourni
+      if (
+        !searchTerm ||
+        key.toLowerCase().includes(searchTerm) ||
+        frValue.toLowerCase().includes(searchTerm) ||
+        enValue.toLowerCase().includes(searchTerm)
+      ) {
+        translationsArray.push({
+          key,
+          fr: frValue,
+          en: enValue,
+        });
+      }
+    });
+
+    // Trier par clé
+    translationsArray.sort((a, b) => a.key.localeCompare(b.key));
+
+    // Calculer la pagination
+    const total = translationsArray.length;
+    const totalPages = Math.ceil(total / limitNum);
+    const startIndex = (pageNum - 1) * limitNum;
+    const endIndex = startIndex + limitNum;
+
+    const paginatedTranslations = translationsArray.slice(startIndex, endIndex);
+
     res.json({
-      fr: translations.fr || {},
-      en: translations.en || {},
+      translations: paginatedTranslations,
+      pagination: {
+        page: pageNum,
+        limit: limitNum,
+        total,
+        totalPages,
+        hasNextPage: pageNum < totalPages,
+        hasPrevPage: pageNum > 1,
+      },
     });
   } catch (error) {
     handleError(res, error);
   }
 });
 
-// Route publique pour le JSON complet (utile pour téléchargement ou backup)
+// Route publique pour le JSON complet (pour le site web)
 router.get("/public/full", async (req: Request, res: Response) => {
   try {
     const translations = readTranslations();
 
-    // Augmenter la limite de taille pour les gros JSON
+    // Headers pour optimiser la réponse
     res.setHeader("Content-Type", "application/json");
-    res.setHeader("Content-Disposition", 'inline; filename="translations.json"');
-    
-    // Augmenter les limites pour les gros JSON
-    res.setHeader("Content-Length", JSON.stringify(translations).length.toString());
+    res.setHeader("Cache-Control", "public, max-age=300"); // Cache 5 minutes
     
     res.json(translations);
   } catch (error) {

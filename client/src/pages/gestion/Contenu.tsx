@@ -168,14 +168,14 @@ export default function Contenu() {
     return () => clearTimeout(timer);
   }, [imageSearchQuery]);
 
-  // Récupérer les statistiques
+  // Récupérer les statistiques (route protégée - interface admin)
   const { data: stats } = useQuery({
     queryKey: ["/api/translations/stats"],
   });
 
   // Récupérer les traductions paginées
   const { data: paginatedData, isLoading } = useQuery({
-    queryKey: ["/api/translations", currentPage, pageSize, debouncedSearch],
+    queryKey: ["/api/translations/public", currentPage, pageSize, debouncedSearch],
     queryFn: async (): Promise<PaginatedResponse> => {
       const params = new URLSearchParams({
         page: currentPage.toString(),
@@ -183,7 +183,7 @@ export default function Contenu() {
         search: debouncedSearch,
       });
 
-      const response = await fetch(`/api/translations?${params}`);
+      const response = await fetch(`/api/translations/public?${params}`);
       if (!response.ok) {
         throw new Error("Erreur lors du chargement des traductions");
       }
@@ -192,7 +192,7 @@ export default function Contenu() {
     },
   });
 
-  // Récupérer le JSON complet (pour le mode JSON uniquement)
+  // Récupérer le JSON complet (pour le mode JSON uniquement - route protégée)
   const { data: fullTranslations } = useQuery({
     queryKey: ["/api/translations/full"],
     queryFn: async () => {
@@ -205,11 +205,11 @@ export default function Contenu() {
     enabled: selectedTab === "json", // Ne charger que quand on est sur l'onglet JSON
   });
 
-  // Récupérer le JSON complet des illustrations
+  // Récupérer le JSON complet des illustrations (route protégée - interface admin)
   const { data: fullIllustrations } = useQuery({
-    queryKey: ["/api/illustrations/public/full"],
+    queryKey: ["/api/illustrations/full"],
     queryFn: async () => {
-      const response = await fetch("/api/illustrations/public/full");
+      const response = await fetch("/api/illustrations/full");
       if (!response.ok) {
         throw new Error("Erreur lors du chargement du JSON complet des illustrations");
       }
@@ -226,6 +226,7 @@ export default function Contenu() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/translations"] });
       queryClient.invalidateQueries({ queryKey: ["/api/translations/stats"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/translations/public"] });
       window.dispatchEvent(new CustomEvent("translationsUpdated"));
       toast({
         title: "Succès",
@@ -249,6 +250,7 @@ export default function Contenu() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/translations"] });
       queryClient.invalidateQueries({ queryKey: ["/api/translations/stats"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/translations/public"] });
       setPendingChanges([]);
       window.dispatchEvent(new CustomEvent("translationsUpdated"));
       toast({
@@ -276,6 +278,7 @@ export default function Contenu() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/translations"] });
       queryClient.invalidateQueries({ queryKey: ["/api/translations/stats"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/translations/public"] });
       setDeleteKey(null);
       window.dispatchEvent(new CustomEvent("translationsUpdated"));
       toast({
@@ -302,6 +305,7 @@ export default function Contenu() {
       queryClient.invalidateQueries({ queryKey: ["/api/translations"] });
       queryClient.invalidateQueries({ queryKey: ["/api/translations/stats"] });
       queryClient.invalidateQueries({ queryKey: ["/api/translations/full"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/translations/public"] });
       
       // Forcer le rechargement des données paginées
       queryClient.refetchQueries({ queryKey: ["/api/translations"] });
@@ -331,7 +335,8 @@ export default function Contenu() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/illustrations"] });
-      queryClient.invalidateQueries({ queryKey: ["/api/illustrations/public/full"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/illustrations/full"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/illustrations/public"] });
       window.dispatchEvent(new CustomEvent("illustrationsUpdated"));
       toast({
         title: "Succès",

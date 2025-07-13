@@ -1,0 +1,265 @@
+{
+  "about.anatole": {
+    "url": "https://www.alto-lille.fr/uploads/6d140285-f1c2-4a80-bfde-d9848a4c5f92.jpg",
+    "title": "Portrait d'Anatole Collet",
+    "description": "Photo d'Anatole Collet, fondateur d'Alto Lille, pour la page À propos",
+    "pages": [
+      "about"
+    ],
+    "category": "portrait"
+  },
+  "designInAction.seacle1": {
+    "url": "https://www.alto-lille.fr/uploads/sea-cle.jpg",
+    "title": "Projet Sea Clé - Image 1",
+    "description": "Première image du projet Sea Clé dans le slider",
+    "pages": [
+      "designInAction"
+    ],
+    "category": "projects"
+  },
+  "designInAction.seacle2": {
+    "url": "https://www.alto-lille.fr/uploads/2f869fa9-1d39-42d4-8413-8913ca9a8046.png",
+    "title": "Projet Sea Clé - Image 2",
+    "description": "Deuxième image du projet Sea Clé dans le slider",
+    "pages": [
+      "designInAction"
+    ],
+    "category": "projects"
+  },
+  "designInAction.project1": {
+    "url": "https://www.alto-lille.fr/uploads/8c4bf80d-6019-445c-9877-bbb91d3fe951.jpg",
+    "title": "Projet Design - Image principale",
+    "description": "Image principale d'un projet de design",
+    "pages": [
+      "designInAction"
+    ],
+    "category": "projects"
+  },
+  "designInAction.gallery1": {
+    "url": "https://www.alto-lille.fr/uploads/f5d04e1c-e453-4ee5-8b73-ac4435453b84.jpg",
+    "title": "Galerie Design - Image 1",
+    "description": "Première image de la galerie design",
+    "pages": [
+      "designInAction"
+    ],
+    "category": "gallery"
+  },
+  "designInAction.gallery2": {
+    "url": "https://www.alto-lille.fr/uploads/0e82ffea-51c2-4782-985a-e6733d240efc.jpg",
+    "title": "Galerie Design - Image 2",
+    "description": "Deuxième image de la galerie design",
+    "pages": [
+      "designInAction"
+    ],
+    "category": "gallery"
+  },
+  "designInAction.gallery3": {
+    "url": "https://www.alto-lille.fr/uploads/48ebe2f3-94a6-4d10-b2d0-b770bd6cfd52.jpg",
+    "title": "Galerie Design - Image 3",
+    "description": "Troisième image de la galerie design",
+    "pages": [
+      "designInAction"
+    ],
+    "category": "gallery"
+  },
+  "designInAction.process1": {
+    "url": "https://www.alto-lille.fr/uploads/019d94a4-0e28-4aa0-bbc1-bfccc13c65c8.jpg",
+    "title": "Processus de design - Étape 1",
+    "description": "Première étape du processus de design",
+    "pages": [
+      "designInAction"
+    ],
+    "category": "process"
+  },
+  "designInAction.process2": {
+    "url": "https://www.alto-lille.fr/uploads/dd3d70e2-6aa6-44e2-a4b7-515b87281e7c.jpg",
+    "title": "Processus de design - Étape 2",
+    "description": "Deuxième étape du processus de design",
+    "pages": [
+      "designInAction"
+    ],
+    "category": "process"
+  },
+  "designInAction.lowtech": {
+    "url": "https://www.alto-lille.fr/uploads/lowtech-vynil.jpg",
+    "title": "Projet Low-tech",
+    "description": "Image du projet low-tech vynil",
+    "pages": [
+      "designInAction"
+    ],
+    "category": "projects"
+  },
+  "shopFocus.ambiance1": {
+    "url": "https://www.alto-lille.fr/uploads/a6fb36f6-9a3a-48c4-ac59-5fe29be8dbd5.jpeg",
+    "title": "Ambiance boutique 1",
+    "description": "Première image d'ambiance pour la boutique Focus",
+    "pages": [
+      "shopFocus"
+    ],
+    "category": "ambiance"
+  },
+  "shopFocus.ambiance2": {
+    "url": "https://www.alto-lille.fr/uploads/6ca98d66-62d6-4d50-9fa9-253eeae6c89e.jpeg",
+    "title": "Ambiance boutique 2",
+    "description": "Deuxième image d'ambiance pour la boutique Focus",
+    "pages": [
+      "shopFocus"
+    ],
+    "category": "ambiance"
+  },
+  "shopFocus.lifestyle1": {
+    "url": "https://www.alto-lille.fr/uploads/f0d658a0-e71f-462d-9210-31b276408bdd.jpeg",
+    "title": "Style de vie Focus 1",
+    "description": "Première image lifestyle pour présenter l'univers Focus",
+    "pages": [
+      "shopFocus"
+    ],
+    "category": "lifestyle"
+  },
+  "shopFocus.lifestyle2": {
+    "url": "https://www.alto-lille.fr/uploads/29ce9490-1000-4d95-8d92-cd5191e15b80.jpeg",
+    "title": "Style de vie Focus 2",
+    "description": "Deuxième image lifestyle pour présenter l'univers Focus",
+    "pages": [
+      "shopFocus"
+    ],
+    "category": "lifestyle"
+  },
+  "surMesure.gallery1": {
+    "url": "https://www.alto-lille.fr/uploads/1ebb8f8c-1206-4581-b9ae-c3cb6641aa97.JPEG",
+    "title": "Créations sur-mesure - Galerie 1",
+    "description": "Première image de la galerie des créations sur-mesure",
+    "pages": [
+      "surMesure"
+    ],
+    "category": "gallery"
+  },
+  "surMesure.gallery2": {
+    "url": "https://www.alto-lille.fr/uploads/1a786d6d-4866-444b-b5c6-e165ab45eb54.JPEG",
+    "title": "Créations sur-mesure - Galerie 2",
+    "description": "Deuxième image de la galerie des créations sur-mesure",
+    "pages": [
+      "surMesure"
+    ],
+    "category": "gallery"
+  },
+  "surMesure.gallery3": {
+    "url": "https://www.alto-lille.fr/uploads/5dcd2a73-249b-4ed7-bf83-064f1c679932.JPEG",
+    "title": "Créations sur-mesure - Galerie 3",
+    "description": "Troisième image de la galerie des créations sur-mesure",
+    "pages": [
+      "surMesure"
+    ],
+    "category": "gallery"
+  },
+  "surMesure.gallery4": {
+    "url": "https://www.alto-lille.fr/uploads/d7c3b584-0de1-413d-84ed-316a57e4367d.JPEG",
+    "title": "Créations sur-mesure - Galerie 4",
+    "description": "Quatrième image de la galerie des créations sur-mesure",
+    "pages": [
+      "surMesure"
+    ],
+    "category": "gallery"
+  },
+  "surMesure.gallery5": {
+    "url": "https://www.alto-lille.fr/uploads/11f4d848-62d7-44e5-a738-536d6ab6490e.JPEG",
+    "title": "Créations sur-mesure - Galerie 5",
+    "description": "Cinquième image de la galerie des créations sur-mesure",
+    "pages": [
+      "surMesure"
+    ],
+    "category": "gallery"
+  },
+  "surMesure.gallery6": {
+    "url": "https://www.alto-lille.fr/uploads/13909521-1363-4a81-9177-5a64ac0918ef.JPEG",
+    "title": "Créations sur-mesure - Galerie 6",
+    "description": "Sixième image de la galerie des créations sur-mesure",
+    "pages": [
+      "surMesure"
+    ],
+    "category": "gallery"
+  },
+  "surMesure.gallery7": {
+    "url": "https://www.alto-lille.fr/uploads/e2f45c03-cdbf-438d-bb23-6a73ec91cdc5.JPEG",
+    "title": "Créations sur-mesure - Galerie 7",
+    "description": "Septième image de la galerie des créations sur-mesure",
+    "pages": [
+      "surMesure"
+    ],
+    "category": "gallery"
+  },
+  "surMesure.gallery8": {
+    "url": "https://www.alto-lille.fr/uploads/8b94efef-0919-47e8-987c-5afc676b965c.JPEG",
+    "title": "Créations sur-mesure - Galerie 8",
+    "description": "Huitième image de la galerie des créations sur-mesure",
+    "pages": [
+      "surMesure"
+    ],
+    "category": "gallery"
+  },
+  "surMesure.gallery9": {
+    "url": "https://www.alto-lille.fr/uploads/864143f6-2415-4924-adee-6da2a71bb8d3.JPEG",
+    "title": "Créations sur-mesure - Galerie 9",
+    "description": "Neuvième image de la galerie des créations sur-mesure",
+    "pages": [
+      "surMesure"
+    ],
+    "category": "gallery"
+  },
+  "surMesure.gallery10": {
+    "url": "https://www.alto-lille.fr/uploads/e1718e09-554f-43be-b355-91c0e91c52e3.JPEG",
+    "title": "Créations sur-mesure - Galerie 10",
+    "description": "Dixième image de la galerie des créations sur-mesure",
+    "pages": [
+      "surMesure"
+    ],
+    "category": "gallery"
+  },
+  "surMesure.gallery11": {
+    "url": "https://www.alto-lille.fr/uploads/993c6b33-19f9-4467-af0a-845485d53b1d.JPEG",
+    "title": "Créations sur-mesure - Galerie 11",
+    "description": "Onzième image de la galerie des créations sur-mesure",
+    "pages": [
+      "surMesure"
+    ],
+    "category": "gallery"
+  },
+  "surMesure.gallery12": {
+    "url": "https://www.alto-lille.fr/uploads/7e9b6d82-7b1e-460c-b9c0-ee7132714d3d.JPEG",
+    "title": "Créations sur-mesure - Galerie 12",
+    "description": "Douzième image de la galerie des créations sur-mesure",
+    "pages": [
+      "surMesure"
+    ],
+    "category": "gallery"
+  },
+  "surMesure.process1": {
+    "url": "https://www.alto-lille.fr/uploads/c5e2d6c0-e84d-4409-9349-0c3582bf0d6c.png",
+    "title": "Processus sur-mesure - Étape 1",
+    "description": "Première étape du processus de création sur-mesure",
+    "pages": [
+      "surMesure"
+    ],
+    "category": "process"
+  },
+  "surMesure.process2": {
+    "url": "https://www.alto-lille.fr/uploads/ca4d1b96-c00f-4992-b23d-5a7cdaafde05.png",
+    "title": "Processus sur-mesure - Étape 2",
+    "description": "Deuxième étape du processus de création sur-mesure",
+    "pages": [
+      "surMesure"
+    ],
+    "category": "process"
+  },
+  "common.logo": {
+    "url": "/images/logo.png",
+    "title": "Logo Focus Light Commerce",
+    "description": "Logo principal du site",
+    "pages": [
+      "layout",
+      "header",
+      "footer"
+    ],
+    "category": "branding"
+  }
+}
