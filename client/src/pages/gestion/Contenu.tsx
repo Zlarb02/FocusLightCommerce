@@ -337,6 +337,7 @@ export default function Contenu() {
       queryClient.invalidateQueries({ queryKey: ["/api/illustrations"] });
       queryClient.invalidateQueries({ queryKey: ["/api/illustrations/full"] });
       queryClient.invalidateQueries({ queryKey: ["/api/illustrations/public"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/illustrations/public/full"] });
       window.dispatchEvent(new CustomEvent("illustrationsUpdated"));
       toast({
         title: "Succès",

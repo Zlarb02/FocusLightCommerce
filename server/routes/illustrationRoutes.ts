@@ -326,18 +326,21 @@ router.get("/public", async (req: Request, res: Response) => {
 // Route publique pour téléchargement du JSON complet
 router.get("/public/full", async (req: Request, res: Response) => {
   try {
+    console.log("🖼️ [ILLUSTRATIONS] Route /public/full appelée");
+    console.log("🖼️ [ILLUSTRATIONS] Chemin du fichier:", ILLUSTRATIONS_PATH);
+    
     const illustrations = readIllustrations();
+    
+    console.log("🖼️ [ILLUSTRATIONS] Nombre d'illustrations lues:", Object.keys(illustrations).length);
+    console.log("🖼️ [ILLUSTRATIONS] Premières clés:", Object.keys(illustrations).slice(0, 3));
 
-    // Augmenter la limite de taille pour les gros JSON
+    // Headers pour optimiser la réponse
     res.setHeader("Content-Type", "application/json");
-    res.setHeader(
-      "Content-Disposition",
-      'inline; filename="illustrations.json"'
-    );
-    res.setHeader("Content-Length", JSON.stringify(illustrations).length.toString());
+    res.setHeader("Cache-Control", "public, max-age=300"); // Cache 5 minutes
 
     res.json(illustrations);
   } catch (error) {
+    console.error("🖼️ [ILLUSTRATIONS] Erreur dans /public/full:", error);
     handleError(res, error);
   }
 });
