@@ -1,7 +1,6 @@
 import express from "express";
 import { storage } from "../storage/index.js";
-import { SiteVersionData } from "../storage/versionStorage.js";
-import { ThemeDecoration, ShopMode } from "../../shared/schema.js";
+import { ThemeDecoration, ShopMode, SiteVersion } from "../../shared/schema.js";
 import { isAdmin } from "../middleware/middlewares.js";
 
 const router = express.Router();
@@ -68,13 +67,13 @@ router.put("/", isAdmin, async (req, res) => {
     if (!req.body.id) {
       // Création d'une nouvelle version
       const newVersion = await storage.createVersion(
-        req.body as Omit<SiteVersionData, "id" | "createdAt" | "updatedAt">
+        req.body as Omit<SiteVersion, "id" | "createdAt" | "updatedAt">
       );
       res.json(newVersion);
     } else {
       // Mise à jour d'une version existante
       const updatedVersion = await storage.updateVersion(
-        req.body as Partial<SiteVersionData> & { id: number }
+        req.body as Partial<SiteVersion> & { id: number }
       );
       res.json(updatedVersion);
     }
