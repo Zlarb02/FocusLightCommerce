@@ -138,6 +138,21 @@ export function OrderConfirmation({
         </div>
       </div>
 
+      {/* Alerte pour vérifier les spams */}
+      <Alert className="mb-6 bg-blue-50 border-blue-200">
+        <AlertDescription className="flex items-center gap-2">
+          <span className="text-blue-600">📧</span>
+          <div>
+            <strong>Email de confirmation envoyé !</strong> Un email avec votre facture a été envoyé à{" "}
+            <strong>{orderData.customer.email}</strong>. 
+            <br />
+            <span className="text-blue-700">
+              💡 Si vous ne le trouvez pas, pensez à vérifier vos dossiers spam/courrier indésirable.
+            </span>
+          </div>
+        </AlertDescription>
+      </Alert>
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Détails de la commande */}
         <Card>

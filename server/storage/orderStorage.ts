@@ -40,11 +40,15 @@ export class OrderStorage {
 
   async createOrder(order: InsertOrder): Promise<Order> {
     const id = this.orderId++;
-    const newOrder = {
+    const newOrder: Order = {
       ...order,
       id,
-      status: order.status || "pending", // Providing a default status if none is given
+      status: order.status || "pending",
       createdAt: new Date(),
+      orderNumber: order.orderNumber ?? null,
+      relayPoint: order.relayPoint ?? null,
+      shippedAt: null,
+      deliveredAt: null,
     };
     this.orders.set(id, newOrder);
     return newOrder;
@@ -71,7 +75,12 @@ export class OrderStorage {
 
   async createOrderItem(item: InsertOrderItem): Promise<OrderItem> {
     const id = this.orderItemId++;
-    const newItem = { ...item, id };
+    const newItem: OrderItem = { 
+      ...item, 
+      id,
+      variationType: item.variationType ?? null,
+      variationValue: item.variationValue ?? null
+    };
     this.orderItems.set(id, newItem);
     return newItem;
   }

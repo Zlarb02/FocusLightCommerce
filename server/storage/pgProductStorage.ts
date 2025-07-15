@@ -68,9 +68,9 @@ export class PgProductStorage {
       sql`SELECT * FROM product_variations WHERE product_id = ${id}`
     );
 
-    let imagesResult;
+    let imagesResult: { rows: any[] };
     if (variationsResult.rows.length > 0) {
-      const variationIds = variationsResult.rows.map((v) => Number(v.id));
+      const variationIds = variationsResult.rows.map((v: any) => Number(v.id));
       const idsString = variationIds.join(",");
       imagesResult = await db.execute(
         sql`SELECT * FROM variation_images WHERE variation_id IN (${sql.raw(
@@ -80,11 +80,11 @@ export class PgProductStorage {
     } else {
       imagesResult = { rows: [] };
     }
-    const variations: ProductVariation[] = variationsResult.rows.map((row) => {
+    const variations: ProductVariation[] = variationsResult.rows.map((row: any) => {
       const images: VariationImage[] = imagesResult.rows
-        .filter((img) => img.variation_id === row.id)
-        .sort((a, b) => Number(a.order) - Number(b.order))
-        .map((img) => ({ url: String(img.url), order: Number(img.order) }));
+        .filter((img: any) => img.variation_id === row.id)
+        .sort((a: any, b: any) => Number(a.order) - Number(b.order))
+        .map((img: any) => ({ url: String(img.url), order: Number(img.order) }));
       return {
         id: Number(row.id),
         productId: Number(row.product_id),
