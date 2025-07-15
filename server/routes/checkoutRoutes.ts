@@ -16,11 +16,14 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 router.post("/", async (req: Request, res: Response): Promise<void> => {
   try {
-    console.log("🔄 Début traitement commande:", JSON.stringify(req.body, null, 2));
-    
+    console.log(
+      "🔄 Début traitement commande:",
+      JSON.stringify(req.body, null, 2)
+    );
+
     const data = checkoutSchema.parse(req.body);
     console.log("✅ Validation schema réussie");
-    
+
     let customer = await storage.getCustomerByEmail(data.customer.email);
     if (!customer) {
       console.log("🆕 Création nouveau client");
@@ -33,10 +36,10 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
     console.log("✅ Client traité:", customer.id);
 
     // Préparer les données de point relais si disponible
-    const relayPointData = (data.customer as any).relayPoint
-      ? JSON.stringify((data.customer as any).relayPoint)
+    const relayPointData = data.customer.relayPoint
+      ? JSON.stringify(data.customer.relayPoint)
       : null;
-    console.log("📦 Point relais reçu:", (data.customer as any).relayPoint);
+    console.log("📦 Point relais reçu:", data.customer.relayPoint);
     console.log("📦 Point relais stringifié:", relayPointData);
 
     console.log("🔄 Création commande...");
@@ -63,11 +66,14 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
     await Promise.all(
       data.items.map(async (item: any, index: number) => {
         console.log(`🔄 Traitement article ${index + 1}:`, item);
-        
+
         // Récupérer les détails complets du produit pour l'email
         const product = await storage.getProductById(item.productId);
-        console.log(`📦 Produit ${item.productId} trouvé:`, product ? "Oui" : "Non");
-        
+        console.log(
+          `📦 Produit ${item.productId} trouvé:`,
+          product ? "Oui" : "Non"
+        );
+
         const variation = product?.variations?.find(
           (v) =>
             v.variationType === item.variationType &&
@@ -88,8 +94,8 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
           variationType: item.variationType || null,
           variationValue: item.variationValue || null,
           quantity: item.quantity,
-          unitPrice: item.price,
-          totalPrice: item.price * item.quantity,
+          unitPrice: item.price / 100, // Stocker en euros
+          totalPrice: (item.price * item.quantity) / 100, // Stocker en euros
         });
 
         // Ajouter aux données pour l'email
@@ -97,7 +103,7 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
           productName: productName,
           variationValue: variationDisplay,
           quantity: item.quantity,
-          price: item.price, // Prix en centimes pour l'email
+          price: item.price / 100, // Déjà converti, pas besoin de rediviser
         });
 
         // Mise à jour du stock de la variation
@@ -111,20 +117,21 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
 
     // Envoi des notifications email avec facture
     try {
-      console.log("📧 Données relayPoint pour email:", (data.customer as any).relayPoint);
+      console.log("📧 Données relayPoint pour email:", order.relayPoint);
       const invoice = await notificationService.sendOrderConfirmation({
+        orderId: order.id, // Ajouter l'orderId manquant
         customerEmail: customer.email,
         customerPhone: customer.phone || "",
         customerName: `${customer.firstName} ${customer.lastName}`,
         orderNumber: order.orderNumber || `ALTO-${order.id}`,
         items: emailItems, // Utiliser les données enrichies
-        totalAmount: order.totalAmount,
-        relayPoint: (data.customer as any).relayPoint
+        totalAmount: order.totalAmount / 100, // Convertir centimes en euros,
+        relayPoint: order.relayPoint
           ? {
-              name: (data.customer as any).relayPoint.name || "",
-              address: (data.customer as any).relayPoint.address || "",
-              city: (data.customer as any).relayPoint.city || "",
-              postalCode: (data.customer as any).relayPoint.postalCode || "",
+              name: order.relayPoint.name || "",
+              address: order.relayPoint.address || "",
+              city: order.relayPoint.city || "",
+              postalCode: order.relayPoint.postalCode || "",
             }
           : null,
       });
@@ -153,7 +160,10 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
     });
   } catch (error) {
     console.error("❌ Erreur dans POST /api/checkout:", error);
-    console.error("Stack trace:", error instanceof Error ? error.stack : "Pas de stack");
+    console.error(
+      "Stack trace:",
+      error instanceof Error ? error.stack : "Pas de stack"
+    );
     handleError(res, error);
   }
 });
@@ -223,9 +233,54 @@ router.get(
       }
       console.log("✅ Client trouvé:", customer.id);
 
-      // Récupérer les articles de la commande
+      // Récupérer les articles de la commande avec les infos de produits
       const orderItems = await storage.getOrderItemsByOrderId(order.id);
       console.log("📦 Articles trouvés:", orderItems.length);
+
+      // Enrichir les articles avec les informations complètes des produits et leurs images
+      const enrichedItems = await Promise.all(
+        orderItems.map(async (item) => {
+          try {
+            const product = await storage.getProductById(item.productId);
+            let productImage = null;
+
+            if (product) {
+              // Trouver la variation correspondante par type et valeur
+              if (
+                item.variationType &&
+                item.variationValue &&
+                product.variations
+              ) {
+                const variation = product.variations.find(
+                  (v) =>
+                    v.variationType === item.variationType &&
+                    v.variationValue === item.variationValue
+                );
+                if (
+                  variation &&
+                  variation.images &&
+                  variation.images.length > 0
+                ) {
+                  // Prendre la première image de la variation
+                  productImage = variation.images[0].url;
+                }
+              }
+            }
+
+            return {
+              ...item,
+              productImage,
+              productName: product?.name || item.productName,
+            };
+          } catch (error) {
+            console.error(
+              `Erreur lors de l'enrichissement de l'article ${item.id}:`,
+              error
+            );
+            return item;
+          }
+        })
+      );
 
       // Chercher le fichier de facture
       const invoicesDir = path.join(process.cwd(), "invoices");
@@ -260,19 +315,22 @@ router.get(
           email: customer.email,
           phone: customer.phone,
         },
-        items: orderItems,
+        items: enrichedItems,
         invoice: {
           number: invoiceNumber,
           html: invoiceHTML,
         },
         // Ajouter les informations de point relais s'il y en a
         ...(order.relayPoint && {
-          relayPoint: JSON.parse(order.relayPoint),
+          relayPoint: order.relayPoint, // Plus besoin de parser car c'est déjà fait dans mapRowToOrder
         }),
       };
-      
-      console.log("📦 Point relais dans la commande récupérée:", order.relayPoint);
-      console.log("📦 Point relais après parsing:", order.relayPoint ? JSON.parse(order.relayPoint) : null);
+
+      console.log(
+        "📦 Point relais dans la commande récupérée:",
+        order.relayPoint
+      );
+      console.log("📦 Point relais après parsing:", order.relayPoint);
 
       res.json(orderData);
     } catch (error) {

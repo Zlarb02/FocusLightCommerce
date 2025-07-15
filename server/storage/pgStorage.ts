@@ -8,6 +8,7 @@ import {
   type Customer,
   type InsertCustomer,
   type Order,
+  type OrderWithParsedRelay,
   type InsertOrder,
   type OrderItem,
   type InsertOrderItem,
@@ -129,30 +130,30 @@ export class PgStorage implements IStorage {
   }
 
   // Orders
-  async getAllOrders(): Promise<Order[]> {
+  async getAllOrders(): Promise<OrderWithParsedRelay[]> {
     return this.orderStorage.getAllOrders();
   }
 
-  async getOrderById(id: number): Promise<Order | undefined> {
+  async getOrderById(id: number): Promise<OrderWithParsedRelay | undefined> {
     return this.orderStorage.getOrderById(id);
   }
 
-  async getOrderByNumber(orderNumber: string): Promise<Order | undefined> {
+  async getOrderByNumber(orderNumber: string): Promise<OrderWithParsedRelay | undefined> {
     return this.orderStorage.getOrderByNumber(orderNumber);
   }
 
-  async getOrdersByCustomerId(customerId: number): Promise<Order[]> {
+  async getOrdersByCustomerId(customerId: number): Promise<OrderWithParsedRelay[]> {
     return this.orderStorage.getOrdersByCustomerId(customerId);
   }
 
-  async createOrder(order: InsertOrder): Promise<Order> {
+  async createOrder(order: InsertOrder): Promise<OrderWithParsedRelay> {
     return this.orderStorage.createOrder(order);
   }
 
   async updateOrderStatus(
     id: number,
     status: string
-  ): Promise<Order | undefined> {
+  ): Promise<OrderWithParsedRelay | undefined> {
     return this.orderStorage.updateOrderStatus(id, status);
   }
 

@@ -7,6 +7,7 @@ import {
   type Customer,
   type InsertCustomer,
   type Order,
+  type OrderWithParsedRelay,
   type InsertOrder,
   type OrderItem,
   type InsertOrderItem,
@@ -54,12 +55,17 @@ export interface IStorage {
   ): Promise<Customer | undefined>;
 
   // Orders
-  getAllOrders(): Promise<Order[]>;
-  getOrderById(id: number): Promise<Order | undefined>;
-  getOrderByNumber(orderNumber: string): Promise<Order | undefined>;
-  getOrdersByCustomerId(customerId: number): Promise<Order[]>;
-  createOrder(order: InsertOrder): Promise<Order>;
-  updateOrderStatus(id: number, status: string): Promise<Order | undefined>;
+  getAllOrders(): Promise<OrderWithParsedRelay[]>;
+  getOrderById(id: number): Promise<OrderWithParsedRelay | undefined>;
+  getOrderByNumber(
+    orderNumber: string
+  ): Promise<OrderWithParsedRelay | undefined>;
+  getOrdersByCustomerId(customerId: number): Promise<OrderWithParsedRelay[]>;
+  createOrder(order: InsertOrder): Promise<OrderWithParsedRelay>;
+  updateOrderStatus(
+    id: number,
+    status: string
+  ): Promise<OrderWithParsedRelay | undefined>;
 
   // Order Items
   getOrderItemsByOrderId(orderId: number): Promise<OrderItem[]>;

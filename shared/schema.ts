@@ -183,6 +183,21 @@ export type InsertCustomer = z.infer<typeof insertCustomerSchema>;
 export type Order = typeof orders.$inferSelect;
 export type InsertOrder = z.infer<typeof insertOrderSchema>;
 
+// Type Order avec relayPoint parsé (pour usage côté serveur)
+export type OrderWithParsedRelay = Omit<Order, "relayPoint"> & {
+  relayPoint: {
+    id?: string;
+    name: string;
+    address: string;
+    city: string;
+    postalCode: string;
+    country?: string;
+    openingHours?: string;
+    latitude?: number;
+    longitude?: number;
+  } | null;
+};
+
 export type OrderItem = typeof orderItems.$inferSelect;
 export type InsertOrderItem = z.infer<typeof insertOrderItemSchema>;
 
@@ -241,7 +256,21 @@ export type InsertSiteVersion = z.infer<typeof insertVersionSchema>;
 
 // For cart and checkout
 export const checkoutSchema = z.object({
-  customer: insertCustomerSchema,
+  customer: insertCustomerSchema.extend({
+    relayPoint: z
+      .object({
+        id: z.string(),
+        name: z.string(),
+        address: z.string(),
+        city: z.string(),
+        postalCode: z.string(),
+        country: z.string().optional(),
+        openingHours: z.string().optional(),
+        latitude: z.number().optional(),
+        longitude: z.number().optional(),
+      })
+      .optional(),
+  }),
   items: z.array(
     z.object({
       productId: z.number(), // Maintenant, il s'agit de l'ID de la variation

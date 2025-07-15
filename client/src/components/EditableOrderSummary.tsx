@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useCart } from "@/hooks/useCart";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { formatPrice, cn, getColorInfo } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -31,6 +32,7 @@ export const EditableOrderSummary: React.FC<EditableOrderSummaryProps> = ({
   className = "",
   showTitle = true,
 }) => {
+  const { t } = useLanguage();
   const {
     items,
     updateQuantity,
@@ -160,7 +162,7 @@ export const EditableOrderSummary: React.FC<EditableOrderSummaryProps> = ({
       <Card className={`${className}`}>
         <CardContent className="p-6 text-center">
           <ShoppingBag className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-          <p className="text-gray-500">Votre panier est vide</p>
+          <p className="text-gray-500">{t("cart.empty")}</p>
         </CardContent>
       </Card>
     );
@@ -175,9 +177,14 @@ export const EditableOrderSummary: React.FC<EditableOrderSummaryProps> = ({
               <ShoppingBag className="w-5 h-5 text-blue-600 dark:text-blue-400" />
             </div>
             <div>
-              <h3 className="text-lg font-semibold">Votre commande</h3>
+              <h3 className="text-lg font-semibold">
+                {t("checkout.confirmation.orderDetails")}
+              </h3>
               <p className="text-sm text-gray-600 dark:text-gray-400 font-normal">
-                {getTotalItems()} article{getTotalItems() > 1 ? "s" : ""}
+                {getTotalItems()}{" "}
+                {getTotalItems() > 1
+                  ? t("checkout.cart.items_plural")
+                  : t("checkout.cart.items")}
               </p>
             </div>
           </CardTitle>
@@ -228,7 +235,7 @@ export const EditableOrderSummary: React.FC<EditableOrderSummaryProps> = ({
                       item.product.variationValue && (
                         <p className="text-sm text-muted-foreground dark:text-gray-400 mt-1">
                           {item.product.variationType === "color"
-                            ? "Couleur"
+                            ? t("common.color")
                             : item.product.variationType}
                           :{" "}
                           {item.product.variationType === "color"
@@ -306,7 +313,9 @@ export const EditableOrderSummary: React.FC<EditableOrderSummaryProps> = ({
                                         "bg-gray-50 dark:bg-gray-800"
                                   }`}
                                   title={variation.variationValue}
-                                  aria-label={`Changer vers ${variation.variationValue}`}
+                                  aria-label={`${t("cart.colorVariation")}: ${
+                                    variation.variationValue
+                                  }`}
                                 >
                                   <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent"></div>
                                   {primaryImage ? (
@@ -432,25 +441,27 @@ export const EditableOrderSummary: React.FC<EditableOrderSummaryProps> = ({
         {/* Résumé des coûts */}
         <div className="border-t border-gray-200 dark:border-gray-700 bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900/20 p-6 space-y-3">
           <div className="flex justify-between items-center text-sm">
-            <span className="text-gray-600 dark:text-gray-400">Sous-total</span>
+            <span className="text-gray-600 dark:text-gray-400">
+              {t("cart.subtotal")}
+            </span>
             <span className="font-medium">{formatPrice(getTotalPrice())}</span>
           </div>
 
           <div className="flex justify-between items-center text-sm">
             <span className="text-gray-600 dark:text-gray-400 flex items-center gap-2">
               <Truck className="w-4 h-4" />
-              Livraison
+              {t("cart.shipping")}
             </span>
             <span className="font-medium text-green-600 dark:text-green-400 flex items-center gap-1">
               <Star className="w-3 h-3" />
-              Gratuite
+              {t("cart.freeShipping")}
             </span>
           </div>
 
           <div className="border-t border-gray-300 dark:border-gray-600 pt-3">
             <div className="flex justify-between items-center">
               <span className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                Total
+                {t("cart.total")}
               </span>
               <span className="text-xl font-bold text-blue-600 dark:text-blue-400">
                 {formatPrice(getTotalPrice())}
@@ -466,10 +477,10 @@ export const EditableOrderSummary: React.FC<EditableOrderSummaryProps> = ({
               </div>
               <div className="flex-1">
                 <p className="text-sm font-medium text-green-800 dark:text-green-200">
-                  Livraison gratuite
+                  {t("checkout.freeShipping")}
                 </p>
                 <p className="text-xs text-green-600 dark:text-green-400">
-                  Retrait en point relais offert
+                  {t("checkout.delivery.free.description")}
                 </p>
               </div>
             </div>

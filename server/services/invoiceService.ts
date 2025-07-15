@@ -44,12 +44,12 @@ interface CompanyInfo {
 export class InvoiceService {
   private companyInfo: CompanyInfo = {
     name: "Alto Lille",
-    address: "123 Rue de la Paix", // À modifier avec vos vraies informations
-    postalCode: "59000",
-    city: "Lille",
-    phone: "+33 1 23 45 67 89",
+    address: "95 rue Pierre Ledent",
+    postalCode: "62170",
+    city: "Montreuil-sur-Mer",
+    phone: "+33 782 086 690",
     email: "altolille@gmail.com",
-    website: "www.altolille.com",
+    website: "www.alto-lille.fr",
     siret: "94517981000011",
     tva: "FR76 4061 8804 8200 0400 6319 731",
   };
@@ -198,13 +198,9 @@ export class InvoiceService {
                   : data.shipping.toFixed(2) + " €"
               }</span>
             </div>
-            <div class="total-line">
-              <span>TVA (20%):</span>
-              <span>${(data.totalAmount * 0.2).toFixed(2)} €</span>
-            </div>
             <hr style="margin: 10px 0;">
             <div class="total-line total-final">
-              <span>TOTAL TTC:</span>
+              <span>TOTAL TTC (TVA incluse):</span>
               <span>${data.totalAmount.toFixed(2)} €</span>
             </div>
           </div>
@@ -237,20 +233,23 @@ export class InvoiceService {
   /**
    * Génère un PDF de la facture à partir du HTML
    */
-  async generateInvoicePDF(invoiceHTML: string, invoiceNumber: string): Promise<Buffer> {
+  async generateInvoicePDF(
+    invoiceHTML: string,
+    invoiceNumber: string
+  ): Promise<Buffer> {
     let browser;
     try {
       // Lancer Puppeteer avec des options optimisées pour la production
       browser = await puppeteer.launch({
         headless: true,
         args: [
-          '--no-sandbox',
-          '--disable-setuid-sandbox',
-          '--disable-dev-shm-usage',
-          '--disable-gpu',
-          '--no-first-run',
-          '--no-zygote',
-          '--single-process', // Utile pour certains environnements comme Docker
+          "--no-sandbox",
+          "--disable-setuid-sandbox",
+          "--disable-dev-shm-usage",
+          "--disable-gpu",
+          "--no-first-run",
+          "--no-zygote",
+          "--single-process", // Utile pour certains environnements comme Docker
         ],
       });
 
@@ -258,21 +257,21 @@ export class InvoiceService {
 
       // Configurer la page pour l'impression
       await page.setContent(invoiceHTML, {
-        waitUntil: 'networkidle0', // Attendre que toutes les ressources soient chargées
+        waitUntil: "networkidle0", // Attendre que toutes les ressources soient chargées
       });
 
       // Optionnel: Émuler le type de média pour l'impression
-      await page.emulateMediaType('print');
+      await page.emulateMediaType("print");
 
       // Générer le PDF avec des options optimisées pour les factures
       const pdfBuffer = await page.pdf({
-        format: 'A4',
+        format: "A4",
         printBackground: true, // Inclure les couleurs de fond
         margin: {
-          top: '20mm',
-          right: '15mm',
-          bottom: '20mm',
-          left: '15mm',
+          top: "20mm",
+          right: "15mm",
+          bottom: "20mm",
+          left: "15mm",
         },
         displayHeaderFooter: false, // On utilise notre propre en-tête/pied de page
         preferCSSPageSize: false, // Utiliser le format A4 défini
@@ -288,7 +287,7 @@ export class InvoiceService {
 
         const pdfFilename = `facture-${invoiceNumber}.pdf`;
         const pdfFilepath = path.join(invoicesDir, pdfFilename);
-        
+
         fs.writeFileSync(pdfFilepath, pdfBuffer);
         console.log("📄 Facture PDF sauvegardée:", pdfFilename);
       } catch (saveError) {
@@ -299,7 +298,8 @@ export class InvoiceService {
       return Buffer.from(pdfBuffer);
     } catch (error) {
       console.error("Erreur génération PDF:", error);
-      const errorMessage = error instanceof Error ? error.message : "Erreur inconnue";
+      const errorMessage =
+        error instanceof Error ? error.message : "Erreur inconnue";
       throw new Error(`Impossible de générer le PDF: ${errorMessage}`);
     } finally {
       if (browser) {
@@ -313,7 +313,11 @@ export class InvoiceService {
    */
   async generateInvoice(
     orderData: any
-  ): Promise<{ invoiceNumber: string; invoiceHTML: string; invoicePDF: Buffer }> {
+  ): Promise<{
+    invoiceNumber: string;
+    invoiceHTML: string;
+    invoicePDF: Buffer;
+  }> {
     const now = new Date();
     const year = now.getFullYear();
     const month = String(now.getMonth() + 1).padStart(2, "0");
@@ -337,12 +341,12 @@ export class InvoiceService {
         productName: item.productName,
         variationValue: item.variationValue || "",
         quantity: item.quantity,
-        unitPrice: item.price,
-        totalPrice: item.price * item.quantity,
+        unitPrice: item.price * 100, // Convertir vers euros normaux
+        totalPrice: item.price * item.quantity * 100, // Convertir vers euros normaux
       })),
-      subtotal: orderData.totalAmount,
+      subtotal: orderData.totalAmount * 100, // Convertir vers euros normaux
       shipping: 0, // Livraison gratuite
-      totalAmount: orderData.totalAmount,
+      totalAmount: orderData.totalAmount * 100, // Convertir vers euros normaux
       issueDate: now.toLocaleDateString("fr-FR"),
       relayPoint: orderData.relayPoint,
     };

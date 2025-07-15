@@ -139,21 +139,23 @@ export default function CheckoutNew() {
                 className="mb-6"
                 disabled={isProcessing}
               >
-                ← Retour aux informations
+                {t("checkout.backToInfo")}
               </Button>
 
               <Card className="mb-6">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <CreditCard className="w-5 h-5" />
-                    Paiement Sécurisé
+                    {t("checkout.securedPayment")}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid md:grid-cols-2 gap-6">
                     {/* Récap commande */}
                     <div>
-                      <h3 className="font-semibold mb-3">Récapitulatif</h3>
+                      <h3 className="font-semibold mb-3">
+                        {t("checkout.summary")}
+                      </h3>
                       <div className="space-y-2 text-sm">
                         <div>
                           <strong>
@@ -179,7 +181,7 @@ export default function CheckoutNew() {
                     {/* Articles */}
                     <div>
                       <h3 className="font-semibold mb-3">
-                        Articles ({items.length})
+                        {t("checkout.articles")} ({items.length})
                       </h3>
                       <div className="space-y-2">
                         {items.map((item, index) => (
@@ -199,7 +201,7 @@ export default function CheckoutNew() {
                           </div>
                         ))}
                         <div className="border-t pt-2 flex justify-between font-bold">
-                          <span>Total</span>
+                          <span>{t("checkout.total")}</span>
                           <span>{formatPrice(getTotalPrice())}</span>
                         </div>
                       </div>
@@ -253,8 +255,12 @@ export default function CheckoutNew() {
                   className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 transition-all duration-200"
                 >
                   <ArrowLeft className="w-3.5 h-3.5" />
-                  <span className="hidden xs:inline">Retour à la boutique</span>
-                  <span className="xs:hidden">Retour</span>
+                  <span className="hidden xs:inline">
+                    {t("checkout.backToShop")}
+                  </span>
+                  <span className="xs:hidden">
+                    {t("checkout.backToShop.short")}
+                  </span>
                 </button>
                 <div className="flex items-center gap-1.5 text-xs">
                   <ShoppingBag className="w-3.5 h-3.5 text-gray-500" />
@@ -268,7 +274,7 @@ export default function CheckoutNew() {
               </div>
               <div className="text-center">
                 <h1 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                  Finaliser ma commande
+                  {t("checkout.title")}
                 </h1>
               </div>
             </div>
@@ -281,18 +287,25 @@ export default function CheckoutNew() {
                   className="flex items-center gap-2 px-3 py-2 md:px-4 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 transition-all duration-200"
                 >
                   <ArrowLeft className="w-4 h-4" />
-                  <span className="hidden md:inline">Retour à la boutique</span>
-                  <span className="md:hidden">Retour</span>
+                  <span className="hidden md:inline">
+                    {t("checkout.backToShop")}
+                  </span>
+                  <span className="md:hidden">
+                    {t("checkout.backToShop.short")}
+                  </span>
                 </button>
                 <h1 className="text-lg md:text-xl font-semibold text-gray-900 dark:text-gray-100 truncate">
-                  Finaliser ma commande
+                  {t("checkout.title")}
                 </h1>
               </div>
               <div className="flex items-center gap-3 md:gap-4 flex-shrink-0">
                 <div className="flex items-center gap-1.5 md:gap-2 text-sm">
                   <ShoppingBag className="w-4 h-4 text-gray-500" />
                   <span className="text-gray-600 dark:text-gray-400 hidden md:inline">
-                    {items.length} article{items.length !== 1 ? "s" : ""}
+                    {items.length}{" "}
+                    {items.length !== 1
+                      ? t("checkout.cart.items_plural")
+                      : t("checkout.cart.items")}
                   </span>
                   <span className="text-gray-600 dark:text-gray-400 md:hidden">
                     {items.length}
@@ -323,7 +336,7 @@ export default function CheckoutNew() {
                 <span
                   className={isContactValid ? "text-green-600 font-medium" : ""}
                 >
-                  Informations
+                  {t("checkout.steps.customer")}
                 </span>
                 <span>•</span>
                 <CheckCircle2
@@ -337,11 +350,11 @@ export default function CheckoutNew() {
                     isShippingValid ? "text-green-600 font-medium" : ""
                   }
                 >
-                  Livraison
+                  {t("checkout.steps.delivery")}
                 </span>
                 <span>•</span>
                 <CreditCard className="w-4 h-4 text-gray-300" />
-                <span>Paiement</span>
+                <span>{t("checkout.steps.payment")}</span>
               </div>
             </div>
 
@@ -353,7 +366,7 @@ export default function CheckoutNew() {
                   <CardHeader className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20">
                     <CardTitle className="flex items-center gap-2">
                       <User className="w-5 h-5" />
-                      Vos informations
+                      {t("checkout.customer.title")}
                       {isContactValid && (
                         <CheckCircle2 className="w-5 h-5 text-green-500 ml-auto" />
                       )}
@@ -369,17 +382,15 @@ export default function CheckoutNew() {
                           </div>
                           <div>
                             <h4 className="font-medium text-gray-900 dark:text-gray-100 mb-1">
-                              Commande en toute sérénité
+                              {t("checkout.customer.welcome.title")}
                             </h4>
                             <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-                              Nous avons besoin de quelques informations pour
-                              vous livrer et vous tenir informé.
+                              {t("checkout.customer.welcome.description")}
                             </p>
                             <div className="flex items-center gap-2 text-xs text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/30 rounded-lg px-2 py-1">
                               <Lock className="w-3 h-3" />
                               <span className="font-medium">
-                                Promesse : JAMAIS d'emails ou SMS publicitaires,
-                                uniquement le suivi de votre commande
+                                {t("checkout.customer.promise")}
                               </span>
                             </div>
                           </div>
@@ -390,7 +401,7 @@ export default function CheckoutNew() {
                         <ValidatedInput
                           id="firstName"
                           name="firstName"
-                          label="Prénom"
+                          label={t("checkout.customer.firstName.label")}
                           value={formData.firstName}
                           onChange={(value) =>
                             setFormData((prev) => ({
@@ -400,16 +411,18 @@ export default function CheckoutNew() {
                           }
                           onValidationChange={handleFirstNameValidation}
                           type="text"
-                          placeholder="Votre prénom"
+                          placeholder={t(
+                            "checkout.customer.firstName.placeholder"
+                          )}
                           required
-                          helperText="Pour personnaliser nos communications"
+                          helperText={t("checkout.customer.firstName.helper")}
                           autoComplete="given-name"
                         />
 
                         <ValidatedInput
                           id="lastName"
                           name="lastName"
-                          label="Nom"
+                          label={t("checkout.customer.lastName.label")}
                           value={formData.lastName}
                           onChange={(value) =>
                             setFormData((prev) => ({
@@ -419,43 +432,45 @@ export default function CheckoutNew() {
                           }
                           onValidationChange={handleLastNameValidation}
                           type="text"
-                          placeholder="Votre nom de famille"
+                          placeholder={t(
+                            "checkout.customer.lastName.placeholder"
+                          )}
                           required
-                          helperText="Pour l'identification au point relais"
+                          helperText={t("checkout.customer.lastName.helper")}
                           autoComplete="family-name"
                         />
 
                         <ValidatedInput
                           id="email"
                           name="email"
-                          label="Adresse email"
+                          label={t("checkout.customer.email.label")}
                           value={formData.email}
                           onChange={(value) =>
                             setFormData((prev) => ({ ...prev, email: value }))
                           }
                           onValidationChange={handleEmailValidation}
                           type="email"
-                          placeholder="votre@email.com"
+                          placeholder={t("checkout.customer.email.placeholder")}
                           required
-                          helperText="Pour la confirmation et le suivi de votre commande"
-                          privacyNote="Aucun email publicitaire, promis ! Seulement les infos importantes sur votre commande."
+                          helperText={t("checkout.customer.email.helper")}
+                          privacyNote={t("checkout.customer.email.privacy")}
                           autoComplete="email"
                         />
 
                         <ValidatedInput
                           id="phone"
                           name="phone"
-                          label="Numéro de téléphone"
+                          label={t("checkout.customer.phone.label")}
                           value={formData.phone}
                           onChange={(value) =>
                             setFormData((prev) => ({ ...prev, phone: value }))
                           }
                           onValidationChange={handlePhoneValidation}
                           type="tel"
-                          placeholder="06 12 34 56 78"
+                          placeholder={t("checkout.customer.phone.placeholder")}
                           required
-                          helperText="Pour vous prévenir de l'arrivée de votre colis"
-                          privacyNote="Uniquement pour les notifications importantes, pas de SMS publicitaires !"
+                          helperText={t("checkout.customer.phone.helper")}
+                          privacyNote={t("checkout.customer.phone.privacy")}
                           autoComplete="tel"
                         />
                       </div>
@@ -473,10 +488,10 @@ export default function CheckoutNew() {
                           </div>
                           <div>
                             <span className="text-sm font-medium text-green-800 dark:text-green-200">
-                              Parfait ! Vos informations sont validées
+                              {t("checkout.customer.validation.success")}
                             </span>
                             <p className="text-xs text-green-600 dark:text-green-400 mt-0.5">
-                              Vous pouvez maintenant choisir votre point relais
+                              {t("checkout.customer.validation.canSelectRelay")}
                             </p>
                           </div>
                         </div>
@@ -490,7 +505,7 @@ export default function CheckoutNew() {
                   <CardHeader className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20">
                     <CardTitle className="flex items-center gap-2">
                       <MapPin className="w-5 h-5" />
-                      Point relais de livraison
+                      {t("checkout.delivery.title")}
                       {isShippingValid && (
                         <CheckCircle2 className="w-5 h-5 text-green-500 ml-auto" />
                       )}
@@ -501,8 +516,7 @@ export default function CheckoutNew() {
                       <Alert>
                         <AlertCircle className="h-4 w-4" />
                         <AlertDescription>
-                          Veuillez d'abord remplir vos informations de contact
-                          pour sélectionner un point relais.
+                          {t("checkout.delivery.fillContactFirst")}
                         </AlertDescription>
                       </Alert>
                     ) : (
@@ -513,11 +527,10 @@ export default function CheckoutNew() {
                             <Truck className="w-6 h-6 text-green-600 dark:text-green-400" />
                             <div>
                               <h3 className="font-semibold text-green-900 dark:text-green-100">
-                                🎁 Livraison gratuite en point relais
+                                {t("checkout.delivery.free.title")}
                               </h3>
                               <p className="text-sm text-green-700 dark:text-green-300">
-                                Récupérez votre commande quand vous voulez, avec
-                                des horaires étendus
+                                {t("checkout.delivery.free.description")}
                               </p>
                             </div>
                           </div>
@@ -551,7 +564,7 @@ export default function CheckoutNew() {
                                 }
                                 className="text-blue-600 border-blue-200 hover:bg-blue-50"
                               >
-                                Modifier
+                                {t("checkout.delivery.change")}
                               </Button>
                             </div>
                           </div>
@@ -596,7 +609,7 @@ export default function CheckoutNew() {
                       {/* Total avec livraison gratuite */}
                       <div className="flex items-center justify-between text-lg">
                         <span className="text-gray-600 dark:text-gray-400">
-                          Total
+                          {t("checkout.payment.total")}
                         </span>
                         <span className="font-bold text-2xl text-gray-900 dark:text-gray-100">
                           {formatPrice(getTotalPrice())}
@@ -611,10 +624,10 @@ export default function CheckoutNew() {
                           </div>
                           <div className="text-center">
                             <div className="font-semibold text-green-800 dark:text-green-200">
-                              Livraison gratuite 🎉
+                              {t("checkout.payment.freeShipping")}
                             </div>
                             <div className="text-xs text-green-600 dark:text-green-400">
-                              En point relais • Partout en France
+                              {t("checkout.payment.freeShippingDetails")}
                             </div>
                           </div>
                         </div>
@@ -635,12 +648,14 @@ export default function CheckoutNew() {
                       >
                         <CreditCard className="w-5 h-5 mr-2" />
                         {canProceedToPayment
-                          ? `Payer ${formatPrice(getTotalPrice())}`
-                          : "Complétez les informations"}
+                          ? `${t("checkout.payment.pay")} ${formatPrice(
+                              getTotalPrice()
+                            )}`
+                          : t("checkout.payment.completeInfo")}
                         <Zap className="w-5 h-5 ml-2" />
                       </Button>
                       <p className="text-white/90 text-sm mt-3">
-                        Paiement 100% sécurisé par Stripe • Pas de compte requis
+                        {t("checkout.payment.secure")}
                       </p>
                     </div>
                   </CardContent>

@@ -5,6 +5,7 @@ import nodemailer from "nodemailer";
 import { invoiceService } from "./invoiceService.js";
 
 interface OrderConfirmationData {
+  orderId: number; // Ajouter l'orderId
   customerEmail: string;
   customerPhone: string;
   customerName: string;
@@ -26,7 +27,7 @@ interface OrderConfirmationData {
 
 class NotificationService {
   private adminEmail = process.env.ADMIN_EMAIL || "altolille@gmail.com";
-  private shopEmail = process.env.SHOP_EMAIL || "noreply@focuslight.com";
+  private shopEmail = process.env.SHOP_EMAIL || "altolille@gmail.com";
   private transporter: nodemailer.Transporter;
 
   constructor() {
@@ -44,21 +45,36 @@ class NotificationService {
 
   async sendOrderConfirmation(
     data: OrderConfirmationData
-  ): Promise<{ invoiceNumber: string; invoiceHTML: string; invoicePDF: Buffer }> {
+  ): Promise<{
+    invoiceNumber: string;
+    invoiceHTML: string;
+    invoicePDF: Buffer;
+  }> {
     try {
       console.log("🔍 DEBUG - Données reçues dans sendOrderConfirmation:");
       console.log("  - relayPoint:", data.relayPoint);
-      console.log("  - relayPoint détails:", JSON.stringify(data.relayPoint, null, 2));
-      
+      console.log(
+        "  - relayPoint détails:",
+        JSON.stringify(data.relayPoint, null, 2)
+      );
+
       // 1. Générer la facture (HTML + PDF)
       const invoiceResult = await invoiceService.generateInvoice(data);
       const { invoiceNumber, invoiceHTML, invoicePDF } = invoiceResult;
 
       // 2. Email au client avec facture HTML et PDF en pièce jointe
-      await this.sendCustomerEmail(data, { invoiceNumber, invoiceHTML, invoicePDF });
+      await this.sendCustomerEmail(data, {
+        invoiceNumber,
+        invoiceHTML,
+        invoicePDF,
+      });
 
       // 3. Email admin avec toutes les infos
-      await this.sendAdminNotification(data, { invoiceNumber, invoiceHTML, invoicePDF });
+      await this.sendAdminNotification(data, {
+        invoiceNumber,
+        invoiceHTML,
+        invoicePDF,
+      });
 
       // 4. Log et sauvegarde pour backup
       this.logAndSaveOrder(data);
@@ -182,7 +198,7 @@ class NotificationService {
           ${item.quantity}
         </td>
         <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; text-align: right; font-weight: 500;">
-          ${(item.price * item.quantity).toFixed(2)} €
+          ${(item.price * item.quantity * 100).toFixed(2)} €
         </td>
       </tr>
     `
@@ -259,7 +275,9 @@ class NotificationService {
                   <tfoot>
                     <tr style="background: #f3f4f6;">
                       <td style="padding: 15px; font-weight: 700; color: #1f2937;" colspan="2">Total payé</td>
-                      <td style="padding: 15px; text-align: right; font-weight: 700; color: #059669; font-size: 18px;">${data.totalAmount.toFixed(2)} €</td>
+                      <td style="padding: 15px; text-align: right; font-weight: 700; color: #059669; font-size: 18px;">${(
+                        data.totalAmount * 100
+                      ).toFixed(2)} €</td>
                     </tr>
                   </tfoot>
                 </table>
@@ -356,7 +374,7 @@ class NotificationService {
         (item) =>
           `• ${item.productName} (${item.variationValue}) x${
             item.quantity
-          } - ${(item.price * item.quantity).toFixed(2)}€`
+          } - ${(item.price * item.quantity * 100).toFixed(2)}€`
       )
       .join("\n");
 
@@ -402,7 +420,9 @@ class NotificationService {
           <div style="background: #eff6ff; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
             <h3 style="margin-top: 0; color: #1e40af;">📦 ARTICLES À EXPÉDIER</h3>
             <div style="background: white; padding: 15px; border-radius: 5px; font-family: monospace; white-space: pre-line;">${itemsList}</div>
-            <p><strong>Total :</strong> ${data.totalAmount.toFixed(2)} €</p>
+            <p><strong>Total :</strong> ${(data.totalAmount * 100).toFixed(
+              2
+            )} €</p>
           </div>
 
           <div style="background: #fef3c7; padding: 20px; border-radius: 8px; margin-bottom: 20px;">

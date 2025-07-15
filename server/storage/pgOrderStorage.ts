@@ -3,6 +3,7 @@ import { db } from "./db.js";
 import { sql } from "drizzle-orm";
 import {
   type Order,
+  type OrderWithParsedRelay,
   type InsertOrder,
   type OrderItem,
   type InsertOrderItem,
@@ -16,7 +17,7 @@ export class PgOrderStorage {
   /**
    * Récupère toutes les commandes, triées par date de création décroissante
    */
-  async getAllOrders(): Promise<Order[]> {
+  async getAllOrders(): Promise<OrderWithParsedRelay[]> {
     const result = await db.execute(
       sql`SELECT * FROM orders ORDER BY created_at DESC`
     );
@@ -27,7 +28,7 @@ export class PgOrderStorage {
   /**
    * Récupère une commande par son ID
    */
-  async getOrderById(id: number): Promise<Order | undefined> {
+  async getOrderById(id: number): Promise<OrderWithParsedRelay | undefined> {
     const result = await db.execute(sql`SELECT * FROM orders WHERE id = ${id}`);
 
     if (result.rowCount === 0 || result.rowCount === undefined) {
@@ -40,7 +41,9 @@ export class PgOrderStorage {
   /**
    * Récupère une commande par son numéro de commande
    */
-  async getOrderByNumber(orderNumber: string): Promise<Order | undefined> {
+  async getOrderByNumber(
+    orderNumber: string
+  ): Promise<OrderWithParsedRelay | undefined> {
     const result = await db.execute(
       sql`SELECT * FROM orders WHERE order_number = ${orderNumber}`
     );
@@ -55,7 +58,9 @@ export class PgOrderStorage {
   /**
    * Récupère toutes les commandes d'un client spécifique
    */
-  async getOrdersByCustomerId(customerId: number): Promise<Order[]> {
+  async getOrdersByCustomerId(
+    customerId: number
+  ): Promise<OrderWithParsedRelay[]> {
     const result = await db.execute(
       sql`SELECT * FROM orders 
           WHERE customer_id = ${customerId} 
@@ -68,7 +73,7 @@ export class PgOrderStorage {
   /**
    * Crée une nouvelle commande avec toutes les informations nécessaires
    */
-  async createOrder(order: InsertOrder): Promise<Order> {
+  async createOrder(order: InsertOrder): Promise<OrderWithParsedRelay> {
     // Génération du numéro de commande unique
     const orderNumber = `ALTO-${Date.now()}-${Math.random()
       .toString(36)
@@ -101,7 +106,7 @@ export class PgOrderStorage {
   async updateOrderStatus(
     id: number,
     status: string
-  ): Promise<Order | undefined> {
+  ): Promise<OrderWithParsedRelay | undefined> {
     const updateData: any = { status };
 
     // Ajouter les timestamps selon le statut
@@ -183,7 +188,7 @@ export class PgOrderStorage {
    */
   async getOrderWithItems(
     id: number
-  ): Promise<{ order: Order; items: OrderItem[] } | undefined> {
+  ): Promise<{ order: OrderWithParsedRelay; items: OrderItem[] } | undefined> {
     const orderResult = await this.getOrderById(id);
 
     if (!orderResult) {
@@ -201,7 +206,16 @@ export class PgOrderStorage {
   /**
    * Mappe une ligne de base de données vers un objet Order
    */
-  private mapRowToOrder(row: any): Order {
+  private mapRowToOrder(row: any): OrderWithParsedRelay {
+    let parsedRelayPoint = null;
+    try {
+      if (row.relay_point) {
+        parsedRelayPoint = JSON.parse(row.relay_point);
+      }
+    } catch (error) {
+      console.error("Erreur parsing relayPoint:", error);
+    }
+
     return {
       id: Number(row.id),
       customerId: Number(row.customer_id),
@@ -210,7 +224,7 @@ export class PgOrderStorage {
       customerLastName: String(row.customer_last_name || ""),
       customerEmail: String(row.customer_email || ""),
       customerPhone: String(row.customer_phone || ""),
-      relayPoint: row.relay_point ? String(row.relay_point) : null,
+      relayPoint: parsedRelayPoint,
       totalAmount: Number(row.total_amount),
       status: String(row.status),
       createdAt: row.created_at ? new Date(row.created_at) : null,
