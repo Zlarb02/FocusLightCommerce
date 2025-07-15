@@ -65,6 +65,166 @@ async function migrateImageData() {
   }
 }
 
+async function migrateOrderColumns() {
+  console.log("Vérification et migration des colonnes de commande...");
+
+  try {
+    // 1. Enrichir la table orders
+    console.log("Migration de la table orders...");
+    
+    // Ajouter order_number
+    const hasOrderNumber = await db.execute(sql`
+      SELECT column_name 
+      FROM information_schema.columns 
+      WHERE table_name = 'orders' AND column_name = 'order_number'
+    `);
+
+    if (!hasOrderNumber.rowCount || hasOrderNumber.rowCount === 0) {
+      await db.execute(sql`ALTER TABLE orders ADD COLUMN order_number text`);
+      console.log('✅ Colonne order_number ajoutée');
+    } else {
+      console.log('✅ Colonne order_number existe déjà');
+    }
+    
+    // Ajouter les informations client (snapshot)
+    const hasCustomerFirstName = await db.execute(sql`
+      SELECT column_name 
+      FROM information_schema.columns 
+      WHERE table_name = 'orders' AND column_name = 'customer_first_name'
+    `);
+
+    if (!hasCustomerFirstName.rowCount || hasCustomerFirstName.rowCount === 0) {
+      await db.execute(sql`ALTER TABLE orders ADD COLUMN customer_first_name text NOT NULL DEFAULT 'N/A'`);
+      await db.execute(sql`ALTER TABLE orders ADD COLUMN customer_last_name text NOT NULL DEFAULT 'N/A'`);
+      await db.execute(sql`ALTER TABLE orders ADD COLUMN customer_email text NOT NULL DEFAULT 'unknown@example.com'`);
+      await db.execute(sql`ALTER TABLE orders ADD COLUMN customer_phone text NOT NULL DEFAULT 'N/A'`);
+      console.log('✅ Colonnes informations client ajoutées');
+    } else {
+      console.log('✅ Colonnes informations client existent déjà');
+    }
+    
+    // Ajouter point relais
+    const hasRelayPoint = await db.execute(sql`
+      SELECT column_name 
+      FROM information_schema.columns 
+      WHERE table_name = 'orders' AND column_name = 'relay_point'
+    `);
+
+    if (!hasRelayPoint.rowCount || hasRelayPoint.rowCount === 0) {
+      await db.execute(sql`ALTER TABLE orders ADD COLUMN relay_point text`);
+      console.log('✅ Colonne relay_point ajoutée');
+    } else {
+      console.log('✅ Colonne relay_point existe déjà');
+    }
+    
+    // Ajouter timestamps de suivi
+    const hasShippedAt = await db.execute(sql`
+      SELECT column_name 
+      FROM information_schema.columns 
+      WHERE table_name = 'orders' AND column_name = 'shipped_at'
+    `);
+
+    if (!hasShippedAt.rowCount || hasShippedAt.rowCount === 0) {
+      await db.execute(sql`ALTER TABLE orders ADD COLUMN shipped_at timestamp`);
+      await db.execute(sql`ALTER TABLE orders ADD COLUMN delivered_at timestamp`);
+      console.log('✅ Colonnes de suivi ajoutées');
+    } else {
+      console.log('✅ Colonnes de suivi existent déjà');
+    }
+
+    // 2. Enrichir la table order_items
+    console.log("Migration de la table order_items...");
+    
+    // Ajouter les détails produit (snapshot)
+    const hasProductName = await db.execute(sql`
+      SELECT column_name 
+      FROM information_schema.columns 
+      WHERE table_name = 'order_items' AND column_name = 'product_name'
+    `);
+
+    if (!hasProductName.rowCount || hasProductName.rowCount === 0) {
+      await db.execute(sql`ALTER TABLE order_items ADD COLUMN product_name text NOT NULL DEFAULT 'Produit'`);
+      await db.execute(sql`ALTER TABLE order_items ADD COLUMN variation_type text`);
+      await db.execute(sql`ALTER TABLE order_items ADD COLUMN variation_value text`);
+      console.log('✅ Colonnes détails produit ajoutées');
+    } else {
+      console.log('✅ Colonnes détails produit existent déjà');
+    }
+    
+    // Renommer et ajouter colonnes de prix
+    const hasUnitPrice = await db.execute(sql`
+      SELECT column_name 
+      FROM information_schema.columns 
+      WHERE table_name = 'order_items' AND column_name = 'unit_price'
+    `);
+
+    if (!hasUnitPrice.rowCount || hasUnitPrice.rowCount === 0) {
+      // Vérifier si la colonne price existe avant de la renommer
+      const hasPriceColumn = await db.execute(sql`
+        SELECT column_name 
+        FROM information_schema.columns 
+        WHERE table_name = 'order_items' AND column_name = 'price'
+      `);
+      
+      if (hasPriceColumn.rowCount && hasPriceColumn.rowCount > 0) {
+        await db.execute(sql`ALTER TABLE order_items RENAME COLUMN price TO unit_price`);
+      } else {
+        await db.execute(sql`ALTER TABLE order_items ADD COLUMN unit_price real`);
+      }
+      
+      await db.execute(sql`ALTER TABLE order_items ADD COLUMN total_price real NOT NULL DEFAULT 0`);
+      console.log('✅ Colonnes de prix restructurées');
+    } else {
+      console.log('✅ Colonnes de prix existent déjà');
+    }
+
+    // 3. Migrer les données existantes si nécessaire
+    console.log("Migration des données existantes...");
+    
+    // Générer des numéros de commande pour les commandes existantes
+    await db.execute(sql`
+      UPDATE orders 
+      SET order_number = 'ALTO-' || id || '-' || EXTRACT(EPOCH FROM COALESCE(created_at, NOW()))::bigint
+      WHERE order_number IS NULL
+    `);
+    
+    // Récupérer les infos client pour les commandes existantes
+    await db.execute(sql`
+      UPDATE orders 
+      SET 
+        customer_first_name = COALESCE(customers.first_name, 'N/A'),
+        customer_last_name = COALESCE(customers.last_name, 'N/A'),
+        customer_email = COALESCE(customers.email, 'unknown@example.com'),
+        customer_phone = COALESCE(customers.phone, 'N/A')
+      FROM customers 
+      WHERE orders.customer_id = customers.id 
+      AND orders.customer_first_name IS NULL
+    `);
+    
+    // Calculer total_price pour les order_items existants
+    await db.execute(sql`
+      UPDATE order_items 
+      SET total_price = COALESCE(unit_price, 0) * quantity 
+      WHERE total_price IS NULL OR total_price = 0
+    `);
+    
+    // Mettre à jour product_name pour les order_items existants qui n'en ont pas
+    await db.execute(sql`
+      UPDATE order_items 
+      SET product_name = COALESCE(products.name, 'Produit')
+      FROM products 
+      WHERE order_items.product_id = products.id 
+      AND (order_items.product_name IS NULL OR order_items.product_name = 'Produit')
+    `);
+    
+    console.log('✅ Migration des données existantes terminée');
+
+  } catch (error) {
+    console.error("Erreur lors de la migration des colonnes de commande:", error);
+    throw error;
+  }
+}
+
 async function createTablesDirectly() {
   console.log("Création directe des tables dans la base de données...");
 
@@ -146,8 +306,12 @@ async function createTablesDirectly() {
         id SERIAL PRIMARY KEY,
         order_id INTEGER NOT NULL,
         product_id INTEGER NOT NULL,
+        product_name TEXT,
+        variation_type TEXT,
+        variation_value TEXT,
         quantity INTEGER NOT NULL,
-        price REAL NOT NULL
+        unit_price REAL NOT NULL,
+        total_price REAL
       )
     `);
 
@@ -222,6 +386,9 @@ async function runMigrations() {
       // Créer les tables directement depuis le schéma
       await createTablesDirectly();
     }
+
+    // Migrer les colonnes de commande (order_number, etc.)
+    await migrateOrderColumns();
 
     // Initialiser les données par défaut si nécessaire
     await initializeDefaultData();
