@@ -137,6 +137,10 @@ export class PgStorage implements IStorage {
     return this.orderStorage.getOrderById(id);
   }
 
+  async getOrderByNumber(orderNumber: string): Promise<Order | undefined> {
+    return this.orderStorage.getOrderByNumber(orderNumber);
+  }
+
   async getOrdersByCustomerId(customerId: number): Promise<Order[]> {
     return this.orderStorage.getOrdersByCustomerId(customerId);
   }

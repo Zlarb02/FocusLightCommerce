@@ -1,0 +1,36 @@
+{
+  "timestamp": "2025-07-14T21:10:06.573Z",
+  "orderNumber": "FC-20250001",
+  "customer": {
+    "name": "ee ee",
+    "email": "e@z.fr",
+    "phone": "07 71 85 33 28"
+  },
+  "items": [
+    {
+      "productName": "Produit 2",
+      "variationValue": "",
+      "quantity": 1,
+      "price": 80
+    },
+    {
+      "productName": "Produit 1",
+      "variationValue": "",
+      "quantity": 1,
+      "price": 80
+    }
+  ],
+  "totalAmount": 160,
+  "relayPoint": {
+    "name": "",
+    "address": "",
+    "city": "",
+    "postalCode": ""
+  },
+  "status": "nouvelle",
+  "emailsSent": {
+    "customer": true,
+    "admin": true,
+    "sentAt": "2025-07-14T21:10:06.573Z"
+  }
+}

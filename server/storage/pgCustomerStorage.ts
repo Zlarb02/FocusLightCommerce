@@ -105,49 +105,63 @@ export class PgCustomerStorage {
       return this.getCustomerById(id);
     }
 
-    // Construire la requête dynamiquement dans un style similaire aux autres méthodes
-    let updateSQL = sql`UPDATE customers SET `;
-    const updates: string[] = [];
+    // Construire la requête avec template literals et paramètres
+    let queryParts = ["UPDATE customers SET "];
+    let values: any[] = [];
 
     if (customer.firstName !== undefined) {
-      updates.push(sql`first_name = ${customer.firstName}`.toString());
+      queryParts.push(queryParts.length > 1 ? ", " : "", "first_name = ");
+      values.push(customer.firstName);
     }
-
     if (customer.lastName !== undefined) {
-      updates.push(sql`last_name = ${customer.lastName}`.toString());
+      queryParts.push(queryParts.length > 1 ? ", " : "", "last_name = ");
+      values.push(customer.lastName);
     }
-
     if (customer.email !== undefined) {
-      updates.push(sql`email = ${customer.email}`.toString());
+      queryParts.push(queryParts.length > 1 ? ", " : "", "email = ");
+      values.push(customer.email);
     }
-
     if (customer.phone !== undefined) {
-      updates.push(sql`phone = ${customer.phone}`.toString());
+      queryParts.push(queryParts.length > 1 ? ", " : "", "phone = ");
+      values.push(customer.phone);
     }
-
     if (customer.address !== undefined) {
-      updates.push(sql`address = ${customer.address}`.toString());
+      queryParts.push(queryParts.length > 1 ? ", " : "", "address = ");
+      values.push(customer.address);
     }
-
     if (customer.city !== undefined) {
-      updates.push(sql`city = ${customer.city}`.toString());
+      queryParts.push(queryParts.length > 1 ? ", " : "", "city = ");
+      values.push(customer.city);
     }
-
     if (customer.postalCode !== undefined) {
-      updates.push(sql`postal_code = ${customer.postalCode}`.toString());
+      queryParts.push(queryParts.length > 1 ? ", " : "", "postal_code = ");
+      values.push(customer.postalCode);
     }
-
     if (customer.country !== undefined) {
-      updates.push(sql`country = ${customer.country}`.toString());
+      queryParts.push(queryParts.length > 1 ? ", " : "", "country = ");
+      values.push(customer.country);
     }
 
-    const updateClause = updates.join(", ");
-
-    const result = await db.execute(
-      sql`UPDATE customers SET ${sql.raw(updateClause)} 
-          WHERE id = ${id} 
-          RETURNING id, first_name, last_name, email, phone, address, city, postal_code, country`
+    queryParts.push(" WHERE id = ");
+    values.push(id);
+    queryParts.push(
+      " RETURNING id, first_name, last_name, email, phone, address, city, postal_code, country"
     );
+
+    // Utiliser la syntaxe template de sql avec les valeurs séparément
+    const updateQuery = sql`UPDATE customers SET 
+      first_name = COALESCE(${customer.firstName}, first_name),
+      last_name = COALESCE(${customer.lastName}, last_name),
+      email = COALESCE(${customer.email}, email),
+      phone = COALESCE(${customer.phone}, phone),
+      address = COALESCE(${customer.address}, address),
+      city = COALESCE(${customer.city}, city),
+      postal_code = COALESCE(${customer.postalCode}, postal_code),
+      country = COALESCE(${customer.country}, country)
+      WHERE id = ${id}
+      RETURNING id, first_name, last_name, email, phone, address, city, postal_code, country`;
+
+    const result = await db.execute(updateQuery);
 
     if (result.rowCount === 0 || result.rowCount === undefined) {
       return undefined;
@@ -159,11 +173,11 @@ export class PgCustomerStorage {
       firstName: String(row.first_name),
       lastName: String(row.last_name),
       email: String(row.email),
-      phone: String(row.phone),
-      address: row.address ? String(row.address) : null,
-      city: row.city ? String(row.city) : null,
-      postalCode: row.postal_code ? String(row.postal_code) : null,
-      country: row.country ? String(row.country) : null,
+      phone: String(row.phone || ""),
+      address: String(row.address || ""),
+      city: String(row.city || ""),
+      postalCode: String(row.postal_code || ""),
+      country: String(row.country || "FR"),
     };
   }
 }

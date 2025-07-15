@@ -67,11 +67,19 @@ export class PgProductStorage {
     const variationsResult = await db.execute(
       sql`SELECT * FROM product_variations WHERE product_id = ${id}`
     );
-    const imagesResult = await db.execute(
-      sql`SELECT * FROM variation_images WHERE variation_id IN (${
-        variationsResult.rows.map((v) => v.id).join(",") || 0
-      })`
-    );
+
+    let imagesResult;
+    if (variationsResult.rows.length > 0) {
+      const variationIds = variationsResult.rows.map((v) => Number(v.id));
+      const idsString = variationIds.join(",");
+      imagesResult = await db.execute(
+        sql`SELECT * FROM variation_images WHERE variation_id IN (${sql.raw(
+          idsString
+        )})`
+      );
+    } else {
+      imagesResult = { rows: [] };
+    }
     const variations: ProductVariation[] = variationsResult.rows.map((row) => {
       const images: VariationImage[] = imagesResult.rows
         .filter((img) => img.variation_id === row.id)

@@ -25,8 +25,7 @@ const sampleReviews: GoogleReview[] = [
     relative_time_description: "il y a 2 semaines",
     text: "Excellent travail, des lampes magnifiques et de très haute qualité. L'équipe est très professionnelle et à l'écoute. Je recommande vivement !",
     time: Date.now() - 14 * 24 * 60 * 60 * 1000,
-    profile_photo_url:
-      "https://lh3.googleusercontent.com/a/default-user=s128-c0x00000000-cc-rp-mo-ba5",
+    profile_photo_url: "/images/avatar-placeholder.png", // Utiliser une image locale
   },
   {
     author_name: "Jean Martin",
@@ -34,8 +33,7 @@ const sampleReviews: GoogleReview[] = [
     relative_time_description: "il y a 1 mois",
     text: "Produits d'exception, finition impeccable. La lampe FOCUS.01 illumine parfaitement mon salon. Service client au top !",
     time: Date.now() - 30 * 24 * 60 * 60 * 1000,
-    profile_photo_url:
-      "https://lh3.googleusercontent.com/a/default-user=s128-c0x00000000-cc-rp-mo-ba4",
+    profile_photo_url: "/images/avatar-placeholder.png",
   },
   {
     author_name: "Sophie Leroy",
@@ -43,8 +41,7 @@ const sampleReviews: GoogleReview[] = [
     relative_time_description: "il y a 3 semaines",
     text: "Très belles lampes artisanales. Design moderne et élégant. Livraison rapide et emballage soigné.",
     time: Date.now() - 21 * 24 * 60 * 60 * 1000,
-    profile_photo_url:
-      "https://lh3.googleusercontent.com/a/default-user=s128-c0x00000000-cc-rp-mo-ba3",
+    profile_photo_url: "/images/avatar-placeholder.png",
   },
   {
     author_name: "Pierre Durand",

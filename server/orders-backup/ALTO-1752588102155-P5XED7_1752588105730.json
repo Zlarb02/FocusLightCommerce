@@ -1,0 +1,43 @@
+{
+  "timestamp": "2025-07-15T14:01:45.729Z",
+  "orderNumber": "ALTO-1752588102155-P5XED7",
+  "customer": {
+    "name": "Nouveauprenom TestNom",
+    "email": "pogoda.etienne@outlook.fr",
+    "phone": "07 71 85 33 28"
+  },
+  "items": [
+    {
+      "productName": "Produit 2",
+      "variationValue": "Bleu",
+      "quantity": 2,
+      "price": 80
+    },
+    {
+      "productName": "Produit 3",
+      "variationValue": "Rouge",
+      "quantity": 1,
+      "price": 80
+    },
+    {
+      "productName": "Produit 4",
+      "variationValue": "Orange",
+      "quantity": 1,
+      "price": 80
+    },
+    {
+      "productName": "FOCUS.01",
+      "variationValue": "Blanc",
+      "quantity": 1,
+      "price": 80
+    }
+  ],
+  "totalAmount": 400,
+  "relayPoint": null,
+  "status": "nouvelle",
+  "emailsSent": {
+    "customer": true,
+    "admin": true,
+    "sentAt": "2025-07-15T14:01:45.729Z"
+  }
+}

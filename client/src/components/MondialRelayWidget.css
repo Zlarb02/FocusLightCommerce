@@ -1,0 +1,191 @@
+/* Styles personnalisés pour le widget Mondial Relay */
+
+/* Intégration des couleurs du thème dans le widget */
+.mondial-relay-widget {
+  --mr-primary-color: #3b82f6;
+  --mr-secondary-color: #1e40af;
+  --mr-accent-color: #10b981;
+  --mr-text-color: #374151;
+  --mr-border-color: #e5e7eb;
+  --mr-hover-color: #f3f4f6;
+  --mr-shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Styles pour le widget Mondial Relay */
+.mondial-relay-widget iframe {
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px 0 var(--mr-shadow-color);
+}
+
+/* Override des styles du widget pour une meilleure intégration */
+.mondial-relay-widget .mr-container {
+  font-family: inherit !important;
+  border-radius: 0.75rem !important;
+  overflow: hidden !important;
+}
+
+/* Styles pour les points relais dans la liste */
+.mondial-relay-widget .mr-shop-item {
+  border-radius: 0.5rem !important;
+  margin-bottom: 0.5rem !important;
+  transition: all 0.2s ease !important;
+  border: 1px solid var(--mr-border-color) !important;
+}
+
+.mondial-relay-widget .mr-shop-item:hover {
+  background-color: var(--mr-hover-color) !important;
+  border-color: var(--mr-primary-color) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 6px -1px var(--mr-shadow-color) !important;
+}
+
+.mondial-relay-widget .mr-shop-item.selected {
+  background-color: #eff6ff !important;
+  border-color: var(--mr-primary-color) !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+}
+
+/* Styles pour les boutons */
+.mondial-relay-widget .mr-button {
+  background: linear-gradient(
+    135deg,
+    var(--mr-primary-color),
+    var(--mr-secondary-color)
+  ) !important;
+  border: none !important;
+  border-radius: 0.5rem !important;
+  padding: 0.5rem 1rem !important;
+  font-weight: 600 !important;
+  transition: all 0.2s ease !important;
+}
+
+.mondial-relay-widget .mr-button:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 6px -1px var(--mr-shadow-color) !important;
+}
+
+/* Styles pour la carte */
+.mondial-relay-widget .mr-map-container {
+  border-radius: 0.5rem !important;
+  overflow: hidden !important;
+  box-shadow: 0 1px 3px 0 var(--mr-shadow-color) !important;
+}
+
+/* Styles pour les marqueurs sur la carte */
+.mondial-relay-widget .mr-marker {
+  transition: all 0.2s ease !important;
+}
+
+.mondial-relay-widget .mr-marker:hover {
+  transform: scale(1.1) !important;
+}
+
+.mondial-relay-widget .mr-marker.selected {
+  z-index: 1000 !important;
+  transform: scale(1.2) !important;
+}
+
+/* Styles pour les pop-ups */
+.mondial-relay-widget .mr-popup {
+  border-radius: 0.5rem !important;
+  box-shadow: 0 4px 6px -1px var(--mr-shadow-color) !important;
+  border: 1px solid var(--mr-border-color) !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .mondial-relay-widget .mr-container {
+    border-radius: 0.5rem !important;
+  }
+
+  .mondial-relay-widget .mr-shop-item {
+    padding: 0.75rem !important;
+  }
+}
+
+/* Mode sombre */
+@media (prefers-color-scheme: dark) {
+  .mondial-relay-widget {
+    --mr-primary-color: #60a5fa;
+    --mr-secondary-color: #3b82f6;
+    --mr-accent-color: #34d399;
+    --mr-text-color: #f3f4f6;
+    --mr-border-color: #374151;
+    --mr-hover-color: #4b5563;
+    --mr-shadow-color: rgba(0, 0, 0, 0.3);
+  }
+
+  .mondial-relay-widget .mr-shop-item.selected {
+    background-color: #1e3a8a !important;
+  }
+}
+
+/* Animation de chargement personnalisée */
+.mr-loading-overlay {
+  background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+  border-radius: 0.75rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.mr-loading-overlay::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Styles pour l'état de confirmation */
+.relay-confirmation-card {
+  background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+  border: 2px solid #10b981;
+  position: relative;
+  overflow: hidden;
+}
+
+.relay-confirmation-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #10b981, #059669, #047857);
+}
+
+/* Icônes animées */
+.animated-icon {
+  transition: all 0.3s ease;
+}
+
+.animated-icon:hover {
+  transform: scale(1.1) rotate(5deg);
+}
+
+/* Effet de survol pour les cartes */
+.hover-card {
+  transition: all 0.2s ease;
+}
+
+.hover-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px -8px rgba(0, 0, 0, 0.15);
+}

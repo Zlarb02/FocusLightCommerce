@@ -90,13 +90,26 @@ export const insertCustomerSchema = createInsertSchema(customers).omit({
   id: true,
 });
 
-// Order schema
+// Order schema - Enrichi pour inclure toutes les informations nécessaires
 export const orders = pgTable("orders", {
   id: serial("id").primaryKey(),
   customerId: integer("customer_id").notNull(),
+  orderNumber: text("order_number"),
+
+  // Informations client (snapshot au moment de la commande)
+  customerFirstName: text("customer_first_name").notNull(),
+  customerLastName: text("customer_last_name").notNull(),
+  customerEmail: text("customer_email").notNull(),
+  customerPhone: text("customer_phone").notNull(),
+
+  // Point relais (JSON pour stocker toutes les infos du point relais)
+  relayPoint: text("relay_point"), // JSON stringifié
+
   totalAmount: real("total_amount").notNull(),
-  status: text("status").notNull().default("pending"),
+  status: text("status").notNull().default("pending"), // 'pending', 'processing', 'shipped', 'delivered', 'cancelled'
   createdAt: timestamp("created_at").defaultNow(),
+  shippedAt: timestamp("shipped_at"),
+  deliveredAt: timestamp("delivered_at"),
 });
 
 export const insertOrderSchema = createInsertSchema(orders).omit({
@@ -104,13 +117,20 @@ export const insertOrderSchema = createInsertSchema(orders).omit({
   createdAt: true,
 });
 
-// Order Item schema
+// Order Item schema - Enrichi pour inclure les détails produit
 export const orderItems = pgTable("order_items", {
   id: serial("id").primaryKey(),
   orderId: integer("order_id").notNull(),
+
+  // Informations produit (snapshot au moment de la commande)
   productId: integer("product_id").notNull(),
+  productName: text("product_name").notNull(),
+  variationType: text("variation_type"), // 'couleur', 'taille', etc.
+  variationValue: text("variation_value"), // 'rouge', 'M', etc.
+
   quantity: integer("quantity").notNull(),
-  price: real("price").notNull(),
+  unitPrice: real("unit_price").notNull(), // Prix unitaire
+  totalPrice: real("total_price").notNull(), // Prix total = unitPrice * quantity
 });
 
 export const insertOrderItemSchema = createInsertSchema(orderItems).omit({

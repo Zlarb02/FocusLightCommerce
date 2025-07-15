@@ -1,0 +1,135 @@
+
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8">
+        <title>Facture ALTO-20250715-1752580699696</title>
+        <style>
+          body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+          .invoice-container { max-width: 800px; margin: 0 auto; padding: 20px; }
+          .header { display: flex; justify-content: space-between; margin-bottom: 40px; }
+          .company-info { font-size: 14px; line-height: 1.5; }
+          .invoice-title { font-size: 24px; font-weight: bold; color: #1f2937; }
+          .invoice-details { background: #f9fafb; padding: 20px; border-radius: 8px; margin: 20px 0; }
+          .customer-info { margin: 20px 0; }
+          .items-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+          .items-table th { background: #374151; color: white; padding: 12px; text-align: left; }
+          .totals { text-align: right; margin: 20px 0; }
+          .total-line { display: flex; justify-content: space-between; margin: 5px 0; }
+          .total-final { font-weight: bold; font-size: 18px; color: #059669; }
+          .footer { margin-top: 40px; font-size: 12px; color: #6b7280; text-align: center; }
+          @media print { body { margin: 0; } .invoice-container { margin: 0; padding: 15px; } }
+        </style>
+      </head>
+      <body>
+        <div class="invoice-container">
+          <!-- En-tête -->
+          <div class="header">
+            <div>
+              <h1 style="margin: 0; color: #1f2937; font-size: 28px;">Alto Lille</h1>
+              <div class="company-info">
+                123 Rue de la Paix<br>
+                59000 Lille<br>
+                Tél: +33 1 23 45 67 89<br>
+                Email: altolille@gmail.com<br>
+                SIRET: 12345678901234<br>
+                TVA: FR12345678901
+              </div>
+            </div>
+            <div style="text-align: right;">
+              <div class="invoice-title">FACTURE</div>
+              <div style="font-size: 18px; margin: 10px 0;">N° ALTO-20250715-1752580699696</div>
+              <div style="color: #6b7280;">Date: 15/07/2025</div>
+            </div>
+          </div>
+
+          <!-- Informations client -->
+          <div class="customer-info">
+            <h3 style="color: #1f2937; margin-bottom: 10px;">Facturé à :</h3>
+            <div style="background: #f9fafb; padding: 15px; border-radius: 8px;">
+              <strong>Etienne Pogoda</strong><br>
+              altolille@gmail.com<br>
+              07 71 85 33 28<br>
+              Adresse non spécifiée
+            </div>
+          </div>
+
+          <!-- Point relais si applicable -->
+          
+
+          <!-- Détails de la commande -->
+          <div class="invoice-details">
+            <strong>Commande N° ALTO-1752580699687-WS0KGZ</strong><br>
+            Méthode de paiement: Carte bancaire (Stripe)<br>
+            Statut: Payé
+          </div>
+
+          <!-- Articles -->
+          <table class="items-table">
+            <thead>
+              <tr>
+                <th>Article</th>
+                <th style="text-align: center; width: 80px;">Qté</th>
+                <th style="text-align: right; width: 100px;">Prix unit.</th>
+                <th style="text-align: right; width: 100px;">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+        <tr>
+          <td style="padding: 12px; border-bottom: 1px solid #e5e7eb;">
+            <div style="font-weight: 500;">Produit 2</div>
+            <div style="color: #6b7280; font-size: 14px;"></div>
+          </td>
+          <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; text-align: center;">
+            1
+          </td>
+          <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; text-align: right;">
+            0.80 €
+          </td>
+          <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; text-align: right; font-weight: 500;">
+            0.80 €
+          </td>
+        </tr>
+      
+            </tbody>
+          </table>
+
+          <!-- Totaux -->
+          <div class="totals">
+            <div class="total-line">
+              <span>Sous-total:</span>
+              <span>0.80 €</span>
+            </div>
+            <div class="total-line">
+              <span>Livraison:</span>
+              <span style="color: #059669;">Gratuite</span>
+            </div>
+            <div class="total-line">
+              <span>TVA (20%):</span>
+              <span>0.16 €</span>
+            </div>
+            <hr style="margin: 10px 0;">
+            <div class="total-line total-final">
+              <span>TOTAL TTC:</span>
+              <span>0.80 €</span>
+            </div>
+          </div>
+
+          <!-- Pied de page légal -->
+          <div class="footer">
+            <p><strong>Conditions de vente et mentions légales</strong></p>
+            <p>
+              Facture générée automatiquement le 15/07/2025 à 13:58:19<br>
+              Paiement effectué par carte bancaire via Stripe - Transaction sécurisée<br>
+              Alto Lille - SIRET: 12345678901234 - TVA: FR12345678901
+            </p>
+            <p style="margin-top: 20px;">
+              <strong>Garantie et retours :</strong> Produits garantis 2 ans - Retour possible sous 30 jours<br>
+              <strong>Contact :</strong> altolille@gmail.com - +33 1 23 45 67 89
+            </p>
+          </div>
+        </div>
+      </body>
+      </html>
+    

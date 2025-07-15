@@ -72,163 +72,174 @@ const progressVariants = {
   }),
 };
 
-export function EnhancedToast({
-  id,
-  title,
-  description,
-  type = "info",
-  duration = 4000,
-  onClose,
-  productImage,
-  productName,
-  quantity = 1,
-}: EnhancedToastProps) {
-  const [isVisible, setIsVisible] = React.useState(true);
+export const EnhancedToast = React.forwardRef<
+  HTMLDivElement,
+  EnhancedToastProps
+>(
+  (
+    {
+      id,
+      title,
+      description,
+      type = "info",
+      duration = 4000,
+      onClose,
+      productImage,
+      productName,
+      quantity = 1,
+    },
+    ref
+  ) => {
+    const [isVisible, setIsVisible] = React.useState(true);
 
-  React.useEffect(() => {
-    const timer = setTimeout(() => {
-      handleClose();
-    }, duration);
+    React.useEffect(() => {
+      const timer = setTimeout(() => {
+        handleClose();
+      }, duration);
 
-    return () => clearTimeout(timer);
-  }, [duration]);
+      return () => clearTimeout(timer);
+    }, [duration]);
 
-  const handleClose = () => {
-    setIsVisible(false);
-    setTimeout(() => onClose(id), 200);
-  };
+    const handleClose = () => {
+      setIsVisible(false);
+      setTimeout(() => onClose(id), 200);
+    };
 
-  const getIcon = () => {
-    switch (type) {
-      case "success":
-        return <CheckCircle className="h-5 w-5 text-green-500" />;
-      case "cart":
-        return <ShoppingCart className="h-5 w-5 text-blue-500" />;
-      case "error":
-        return <AlertCircle className="h-5 w-5 text-red-500" />;
-      default:
-        return <Package className="h-5 w-5 text-blue-500" />;
-    }
-  };
+    const getIcon = () => {
+      switch (type) {
+        case "success":
+          return <CheckCircle className="h-5 w-5 text-green-500" />;
+        case "cart":
+          return <ShoppingCart className="h-5 w-5 text-blue-500" />;
+        case "error":
+          return <AlertCircle className="h-5 w-5 text-red-500" />;
+        default:
+          return <Package className="h-5 w-5 text-blue-500" />;
+      }
+    };
 
-  const getBgColor = () => {
-    switch (type) {
-      case "success":
-        return "bg-green-50 border-green-200 dark:bg-green-900 dark:border-green-700";
-      case "cart":
-        return "bg-blue-50 border-blue-200 dark:bg-blue-900 dark:border-blue-700";
-      case "error":
-        return "bg-red-50 border-red-200 dark:bg-red-900 dark:border-red-700";
-      default:
-        return "bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700";
-    }
-  };
+    const getBgColor = () => {
+      switch (type) {
+        case "success":
+          return "bg-green-50 border-green-200 dark:bg-green-900 dark:border-green-700";
+        case "cart":
+          return "bg-blue-50 border-blue-200 dark:bg-blue-900 dark:border-blue-700";
+        case "error":
+          return "bg-red-50 border-red-200 dark:bg-red-900 dark:border-red-700";
+        default:
+          return "bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700";
+      }
+    };
 
-  if (!isVisible) return null;
+    if (!isVisible) return null;
 
-  return (
-    <motion.div
-      variants={toastVariants}
-      initial="hidden"
-      animate="visible"
-      exit="exit"
-      className={cn(
-        "relative overflow-hidden rounded-lg border p-4 shadow-lg max-w-sm",
-        getBgColor(),
-        "text-gray-900 dark:text-gray-100"
-      )}
-      style={{ fontFamily: "var(--font-body)" }}
-    >
-      {/* Barre de progression */}
+    return (
       <motion.div
-        className="absolute top-0 left-0 h-1 bg-primary/30"
-        variants={progressVariants}
-        initial="initial"
-        animate="animate"
-        custom={duration}
-      />
+        ref={ref}
+        variants={toastVariants}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+        className={cn(
+          "relative overflow-hidden rounded-lg border p-4 shadow-lg max-w-sm",
+          getBgColor(),
+          "text-gray-900 dark:text-gray-100"
+        )}
+        style={{ fontFamily: "var(--font-body)" }}
+      >
+        {/* Barre de progression */}
+        <motion.div
+          className="absolute top-0 left-0 h-1 bg-primary/30"
+          variants={progressVariants}
+          initial="initial"
+          animate="animate"
+          custom={duration}
+        />
 
-      <div className="flex items-start gap-3">
-        {/* Icône animée */}
-        <motion.div variants={iconVariants} className="flex-shrink-0 mt-0.5">
-          {getIcon()}
-        </motion.div>
+        <div className="flex items-start gap-3">
+          {/* Icône animée */}
+          <motion.div variants={iconVariants} className="flex-shrink-0 mt-0.5">
+            {getIcon()}
+          </motion.div>
 
-        {/* Contenu principal */}
-        <div className="flex-1 min-w-0">
-          <div className="flex items-start justify-between">
-            <div className="flex-1">
-              <motion.h4
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="text-sm font-semibold text-gray-900 dark:text-gray-100"
-              >
-                {title}
-              </motion.h4>
-              {description && (
-                <motion.p
-                  initial={{ opacity: 0, y: 10 }}
+          {/* Contenu principal */}
+          <div className="flex-1 min-w-0">
+            <div className="flex items-start justify-between">
+              <div className="flex-1">
+                <motion.h4
+                  initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 }}
-                  className="text-sm text-gray-600 dark:text-gray-300 mt-1"
+                  transition={{ delay: 0.1 }}
+                  className="text-sm font-semibold text-gray-900 dark:text-gray-100"
                 >
-                  {description}
-                </motion.p>
-              )}
+                  {title}
+                </motion.h4>
+                {description && (
+                  <motion.p
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                    className="text-sm text-gray-600 dark:text-gray-300 mt-1"
+                  >
+                    {description}
+                  </motion.p>
+                )}
+              </div>
+
+              {/* Bouton fermer */}
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={handleClose}
+                className="flex-shrink-0 ml-2 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors"
+              >
+                <X className="h-4 w-4" />
+              </motion.button>
             </div>
 
-            {/* Bouton fermer */}
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={handleClose}
-              className="flex-shrink-0 ml-2 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors"
-            >
-              <X className="h-4 w-4" />
-            </motion.button>
+            {/* Section produit pour les toasts de panier */}
+            {type === "cart" && productImage && productName && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="mt-3 flex items-center gap-3 p-2 bg-white/50 dark:bg-gray-800/70 rounded-md"
+              >
+                <img
+                  src={productImage}
+                  alt={productName}
+                  className="w-10 h-10 object-cover rounded"
+                />
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-medium text-gray-900 dark:text-gray-100 truncate">
+                    {productName}
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-300">
+                    Quantité: {quantity}
+                  </p>
+                </div>
+              </motion.div>
+            )}
           </div>
-
-          {/* Section produit pour les toasts de panier */}
-          {type === "cart" && productImage && productName && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="mt-3 flex items-center gap-3 p-2 bg-white/50 dark:bg-gray-800/70 rounded-md"
-            >
-              <img
-                src={productImage}
-                alt={productName}
-                className="w-10 h-10 object-cover rounded"
-              />
-              <div className="flex-1 min-w-0">
-                <p className="text-xs font-medium text-gray-900 dark:text-gray-100 truncate">
-                  {productName}
-                </p>
-                <p className="text-xs text-gray-500 dark:text-gray-300">
-                  Quantité: {quantity}
-                </p>
-              </div>
-            </motion.div>
-          )}
         </div>
-      </div>
 
-      {/* Effet de brillance */}
-      <motion.div
-        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12"
-        initial={{ x: "-100%" }}
-        animate={{ x: "200%" }}
-        transition={{
-          duration: 0.8,
-          delay: 0.2,
-          ease: "easeInOut",
-        }}
-      />
-    </motion.div>
-  );
-}
+        {/* Effet de brillance */}
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12"
+          initial={{ x: "-100%" }}
+          animate={{ x: "200%" }}
+          transition={{
+            duration: 0.8,
+            delay: 0.2,
+            ease: "easeInOut",
+          }}
+        />
+      </motion.div>
+    );
+  }
+);
+
+EnhancedToast.displayName = "EnhancedToast";
 
 // Container pour gérer l'affichage des toasts
 export function ToastContainer({

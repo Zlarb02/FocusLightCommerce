@@ -1,10 +1,11 @@
-import { Switch, Route } from "wouter";
+import { Switch, Route, useLocation } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import Home from "@/pages/ShopFocus";
 import NotFound from "@/pages/not-found";
-import CheckoutNew from "@/pages/checkout/Checkout";
+import CheckoutNew from "@/pages/checkout/CheckoutNew";
+import { OrderConfirmation } from "@/pages/checkout/OrderConfirmation";
 import { CartProvider } from "@/hooks/useCart";
 import { CheckoutProvider } from "@/hooks/useCheckout";
 import { useEffect, useState, Suspense, lazy } from "react";
@@ -12,6 +13,7 @@ import Shop from "@/pages/Shop";
 import useVersions from "@/hooks/useVersions";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import { StripeProvider } from "@/components/StripeProvider";
 
 // Pages de projets autonomes
 const DesignEnAction = lazy(() => import("@/pages/DesignEnAction"));
@@ -26,7 +28,9 @@ import Commandes from "./pages/gestion/Commandes";
 import Contenu from "./pages/gestion/Contenu";
 import Parametres from "./pages/gestion/Parametres";
 import Medias from "./pages/gestion/Medias";
+import { GestionStripeTest } from "./pages/gestion/StripeTest";
 import Versions from "./pages/gestion/Versions";
+import ProtectedGestionRoute from "./components/ProtectedGestionRoute";
 
 // Pages légales et services
 import MentionsLegales from "./pages/legal/MentionsLegales";
@@ -45,6 +49,18 @@ interface RouteChangeEvent extends CustomEvent {
 }
 
 function Router() {
+  const [, navigate] = useLocation();
+
+  const OrderConfirmationWrapper = ({
+    orderNumber,
+  }: {
+    orderNumber: string;
+  }) => (
+    <OrderConfirmation
+      orderNumber={orderNumber}
+      onBackToHome={() => navigate("/")}
+    />
+  );
   // Suivre si on vient de la landing page pour ajouter un bouton de retour si nécessaire
   const [comingFromLanding, setComingFromLanding] = useState(false);
   // Utiliser le hook pour le mode boutique
@@ -100,6 +116,11 @@ function Router() {
         {/* Routes principales de l'application */}
         <Route path="/shop" component={shopMode === "focus" ? Home : Shop} />
         <Route path="/checkout" component={CheckoutNew} />
+        <Route path="/checkout/confirmation/:orderNumber">
+          {(params) => (
+            <OrderConfirmationWrapper orderNumber={params.orderNumber} />
+          )}
+        </Route>
 
         {/* Routes des projets */}
         <Route path="/design-action">
@@ -143,13 +164,30 @@ function Router() {
 
         {/* Routes d'administration */}
         <Route path="/gestion" component={GestionLogin} />
-        <Route path="/gestion/dashboard" component={Dashboard} />
-        <Route path="/gestion/stocks" component={Stocks} />
-        <Route path="/gestion/commandes" component={Commandes} />
-        <Route path="/gestion/medias" component={Medias} />
-        <Route path="/gestion/contenu" component={Contenu} />
-        <Route path="/gestion/parametres" component={Parametres} />
-        <Route path="/gestion/versions" component={Versions} />
+        <Route path="/gestion/dashboard">
+          <ProtectedGestionRoute component={Dashboard} />
+        </Route>
+        <Route path="/gestion/stocks">
+          <ProtectedGestionRoute component={Stocks} />
+        </Route>
+        <Route path="/gestion/commandes">
+          <ProtectedGestionRoute component={Commandes} />
+        </Route>
+        <Route path="/gestion/medias">
+          <ProtectedGestionRoute component={Medias} />
+        </Route>
+        <Route path="/gestion/contenu">
+          <ProtectedGestionRoute component={Contenu} />
+        </Route>
+        <Route path="/gestion/parametres">
+          <ProtectedGestionRoute component={Parametres} />
+        </Route>
+        <Route path="/gestion/versions">
+          <ProtectedGestionRoute component={Versions} />
+        </Route>
+        <Route path="/gestion/stripe-test">
+          <ProtectedGestionRoute component={GestionStripeTest} />
+        </Route>
 
         {/* Pages légales */}
         <Route path="/mentions-legales" component={MentionsLegales} />
@@ -178,12 +216,14 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
         <LanguageProvider>
-          <CartProvider>
-            <CheckoutProvider>
-              <Router />
-              <Toaster />
-            </CheckoutProvider>
-          </CartProvider>
+          <StripeProvider>
+            <CartProvider>
+              <CheckoutProvider>
+                <Router />
+                <Toaster />
+              </CheckoutProvider>
+            </CartProvider>
+          </StripeProvider>
         </LanguageProvider>
       </ThemeProvider>
     </QueryClientProvider>

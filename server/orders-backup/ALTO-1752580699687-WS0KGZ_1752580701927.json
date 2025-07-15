@@ -1,0 +1,25 @@
+{
+  "timestamp": "2025-07-15T11:58:21.927Z",
+  "orderNumber": "ALTO-1752580699687-WS0KGZ",
+  "customer": {
+    "name": "Etienne Pogoda",
+    "email": "altolille@gmail.com",
+    "phone": "07 71 85 33 28"
+  },
+  "items": [
+    {
+      "productName": "Produit 2",
+      "variationValue": "",
+      "quantity": 1,
+      "price": 80
+    }
+  ],
+  "totalAmount": 80,
+  "relayPoint": null,
+  "status": "nouvelle",
+  "emailsSent": {
+    "customer": true,
+    "admin": true,
+    "sentAt": "2025-07-15T11:58:21.927Z"
+  }
+}

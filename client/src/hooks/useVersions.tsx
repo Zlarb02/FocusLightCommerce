@@ -31,6 +31,7 @@ export const useVersions = () => {
       );
       return response;
     },
+    enabled: true,
   });
 
   // Récupérer toutes les versions
@@ -43,6 +44,7 @@ export const useVersions = () => {
       );
       return response;
     },
+    enabled: false, // Désactivé pour éviter les erreurs 403 dans les logs
   });
 
   // Mutation pour mettre à jour le mode boutique

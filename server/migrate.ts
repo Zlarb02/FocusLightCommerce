@@ -126,9 +126,17 @@ async function createTablesDirectly() {
       CREATE TABLE IF NOT EXISTS orders (
         id SERIAL PRIMARY KEY,
         customer_id INTEGER NOT NULL,
+        order_number TEXT,
+        customer_first_name TEXT,
+        customer_last_name TEXT,
+        customer_email TEXT,
+        customer_phone TEXT,
+        relay_point TEXT,
         total_amount REAL NOT NULL,
         status TEXT NOT NULL DEFAULT 'pending',
-        created_at TIMESTAMP DEFAULT NOW()
+        created_at TIMESTAMP DEFAULT NOW(),
+        shipped_at TIMESTAMP,
+        delivered_at TIMESTAMP
       )
     `);
 

@@ -1,13 +1,5 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
 
-declare global {
-  interface Window {
-    ENV?: {
-      API_URL?: string;
-    };
-  }
-}
-
 // Fonction utilitaire pour obtenir la base URL de l'API
 export function getApiBaseUrl() {
   // En développement, utilisez l'URL locale
@@ -39,7 +31,8 @@ export async function apiRequest<T = any>(
   const url = `${baseUrl}${endpoint}`;
 
   // Timeout plus long pour les gros JSON (updates complets)
-  const isFullUpdate = endpoint.includes('/full') && (method === 'PUT' || method === 'POST');
+  const isFullUpdate =
+    endpoint.includes("/full") && (method === "PUT" || method === "POST");
   const timeoutMs = isFullUpdate ? 30000 : 10000; // 30s pour full updates, 10s sinon
 
   const fetchOptions: RequestInit = {
@@ -81,8 +74,10 @@ export async function apiRequest<T = any>(
     return response.json();
   } catch (error) {
     clearTimeout(timeoutId);
-    if (error instanceof Error && error.name === 'AbortError') {
-      throw new Error(`Timeout: La requête a pris plus de ${timeoutMs/1000}s`);
+    if (error instanceof Error && error.name === "AbortError") {
+      throw new Error(
+        `Timeout: La requête a pris plus de ${timeoutMs / 1000}s`
+      );
     }
     throw error;
   }

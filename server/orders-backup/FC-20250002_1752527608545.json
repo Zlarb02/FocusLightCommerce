@@ -1,0 +1,30 @@
+{
+  "timestamp": "2025-07-14T21:13:28.545Z",
+  "orderNumber": "FC-20250002",
+  "customer": {
+    "name": "Etienne Pogoda",
+    "email": "pogoda.etienne@outlook.fr",
+    "phone": "07 71 85 33 28"
+  },
+  "items": [
+    {
+      "productName": "Produit 2",
+      "variationValue": "",
+      "quantity": 1,
+      "price": 80
+    }
+  ],
+  "totalAmount": 80,
+  "relayPoint": {
+    "name": "",
+    "address": "",
+    "city": "",
+    "postalCode": ""
+  },
+  "status": "nouvelle",
+  "emailsSent": {
+    "customer": true,
+    "admin": true,
+    "sentAt": "2025-07-14T21:13:28.545Z"
+  }
+}

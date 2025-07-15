@@ -34,7 +34,7 @@ export default defineConfig(async () => {
   }
 
   return {
-    plugins: [react(), runtimeErrorOverlay(), themePlugin(), ...devPlugins],
+    plugins: [react(), themePlugin(), ...devPlugins], // Supprimer runtimeErrorOverlay() temporairement
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "src"),
@@ -65,7 +65,7 @@ export default defineConfig(async () => {
     build: {
       outDir: path.resolve(__dirname, "dist"),
       emptyOutDir: true,
-      sourcemap: process.env.NODE_ENV !== "production",
+      sourcemap: false, // Désactiver les source maps pour éviter les erreurs
     },
     base: "/",
     define: {
