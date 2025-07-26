@@ -170,13 +170,26 @@
       }
       #landing-container {
         background: var(--bg-color);
+        position: relative; /* Assure un contexte de positionnement pour les éléments absolus */
+        min-height: 100vh;
       }
+
       #webgl {
         position: fixed;
-        inset: 0;
+        top: 80px; /* Commence sous le header */
+        left: 0;
+        right: 0;
+        bottom: 0;
         transition: margin-left 0.3s ease-out;
         opacity: 0; /* Masqué au début */
         transition: opacity 0.5s ease, margin-left 0.3s ease-out;
+      }
+
+      /* Ajustement responsive pour webgl */
+      @media (max-width: 768px) {
+        #webgl {
+          top: 70px; /* Commence sous le header mobile */
+        }
       }
       #scrollArea {
         height: 800vh;
@@ -194,19 +207,19 @@
         color: var(--text-color);
       }
       .tl {
-        top: 15%;
+        top: calc(15% + 80px); /* Décalé pour le header */
         left: 6%;
       }
       .tr {
-        top: 15%;
+        top: calc(15% + 80px); /* Décalé pour le header */
         right: 6%;
       }
       .ml {
-        top: 55%;
+        top: calc(55% + 40px); /* Légèrement décalé */
         left: 6%;
       }
       .mr {
-        top: 45%;
+        top: calc(45% + 40px); /* Légèrement décalé */
         right: 6%;
       }
       .br {
@@ -216,6 +229,16 @@
       .bl {
         bottom: 13%;
         left: 6%;
+      }
+
+      /* Ajustements responsive pour les captions */
+      @media (max-width: 768px) {
+        .tl {
+          top: calc(15% + 70px); /* Décalé pour le header mobile */
+        }
+        .tr {
+          top: calc(15% + 70px); /* Décalé pour le header mobile */
+        }
       }
       #cta {
         position: fixed;
@@ -254,7 +277,7 @@
         opacity: 1;
       }
 
-      /* Style épuré pour les toggles en haut à droite */
+      /* Style épuré pour les toggles en haut à droite - ajustés pour le header */
       /* Style pour les toggles - Style Layout.tsx minimaliste */
       .toggle-container {
         position: fixed;
@@ -262,7 +285,7 @@
         right: 20px;
         display: flex;
         gap: 4px;
-        z-index: 100;
+        z-index: 101; /* Au-dessus du header */
       }
 
       .toggle {
@@ -304,10 +327,10 @@
         display: none; /* Masquer les switches pour un style plus minimaliste */
       }
 
-      /* Style pour le slider Focus - Mobile First */
+      /* Style pour le slider Focus - Mobile First - mieux aligné */
       .focus-slider {
         position: absolute;
-        top: 42%;
+        top: calc(50% - 60px); /* Position équilibrée sur mobile */
         left: 50%;
         transform: translate(-50%, -50%);
         width: 75vw;
@@ -326,17 +349,39 @@
         box-shadow: 0 6px 30px rgba(0, 0, 0, 0.2);
       }
 
-      /* Focus slider position pour écrans > 765px */
-      @media (min-width: 766px) {
+      /* Focus slider responsive - Consolidé */
+      /* Tablette (768px-1199px) */
+      @media (min-width: 768px) and (max-width: 1199px) {
+        .focus-section-desktop {
+          display: none !important;
+        }
+
         .focus-slider {
-          top: 50%;
+          top: calc(50% - 40px); /* Position équilibrée sur tablette */
+          max-width: 400px;
         }
       }
 
-      /* Containers pour les sections latérales desktop */
+      /* Desktop (min-width: 766px) */
+      @media (min-width: 766px) {
+        .focus-slider {
+          top: calc(50% - 30px); /* Position équilibrée sur desktop */
+        }
+      }
+
+      /* Desktop large (min-width: 1024px) */
+      @media (min-width: 1024px) {
+        .focus-slider {
+          width: 35vw;
+          max-width: 400px;
+          top: calc(50% - 40px); /* Position équilibrée pour grand écran */
+        }
+      }
+
+      /* Containers pour les sections latérales desktop - mieux aligné */
       .focus-section-desktop {
         position: absolute;
-        top: 50%;
+        top: calc(50% + 60px); /* Légèrement moins bas pour mieux aligner */
         transform: translateY(-50%);
         z-index: 5;
         display: none !important; /* Masqué sur mobile et tablette */
@@ -348,15 +393,15 @@
           display: block !important;
         }
 
-        /* Sections positionnées avec plus d'air */
+        /* Sections positionnées avec plus d'air - taille réduite */
         .left-section {
           left: clamp(2%, 8vw, 120px);
-          width: clamp(280px, 25vw, 400px);
+          width: clamp(250px, 22vw, 350px); /* Largeur réduite */
         }
 
         .right-section {
           right: clamp(2%, 8vw, 120px);
-          width: clamp(280px, 25vw, 400px);
+          width: clamp(250px, 22vw, 350px); /* Largeur réduite */
         }
 
         /* Contenu des sections - design épuré */
@@ -373,14 +418,14 @@
           transform: translateY(-8px);
         }
 
-        /* Grilles d'images - design flexible et moderne */
+        /* Grilles d'images - design flexible et moderne - plus compact */
         .design-images-grid,
         .creations-images-grid {
           display: grid;
-          gap: clamp(16px, 3vw, 32px);
+          gap: clamp(12px, 2vw, 24px); /* Espacement réduit */
           width: 100%;
           height: auto;
-          min-height: clamp(300px, 40vh, 500px);
+          min-height: clamp(250px, 30vh, 400px); /* Hauteur réduite */
           align-content: center;
           justify-content: center;
         }
@@ -407,20 +452,20 @@
           justify-items: end;
         }
 
-        /* Images principales - design moderne */
+        /* Images principales - design moderne - taille réduite */
         .design-image-main,
         .creation-image-main {
           grid-area: main;
-          width: clamp(240px, 20vw, 320px);
-          height: clamp(140px, 12vw, 200px);
+          width: clamp(200px, 16vw, 280px); /* Réduction de la taille */
+          height: clamp(120px, 10vw, 170px); /* Réduction de la taille */
         }
 
-        /* Images secondaires */
+        /* Images secondaires - taille réduite */
         .design-image-secondary,
         .creation-image-secondary {
           grid-area: secondary;
-          width: clamp(200px, 18vw, 280px);
-          height: clamp(120px, 10vw, 160px);
+          width: clamp(170px, 14vw, 240px); /* Réduction de la taille */
+          height: clamp(100px, 8vw, 140px); /* Réduction de la taille */
         }
 
         /* Titres - typographie moderne */
@@ -655,23 +700,7 @@
         }
       }
 
-      /* Sur tablette (768px-1199px), cacher les placeholders */
-      @media (min-width: 768px) and (max-width: 1199px) {
-        .focus-section-desktop {
-          display: none !important;
-        }
-
-        .focus-slider {
-          max-width: 400px; /* Plus grand sur tablette */
-        }
-      }
-
-      /* Focus slider position pour écrans > 765px */
-      @media (min-width: 766px) {
-        .focus-slider {
-          top: 50%;
-        }
-      }
+      /* Sur tablette, les sections desktop et focus-slider sont déjà gérées plus haut */
 
       .slider-container {
         position: relative;
@@ -700,11 +729,11 @@
         display: block;
       }
 
-      /* Menu burger - Style minimaliste identique à Layout.tsx */
+      /* Menu burger dans le header */
       .mobile-menu-burger {
-        position: fixed;
-        top: 20px;
-        left: 20px;
+        position: relative;
+        top: 0;
+        left: 0;
         z-index: 30;
         padding: 12px;
         background: transparent !important;
@@ -789,16 +818,11 @@
         width: 28px;
       }
 
-      /* Menu burger visible sur tous les écrans */
+      /* Menu burger visible sur tous les écrans - focus-slider déjà géré plus haut */
       @media (min-width: 1024px) {
         /* .mobile-menu-burger {
           display: none;
         } */
-
-        .focus-slider {
-          width: 35vw;
-          max-width: 400px;
-        }
       }
 
       /* Masquer l'app React par défaut */
@@ -810,39 +834,182 @@
         display: block;
       }
 
-      /* Style pour le titre de la marque - Style Layout.tsx */
-      #brand-title {
+      /* Header unifié avec menu burger, logo et titre */
+      .main-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        padding: 0 20px;
+        z-index: 100;
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        transition: all 0.3s ease-out;
+      }
+
+      .dark-mode .main-header {
+        background: rgba(0, 0, 0, 0.05);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      }
+
+      .header-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between; /* Répartit l'espace entre les éléments */
+        width: 100%;
+      }
+
+      /* Container pour centrer logo + titre sur desktop */
+      .header-brand {
+        display: flex;
+        align-items: center;
+        gap: 16px;
         position: absolute;
-        top: 24px;
         left: 50%;
         transform: translateX(-50%);
-        text-align: center;
-        font-family: var(--font-titles);
-        font-size: clamp(64px, 8vw, 96px);
-        font-weight: 1000;
-        color: var(--text-color);
+      }
+
+      /* Sur mobile, on garde la structure linéaire */
+      @media (max-width: 1024px) {
+        .header-brand {
+          position: static;
+          transform: none;
+          flex: 1;
+        }
+      }
+
+      .header-logo {
+        width: 32px; /* Plus grand pour l'équilibre */
+        height: 32px;
+        object-fit: contain;
+        opacity: 0.9;
+        transition: opacity 0.3s ease-out;
+      }
+
+      .header-logo:hover {
         opacity: 1;
+      }
+
+      /* Style pour le titre de la marque dans le header */
+      #brand-title {
+        font-family: var(--font-titles);
+        font-size: 24px; /* Plus lisible à distance */
+        font-weight: 600;
+        color: var(--text-color);
+        opacity: 0.9;
         transition: all 0.3s ease-out;
-        pointer-events: none;
         user-select: none;
         background: transparent;
         border: none;
         box-shadow: none;
         padding: 0;
-        cursor: pointer;
+        margin: 0;
         letter-spacing: 0.02em;
+        text-transform: none;
       }
 
       #brand-title:hover {
-        transform: translateX(-50%) scale(1.05);
+        opacity: 1;
+        transform: scale(1.02);
       }
 
-      /* Repositionner sur mobile pour laisser place au burger */
-      @media (max-width: 767px) {
+      /* Responsive adjustments pour le header - Version lisible */
+
+      /* Mobile portrait (≤480px) */
+      @media (max-width: 480px) {
+        .main-header {
+          height: 65px;
+          padding: 0 12px;
+        }
+
+        .header-brand {
+          gap: 10px;
+        }
+
+        .header-logo {
+          width: 24px;
+          height: 24px;
+        }
+
         #brand-title {
-          left: 50%;
-          transform: translateX(-50%);
-          top: 20px;
+          font-size: 18px; /* Plus lisible sur mobile */
+        }
+      }
+
+      /* Mobile paysage et tablette portrait (481px-768px) */
+      @media (min-width: 481px) and (max-width: 768px) {
+        .main-header {
+          height: 70px;
+          padding: 0 16px;
+        }
+
+        .header-brand {
+          gap: 12px;
+        }
+
+        .header-logo {
+          width: 26px;
+          height: 26px;
+        }
+
+        #brand-title {
+          font-size: 20px; /* Plus lisible */
+        }
+      }
+
+      /* Tablette paysage (769px-1024px) */
+      @media (min-width: 769px) and (max-width: 1024px) {
+        .header-brand {
+          gap: 14px;
+        }
+
+        .header-logo {
+          width: 28px;
+          height: 28px;
+        }
+
+        #brand-title {
+          font-size: 22px; /* Plus lisible */
+        }
+      }
+
+      /* Desktop standard (1025px-1440px) */
+      @media (min-width: 1025px) and (max-width: 1440px) {
+        .header-logo {
+          width: 32px;
+          height: 32px;
+        }
+
+        #brand-title {
+          font-size: 24px; /* Parfait pour la lisibilité */
+        }
+      }
+
+      /* Grand écran (1441px-1920px) */
+      @media (min-width: 1441px) and (max-width: 1920px) {
+        .header-logo {
+          width: 34px;
+          height: 34px;
+        }
+
+        #brand-title {
+          font-size: 26px; /* Plus visible sur grand écran */
+        }
+      }
+
+      /* Très grand écran (>1920px) */
+      @media (min-width: 1921px) {
+        .header-logo {
+          width: 36px;
+          height: 36px;
+        }
+
+        #brand-title {
+          font-size: 28px; /* Excellent pour très grands écrans */
         }
       }
 
@@ -1104,10 +1271,7 @@
 
       /* Amélioration pour mobile large (avant tablette) */
       @media (min-width: 481px) and (max-width: 764px) {
-        #brand-title {
-          top: 6%;
-          font-size: clamp(40px, 8vw, 50px);
-        }
+        /* Titre maintenant dans le header - gestion responsive déjà en place */
 
         /* Optimisation moderne de l'indicateur de défilement pour mobile large */
         #scroll-indicator {
@@ -1255,10 +1419,7 @@
 
       /* Amélioration pour tablette large */
       @media (min-width: 1081px) and (max-width: 1440px) {
-        #brand-title {
-          top: 24px; /* Position cohérente avec desktop */
-          font-size: clamp(48px, 5.5vw, 64px); /* Taille harmonisée tablette */
-        }
+        /* Titre maintenant dans le header - pas de style spécifique nécessaire */
 
         /* Optimisation moderne de l'indicateur de défilement pour tablette - FORMAT HORIZONTAL */
         #scroll-indicator {
@@ -1320,14 +1481,7 @@
 
       /* Optimisation pour les grands écrans */
       @media (min-width: 1441px) and (max-width: 1919px) {
-        #brand-title {
-          top: 24px; /* Position cohérente */
-          font-size: clamp(
-            72px,
-            6vw,
-            96px
-          ); /* Taille harmonisée grands écrans */
-        }
+        /* Titre maintenant dans le header - pas de style spécifique nécessaire */
 
         /* Optimiser l'indicateur de défilement pour les grands écrans - FORMAT HORIZONTAL */
         #scroll-indicator {
@@ -1389,14 +1543,7 @@
 
       /* Optimisations pour les très grandes tailles d'écran */
       @media (min-width: 1920px) and (max-width: 2559px) {
-        #brand-title {
-          top: 24px; /* Position cohérente */
-          font-size: clamp(
-            80px,
-            5.5vw,
-            108px
-          ); /* Taille harmonisée très grands écrans */
-        }
+        /* Titre maintenant dans le header - pas de style spécifique nécessaire */
 
         /* Optimiser l'indicateur de défilement pour les très grands écrans - FORMAT HORIZONTAL */
         #scroll-indicator {
@@ -1458,14 +1605,7 @@
 
       /* Amélioration pour les écrans ultra-larges */
       @media (min-width: 2560px) {
-        #brand-title {
-          top: 24px; /* Position cohérente */
-          font-size: clamp(
-            88px,
-            5vw,
-            120px
-          ); /* Taille harmonisée écrans ultra-larges */
-        }
+        /* Titre maintenant dans le header - pas de style spécifique nécessaire */
 
         /* Optimiser l'indicateur de défilement pour les écrans ultra-larges - FORMAT HORIZONTAL */
         #scroll-indicator {
@@ -2163,12 +2303,7 @@
         );
       }
 
-      /* Focus slider position pour écrans > 765px */
-      @media (min-width: 766px) {
-        .focus-slider {
-          top: 50%;
-        }
-      }
+      /* Focus slider - règles consolidées plus haut dans le fichier */
 
       /* ===== BOUTON REPLAY ANIMATION ===== */
       #replay-animation-btn {
@@ -2256,6 +2391,37 @@
   <body>
     <!-- Landing page avec Three.js -->
     <div id="landing-container">
+      <!-- Header unifié avec menu burger, logo et titre -->
+      <header class="main-header">
+        <div class="header-content">
+          <!-- Menu burger moderne pour mobile -->
+          <button
+            class="mobile-menu-burger group"
+            id="menuBurger"
+            aria-label="Ouvrir le menu de navigation"
+          >
+            <!-- Icône burger minimaliste avec animation -->
+            <div class="burger-container">
+              <span class="burger-line"></span>
+              <span class="burger-line"></span>
+              <span class="burger-line"></span>
+            </div>
+          </button>
+
+          <!-- Container centré pour logo + titre -->
+          <div class="header-brand">
+            <!-- Logo -->
+            <img
+              src="/images/logo.png"
+              alt="Logo Alto Lille"
+              class="header-logo"
+            />
+            <!-- Titre -->
+            <h1 id="brand-title">Alto Lille</h1>
+          </div>
+        </div>
+      </header>
+
       <!-- Toggles en haut à droite - Style Layout.tsx -->
       <div class="toggle-container">
         <button
@@ -2356,23 +2522,6 @@
           />
         </svg>
         <span class="replay-text">Rejouer l'animation</span>
-      </button>
-
-      <!-- Titre placé au-dessus -->
-      <h1 id="brand-title">Alto lille</h1>
-
-      <!-- Menu burger moderne pour mobile - Structure identique à Layout.tsx -->
-      <button
-        class="mobile-menu-burger group"
-        id="menuBurger"
-        aria-label="Ouvrir le menu de navigation"
-      >
-        <!-- Icône burger minimaliste avec animation -->
-        <div class="burger-container">
-          <span class="burger-line"></span>
-          <span class="burger-line"></span>
-          <span class="burger-line"></span>
-        </div>
       </button>
 
       <!-- Menu mobile overlay -->
@@ -3146,8 +3295,10 @@
           camera.lookAt(center.x, center.y - R * 0.15, center.z);
           showCaps(t);
           // Faire disparaître le titre ALTO LILLE progressivement au début de la transition
-          const titleOpacity = t < 0.1 ? 1 - t * 10 : 0;
-          document.getElementById("brand-title").style.opacity = titleOpacity;
+          // const titleOpacity = t < 0.1 ? 1 - t * 10 : 0;
+          // document.getElementById("brand-title").style.opacity = titleOpacity;
+          // Garder le titre toujours visible
+          document.getElementById("brand-title").style.opacity = 1;
           // Masquer l'indicateur de défilement dès que l'utilisateur commence à défiler
           const scrollIndicatorEl = document.getElementById("scroll-indicator");
           scrollIndicatorEl.classList.remove("visible");
@@ -3321,9 +3472,9 @@
         // Arrêter l'auto-play du slider avant navigation
         stopSliderAutoPlay();
 
-        // Ajouter les animations fade-out
+        // Ajouter les animations fade-out (titre exclu pour rester visible)
         document.querySelector(".focus-slider")?.classList.add("fade-out");
-        document.querySelector("#brand-title")?.classList.add("fade-out");
+        // document.querySelector("#brand-title")?.classList.add("fade-out"); // Commenté pour garder le titre visible
         document.querySelector(".desktop-links")?.classList.add("fade-out");
         document.querySelector(".toggle-container")?.classList.add("fade-out");
         document
@@ -3794,9 +3945,9 @@
         // Arrêter l'auto-play du slider avant navigation
         stopSliderAutoPlay();
 
-        // Ajouter les animations fade-out
+        // Ajouter les animations fade-out (titre exclu pour rester visible)
         document.querySelector(".focus-slider")?.classList.add("fade-out");
-        document.querySelector("#brand-title")?.classList.add("fade-out");
+        // document.querySelector("#brand-title")?.classList.add("fade-out"); // Commenté pour garder le titre visible
         document.querySelector(".desktop-links")?.classList.add("fade-out");
         document.querySelector(".toggle-container")?.classList.add("fade-out");
         document
@@ -3832,9 +3983,9 @@
         // Arrêter l'auto-play du slider avant navigation
         stopSliderAutoPlay();
 
-        // Ajouter les animations fade-out
+        // Ajouter les animations fade-out (titre exclu pour rester visible)
         document.querySelector(".focus-slider")?.classList.add("fade-out");
-        document.querySelector("#brand-title")?.classList.add("fade-out");
+        // document.querySelector("#brand-title")?.classList.add("fade-out"); // Commenté pour garder le titre visible
         document.querySelector(".desktop-links")?.classList.add("fade-out");
         document.querySelector(".toggle-container")?.classList.add("fade-out");
         document
