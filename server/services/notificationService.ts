@@ -32,6 +32,12 @@ class NotificationService {
 
   constructor() {
     // Configuration du transporteur SMTP
+    console.log("🔧 Configuration SMTP en cours...");
+    console.log(`📧 SMTP Host: ${process.env.SMTP_HOST || "smtp.gmail.com"}`);
+    console.log(`📧 SMTP Port: ${process.env.SMTP_PORT || "587"}`);
+    console.log(`📧 SMTP User: ${process.env.SMTP_USER || this.shopEmail}`);
+    console.log(`📧 SMTP Pass: ${process.env.SMTP_PASS ? "✅ Défini" : "❌ NON DÉFINI"}`);
+    
     this.transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST || "smtp.gmail.com",
       port: parseInt(process.env.SMTP_PORT || "587"),
@@ -41,17 +47,20 @@ class NotificationService {
         pass: process.env.SMTP_PASS,
       },
     });
+    
+    console.log("✅ Transporteur SMTP configuré");
   }
 
-  async sendOrderConfirmation(
-    data: OrderConfirmationData
-  ): Promise<{
+  async sendOrderConfirmation(data: OrderConfirmationData): Promise<{
     invoiceNumber: string;
     invoiceHTML: string;
     invoicePDF: Buffer;
   }> {
     try {
-      console.log("🔍 DEBUG - Données reçues dans sendOrderConfirmation:");
+      console.log("� =============== DÉBUT ENVOI EMAIL ===============");
+      console.log("�🔍 DEBUG - Données reçues dans sendOrderConfirmation:");
+      console.log("  - customerEmail:", data.customerEmail);
+      console.log("  - orderNumber:", data.orderNumber);
       console.log("  - relayPoint:", data.relayPoint);
       console.log(
         "  - relayPoint détails:",
@@ -81,7 +90,16 @@ class NotificationService {
 
       return { invoiceNumber, invoiceHTML, invoicePDF };
     } catch (error) {
-      console.error("Erreur envoi notifications:", error);
+      console.error("❌ =============== ERREUR EMAIL ===============");
+      console.error("📧 Détails de l'erreur email:", error);
+      if (error instanceof Error) {
+        console.error("📧 Type d'erreur:", error.name);
+        console.error("📧 Message d'erreur:", error.message);
+        if ((error as any).code) {
+          console.error("📧 Code d'erreur:", (error as any).code);
+        }
+      }
+      console.error("❌ =============== FIN ERREUR ===============");
       throw error;
     }
   }

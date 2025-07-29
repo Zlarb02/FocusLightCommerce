@@ -18,6 +18,14 @@ services:
       # ⇡ Redis :
       - REDIS_URL=redis://redis:6379 # nom du conteneur = host DNS
       - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      # ⬇️ Configuration Email SMTP ⬇️
+      - SHOP_EMAIL=${SHOP_EMAIL}
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_USER=${SMTP_USER}
+      - SMTP_PASS=${SMTP_PASS}
+      - ADMIN_EMAIL=${ADMIN_EMAIL}
     expose:
       - "5005"
     labels:
