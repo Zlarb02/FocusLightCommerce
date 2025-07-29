@@ -20,34 +20,67 @@ export default function About() {
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
         {/* Hero Section avec photo */}
         <section className="relative overflow-hidden bg-white dark:bg-gray-900">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
-            <div className="text-center">
-              {/* Photo d'Anatole */}
-              <div className="mb-8 flex justify-center">
-                <div className="relative">
-                  <DynamicImage
-                    illustrationKey="about.anatole"
-                    fallbackSrc="https://www.alto-lille.fr/uploads/6d140285-f1c2-4a80-bfde-d9848a4c5f92.jpg"
-                    fallbackAlt="Anatole Collet - Fondateur d'Alto Lille"
-                    className="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover shadow-xl border-4 border-white dark:border-gray-700"
-                  />
-                  <div className="absolute -bottom-2 -right-2 bg-amber-500 text-white p-2 rounded-full shadow-lg">
-                    <Lightbulb className="w-5 h-5" />
+          {/* Photo d'Anatole en plan large - toute la largeur */}
+          <div className="relative w-full h-[60vh] min-[650px]:h-[70vh] lg:h-[80vh]">
+            <img
+              src="https://www.alto-lille.fr/uploads/40c38c14-5ba6-4f9e-ba09-41ba525eb5eb.jpeg"
+              alt="Anatole Collet - Fondateur d'Alto Lille"
+              className="w-full h-full object-cover object-right min-[650px]:object-center"
+            />
+
+            {/* Overlay gradient pour améliorer la lisibilité du texte */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-black/20 to-transparent"></div>
+
+            {/* Icône décorative - masquée sur mobile */}
+            <div className="hidden min-[650px]:block absolute top-6 left-6 bg-amber-500 text-white p-3 rounded-full shadow-lg">
+              <Lightbulb className="w-6 h-6" />
+            </div>
+
+            {/* Contenu texte superposé */}
+            <div className="absolute inset-0">
+              <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 w-full h-full">
+                {/* Texte en haut pour écrans < 650px */}
+                <div className="block min-[650px]:hidden">
+                  <div className="absolute top-4 left-4 right-4">
+                    <div className="flex items-start gap-3 bg-black/30 backdrop-blur-sm rounded-2xl p-4">
+                      <div className="bg-amber-500 text-white p-2.5 rounded-xl shadow-lg flex-shrink-0">
+                        <Lightbulb className="w-5 h-5" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h1 className="text-xl font-bold text-white mb-1 drop-shadow-lg leading-tight">
+                          {t("about.hero.title")}
+                        </h1>
+                        <p className="text-xs text-white/85 mb-2 drop-shadow-md leading-relaxed">
+                          {t("about.hero.subtitle")}
+                        </p>
+                        <div className="flex items-center gap-1.5 text-amber-300">
+                          <Heart className="h-3.5 w-3.5 fill-current flex-shrink-0" />
+                          <span className="text-white/85 drop-shadow-md text-xs">
+                            {t("about.hero.passion")}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4">
-                {t("about.hero.title")}
-              </h1>
-              <p className="text-xl sm:text-2xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-6">
-                {t("about.hero.subtitle")}
-              </p>
-              <div className="flex items-center justify-center gap-2 text-amber-600 dark:text-amber-400 mb-8">
-                <Heart className="h-5 w-5 fill-current" />
-                <span className="text-gray-600 dark:text-gray-300">
-                  {t("about.hero.passion")}
-                </span>
+                
+                {/* Texte centré pour écrans >= 650px */}
+                <div className="hidden min-[650px]:flex items-center h-full">
+                  <div className="text-left max-w-2xl">
+                    <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 drop-shadow-lg">
+                      {t("about.hero.title")}
+                    </h1>
+                    <p className="text-lg sm:text-xl lg:text-2xl text-white/90 mb-6 drop-shadow-md">
+                      {t("about.hero.subtitle")}
+                    </p>
+                    <div className="flex items-center gap-2 text-amber-300 mb-8">
+                      <Heart className="h-5 w-5 fill-current" />
+                      <span className="text-white/90 drop-shadow-md">
+                        {t("about.hero.passion")}
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
