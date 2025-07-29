@@ -385,6 +385,72 @@ export class InvoiceService {
       invoicePDF,
     };
   }
+
+  /**
+   * Génère uniquement la facture HTML (sans PDF)
+   */
+  async generateInvoiceHTMLOnly(
+    orderData: any
+  ): Promise<{
+    invoiceNumber: string;
+    invoiceHTML: string;
+  }> {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+
+    // Générer un numéro de facture unique
+    const invoiceNumber = `${year}${month}${day}-${orderData.orderId
+      .toString()
+      .padStart(4, "0")}`;
+
+    const invoiceData: InvoiceData = {
+      invoiceNumber,
+      orderNumber: orderData.orderNumber,
+      customerName: orderData.customerName,
+      customerEmail: orderData.customerEmail,
+      customerPhone: orderData.customerPhone,
+      customerAddress: `${orderData.customer?.address || ""}\n${
+        orderData.customer?.postalCode || ""
+      } ${orderData.customer?.city || ""}`.trim(),
+      items: orderData.items.map((item: any) => ({
+        productName: item.productName,
+        variationValue: item.variationValue || "",
+        quantity: item.quantity,
+        unitPrice: item.price * 100, // Convertir vers euros normaux
+        totalPrice: item.price * item.quantity * 100, // Convertir vers euros normaux
+      })),
+      subtotal: orderData.totalAmount * 100, // Convertir vers euros normaux
+      shipping: 0, // Livraison gratuite
+      totalAmount: orderData.totalAmount * 100, // Convertir vers euros normaux
+      issueDate: now.toLocaleDateString("fr-FR"),
+      relayPoint: orderData.relayPoint,
+    };
+
+    const invoiceHTML = this.generateInvoiceHTML(invoiceData);
+
+    // Sauvegarder la facture HTML
+    try {
+      const invoicesDir = path.join(process.cwd(), "invoices");
+      if (!fs.existsSync(invoicesDir)) {
+        fs.mkdirSync(invoicesDir, { recursive: true });
+      }
+
+      const filename = `facture-${invoiceNumber}.html`;
+      const filepath = path.join(invoicesDir, filename);
+
+      fs.writeFileSync(filepath, invoiceHTML);
+      console.log("💾 Facture HTML sauvegardée:", filename);
+    } catch (error) {
+      console.error("Erreur sauvegarde facture HTML:", error);
+    }
+
+    return {
+      invoiceNumber,
+      invoiceHTML,
+    };
+  }
 }
 
 export const invoiceService = new InvoiceService();

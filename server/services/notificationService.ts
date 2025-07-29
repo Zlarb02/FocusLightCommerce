@@ -54,7 +54,6 @@ class NotificationService {
   async sendOrderConfirmation(data: OrderConfirmationData): Promise<{
     invoiceNumber: string;
     invoiceHTML: string;
-    invoicePDF: Buffer;
   }> {
     try {
       console.log("� =============== DÉBUT ENVOI EMAIL ===============");
@@ -67,28 +66,26 @@ class NotificationService {
         JSON.stringify(data.relayPoint, null, 2)
       );
 
-      // 1. Générer la facture (HTML + PDF)
-      const invoiceResult = await invoiceService.generateInvoice(data);
-      const { invoiceNumber, invoiceHTML, invoicePDF } = invoiceResult;
+            // 1. Générer uniquement le HTML de la facture (sans PDF)
+      console.log("📄 Génération de la facture HTML uniquement (sans PDF)");
+      const { invoiceNumber, invoiceHTML } = await invoiceService.generateInvoiceHTMLOnly(data);
 
-      // 2. Email au client avec facture HTML et PDF en pièce jointe
+      // 2. Email au client avec facture HTML uniquement
       await this.sendCustomerEmail(data, {
         invoiceNumber,
         invoiceHTML,
-        invoicePDF,
       });
 
       // 3. Email admin avec toutes les infos
       await this.sendAdminNotification(data, {
         invoiceNumber,
         invoiceHTML,
-        invoicePDF,
       });
 
       // 4. Log et sauvegarde pour backup
       this.logAndSaveOrder(data);
 
-      return { invoiceNumber, invoiceHTML, invoicePDF };
+      return { invoiceNumber, invoiceHTML };
     } catch (error) {
       console.error("❌ =============== ERREUR EMAIL ===============");
       console.error("📧 Détails de l'erreur email:", error);
@@ -106,7 +103,7 @@ class NotificationService {
 
   private async sendCustomerEmail(
     data: OrderConfirmationData,
-    invoice: { invoiceNumber: string; invoiceHTML: string; invoicePDF: Buffer }
+    invoice: { invoiceNumber: string; invoiceHTML: string }
   ): Promise<void> {
     const emailHtml = this.generateCustomerEmailHtml(data, invoice);
 
@@ -121,11 +118,6 @@ class NotificationService {
             filename: `facture-${invoice.invoiceNumber}.html`,
             content: invoice.invoiceHTML,
             contentType: "text/html",
-          },
-          {
-            filename: `facture-${invoice.invoiceNumber}.pdf`,
-            content: invoice.invoicePDF,
-            contentType: "application/pdf",
           },
         ],
       };
@@ -153,7 +145,7 @@ class NotificationService {
 
   private async sendAdminNotification(
     data: OrderConfirmationData,
-    invoice: { invoiceNumber: string; invoiceHTML: string; invoicePDF: Buffer }
+    invoice: { invoiceNumber: string; invoiceHTML: string }
   ): Promise<void> {
     const adminHtml = this.generateAdminEmailHtml(data, invoice);
 
@@ -168,11 +160,6 @@ class NotificationService {
             filename: `facture-${invoice.invoiceNumber}.html`,
             content: invoice.invoiceHTML,
             contentType: "text/html",
-          },
-          {
-            filename: `facture-${invoice.invoiceNumber}.pdf`,
-            content: invoice.invoicePDF,
-            contentType: "application/pdf",
           },
         ],
       };
