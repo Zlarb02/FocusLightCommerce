@@ -311,9 +311,7 @@ export class InvoiceService {
   /**
    * Génère et sauvegarde une facture
    */
-  async generateInvoice(
-    orderData: any
-  ): Promise<{
+  async generateInvoice(orderData: any): Promise<{
     invoiceNumber: string;
     invoiceHTML: string;
     invoicePDF: Buffer;
@@ -389,9 +387,7 @@ export class InvoiceService {
   /**
    * Génère uniquement la facture HTML (sans PDF)
    */
-  async generateInvoiceHTMLOnly(
-    orderData: any
-  ): Promise<{
+  async generateInvoiceHTMLOnly(orderData: any): Promise<{
     invoiceNumber: string;
     invoiceHTML: string;
   }> {

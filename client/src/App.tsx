@@ -55,12 +55,35 @@ function Router() {
     orderNumber,
   }: {
     orderNumber: string;
-  }) => (
-    <OrderConfirmation
-      orderNumber={orderNumber}
-      onBackToHome={() => navigate("/")}
-    />
-  );
+  }) => {
+    // Fonction pour retourner à la landing page de façon sécurisée
+    const backToLanding = () => {
+      // Utiliser l'API History pour la navigation
+      window.history.pushState({}, "", "/");
+
+      // Récupérer les éléments de façon sécurisée avant manipulation
+      const landingContainer = document.getElementById("landing-container");
+      const rootElement = document.getElementById("root");
+
+      if (landingContainer && rootElement) {
+        landingContainer.style.display = "block";
+        rootElement.style.display = "none";
+
+        // Émettre un événement personnalisé pour réinitialiser l'animation Three.js
+        window.dispatchEvent(new CustomEvent("returnToLanding"));
+
+        // Réinitialiser la position de défilement
+        window.scrollTo(0, 0);
+      }
+    };
+
+    return (
+      <OrderConfirmation
+        orderNumber={orderNumber}
+        onBackToHome={backToLanding}
+      />
+    );
+  };
   // Suivre si on vient de la landing page pour ajouter un bouton de retour si nécessaire
   const [comingFromLanding, setComingFromLanding] = useState(false);
   // Utiliser le hook pour le mode boutique
@@ -204,6 +227,14 @@ function Router() {
         <Route path="/faq" component={FAQ} />
 
         {/* Route / est gérée par la landing dans index.html */}
+        <Route path="/">
+          {() => {
+            // Si on arrive sur / depuis React, on redirige vers /shop
+            navigate("/shop");
+            return null;
+          }}
+        </Route>
+
         {/* Fallback pour les routes non gérées */}
         <Route component={NotFound} />
       </Switch>

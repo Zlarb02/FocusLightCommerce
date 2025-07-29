@@ -36,8 +36,10 @@ class NotificationService {
     console.log(`📧 SMTP Host: ${process.env.SMTP_HOST || "smtp.gmail.com"}`);
     console.log(`📧 SMTP Port: ${process.env.SMTP_PORT || "587"}`);
     console.log(`📧 SMTP User: ${process.env.SMTP_USER || this.shopEmail}`);
-    console.log(`📧 SMTP Pass: ${process.env.SMTP_PASS ? "✅ Défini" : "❌ NON DÉFINI"}`);
-    
+    console.log(
+      `📧 SMTP Pass: ${process.env.SMTP_PASS ? "✅ Défini" : "❌ NON DÉFINI"}`
+    );
+
     this.transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST || "smtp.gmail.com",
       port: parseInt(process.env.SMTP_PORT || "587"),
@@ -47,7 +49,7 @@ class NotificationService {
         pass: process.env.SMTP_PASS,
       },
     });
-    
+
     console.log("✅ Transporteur SMTP configuré");
   }
 
@@ -66,9 +68,10 @@ class NotificationService {
         JSON.stringify(data.relayPoint, null, 2)
       );
 
-            // 1. Générer uniquement le HTML de la facture (sans PDF)
+      // 1. Générer uniquement le HTML de la facture (sans PDF)
       console.log("📄 Génération de la facture HTML uniquement (sans PDF)");
-      const { invoiceNumber, invoiceHTML } = await invoiceService.generateInvoiceHTMLOnly(data);
+      const { invoiceNumber, invoiceHTML } =
+        await invoiceService.generateInvoiceHTMLOnly(data);
 
       // 2. Email au client avec facture HTML uniquement
       await this.sendCustomerEmail(data, {
