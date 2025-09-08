@@ -100,35 +100,7 @@ export default function FAQ() {
             </div>
           </section>
 
-          {/* SAV et garantie */}
-          <section>
-            <h2
-              className="text-2xl font-semibold text-[var(--color-text)] mb-6 pb-2 border-b border-gray-200 dark:border-gray-700"
-              style={{ fontFamily: "var(--font-titles)" }}
-            >
-              {t("faq.support.title")}
-            </h2>
-
-            <div className="space-y-6">
-              <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg">
-                <h3 className="text-lg font-medium text-[var(--color-text)] mb-3">
-                  {t("faq.support.warranty.title")}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                  {t("faq.support.warranty.answer")}
-                </p>
-              </div>
-
-              <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg">
-                <h3 className="text-lg font-medium text-[var(--color-text)] mb-3">
-                  {t("faq.support.returns.title")}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                  {t("faq.support.returns.answer")}
-                </p>
-              </div>
-            </div>
-          </section>
+          {/* Section SAV et garantie supprimée à la demande du client */}
 
           {/* Technique */}
           <section>

@@ -552,14 +552,6 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                 </li>
                 <li>
                   <Link
-                    href="/garantie"
-                    className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-300 text-sm inline-block"
-                  >
-                    {t("services.warranty")}
-                  </Link>
-                </li>
-                <li>
-                  <Link
                     href="/faq"
                     className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-300 text-sm inline-block"
                   >

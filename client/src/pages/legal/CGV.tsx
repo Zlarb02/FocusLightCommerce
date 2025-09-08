@@ -115,17 +115,7 @@ export default function CGV() {
             </p>
           </section>
 
-          <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
-              {t("cgv.article10.title")}
-            </h2>
-            <p className="text-gray-700 dark:text-gray-300">
-              {t("cgv.article10.text1")}
-            </p>
-            <p className="text-gray-700 dark:text-gray-300">
-              {t("cgv.article10.text2")}
-            </p>
-          </section>
+          {/* Article 10 (Garantie) masqué à la demande du client */}
 
           <section className="mb-8">
             <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100">

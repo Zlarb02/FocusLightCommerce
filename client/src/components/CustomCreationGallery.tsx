@@ -13,6 +13,11 @@ interface GalleryProps {
   currentIndex: number;
   onIndexChange: (index: number) => void;
   onImageClick: (fallbackUrl: string) => void;
+  /**
+   * Classe utilitaire Tailwind pour l'aspect ratio (par défaut carré).
+   * Ex: "aspect-[3/4]" pour un format vertical.
+   */
+  aspectClass?: string;
 }
 
 export function CustomCreationGallery({
@@ -21,6 +26,7 @@ export function CustomCreationGallery({
   currentIndex,
   onIndexChange,
   onImageClick,
+  aspectClass = "aspect-square",
 }: GalleryProps) {
   const nextImage = () => {
     onIndexChange((currentIndex + 1) % images.length);
@@ -36,7 +42,9 @@ export function CustomCreationGallery({
 
   return (
     <div className="relative group">
-      <div className="aspect-square overflow-hidden rounded-lg shadow-lg bg-gray-100 dark:bg-gray-700">
+      <div
+        className={`${aspectClass} overflow-hidden rounded-lg shadow-lg bg-gray-100 dark:bg-gray-700`}
+      >
         <DynamicImage
           illustrationKey={currentImage.key}
           fallbackSrc={currentImage.fallback}
@@ -46,7 +54,12 @@ export function CustomCreationGallery({
         />
 
         {/* Overlay pour indiquer que c'est cliquable */}
-        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
+        <div
+          className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center cursor-zoom-in"
+          role="button"
+          aria-label={`Agrandir ${title}`}
+          onClick={() => onImageClick(currentImage.fallback)}
+        >
           <div className="w-16 h-16 bg-white bg-opacity-0 group-hover:bg-opacity-20 rounded-full flex items-center justify-center transition-all duration-300 transform scale-0 group-hover:scale-100">
             <Maximize2 className="w-8 h-8 text-white" />
           </div>

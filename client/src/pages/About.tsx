@@ -63,7 +63,7 @@ export default function About() {
                     </div>
                   </div>
                 </div>
-                
+
                 {/* Texte centré pour écrans >= 650px */}
                 <div className="hidden min-[650px]:flex items-center h-full">
                   <div className="text-left max-w-2xl">

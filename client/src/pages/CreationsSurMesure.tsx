@@ -48,8 +48,14 @@ export default function CreationsSurMesure() {
     }));
   };
 
-  const openImageModal = (url: string) => {
-    setModalImage({ images: [url], index: 0, title: "" });
+  const openImageModal = (
+    images: string[] | string,
+    index: number = 0,
+    title: string = ""
+  ) => {
+    const arr = Array.isArray(images) ? images : [images];
+    const safeIndex = Math.min(Math.max(index, 0), arr.length - 1);
+    setModalImage({ images: arr, index: safeIndex, title });
   };
 
   const closeImageModal = () => {
@@ -76,7 +82,30 @@ export default function CreationsSurMesure() {
     }
   };
 
+  // On place le lampadaire standard d'abord, puis la lampe murale, et on met le Focus au milieu via la grille.
+  // L'ordre d'affichage sera forcé plus bas pour garantir le Focus au centre et le lampadaire sur mesure en dernier.
   const customCreations = [
+    {
+      // Lampadaire sur mesure (moins important) – sera placé en dernier
+      id: "lampadaire-sur-mesure",
+      title: t("customCreations.lampadaire.title"),
+      description: t("customCreations.lampadaire.description"),
+      image: {
+        key: "surMesure.lampadaire",
+        fallback:
+          "https://www.alto-lille.fr/uploads/c5e2d6c0-e84d-4409-9349-0c3582bf0d6c.png",
+      },
+      features: [
+        t("customCreations.lampadaire.features.design"),
+        t("customCreations.lampadaire.features.led"),
+        t("customCreations.lampadaire.features.adjustable"),
+        t("customCreations.lampadaire.features.materials"),
+        t("customCreations.lampadaire.features.french"),
+      ],
+      specs: t("customCreations.lampadaire.specs"),
+      price: t("customCreations.lampadaire.price"),
+      story: t("customCreations.lampadaire.story"),
+    },
     {
       id: "lampadaire-focus-sur-pied",
       title: t("customCreations.lampadaireFocus.title"),
@@ -154,26 +183,7 @@ export default function CreationsSurMesure() {
       price: t("customCreations.lampadaireFocus.price"),
       story: t("customCreations.lampadaireFocus.story"),
     },
-    {
-      id: "lampadaire-sur-mesure",
-      title: t("customCreations.lampadaire.title"),
-      description: t("customCreations.lampadaire.description"),
-      image: {
-        key: "surMesure.lampadaire",
-        fallback:
-          "https://www.alto-lille.fr/uploads/c5e2d6c0-e84d-4409-9349-0c3582bf0d6c.png",
-      },
-      features: [
-        t("customCreations.lampadaire.features.design"),
-        t("customCreations.lampadaire.features.led"),
-        t("customCreations.lampadaire.features.adjustable"),
-        t("customCreations.lampadaire.features.materials"),
-        t("customCreations.lampadaire.features.french"),
-      ],
-      specs: t("customCreations.lampadaire.specs"),
-      price: t("customCreations.lampadaire.price"),
-      story: t("customCreations.lampadaire.story"),
-    },
+    // Lampe murale reste telle quelle
     {
       id: "lampe-murale-sur-mesure",
       title: t("customCreations.lampemurale.title"),
@@ -237,14 +247,7 @@ export default function CreationsSurMesure() {
               <p className="text-xl sm:text-2xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-8">
                 {t("customCreations.hero.subtitle")}
               </p>
-              <div className="flex items-center justify-center gap-2 text-amber-600 dark:text-amber-400 mb-6">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="h-5 w-5 fill-current" />
-                ))}
-                <span className="ml-2 text-gray-600 dark:text-gray-300">
-                  {t("customCreations.hero.guarantee")}
-                </span>
-              </div>
+              {/* Mention de garantie supprimée à la demande du client */}
             </div>
           </div>
         </section>
@@ -261,113 +264,149 @@ export default function CreationsSurMesure() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-              {customCreations.map((creation, index) => (
-                <div
-                  key={creation.id}
-                  className={`bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-500 group relative ${
-                    creation.id === "lampadaire-focus-sur-pied"
-                      ? "ring-2 ring-amber-500 ring-offset-2 ring-offset-gray-50 dark:ring-offset-gray-900"
-                      : ""
-                  }`}
-                >
-                  {/* Badge "Nouveau" pour le lampadaire Focus */}
-                  {creation.id === "lampadaire-focus-sur-pied" && (
-                    <div className="absolute top-4 left-4 z-10 bg-gradient-to-r from-amber-500 to-orange-500 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg">
-                      {t("customCreations.lampadaireFocus.badge")}
-                    </div>
-                  )}
+            {/* Grille en 3 colonnes sur desktop pour placer le Focus au milieu */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+              {customCreations
+                // Réordonne: Focus au milieu (index 1), murale en 1ère colonne (index 0), lampadaire sur mesure en dernière colonne (index 2)
+                .sort((a, b) => {
+                  const order = (id: string) =>
+                    id === "lampe-murale-sur-mesure"
+                      ? 0
+                      : id === "lampadaire-focus-sur-pied"
+                      ? 1
+                      : 2;
+                  return order(a.id) - order(b.id);
+                })
+                .map((creation, index) => (
+                  <div
+                    key={creation.id}
+                    className={`bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-500 group relative ${
+                      creation.id === "lampadaire-focus-sur-pied"
+                        ? "ring-2 ring-amber-500 ring-offset-2 ring-offset-gray-50 dark:ring-offset-gray-900"
+                        : ""
+                    }`}
+                  >
+                    {/* Badge "Nouveau" pour le lampadaire Focus */}
+                    {creation.id === "lampadaire-focus-sur-pied" && (
+                      <div className="absolute top-4 left-4 z-10 bg-gradient-to-r from-amber-500 to-orange-500 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg">
+                        {t("customCreations.lampadaireFocus.badge")}
+                      </div>
+                    )}
 
-                  {/* Image ou Galerie */}
-                  <div className="relative h-64 overflow-hidden">
-                    {creation.images ? (
-                      <CustomCreationGallery
-                        images={creation.images}
-                        title={creation.title}
-                        currentIndex={currentImageIndex[creation.id] || 0}
-                        onIndexChange={(index) => {
-                          setCurrentImageIndex((prev) => ({
-                            ...prev,
-                            [creation.id]: index,
-                          }));
-                        }}
-                        onImageClick={(url) => openImageModal(url)}
-                      />
-                    ) : creation.image ? (
-                      <DynamicImage
-                        illustrationKey={creation.image.key}
-                        fallbackSrc={creation.image.fallback}
-                        alt={creation.title}
-                        className="w-full h-full object-cover cursor-pointer hover:scale-110 transition-transform duration-500"
-                        onClick={() => openImageModal(creation.image.fallback)}
-                      />
-                    ) : null}
-                  </div>
-
-                  {/* Badge prix remplacé par un badge "Sur demande" (seulement si ce n'est pas le Focus sur pied qui a déjà un badge) */}
-                  {creation.id !== "lampadaire-focus-sur-pied" && (
-                    <div className="absolute bottom-4 right-4 bg-gradient-to-r from-gray-600 to-gray-700 text-white px-3 py-1 rounded-full text-sm font-medium">
-                      {t("customCreations.common.onDemand")}
-                    </div>
-                  )}
-
-                  {/* Content */}
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-                      {creation.title}
-                    </h3>
-                    <p className="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">
-                      {creation.description}
-                    </p>
-
-                    {/* Features */}
-                    <div className="space-y-2 mb-4">
-                      {creation.features.map((feature, idx) => (
-                        <div
-                          key={idx}
-                          className="flex items-center text-sm text-gray-600 dark:text-gray-300"
-                        >
-                          <div className="w-1.5 h-1.5 bg-amber-600 rounded-full mr-2 flex-shrink-0" />
-                          {feature}
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Specs */}
-                    <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3 mb-4">
-                      <p className="text-xs text-gray-500 dark:text-gray-400 font-medium mb-1">
-                        {t("customCreations.common.specifications")}
-                      </p>
-                      <p className="text-sm text-gray-700 dark:text-gray-300">
-                        {creation.specs}
-                      </p>
-                    </div>
-
-                    {/* Story */}
-                    <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3 mb-4">
-                      <p className="text-xs text-amber-600 dark:text-amber-400 font-medium mb-1">
-                        {t("customCreations.common.story")}
-                      </p>
-                      <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-                        {creation.story}
-                      </p>
-                    </div>
-
-                    {/* CTA Button pour demander un devis */}
-                    <Button
-                      onClick={() =>
-                        (window.location.href = `mailto:altolille@gmail.com?subject=Demande de devis - ${creation.title}&body=Bonjour,%0D%0A%0D%0AJe suis intéressé(e) par votre création "${creation.title}" et souhaiterais recevoir un devis personnalisé.%0D%0A%0D%0AMerci de me recontacter pour discuter des détails.%0D%0A%0D%0ACordialement`)
-                      }
-                      className="w-full bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white border-0 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 group"
-                      size="lg"
+                    {/* Image ou Galerie */}
+                    <div
+                      className={`relative overflow-hidden ${
+                        creation.id === "lampadaire-focus-sur-pied"
+                          ? "h-auto"
+                          : "h-64"
+                      }`}
                     >
-                      <Mail className="mr-2 h-4 w-4" />
-                      {t("customCreations.common.requestQuote")}
-                      <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                    </Button>
+                      {creation.images ? (
+                        <CustomCreationGallery
+                          images={creation.images}
+                          title={creation.title}
+                          currentIndex={currentImageIndex[creation.id] || 0}
+                          onIndexChange={(index) => {
+                            setCurrentImageIndex((prev) => ({
+                              ...prev,
+                              [creation.id]: index,
+                            }));
+                          }}
+                          // Lampadaire Focus: ratio vertical (3/4) pour s'adapter aux images
+                          aspectClass={
+                            creation.id === "lampadaire-focus-sur-pied"
+                              ? "aspect-[3/4]"
+                              : "aspect-square"
+                          }
+                          onImageClick={(_url) => {
+                            const imgs = creation.images!.map(
+                              (img) => img.fallback
+                            );
+                            const idx = currentImageIndex[creation.id] || 0;
+                            openImageModal(imgs, idx, creation.title);
+                          }}
+                        />
+                      ) : creation.image ? (
+                        <DynamicImage
+                          illustrationKey={creation.image.key}
+                          fallbackSrc={creation.image.fallback}
+                          alt={creation.title}
+                          className="w-full h-full object-cover cursor-pointer hover:scale-110 transition-transform duration-500"
+                          onClick={() =>
+                            openImageModal(
+                              creation.image!.fallback,
+                              0,
+                              creation.title
+                            )
+                          }
+                        />
+                      ) : null}
+                    </div>
+
+                    {/* Badge prix remplacé par un badge "Sur demande" (seulement si ce n'est pas le Focus sur pied qui a déjà un badge) */}
+                    {creation.id !== "lampadaire-focus-sur-pied" && (
+                      <div className="absolute bottom-4 right-4 bg-gradient-to-r from-gray-600 to-gray-700 text-white px-3 py-1 rounded-full text-sm font-medium">
+                        {t("customCreations.common.onDemand")}
+                      </div>
+                    )}
+
+                    {/* Content */}
+                    <div className="p-6">
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                        {creation.title}
+                      </h3>
+                      <p className="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">
+                        {creation.description}
+                      </p>
+
+                      {/* Features */}
+                      <div className="space-y-2 mb-4">
+                        {creation.features.map((feature, idx) => (
+                          <div
+                            key={idx}
+                            className="flex items-center text-sm text-gray-600 dark:text-gray-300"
+                          >
+                            <div className="w-1.5 h-1.5 bg-amber-600 rounded-full mr-2 flex-shrink-0" />
+                            {feature}
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Specs */}
+                      <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3 mb-4">
+                        <p className="text-xs text-gray-500 dark:text-gray-400 font-medium mb-1">
+                          {t("customCreations.common.specifications")}
+                        </p>
+                        <p className="text-sm text-gray-700 dark:text-gray-300">
+                          {creation.specs}
+                        </p>
+                      </div>
+
+                      {/* Story */}
+                      <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3 mb-4">
+                        <p className="text-xs text-amber-600 dark:text-amber-400 font-medium mb-1">
+                          {t("customCreations.common.story")}
+                        </p>
+                        <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                          {creation.story}
+                        </p>
+                      </div>
+
+                      {/* CTA Button pour demander un devis */}
+                      <Button
+                        onClick={() =>
+                          (window.location.href = `mailto:altolille@gmail.com?subject=Demande de devis - ${creation.title}&body=Bonjour,%0D%0A%0D%0AJe suis intéressé(e) par votre création "${creation.title}" et souhaiterais recevoir un devis personnalisé.%0D%0A%0D%0AMerci de me recontacter pour discuter des détails.%0D%0A%0D%0ACordialement`)
+                        }
+                        className="w-full bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white border-0 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 group"
+                        size="lg"
+                      >
+                        <Mail className="mr-2 h-4 w-4" />
+                        {t("customCreations.common.requestQuote")}
+                        <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
             </div>
           </div>
         </section>
@@ -447,9 +486,6 @@ export default function CreationsSurMesure() {
               <p className="text-amber-100 text-sm">
                 <strong>{t("customCreations.cta.delivery")}</strong>{" "}
                 {t("customCreations.cta.deliveryTime")}
-                <br />
-                <strong>{t("customCreations.cta.warranty")}</strong>{" "}
-                {t("customCreations.cta.warrantyTime")}
               </p>
             </div>
           </div>

@@ -38,7 +38,6 @@ import PolitiqueConfidentialite from "./pages/legal/PolitiqueConfidentialite";
 import CGV from "./pages/legal/CGV";
 import Livraison from "./pages/service/Livraison";
 import Retours from "./pages/service/Retours";
-import Garantie from "./pages/service/Garantie";
 import FAQ from "./pages/service/FAQ";
 
 // Type pour l'événement personnalisé de changement de route
@@ -223,7 +222,6 @@ function Router() {
         {/* Pages de service */}
         <Route path="/livraison" component={Livraison} />
         <Route path="/retours" component={Retours} />
-        <Route path="/garantie" component={Garantie} />
         <Route path="/faq" component={FAQ} />
 
         {/* Route / est gérée par la landing dans index.html */}

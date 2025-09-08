@@ -649,23 +649,7 @@ export default function ShopFocus() {
                   </li>
                 </ul>
                 <div className="flex flex-col sm:flex-row gap-6 pt-4 border-t border-gray-100 dark:border-gray-700">
-                  <div className="flex items-center">
-                    <svg
-                      className="text-green-600 dark:text-green-400 mr-2 h-5 w-5"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-                      <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-                    </svg>
-                    <span className="dark:text-gray-300">
-                      {t("focus.warranty2years")}
-                    </span>
-                  </div>
+                  {/* Garantie supprimée à la demande du client */}
                   <div className="flex items-center">
                     <svg
                       className="text-orange-600 dark:text-orange-400 mr-2 h-5 w-5"
