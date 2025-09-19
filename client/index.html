@@ -527,16 +527,16 @@
         .design-image-main,
         .creation-image-main {
           grid-area: main;
-          width: clamp(200px, 16vw, 280px); /* Réduction de la taille */
-          height: clamp(120px, 10vw, 170px); /* Réduction de la taille */
+          width: clamp(230px, 20vw, 320px) !important; /* +15-20% */
+          height: clamp(138px, 12vw, 195px) !important;
         }
 
         /* Images secondaires - taille réduite */
         .design-image-secondary,
         .creation-image-secondary {
           grid-area: secondary;
-          width: clamp(170px, 14vw, 240px); /* Réduction de la taille */
-          height: clamp(100px, 8vw, 140px); /* Réduction de la taille */
+          width: clamp(200px, 17vw, 280px) !important;
+          height: clamp(120px, 10vw, 165px) !important;
         }
 
         /* Titres - typographie moderne */
@@ -596,38 +596,90 @@
           transform: translateY(-4px) scale(1.02);
         }
 
-        /* Images - qualité et recadrage optimisés */
+        /* Images - respect strict du format (ratio) */
         .section-image img {
           width: 100%;
           height: 100%;
-          object-fit: cover;
+          object-fit: contain !important; /* pas de coupe, ratio préservé */
           object-position: center;
           display: block;
-          transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-          filter: contrast(1.05) saturate(1.1);
+          transition: transform 0.6s ease;
+          filter: none; /* éviter halos sur bords */
+          transform: translateZ(0); /* réduit artefacts de bord */
         }
 
         .section-image:hover img {
-          transform: scale(1.05);
+          transform: none; /* pas de zoom pour éviter les liserés */
         }
 
-        /* Image Sea-cle - recadrage horizontal optimisé + performance */
+        /* Image Sea-cle - garder le ratio sans coupe */
         .design-image-secondary img {
-          object-fit: cover;
+          object-fit: contain !important;
           object-position: center center;
-          transition: transform 0.4s ease; /* Transition plus rapide pour Sea-cle */
+          transition: transform 0.2s ease; /* léger mais sans zoom */
         }
 
         .design-image-secondary {
           will-change: transform; /* Optimisation GPU spécifique */
         }
 
-        /* Autres images - préservation du ratio */
+        /* Préserver le format sans coupe (contain) pour ces sections */
         .design-image-main img,
+        .design-image-secondary img,
         .creation-image-main img,
         .creation-image-secondary img {
-          object-fit: contain;
-          object-position: center;
+          object-fit: contain !important;
+          object-position: center center;
+          background: transparent;
+        }
+
+        /* Supprimer cadre/ombres pour toutes les images des sections */
+        .design-image-main,
+        .design-image-secondary,
+        .creation-image-main,
+        .creation-image-secondary {
+          background: var(
+            --bg-color
+          ) !important; /* bandes assorties au thème */
+          box-shadow: none !important;
+        }
+
+        .creation-image-main::before,
+        .creation-image-secondary::before {
+          display: none !important;
+        }
+
+        .creation-image-main img,
+        .creation-image-secondary img {
+          object-fit: contain !important; /* ratio respecté */
+          background: transparent !important;
+        }
+
+        /* Neutraliser l'overlay qui peut créer un halo clair sur fond noir */
+        .design-image-main::before,
+        .design-image-secondary::before,
+        .creation-image-main::before,
+        .creation-image-secondary::before {
+          display: none !important;
+        }
+
+        /* Éviter halos lors du hover (supprimer le scale) */
+        .design-image-main:hover img,
+        .design-image-secondary:hover img,
+        .creation-image-main:hover img,
+        .creation-image-secondary:hover img {
+          transform: none !important;
+        }
+
+        /* En mode sombre, fond strictement noir pour éviter tout halo/bande claire */
+        .dark-mode .section-image {
+          background: #000 !important;
+          box-shadow: none !important;
+        }
+
+        /* Désactiver également l'overlay global en mode sombre */
+        .dark-mode .section-image::before {
+          display: none !important;
         }
 
         /* Mode sombre - adaptation subtile */
@@ -690,14 +742,14 @@
 
         .design-image-main,
         .creation-image-main {
-          width: 350px;
-          height: 220px;
+          width: 400px;
+          height: 250px;
         }
 
         .design-image-secondary,
         .creation-image-secondary {
-          width: 300px;
-          height: 180px;
+          width: 340px;
+          height: 205px;
         }
 
         .section-title {
@@ -1815,10 +1867,10 @@
           display: block;
         }
 
-        .desktop-link {
+        .desktop-links .desktop-link {
           position: absolute;
-          width: 200px;
-          height: 140px;
+          width: 150px !important; /* compromis lisible */
+          height: 105px !important;
           cursor: pointer;
           border-radius: 8px;
           overflow: hidden;
@@ -1827,14 +1879,21 @@
         }
 
         .desktop-link:hover {
-          transform: translateY(-4px);
+          transform: none; /* éviter artefacts bords */
           box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
         }
 
         .desktop-link img {
           width: 100%;
           height: 100%;
-          object-fit: cover;
+          object-fit: contain !important; /* préserver format, pas de coupe */
+          object-position: center;
+          display: block;
+        }
+
+        .desktop-links .desktop-link {
+          background: var(--bg-color) !important; /* bandes assorties */
+          box-shadow: none;
         }
 
         .desktop-link-overlay {
@@ -2463,6 +2522,13 @@
         .replay-text {
           display: none; /* Masquer le texte sur très petits écrans */
         }
+      }
+
+      /* Désactiver temporairement les clics vers la boutique pendant l'auto-scroll */
+      body.shop-nav-disabled .focus-slider,
+      body.shop-nav-disabled #cta {
+        pointer-events: none;
+        cursor: default;
       }
     </style>
   </head>
@@ -3202,6 +3268,8 @@
 
       /* ===== BOUTON REPLAY VARIABLES ===== */
       let replayButtonVisible = false;
+  /* Flag: auto-défilement en cours -> désactive la nav vers la boutique */
+  let isAutoScrolling = false;
 
       addEventListener(
         "scroll",
@@ -3451,6 +3519,10 @@
         .getElementById("scroll-indicator")
         .addEventListener("click", function () {
           // Défilement optimisé avec lecture confortable en 9 secondes
+          // Activer le verrou de navigation vers la boutique
+          isAutoScrolling = true;
+          document.body.classList.add("shop-nav-disabled");
+
           const startTime = performance.now();
           const startPosition = window.scrollY;
           const targetPosition =
@@ -3485,6 +3557,10 @@
 
             if (progress < 1) {
               requestAnimationFrame(smoothScrollToBottom);
+            } else {
+              // Fin d'auto-scroll -> réactiver la nav vers la boutique
+              isAutoScrolling = false;
+              document.body.classList.remove("shop-nav-disabled");
             }
           }
 
@@ -3495,6 +3571,10 @@
       document
         .getElementById("replay-animation-btn")
         .addEventListener("click", function () {
+          // Activer le verrou de navigation vers la boutique jusqu'à la fin du replay
+          isAutoScrolling = true;
+          document.body.classList.add("shop-nav-disabled");
+
           // Scroll fluide vers le haut d'abord
           window.scrollTo({
             top: 0,
@@ -3538,6 +3618,10 @@
 
               if (progress < 1) {
                 requestAnimationFrame(smoothScrollToBottom);
+              } else {
+                // Fin d'auto-scroll -> réactiver la nav vers la boutique
+                isAutoScrolling = false;
+                document.body.classList.remove("shop-nav-disabled");
               }
             }
 
@@ -3547,6 +3631,11 @@
 
       // Gestion de la navigation
       function navigateToShop() {
+        // Si auto-scroll/animation en cours, ignorer le clic vers la boutique
+        if (isAutoScrolling) {
+          return;
+        }
+
         // Arrêter l'auto-play du slider avant navigation
         stopSliderAutoPlay();
 
@@ -4210,6 +4299,11 @@
 
         // Fonction de navigation
         function navigateFromMenu(path) {
+          // Bloquer la navigation vers la boutique si auto-scroll en cours
+          if (path === "shop" && isAutoScrolling) {
+            return;
+          }
+
           closeMobileMenu();
 
           // Arrêter l'auto-play du slider avant navigation
