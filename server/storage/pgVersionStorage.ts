@@ -227,6 +227,7 @@ export class PgVersionStorage {
     if (!activeVersion) {
       // Créer une nouvelle version si aucune n'est active
       return this.createVersion({
+        shopMode: "focus",
         themeDecoration: decoration,
         isActive: true,
       });
