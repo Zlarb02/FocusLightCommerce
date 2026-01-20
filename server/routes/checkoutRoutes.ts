@@ -81,7 +81,7 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
         );
         console.log(`🎨 Variation trouvée:`, variation ? "Oui" : "Non");
 
-        const productName = "FOCUS.01"; // Hard-codé car il n'y a qu'un seul produit
+        const productName = product?.name || "Produit";
         const variationDisplay = item.variationValue || "";
 
         // Créer l'article en base

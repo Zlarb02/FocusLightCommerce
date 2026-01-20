@@ -208,10 +208,6 @@ export class PgStorage implements IStorage {
     return this.versionStorage.getCurrentDecorations();
   }
 
-  async getCurrentShopMode(): Promise<string> {
-    return this.versionStorage.getCurrentShopMode();
-  }
-
   async updateTheme(theme: string): Promise<void> {
     return this.versionStorage.updateTheme(theme);
   }
@@ -223,15 +219,6 @@ export class PgStorage implements IStorage {
   // Alias pour compatibilité avec les routes existantes
   async setThemeDecoration(decoration: string): Promise<void> {
     return this.updateDecorations({ decoration });
-  }
-
-  async updateShopMode(mode: string): Promise<void> {
-    return this.versionStorage.updateShopMode(mode);
-  }
-
-  // Alias pour compatibilité avec les routes existantes
-  async setShopMode(mode: string): Promise<void> {
-    return this.updateShopMode(mode);
   }
 
   // Nouvelles méthodes pour l'API des versions

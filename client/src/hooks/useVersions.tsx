@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
-import { ThemeDecoration, ShopMode } from "../../../shared/schema";
+import { ThemeDecoration } from "../../../shared/schema";
 
 // Types pour les versions du site
 interface SiteVersionData {
   id: number;
-  shopMode: ShopMode;
   themeDecoration: ThemeDecoration;
   isActive: boolean;
   createdAt: string;
@@ -45,17 +44,6 @@ export const useVersions = () => {
       return response;
     },
     enabled: false, // Désactivé pour éviter les erreurs 403 dans les logs
-  });
-
-  // Mutation pour mettre à jour le mode boutique
-  const { mutate: setShopMode, isPending: isUpdatingShopMode } = useMutation({
-    mutationFn: async (mode: ShopMode) => {
-      return apiRequest<void>("PUT", "/api/versions/shop-mode", { mode });
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["activeVersion"] });
-      queryClient.invalidateQueries({ queryKey: ["allVersions"] });
-    },
   });
 
   // Mutation pour mettre à jour la décoration thématique
@@ -100,15 +88,6 @@ export const useVersions = () => {
     },
   });
 
-  // Fonctions utilitaires
-  const toggleShopMode = () => {
-    if (activeVersion) {
-      const newMode: ShopMode =
-        activeVersion.shopMode === "general" ? "focus" : "general";
-      setShopMode(newMode);
-    }
-  };
-
   // Fonction pour activer une version spécifique
   const activateVersion = (id: number) => {
     updateVersion({ id, isActive: true });
@@ -119,13 +98,10 @@ export const useVersions = () => {
     allVersions,
     isLoading: isLoadingActiveVersion || isLoadingAllVersions,
     isUpdating:
-      isUpdatingShopMode ||
       isUpdatingThemeDecoration ||
       isCreatingVersion ||
       isUpdatingVersion,
-    setShopMode,
     setThemeDecoration,
-    toggleShopMode,
     createVersion,
     updateVersion,
     activateVersion,

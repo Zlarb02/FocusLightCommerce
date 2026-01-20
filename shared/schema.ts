@@ -211,7 +211,6 @@ export type ThemeDecoration =
   | "halloween"
   | "christmas"
   | "april-fools";
-export type ShopMode = "general" | "focus";
 
 // Settings schema (pour les paramètres généraux du site)
 export const siteSettings = pgTable("site_settings", {

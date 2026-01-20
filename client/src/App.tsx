@@ -2,7 +2,6 @@ import { Switch, Route, useLocation } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
-import Home from "@/pages/ShopFocus";
 import NotFound from "@/pages/not-found";
 import CheckoutNew from "@/pages/checkout/CheckoutNew";
 import { OrderConfirmation } from "@/pages/checkout/OrderConfirmation";
@@ -10,7 +9,7 @@ import { CartProvider } from "@/hooks/useCart";
 import { CheckoutProvider } from "@/hooks/useCheckout";
 import { useEffect, useState, Suspense, lazy } from "react";
 import Shop from "@/pages/Shop";
-import useVersions from "@/hooks/useVersions";
+import ProductDetail from "@/pages/ProductDetail";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { StripeProvider } from "@/components/StripeProvider";
@@ -85,9 +84,6 @@ function Router() {
   };
   // Suivre si on vient de la landing page pour ajouter un bouton de retour si nécessaire
   const [comingFromLanding, setComingFromLanding] = useState(false);
-  // Utiliser le hook pour le mode boutique
-  const { activeVersion } = useVersions();
-  const shopMode = activeVersion?.shopMode || "focus";
 
   useEffect(() => {
     // Vérifier si on est sur /shop, ce qui signifie qu'on vient probablement de la landing
@@ -136,7 +132,8 @@ function Router() {
     <>
       <Switch>
         {/* Routes principales de l'application */}
-        <Route path="/shop" component={shopMode === "focus" ? Home : Shop} />
+        <Route path="/shop" component={Shop} />
+        <Route path="/shop/:id" component={ProductDetail} />
         <Route path="/checkout" component={CheckoutNew} />
         <Route path="/checkout/confirmation/:orderNumber">
           {(params) => (

@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useState } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -59,7 +59,7 @@ export default function DashboardLayout({
     { name: "Commandes", href: "/gestion/commandes", icon: ShoppingCart },
     { name: "Médias", href: "/gestion/medias", icon: ImageIcon },
     { name: "Contenu du site", href: "/gestion/contenu", icon: FileText },
-    { name: "Versions", href: "/gestion/versions", icon: Palette },
+    { name: "Décorations", href: "/gestion/versions", icon: Palette },
     { name: "Test Stripe", href: "/gestion/stripe-test", icon: TestTube },
     { name: "Paramètres", href: "/gestion/parametres", icon: Settings },
   ];
@@ -131,10 +131,10 @@ export default function DashboardLayout({
 
       {/* Menu mobile */}
       {isMobileMenuOpen && (
-        <div className="md:hidden fixed inset-0 z-20 bg-gray-600 bg-opacity-75">
-          <div className="fixed inset-y-0 left-0 w-full max-w-xs bg-white">
-            <div className="h-16 flex items-center justify-between px-4 border-b">
-              <h2 className="text-lg font-medium">FOCUS Gestion</h2>
+        <div className="md:hidden fixed inset-0 z-20 bg-gray-600/75 dark:bg-gray-900/80">
+          <div className="fixed inset-y-0 left-0 w-full max-w-xs bg-white dark:bg-gray-900">
+            <div className="h-16 flex items-center justify-between px-4 border-b dark:border-gray-700">
+              <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">Alto Gestion</h2>
               <Button
                 variant="ghost"
                 size="icon"
@@ -164,10 +164,10 @@ export default function DashboardLayout({
                   );
                 })}
 
-                <div className="pt-4 mt-4 border-t">
+                <div className="pt-4 mt-4 border-t dark:border-gray-700">
                   <Button
                     variant="ghost"
-                    className="w-full justify-start text-left text-red-600 hover:text-red-700 hover:bg-red-50"
+                    className="w-full justify-start text-left text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20"
                     onClick={handleLogout}
                   >
                     <LogOut className="mr-3 h-5 w-5" />
@@ -183,14 +183,14 @@ export default function DashboardLayout({
       {/* Contenu principal */}
       <main className="md:ml-64 flex-1 overflow-auto">
         <div className="py-6 md:py-8 px-4 md:px-8 mt-16 md:mt-0">
-          <h1 className="text-2xl font-semibold text-gray-900 mb-6">{title}</h1>
+          <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-6">{title}</h1>
           {children}
         </div>
 
         {/* Footer Admin */}
-        <footer className="border-t border-gray-200 bg-gray-50 py-4 px-4 md:px-8">
+        <footer className="border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 py-4 px-4 md:px-8">
           <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-3">
-            <p className="text-gray-500 text-xs text-center md:text-left">
+            <p className="text-gray-500 dark:text-gray-400 text-xs text-center md:text-left">
               &copy; 2023 Alto Lille - Interface d'administration
             </p>
             <div className="flex items-center justify-center md:justify-end gap-4">
@@ -212,7 +212,7 @@ export default function DashboardLayout({
                 href="https://pogodev.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-gray-600 text-xs transition-colors"
+                className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 text-xs transition-colors"
                 title="Site développé par Etienne Pogoda"
               >
                 Développé par Etienne Pogoda

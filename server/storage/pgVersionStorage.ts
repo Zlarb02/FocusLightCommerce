@@ -2,7 +2,6 @@
 import { db } from "./db.js";
 import { sql } from "drizzle-orm";
 import {
-  type ShopMode,
   type ThemeDecoration,
   type SiteVersion,
 } from "../../shared/schema.js";
@@ -47,7 +46,7 @@ export class PgVersionStorage {
 
     return result.rows.map((row) => ({
       id: Number(row.id),
-      shopMode: String(row.shop_mode) as ShopMode,
+      shopMode: String(row.shop_mode) as "general" | "focus",
       themeDecoration: String(row.theme_decoration) as ThemeDecoration,
       isActive: Boolean(row.is_active),
       createdAt: safeDate(row.created_at),
@@ -70,7 +69,7 @@ export class PgVersionStorage {
     const row = result.rows[0];
     return {
       id: Number(row.id),
-      shopMode: String(row.shop_mode) as ShopMode,
+      shopMode: String(row.shop_mode) as "general" | "focus",
       themeDecoration: String(row.theme_decoration) as ThemeDecoration,
       isActive: Boolean(row.is_active),
       createdAt: safeDate(row.created_at),
@@ -93,7 +92,7 @@ export class PgVersionStorage {
     const row = result.rows[0];
     return {
       id: Number(row.id),
-      shopMode: String(row.shop_mode) as ShopMode,
+      shopMode: String(row.shop_mode) as "general" | "focus",
       themeDecoration: String(row.theme_decoration) as ThemeDecoration,
       isActive: Boolean(row.is_active),
       createdAt: safeDate(row.created_at),
@@ -123,7 +122,7 @@ export class PgVersionStorage {
     const row = result.rows[0];
     return {
       id: Number(row.id),
-      shopMode: String(row.shop_mode) as ShopMode,
+      shopMode: String(row.shop_mode) as "general" | "focus",
       themeDecoration: String(row.theme_decoration) as ThemeDecoration,
       isActive: Boolean(row.is_active),
       createdAt: safeDate(row.created_at),
@@ -144,14 +143,14 @@ export class PgVersionStorage {
 
     const result = await db.execute(
       sql`INSERT INTO site_versions (shop_mode, theme_decoration, is_active)
-          VALUES (${versionData.shopMode}, ${versionData.themeDecoration}, ${versionData.isActive})
+          VALUES (${"focus"}, ${versionData.themeDecoration}, ${versionData.isActive})
           RETURNING id, shop_mode, theme_decoration, is_active, created_at, updated_at`
     );
 
     const row = result.rows[0];
     return {
       id: Number(row.id),
-      shopMode: String(row.shop_mode) as ShopMode,
+      shopMode: String(row.shop_mode) as "general" | "focus",
       themeDecoration: String(row.theme_decoration) as ThemeDecoration,
       isActive: Boolean(row.is_active),
       createdAt: safeDate(row.created_at),
@@ -208,34 +207,12 @@ export class PgVersionStorage {
     const row = result.rows[0];
     return {
       id: Number(row.id),
-      shopMode: String(row.shop_mode) as ShopMode,
+      shopMode: String(row.shop_mode) as "general" | "focus",
       themeDecoration: String(row.theme_decoration) as ThemeDecoration,
       isActive: Boolean(row.is_active),
       createdAt: safeDate(row.created_at),
       updatedAt: safeDateOrNull(row.updated_at),
     };
-  }
-
-  /**
-   * Change le mode de la boutique pour la version active
-   */
-  async setShopMode(mode: ShopMode): Promise<SiteVersion | undefined> {
-    // Récupérer la version active
-    const activeVersion = await this.getActiveVersion();
-
-    if (!activeVersion) {
-      // Créer une nouvelle version si aucune n'est active
-      return this.createVersion({
-        shopMode: mode,
-        themeDecoration: "none",
-        isActive: true,
-      });
-    }
-
-    // Mettre à jour la version active
-    return this.updateVersion(activeVersion.id, {
-      shopMode: mode,
-    });
   }
 
   /**
@@ -250,7 +227,6 @@ export class PgVersionStorage {
     if (!activeVersion) {
       // Créer une nouvelle version si aucune n'est active
       return this.createVersion({
-        shopMode: "focus",
         themeDecoration: decoration,
         isActive: true,
       });
@@ -309,14 +285,6 @@ export class PgVersionStorage {
   }
 
   /**
-   * Récupère le mode boutique actuel
-   */
-  async getCurrentShopMode(): Promise<string> {
-    const activeVersion = await this.getActiveVersion();
-    return activeVersion?.shopMode || "focus";
-  }
-
-  /**
    * Met à jour le thème (alias de setThemeDecoration)
    */
   async updateTheme(theme: string): Promise<void> {
@@ -333,13 +301,6 @@ export class PgVersionStorage {
     // Pour l'instant, cette méthode ne fait rien de spécial
     console.log("Mise à jour des décorations:", decorations);
     // On pourrait extraire un type de décoration de l'objet decorations si nécessaire
-  }
-
-  /**
-   * Met à jour le mode boutique (alias de setShopMode)
-   */
-  async updateShopMode(mode: string): Promise<void> {
-    await this.setShopMode(mode as ShopMode);
   }
 
   /**

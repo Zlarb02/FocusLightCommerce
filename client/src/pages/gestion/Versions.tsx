@@ -5,7 +5,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -29,14 +28,12 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useToast } from "@/hooks/use-toast";
 import {
   Palette,
   Sparkles,
-  Focus,
   Check,
   Zap,
   Sun,
@@ -45,7 +42,7 @@ import {
   Laugh,
 } from "lucide-react";
 import useVersions from "@/hooks/useVersions";
-import { ShopMode, ThemeDecoration } from "../../../../shared/schema";
+import { ThemeDecoration } from "../../../../shared/schema";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 
@@ -57,21 +54,16 @@ export default function Versions() {
     allVersions,
     isLoading,
     isUpdating,
-    setShopMode,
     setThemeDecoration,
     createVersion,
     activateVersion,
-    currentVersion,
-    setCurrentVersion,
   } = useVersions();
 
   // État local pour le formulaire de nouvelle version
   const [newVersion, setNewVersion] = useState<{
-    shopMode: ShopMode;
     themeDecoration: ThemeDecoration;
     isActive: boolean;
   }>({
-    shopMode: "focus",
     themeDecoration: "none",
     isActive: true,
   });
@@ -80,26 +72,16 @@ export default function Versions() {
     createVersion(newVersion);
     setShowAddVersionDialog(false);
     toast({
-      title: "Version créée",
-      description: "La nouvelle version a été créée avec succès",
+      title: "Décoration programmée",
+      description: "La décoration a été programmée avec succès",
     });
   };
 
   const handleActivateVersion = (id: number) => {
     activateVersion(id);
     toast({
-      title: "Version activée",
-      description: "La version a été activée avec succès",
-    });
-  };
-
-  const handleShopModeChange = (mode: ShopMode) => {
-    setShopMode(mode);
-    toast({
-      title: "Mode boutique mis à jour",
-      description: `Le mode boutique est maintenant en mode ${
-        mode === "focus" ? "focus" : "général"
-      }`,
+      title: "Décoration activée",
+      description: "La décoration a été activée avec succès",
     });
   };
 
@@ -143,59 +125,16 @@ export default function Versions() {
   };
 
   return (
-    <DashboardLayout title="Versions du site">
+    <DashboardLayout title="Décorations">
       <div className="grid gap-6">
         <Tabs defaultValue="current">
           <TabsList className="mb-4">
             <TabsTrigger value="current">Configuration actuelle</TabsTrigger>
-            <TabsTrigger value="all">Historique des versions</TabsTrigger>
+            <TabsTrigger value="all">Programmer décorations</TabsTrigger>
           </TabsList>
 
           <TabsContent value="current">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Mode boutique */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Focus className="h-5 w-5" />
-                    Mode boutique
-                  </CardTitle>
-                  <CardDescription>
-                    Choisissez entre le mode général ou focus pour votre
-                    boutique
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <RadioGroup
-                    defaultValue={activeVersion?.shopMode || "focus"}
-                    onValueChange={(value) =>
-                      handleShopModeChange(value as ShopMode)
-                    }
-                    className="flex flex-col space-y-3"
-                    disabled={isLoading || isUpdating}
-                  >
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="focus" id="focus" />
-                      <Label htmlFor="focus" className="font-medium">
-                        Mode Focus
-                      </Label>
-                      <p className="text-sm text-muted-foreground ml-6">
-                        Axé sur un seul produit, interface minimaliste
-                      </p>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="general" id="general" />
-                      <Label htmlFor="general" className="font-medium">
-                        Mode Général
-                      </Label>
-                      <p className="text-sm text-muted-foreground ml-6">
-                        Présentation catalogue avec multiples produits
-                      </p>
-                    </div>
-                  </RadioGroup>
-                </CardContent>
-              </Card>
-
+            <div className="max-w-2xl">
               {/* Décorations thématiques */}
               <Card>
                 <CardHeader>
@@ -271,13 +210,13 @@ export default function Versions() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0">
                 <div>
-                  <CardTitle>Historique des versions</CardTitle>
+                  <CardTitle>Planifier les décorations</CardTitle>
                   <CardDescription>
-                    Gérez les différentes versions du site
+                    Programmez des décorations saisonnières à l'avance
                   </CardDescription>
                 </div>
                 <Button onClick={() => setShowAddVersionDialog(true)}>
-                  Nouvelle version
+                  Nouvelle décoration
                 </Button>
               </CardHeader>
               <CardContent>
@@ -286,7 +225,6 @@ export default function Versions() {
                     <TableHeader>
                       <TableRow>
                         <TableHead>ID</TableHead>
-                        <TableHead>Mode</TableHead>
                         <TableHead>Décoration</TableHead>
                         <TableHead>Date de création</TableHead>
                         <TableHead>Statut</TableHead>
@@ -299,19 +237,6 @@ export default function Versions() {
                         allVersions.map((version) => (
                           <TableRow key={version.id}>
                             <TableCell>{version.id}</TableCell>
-                            <TableCell>
-                              <Badge
-                                variant={
-                                  version.shopMode === "focus"
-                                    ? "secondary"
-                                    : "default"
-                                }
-                              >
-                                {version.shopMode === "focus"
-                                  ? "Focus"
-                                  : "Général"}
-                              </Badge>
-                            </TableCell>
                             <TableCell>
                               <div className="flex items-center gap-1">
                                 {getDecorationIcon(version.themeDecoration)}
@@ -355,7 +280,7 @@ export default function Versions() {
                         ))}
                       {isLoading && (
                         <TableRow>
-                          <TableCell colSpan={6} className="text-center py-8">
+                          <TableCell colSpan={5} className="text-center py-8">
                             Chargement...
                           </TableCell>
                         </TableRow>
@@ -363,8 +288,8 @@ export default function Versions() {
                       {!isLoading &&
                         (!allVersions || allVersions.length === 0) && (
                           <TableRow>
-                            <TableCell colSpan={6} className="text-center py-8">
-                              Aucune version trouvée
+                            <TableCell colSpan={5} className="text-center py-8">
+                              Aucune décoration programmée
                             </TableCell>
                           </TableRow>
                         )}
@@ -384,33 +309,12 @@ export default function Versions() {
       >
         <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
-            <DialogTitle>Créer une nouvelle version</DialogTitle>
+            <DialogTitle>Programmer une décoration</DialogTitle>
             <DialogDescription>
-              Définissez les paramètres pour cette nouvelle version du site
+              Planifiez une décoration saisonnière pour votre boutique
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-6 py-4">
-            <div className="space-y-2">
-              <Label htmlFor="new-shop-mode">Mode boutique</Label>
-              <RadioGroup
-                id="new-shop-mode"
-                value={newVersion.shopMode}
-                onValueChange={(value) =>
-                  setNewVersion({ ...newVersion, shopMode: value as ShopMode })
-                }
-                className="flex flex-col space-y-3"
-              >
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="focus" id="new-focus" />
-                  <Label htmlFor="new-focus">Mode Focus</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="general" id="new-general" />
-                  <Label htmlFor="new-general">Mode Général</Label>
-                </div>
-              </RadioGroup>
-            </div>
-
             <div className="space-y-2">
               <Label htmlFor="new-decoration">Décoration thématique</Label>
               <RadioGroup
@@ -490,7 +394,7 @@ export default function Versions() {
               Annuler
             </Button>
             <Button onClick={handleCreateVersion} disabled={isUpdating}>
-              <Zap className="h-4 w-4 mr-2" /> Créer la version
+              <Zap className="h-4 w-4 mr-2" /> Programmer
             </Button>
           </DialogFooter>
         </DialogContent>

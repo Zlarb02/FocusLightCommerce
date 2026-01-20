@@ -526,7 +526,7 @@ export default function Stocks() {
           </TabsList>
 
           <TabsContent value="variations">
-            <div className="bg-yellow-50 border border-yellow-200 rounded-md p-4 mb-4 flex items-start">
+            <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-md p-4 mb-4 flex items-start">
               <svg
                 className="h-5 w-5 text-yellow-500 mr-2 mt-0.5"
                 fill="none"
@@ -541,7 +541,7 @@ export default function Stocks() {
                 />
               </svg>
               <div>
-                <p className="text-sm text-yellow-800">
+                <p className="text-sm text-yellow-800 dark:text-yellow-200">
                   Cet onglet affiche uniquement les variations existantes. Pour
                   ajouter une nouvelle variation à un produit, veuillez aller
                   dans l'onglet{" "}
@@ -549,7 +549,7 @@ export default function Stocks() {
                 </p>
               </div>
             </div>
-            <div className="bg-white rounded-lg shadow">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow">
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -632,7 +632,7 @@ export default function Stocks() {
                                       )}
                                     </>
                                   ) : (
-                                    <div className="w-12 h-12 bg-gray-100 rounded border flex items-center justify-center flex-shrink-0">
+                                    <div className="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded border dark:border-gray-600 flex items-center justify-center flex-shrink-0">
                                       <svg
                                         className="w-6 h-6 text-gray-400"
                                         fill="none"
@@ -726,7 +726,7 @@ export default function Stocks() {
           </TabsContent>
 
           <TabsContent value="products">
-            <div className="bg-blue-50 border border-blue-200 rounded-md p-4 mb-4 flex items-start">
+            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-md p-4 mb-4 flex items-start">
               <svg
                 className="h-5 w-5 text-blue-500 mr-2 mt-0.5"
                 fill="none"
@@ -741,14 +741,14 @@ export default function Stocks() {
                 />
               </svg>
               <div>
-                <p className="text-sm text-blue-800">
+                <p className="text-sm text-blue-800 dark:text-blue-200">
                   Dans cet onglet, vous pouvez voir tous les produits et gérer
                   leurs variations. Pour ajouter une variation à un produit,
                   cliquez sur le bouton <strong>"+ Variation"</strong>.
                 </p>
               </div>
             </div>
-            <div className="bg-white rounded-lg shadow">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow">
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -1042,7 +1042,7 @@ export default function Stocks() {
                         {field.value.map((img, idx) => (
                           <div
                             key={idx}
-                            className="flex gap-3 items-center p-3 border rounded-lg bg-gray-50"
+                            className="flex gap-3 items-center p-3 border dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700"
                           >
                             {/* Miniature de l'image */}
                             <div className="w-16 h-16 flex-shrink-0">
@@ -1077,9 +1077,9 @@ export default function Stocks() {
                                   </div>
                                 </div>
                               ) : (
-                                <div className="w-full h-full bg-gray-200 rounded border flex items-center justify-center">
+                                <div className="w-full h-full bg-gray-200 dark:bg-gray-600 rounded border dark:border-gray-500 flex items-center justify-center">
                                   <svg
-                                    className="w-6 h-6 text-gray-400"
+                                    className="w-6 h-6 text-gray-400 dark:text-gray-300"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -1107,7 +1107,7 @@ export default function Stocks() {
                                 }}
                               />
                               <div className="flex gap-2 items-center">
-                                <label className="text-sm text-gray-600 font-medium">
+                                <label className="text-sm text-gray-600 dark:text-gray-400 font-medium">
                                   Ordre:
                                 </label>
                                 <Input

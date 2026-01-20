@@ -171,7 +171,7 @@ export default function Commandes() {
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
         </div>
       ) : (
-        <div className="bg-white rounded-lg shadow">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow">
           <Table>
             <TableHeader>
               <TableRow>
@@ -258,7 +258,7 @@ export default function Commandes() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <h3 className="font-medium mb-2">Informations client</h3>
-                <div className="bg-slate-50 p-4 rounded-md">
+                <div className="bg-slate-50 dark:bg-gray-700 p-4 rounded-md">
                   <p>
                     {selectedOrder.customer.firstName}{" "}
                     {selectedOrder.customer.lastName}
@@ -266,7 +266,7 @@ export default function Commandes() {
                   <p>{selectedOrder.customer.email}</p>
                   <p>{selectedOrder.customer.phone}</p>
                   {selectedOrder.customer.address && (
-                    <div className="mt-2 pt-2 border-t border-slate-200">
+                    <div className="mt-2 pt-2 border-t border-slate-200 dark:border-gray-600">
                       <p>{selectedOrder.customer.address}</p>
                       <p>
                         {selectedOrder.customer.postalCode}{" "}
@@ -286,8 +286,8 @@ export default function Commandes() {
 
               <div>
                 <h3 className="font-medium mb-2">Produits commandés</h3>
-                <div className="bg-slate-50 p-4 rounded-md">
-                  <ul className="divide-y divide-slate-200">
+                <div className="bg-slate-50 dark:bg-gray-700 p-4 rounded-md">
+                  <ul className="divide-y divide-slate-200 dark:divide-gray-600">
                     {selectedOrder.items.map((item) => (
                       <li
                         key={item.id}
@@ -305,7 +305,7 @@ export default function Commandes() {
                             {item.product?.name || "FOCUS.01"}{" "}
                             {item.product?.color && `(${item.product.color})`}
                           </p>
-                          <div className="flex justify-between text-sm">
+                          <div className="flex justify-between text-sm text-muted-foreground">
                             <span>Qté: {item.quantity}</span>
                             <span>{formatPrice(item.price)}</span>
                           </div>
@@ -313,7 +313,7 @@ export default function Commandes() {
                       </li>
                     ))}
                   </ul>
-                  <div className="pt-2 mt-2 border-t border-slate-200 flex justify-between font-medium">
+                  <div className="pt-2 mt-2 border-t border-slate-200 dark:border-gray-600 flex justify-between font-medium">
                     <span>Total</span>
                     <span>{formatPrice(selectedOrder.totalAmount)}</span>
                   </div>

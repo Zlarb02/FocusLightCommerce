@@ -92,10 +92,7 @@ export interface IStorage {
   // Méthodes pour le thème et les décorations
   getCurrentTheme(): Promise<string>;
   getCurrentDecorations(): Promise<Record<string, any>>;
-  getCurrentShopMode(): Promise<string>;
   updateTheme(theme: string): Promise<void>;
   updateDecorations(decorations: Record<string, any>): Promise<void>;
   setThemeDecoration(decoration: string): Promise<void>;
-  updateShopMode(mode: string): Promise<void>;
-  setShopMode(mode: string): Promise<void>;
 }

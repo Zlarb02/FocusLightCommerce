@@ -1,6 +1,6 @@
 import express from "express";
 import { storage } from "../storage/index.js";
-import { ThemeDecoration, ShopMode, SiteVersion } from "../../shared/schema.js";
+import { ThemeDecoration, SiteVersion } from "../../shared/schema.js";
 import { isAdmin } from "../middleware/middlewares.js";
 
 const router = express.Router();
@@ -22,7 +22,6 @@ router.get("/", async (req, res) => {
     const activeVersion = await storage.getActiveVersion();
     res.json(
       activeVersion || {
-        shopMode: "focus",
         themeDecoration: "none",
         isActive: true,
       }
@@ -32,17 +31,6 @@ router.get("/", async (req, res) => {
       "Erreur lors de la récupération de la version active:",
       error
     );
-    res.status(500).json({ message: "Erreur serveur" });
-  }
-});
-
-// Récupérer uniquement le mode boutique
-router.get("/shop-mode", async (req, res) => {
-  try {
-    const activeVersion = await storage.getActiveVersion();
-    res.json({ shopMode: activeVersion?.shopMode || "focus" });
-  } catch (error) {
-    console.error("Erreur lors de la récupération du mode boutique:", error);
     res.status(500).json({ message: "Erreur serveur" });
   }
 });
@@ -79,24 +67,6 @@ router.put("/", isAdmin, async (req, res) => {
     }
   } catch (error) {
     console.error("Erreur lors de la mise à jour des paramètres:", error);
-    res.status(500).json({ message: "Erreur serveur" });
-  }
-});
-
-// Mettre à jour uniquement le mode boutique (requiert authentification admin)
-router.put("/shop-mode", isAdmin, async (req, res) => {
-  try {
-    const { mode } = req.body;
-
-    if (mode !== "general" && mode !== "focus") {
-      res.status(400).json({ message: "Mode invalide" });
-      return;
-    }
-
-    await storage.setShopMode(mode);
-    res.json({ shopMode: mode });
-  } catch (error) {
-    console.error("Erreur lors de la mise à jour du mode boutique:", error);
     res.status(500).json({ message: "Erreur serveur" });
   }
 });

@@ -5,97 +5,71 @@ import {
   Package,
   ShoppingCart,
   CheckCircle,
-  AlertCircle,
+  TrendingUp,
   FileText,
-  SwitchCamera,
-  LayoutDashboard,
 } from "lucide-react";
 import { useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
-import { ProductWithVariations } from "../../../../shared/schema";
-import { useState, useEffect } from "react";
-import { Switch } from "@/components/ui/switch";
-import useVersions from "@/hooks/useVersions";
+import { ProductWithVariations, Order } from "../../../../shared/schema";
+import { formatPrice } from "@/lib/utils";
 
 export default function Dashboard() {
   const [, setLocation] = useLocation();
-  // Utiliser le hook pour gérer le mode boutique
-  const { toggleShopMode, isUpdating, activeVersion } = useVersions();
 
-  const shopMode = activeVersion?.shopMode || "focus";
-  const isLoading = isUpdating;
-
-  // Récupération des données depuis l'API (dans un environnement réel)
+  // Récupération des données depuis l'API
   const { data: products = [] } = useQuery<ProductWithVariations[]>({
     queryKey: ["/api/products"],
-    enabled: false, // Désactivé pour la démo - à activer en production
   });
 
-  const { data: orders = [] } = useQuery({
+  const { data: orders = [] } = useQuery<Order[]>({
     queryKey: ["/api/orders"],
-    enabled: false, // Désactivé pour la démo - à activer en production
   });
 
-  // Données de démonstration
+  // Calcul des statistiques réelles
+  const stockTotal = products.reduce((acc, product) => {
+    return acc + (product.variations?.reduce((sum, v) => sum + v.stock, 0) || 0);
+  }, 0);
+
+  // Variations avec stock faible (≤ 5)
+  const lowStockVariations = products.flatMap((product) =>
+    (product.variations || [])
+      .filter((v) => v.stock <= 5)
+      .map((v) => ({ ...v, productName: product.name }))
+  );
+
+  // Commandes en attente (status: pending ou processing)
+  const pendingOrders = orders.filter(
+    (order) => order.status === "pending" || order.status === "processing"
+  );
+
+  // Commandes complétées (status: delivered)
+  const completedOrders = orders.filter((order) => order.status === "delivered");
+
+  // Chiffre d'affaires du mois (commandes livrées ou expédiées ce mois)
+  const now = new Date();
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+  const revenueMonth = orders
+    .filter((order) => {
+      if (!order.createdAt) return false;
+      const orderDate = new Date(order.createdAt);
+      return (
+        orderDate >= startOfMonth &&
+        (order.status === "shipped" || order.status === "delivered")
+      );
+    })
+    .reduce((sum, order) => sum + order.totalAmount, 0);
+
   const stats = {
-    stockTotal: 38,
-    stockLow: 2,
-    ordersTotal: 24,
-    ordersPending: 5,
-    ordersCompleted: 19,
-    revenueMonth: "3 470€",
+    stockTotal,
+    stockLow: lowStockVariations.length,
+    ordersTotal: orders.length,
+    ordersPending: pendingOrders.length,
+    ordersCompleted: completedOrders.length,
+    revenueMonth: formatPrice(revenueMonth / 100),
   };
 
   return (
     <DashboardLayout title="Tableau de bord">
-      {/* Switch du mode boutique */}
-      <Card className="mb-8">
-        <CardHeader className="pb-2">
-          <CardTitle className="flex items-center gap-2 text-base font-medium">
-            <LayoutDashboard className="h-5 w-5 text-primary" /> Mode de
-            boutique
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="font-medium">
-                {shopMode === "focus"
-                  ? "Boutique Focus"
-                  : "Boutique Généraliste"}
-              </p>
-              <p className="text-sm text-muted-foreground">
-                {shopMode === "focus"
-                  ? "Affiche uniquement les lampes Focus.01"
-                  : "Affiche tous les produits disponibles"}
-              </p>
-            </div>
-            <div className="flex items-center gap-3">
-              <span
-                className={`text-sm ${
-                  shopMode !== "focus" ? "font-semibold" : ""
-                }`}
-              >
-                Généraliste
-              </span>
-              <Switch
-                checked={shopMode === "focus"}
-                onCheckedChange={toggleShopMode}
-                id="dashboard-shop-mode-switch"
-                disabled={isLoading}
-              />
-              <span
-                className={`text-sm ${
-                  shopMode === "focus" ? "font-semibold" : ""
-                }`}
-              >
-                Focus
-              </span>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
       {/* Statistiques générales */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <Card>
@@ -144,12 +118,12 @@ export default function Dashboard() {
             <CardTitle className="text-sm font-medium">
               Chiffre du mois
             </CardTitle>
-            <AlertCircle className="h-4 w-4 text-muted-foreground" />
+            <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.revenueMonth}</div>
             <p className="text-xs text-muted-foreground mt-1">
-              +12% par rapport au mois dernier
+              Commandes expédiées/livrées
             </p>
           </CardContent>
         </Card>
@@ -189,61 +163,98 @@ export default function Dashboard() {
       {/* Alertes */}
       <h2 className="font-medium text-xl mb-4">Alertes</h2>
       <div className="space-y-4">
-        <Card className="border-amber-200 bg-amber-50">
-          <CardContent className="p-4 flex items-center gap-3">
-            <div className="bg-amber-100 p-2 rounded-full">
-              <Package className="h-5 w-5 text-amber-600" />
-            </div>
-            <div>
-              <h3 className="font-medium">Stock faible: FOCUS.01 Rouge</h3>
-              <p className="text-sm text-muted-foreground">
-                Il ne reste que 3 unités en stock
-              </p>
-            </div>
-            <Button
-              variant="outline"
-              className="ml-auto"
-              size="sm"
-              onClick={() => setLocation("/gestion/stocks")}
+        {/* Alertes de stock faible */}
+        {lowStockVariations.length > 0 ? (
+          lowStockVariations.slice(0, 3).map((variation) => (
+            <Card
+              key={variation.id}
+              className="border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20"
             >
-              Gérer
-            </Button>
-          </CardContent>
-        </Card>
+              <CardContent className="p-4 flex items-center gap-3">
+                <div className="bg-amber-100 dark:bg-amber-800/50 p-2 rounded-full">
+                  <Package className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-medium text-amber-900 dark:text-amber-100">
+                    Stock faible: {variation.productName} - {variation.variationValue}
+                  </h3>
+                  <p className="text-sm text-amber-700 dark:text-amber-300">
+                    {variation.stock === 0
+                      ? "Rupture de stock !"
+                      : `Il ne reste que ${variation.stock} unité${variation.stock > 1 ? "s" : ""} en stock`}
+                  </p>
+                </div>
+                <Button
+                  variant="outline"
+                  className="ml-auto border-amber-300 dark:border-amber-700 hover:bg-amber-100 dark:hover:bg-amber-800/50"
+                  size="sm"
+                  onClick={() => setLocation("/gestion/stocks")}
+                >
+                  Gérer
+                </Button>
+              </CardContent>
+            </Card>
+          ))
+        ) : (
+          <Card className="border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900/20">
+            <CardContent className="p-4 flex items-center gap-3">
+              <div className="bg-green-100 dark:bg-green-800/50 p-2 rounded-full">
+                <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
+              </div>
+              <div>
+                <h3 className="font-medium text-green-900 dark:text-green-100">
+                  Tous les stocks sont OK
+                </h3>
+                <p className="text-sm text-green-700 dark:text-green-300">
+                  Aucun produit en rupture ou stock faible
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
-        <Card className="border-blue-200 bg-blue-50">
-          <CardContent className="p-4 flex items-center gap-3">
-            <div className="bg-blue-100 p-2 rounded-full">
-              <ShoppingCart className="h-5 w-5 text-blue-600" />
-            </div>
-            <div>
-              <h3 className="font-medium">5 nouvelles commandes à traiter</h3>
-              <p className="text-sm text-muted-foreground">
-                Commandes en attente de validation
-              </p>
-            </div>
-            <Button
-              variant="outline"
-              className="ml-auto"
-              size="sm"
-              onClick={() => setLocation("/gestion/commandes")}
-            >
-              Voir
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Intégration future d'un graphique ou tableau de bord avancé */}
-      <div className="mt-8 p-6 border border-dashed rounded-lg flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-muted-foreground mb-2">
-            Espace réservé pour l'intégration future de graphiques
-          </p>
-          <p className="text-sm text-muted-foreground">
-            Les statistiques détaillées seront disponibles ici
-          </p>
-        </div>
+        {/* Alerte commandes en attente */}
+        {pendingOrders.length > 0 ? (
+          <Card className="border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-900/20">
+            <CardContent className="p-4 flex items-center gap-3">
+              <div className="bg-blue-100 dark:bg-blue-800/50 p-2 rounded-full">
+                <ShoppingCart className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-medium text-blue-900 dark:text-blue-100">
+                  {pendingOrders.length} commande{pendingOrders.length > 1 ? "s" : ""} à traiter
+                </h3>
+                <p className="text-sm text-blue-700 dark:text-blue-300">
+                  Commandes en attente de validation ou traitement
+                </p>
+              </div>
+              <Button
+                variant="outline"
+                className="ml-auto border-blue-300 dark:border-blue-700 hover:bg-blue-100 dark:hover:bg-blue-800/50"
+                size="sm"
+                onClick={() => setLocation("/gestion/commandes")}
+              >
+                Voir
+              </Button>
+            </CardContent>
+          </Card>
+        ) : (
+          <Card className="border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900/20">
+            <CardContent className="p-4 flex items-center gap-3">
+              <div className="bg-green-100 dark:bg-green-800/50 p-2 rounded-full">
+                <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
+              </div>
+              <div>
+                <h3 className="font-medium text-green-900 dark:text-green-100">
+                  Aucune commande en attente
+                </h3>
+                <p className="text-sm text-green-700 dark:text-green-300">
+                  Toutes les commandes ont été traitées
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        )}
       </div>
     </DashboardLayout>
   );

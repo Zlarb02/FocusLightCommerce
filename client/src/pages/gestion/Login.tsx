@@ -7,7 +7,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -118,17 +117,17 @@ export default function GestionLogin() {
   // Afficher un loader pendant la vérification
   if (authStatus?.isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center text-gray-500">Chargement...</div>
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+        <div className="text-center text-gray-500 dark:text-gray-400">Chargement...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
       <div className="w-full max-w-md px-4">
         <div className="mb-8 text-center">
-          <h1 className="font-heading font-bold text-3xl mb-2">Alto</h1>
+          <h1 className="font-heading font-bold text-3xl mb-2 text-gray-900 dark:text-gray-100">Alto</h1>
           <p className="text-muted-foreground">Espace de gestion</p>
         </div>
 
