@@ -10,7 +10,7 @@ import { Separator } from "@/components/ui/separator";
 import ThemeDecorator from "@/components/decorations/ThemeDecorator";
 import { useQuery } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
-import { ThemeDecoration } from "../../../shared/schema";
+import { ThemeDecoration, ProductWithVariations } from "../../../shared/schema";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { LanguageToggle } from "@/components/LanguageToggle";
@@ -63,6 +63,11 @@ export function Layout({ children, showCart = true }: LayoutProps) {
       );
       return response;
     },
+  });
+
+  // Récupérer la liste des produits pour le menu dynamique
+  const { data: products = [] } = useQuery<ProductWithVariations[]>({
+    queryKey: ["/api/products"],
   });
 
   // Calculer une seule fois le nombre d'articles
@@ -222,6 +227,7 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                   {t("nav.shopSection")}
                 </div>
                 <div className="space-y-1">
+                  {/* Lien Catalogue */}
                   <button
                     onClick={() => {
                       setLocation("/shop");
@@ -247,8 +253,26 @@ export function Layout({ children, showCart = true }: LayoutProps) {
                       <line x1="3" y1="6" x2="21" y2="6" />
                       <path d="M16 10a4 4 0 0 1-8 0" />
                     </svg>
-                    <span>{t("nav.shopFocus")}</span>
+                    <span>{t("nav.catalogue")}</span>
                   </button>
+                  {/* Liens dynamiques des produits */}
+                  {products.map((product) => (
+                    <button
+                      key={product.id}
+                      onClick={() => {
+                        setLocation(`/shop/${product.id}`);
+                        setMenuOpen(false);
+                      }}
+                      className="w-full flex items-center px-3 py-2 pl-10 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100 rounded-lg transition-all duration-200 ease-out group hover:translate-x-1"
+                      style={{
+                        fontFamily: "var(--font-nav)",
+                        fontSize: "14px",
+                        fontWeight: "400",
+                      }}
+                    >
+                      <span>{product.name}</span>
+                    </button>
+                  ))}
                 </div>
               </div>
 

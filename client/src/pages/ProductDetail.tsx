@@ -216,20 +216,23 @@ export default function ProductDetail() {
               <p className="mb-6 md:mb-8 text-gray-600 max-w-md text-base md:text-lg leading-relaxed text-center md:text-left mx-auto md:mx-0 dark:text-white dark:font-medium">
                 {product.description}
               </p>
-              <div className="flex flex-wrap gap-4 md:gap-6 mb-6 md:mb-8 justify-center md:justify-start">
-                <div className="flex items-center text-xs md:text-sm">
-                  <Leaf className="text-green-500 mr-2 h-3 w-3 md:h-4 md:w-4" />
-                  <span>{t("focus.features.eco")}</span>
+              {/* Features icons - spécifiques au produit FOCUS.01 */}
+              {productId === 1 && (
+                <div className="flex flex-wrap gap-4 md:gap-6 mb-6 md:mb-8 justify-center md:justify-start">
+                  <div className="flex items-center text-xs md:text-sm">
+                    <Leaf className="text-green-500 mr-2 h-3 w-3 md:h-4 md:w-4" />
+                    <span>{t("focus.features.eco")}</span>
+                  </div>
+                  <div className="flex items-center text-xs md:text-sm">
+                    <Trees className="text-amber-700 mr-2 h-3 w-3 md:h-4 md:w-4" />
+                    <span>{t("focus.features.wood")}</span>
+                  </div>
+                  <div className="flex items-center text-xs md:text-sm">
+                    <Lightbulb className="text-yellow-400 mr-2 h-3 w-3 md:h-4 md:w-4" />
+                    <span>{t("focus.features.led")}</span>
+                  </div>
                 </div>
-                <div className="flex items-center text-xs md:text-sm">
-                  <Trees className="text-amber-700 mr-2 h-3 w-3 md:h-4 md:w-4" />
-                  <span>{t("focus.features.wood")}</span>
-                </div>
-                <div className="flex items-center text-xs md:text-sm">
-                  <Lightbulb className="text-yellow-400 mr-2 h-3 w-3 md:h-4 md:w-4" />
-                  <span>{t("focus.features.led")}</span>
-                </div>
-              </div>
+              )}
               <div className="flex flex-col gap-3 md:gap-4 mb-6 md:mb-8 px-4 md:px-0">
                 <AnimatedAddToCartButton
                   onClick={handleAddToCart}
@@ -362,147 +365,149 @@ export default function ProductDetail() {
           </section>
         )}
 
-        {/* Product Details Section */}
-        <section id="product-details" className="py-20 animate fade-in">
-          <div className="container mx-auto max-w-5xl">
-            <h2
-              className="font-heading text-3xl md:text-4xl mb-16 text-center dark:text-gray-100"
-              style={{ fontFamily: "var(--font-titles)" }}
-            >
-              {t("focus.conceptDetails")}
-            </h2>
+        {/* Product Details Section - Spécifique FOCUS.01 */}
+        {productId === 1 && (
+          <section id="product-details" className="py-20 animate fade-in">
+            <div className="container mx-auto max-w-5xl">
+              <h2
+                className="font-heading text-3xl md:text-4xl mb-16 text-center dark:text-gray-100"
+                style={{ fontFamily: "var(--font-titles)" }}
+              >
+                {t("focus.conceptDetails")}
+              </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
-              <div className="p-6 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 animate fade-in-right delay-1">
-                <div className="w-12 h-12 bg-primary/5 dark:bg-blue-400/10 flex items-center justify-center mb-4">
-                  <Leaf className="text-[var(--color-text)] dark:text-blue-400 h-6 w-6" />
-                </div>
-                <h3
-                  className="font-heading text-xl mb-3 dark:text-gray-100"
-                  style={{ fontFamily: "var(--font-titles)" }}
-                >
-                  {t("focus.sustainableMaterials")}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300">
-                  {t("focus.sustainableMaterials.text")}
-                </p>
-              </div>
-
-              <div className="p-6 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 animate fade-in-up delay-2">
-                <div className="w-12 h-12 bg-primary/5 dark:bg-blue-400/10 flex items-center justify-center mb-4">
-                  <Lightbulb className="text-[var(--color-text)] dark:text-blue-400 h-6 w-6" />
-                </div>
-                <h3
-                  className="font-heading text-xl mb-3 dark:text-gray-100"
-                  style={{ fontFamily: "var(--font-titles)" }}
-                >
-                  {t("focus.lighting.title")}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300">
-                  {t("focus.lighting.text")}
-                </p>
-              </div>
-
-              <div className="p-6 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 animate fade-in-left delay-3">
-                <div className="w-12 h-12 bg-primary/5 dark:bg-blue-400/10 flex items-center justify-center mb-4">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="text-[var(--color-text)] dark:text-blue-400 h-6 w-6"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+                <div className="p-6 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 animate fade-in-right delay-1">
+                  <div className="w-12 h-12 bg-primary/5 dark:bg-blue-400/10 flex items-center justify-center mb-4">
+                    <Leaf className="text-[var(--color-text)] dark:text-blue-400 h-6 w-6" />
+                  </div>
+                  <h3
+                    className="font-heading text-xl mb-3 dark:text-gray-100"
+                    style={{ fontFamily: "var(--font-titles)" }}
                   >
-                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
-                  </svg>
+                    {t("focus.sustainableMaterials")}
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    {t("focus.sustainableMaterials.text")}
+                  </p>
                 </div>
-                <h3
-                  className="font-heading text-xl mb-3 dark:text-gray-100"
-                  style={{ fontFamily: "var(--font-titles)" }}
-                >
-                  {t("focus.artisanalCrafting")}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300">
-                  {t("focus.artisanalCrafting.text")}
-                </p>
-              </div>
-            </div>
 
-            <div className="flex flex-col md:flex-row gap-16">
-              <div className="md:w-1/2 animate fade-in-right delay-4 flex flex-col items-center">
-                <DynamicImage
-                  illustrationKey="shopFocus.lifestyle1"
-                  fallbackSrc="https://www.alto-lille.fr/uploads/f0d658a0-e71f-462d-9210-31b276408bdd.jpeg"
-                  alt={`${product.name} - Caractéristiques`}
-                  className="w-full max-h-[500px] object-contain block dark:hidden mt-8"
-                />
-                <DynamicImage
-                  illustrationKey="shopFocus.lifestyle2"
-                  fallbackSrc="https://www.alto-lille.fr/uploads/29ce9490-1000-4d95-8d92-cd5191e15b80.jpeg"
-                  alt={`${product.name} - Caractéristiques (sombre)`}
-                  className="w-full max-h-[500px] object-contain hidden dark:block mt-8"
-                />
+                <div className="p-6 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 animate fade-in-up delay-2">
+                  <div className="w-12 h-12 bg-primary/5 dark:bg-blue-400/10 flex items-center justify-center mb-4">
+                    <Lightbulb className="text-[var(--color-text)] dark:text-blue-400 h-6 w-6" />
+                  </div>
+                  <h3
+                    className="font-heading text-xl mb-3 dark:text-gray-100"
+                    style={{ fontFamily: "var(--font-titles)" }}
+                  >
+                    {t("focus.lighting.title")}
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    {t("focus.lighting.text")}
+                  </p>
+                </div>
+
+                <div className="p-6 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 animate fade-in-left delay-3">
+                  <div className="w-12 h-12 bg-primary/5 dark:bg-blue-400/10 flex items-center justify-center mb-4">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="text-[var(--color-text)] dark:text-blue-400 h-6 w-6"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+                    </svg>
+                  </div>
+                  <h3
+                    className="font-heading text-xl mb-3 dark:text-gray-100"
+                    style={{ fontFamily: "var(--font-titles)" }}
+                  >
+                    {t("focus.artisanalCrafting")}
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    {t("focus.artisanalCrafting.text")}
+                  </p>
+                </div>
               </div>
-              <div className="md:w-1/2 animate fade-in-left delay-4">
-                <h3
-                  className="font-heading text-2xl mb-6 dark:text-gray-100"
-                  style={{ fontFamily: "var(--font-titles)" }}
-                >
-                  {t("product.specifications")}
-                </h3>
-                <ul className="space-y-6 mb-8">
-                  <li className="flex items-start">
-                    <span className="bg-primary/5 dark:bg-blue-400/10 text-[var(--color-text)] dark:text-blue-400 p-1 mr-4 mt-1">
-                      <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                        <path d="M20 6L9 17l-5-5" />
-                      </svg>
-                    </span>
-                    <div>
-                      <span className="font-medium block mb-1 dark:text-gray-100">
-                        {t("product.dimensions")}
+
+              <div className="flex flex-col md:flex-row gap-16">
+                <div className="md:w-1/2 animate fade-in-right delay-4 flex flex-col items-center">
+                  <DynamicImage
+                    illustrationKey="shopFocus.lifestyle1"
+                    fallbackSrc="https://www.alto-lille.fr/uploads/f0d658a0-e71f-462d-9210-31b276408bdd.jpeg"
+                    alt={`${product.name} - Caractéristiques`}
+                    className="w-full max-h-[500px] object-contain block dark:hidden mt-8"
+                  />
+                  <DynamicImage
+                    illustrationKey="shopFocus.lifestyle2"
+                    fallbackSrc="https://www.alto-lille.fr/uploads/29ce9490-1000-4d95-8d92-cd5191e15b80.jpeg"
+                    alt={`${product.name} - Caractéristiques (sombre)`}
+                    className="w-full max-h-[500px] object-contain hidden dark:block mt-8"
+                  />
+                </div>
+                <div className="md:w-1/2 animate fade-in-left delay-4">
+                  <h3
+                    className="font-heading text-2xl mb-6 dark:text-gray-100"
+                    style={{ fontFamily: "var(--font-titles)" }}
+                  >
+                    {t("product.specifications")}
+                  </h3>
+                  <ul className="space-y-6 mb-8">
+                    <li className="flex items-start">
+                      <span className="bg-primary/5 dark:bg-blue-400/10 text-[var(--color-text)] dark:text-blue-400 p-1 mr-4 mt-1">
+                        <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                          <path d="M20 6L9 17l-5-5" />
+                        </svg>
                       </span>
-                      <p className="text-gray-600 dark:text-gray-300">
-                        {t("focus.dimensions.text")}
-                      </p>
-                    </div>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="bg-primary/5 dark:bg-blue-400/10 text-[var(--color-text)] dark:text-blue-400 p-1 mr-4 mt-1">
-                      <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                        <path d="M20 6L9 17l-5-5" />
-                      </svg>
-                    </span>
-                    <div>
-                      <span className="font-medium block mb-1 dark:text-gray-100">
-                        {t("product.materials")}
+                      <div>
+                        <span className="font-medium block mb-1 dark:text-gray-100">
+                          {t("product.dimensions")}
+                        </span>
+                        <p className="text-gray-600 dark:text-gray-300">
+                          {t("focus.dimensions.text")}
+                        </p>
+                      </div>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="bg-primary/5 dark:bg-blue-400/10 text-[var(--color-text)] dark:text-blue-400 p-1 mr-4 mt-1">
+                        <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                          <path d="M20 6L9 17l-5-5" />
+                        </svg>
                       </span>
-                      <p className="text-gray-600 dark:text-gray-300">
-                        {t("focus.materials.text")}
-                      </p>
-                    </div>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="bg-primary/5 dark:bg-blue-400/10 text-[var(--color-text)] dark:text-blue-400 p-1 mr-4 mt-1">
-                      <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                        <path d="M20 6L9 17l-5-5" />
-                      </svg>
-                    </span>
-                    <div>
-                      <span className="font-medium block mb-1 dark:text-gray-100">
-                        {t("focus.lighting.label")}
+                      <div>
+                        <span className="font-medium block mb-1 dark:text-gray-100">
+                          {t("product.materials")}
+                        </span>
+                        <p className="text-gray-600 dark:text-gray-300">
+                          {t("focus.materials.text")}
+                        </p>
+                      </div>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="bg-primary/5 dark:bg-blue-400/10 text-[var(--color-text)] dark:text-blue-400 p-1 mr-4 mt-1">
+                        <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                          <path d="M20 6L9 17l-5-5" />
+                        </svg>
                       </span>
-                      <p className="text-gray-600 dark:text-gray-300">
-                        {t("focus.lighting.details")}
-                      </p>
-                    </div>
-                  </li>
-                </ul>
+                      <div>
+                        <span className="font-medium block mb-1 dark:text-gray-100">
+                          {t("focus.lighting.label")}
+                        </span>
+                        <p className="text-gray-600 dark:text-gray-300">
+                          {t("focus.lighting.details")}
+                        </p>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
+        )}
 
         {/* Grille des variations */}
         {variations.length > 1 && (
@@ -622,28 +627,30 @@ export default function ProductDetail() {
           </div>
         )}
 
-        {/* Testimonials Section - Avis Google Elfsight */}
-        <section className="py-20 container mx-auto animate fade-in">
-          <h2
-            className="font-heading text-3xl md:text-4xl text-center mb-16"
-            style={{ fontFamily: "var(--font-titles)" }}
-          >
-            {t("focus.testimonials")}
-          </h2>
+        {/* Testimonials Section - Avis Google Elfsight - Spécifique FOCUS.01 */}
+        {productId === 1 && (
+          <section className="py-20 container mx-auto animate fade-in">
+            <h2
+              className="font-heading text-3xl md:text-4xl text-center mb-16"
+              style={{ fontFamily: "var(--font-titles)" }}
+            >
+              {t("focus.testimonials")}
+            </h2>
 
-          {/* Elfsight Google Reviews Widget */}
-          <div
-            className="elfsight-app-4e4b87d4-745d-4e46-ab59-bc0b36f7d8ad relative overflow-visible"
-            data-elfsight-app-lazy
-            style={{ margin: "0 -40px", padding: 0 }}
-          />
-          <style>{`
-            .elfsight-app-4e4b87d4-745d-4e46-ab59-bc0b36f7d8ad [class*="es-widget-title"],
-            .elfsight-app-4e4b87d4-745d-4e46-ab59-bc0b36f7d8ad [class*="es-powered-by"] {
-              display: none;
-            }
-          `}</style>
-        </section>
+            {/* Elfsight Google Reviews Widget */}
+            <div
+              className="elfsight-app-4e4b87d4-745d-4e46-ab59-bc0b36f7d8ad relative overflow-visible"
+              data-elfsight-app-lazy
+              style={{ margin: "0 -40px", padding: 0 }}
+            />
+            <style>{`
+              .elfsight-app-4e4b87d4-745d-4e46-ab59-bc0b36f7d8ad [class*="es-widget-title"],
+              .elfsight-app-4e4b87d4-745d-4e46-ab59-bc0b36f7d8ad [class*="es-powered-by"] {
+                display: none;
+              }
+            `}</style>
+          </section>
+        )}
 
         {/* Avantages Section */}
         <section className="py-16 animate fade-in">

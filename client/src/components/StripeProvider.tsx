@@ -43,10 +43,6 @@ export function StripeProvider({ children }: StripeProviderProps) {
         return;
       }
 
-      console.log(
-        "✅ Initialisation Stripe avec la clé:",
-        stripePublicKey.substring(0, 12) + "..."
-      );
       setStripePromise(loadStripe(stripePublicKey));
     };
 

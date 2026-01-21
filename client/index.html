@@ -2771,8 +2771,10 @@
                     stroke-linejoin="round"
                   />
                 </svg>
-                <span id="focus-shop-menu">Boutique Focus</span>
+                <span id="focus-shop-menu">Catalogue</span>
               </button>
+              <!-- Container pour les liens dynamiques des produits -->
+              <div id="dynamic-product-links"></div>
             </div>
 
             <div class="mobile-menu-separator"></div>
@@ -3944,7 +3946,7 @@
           customCreations: "Créations à la demande",
           home: "Accueil",
           shop: "Boutique",
-          focusShop: "Boutique Focus",
+          focusShop: "Catalogue",
           about: "À propos",
           whoAmI: "Qui suis-je",
           settings: "Paramètres",
@@ -3964,7 +3966,7 @@
           customCreations: "Custom creations",
           home: "Home",
           shop: "Shop",
-          focusShop: "Focus Shop",
+          focusShop: "Catalogue",
           about: "About",
           whoAmI: "Who am I",
           settings: "Settings",
@@ -4364,6 +4366,33 @@
             closeMobileMenu();
           }
         });
+
+        // Charger dynamiquement la liste des produits pour le menu
+        async function loadDynamicProductLinks() {
+          try {
+            const response = await fetch("/api/products");
+            if (!response.ok) return;
+
+            const products = await response.json();
+            const container = document.getElementById("dynamic-product-links");
+            if (!container || !products.length) return;
+
+            products.forEach((product, index) => {
+              const button = document.createElement("button");
+              button.className = "mobile-menu-item mobile-menu-item-sub";
+              button.style.cssText = `--delay: ${index + 2}; padding-left: 2.5rem; font-size: 14px;`;
+              button.innerHTML = `<span>${product.name}</span>`;
+              button.addEventListener("click", function () {
+                navigateFromMenu(`shop/${product.id}`);
+              });
+              container.appendChild(button);
+            });
+          } catch (error) {
+            console.warn("Could not load products for menu:", error);
+          }
+        }
+
+        loadDynamicProductLinks();
       });
 
       // Rendre les fonctions de navigation globales pour les onclick
