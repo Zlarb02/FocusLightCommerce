@@ -21,6 +21,21 @@ done
 
 echo "✅ PostgreSQL est prêt!"
 
+# Initialiser les fichiers JSON manquants depuis les défauts
+echo "📁 Vérification des fichiers de configuration JSON..."
+for file in translations.json illustrations.json sliderConfig.json productContent.json; do
+    if [ ! -f "/app/data/$file" ]; then
+        if [ -f "/app/data-defaults/$file" ]; then
+            echo "  → Copie de $file depuis les défauts"
+            cp "/app/data-defaults/$file" "/app/data/$file"
+        else
+            echo "  ⚠️  Fichier par défaut $file introuvable"
+        fi
+    else
+        echo "  ✓ $file existe déjà"
+    fi
+done
+
 # Exécuter les migrations
 echo "🔄 Exécution des migrations..."
 node server/dist/server/migrate.js

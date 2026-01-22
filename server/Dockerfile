@@ -41,12 +41,14 @@ COPY --from=builder /app/server/uploads ./uploads
 COPY server/docker-entrypoint.sh ./docker-entrypoint.sh
 RUN chmod +x ./docker-entrypoint.sh
 
-# Créer le répertoire data pour les fichiers JSON en production
-RUN mkdir -p ./data
+# Créer les répertoires pour les fichiers JSON
+RUN mkdir -p ./data ./data-defaults
 
-# Copier les fichiers JSON depuis la racine du projet (build context)
-COPY data/translations.json ./data/translations.json
-COPY data/illustrations.json ./data/illustrations.json
+# Copier les fichiers JSON par défaut (pour initialisation du volume)
+COPY data/translations.json ./data-defaults/translations.json
+COPY data/illustrations.json ./data-defaults/illustrations.json
+COPY data/sliderConfig.json ./data-defaults/sliderConfig.json
+COPY data/productContent.json ./data-defaults/productContent.json
 
 # Définir la variable d'environnement pour le port
 ENV PORT=5005

@@ -40,6 +40,7 @@ services:
       - default
     volumes: #PERSISTANCE DES FICHIERS ENTRE LES MAJS
       - uploads-data:/app/uploads #necessite script de remplissage (car ça écrase les fichiers venant du repo)
+      - data-json:/app/data #persistance des fichiers JSON (slider, traductions, etc.)
 
   db:
     image: postgres:15-alpine
@@ -68,3 +69,4 @@ volumes:
   postgres-data:
   redis-data:
   uploads-data:
+  data-json:

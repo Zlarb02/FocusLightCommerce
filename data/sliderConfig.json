@@ -1,0 +1,26 @@
+{
+  "featuredProductId": 1,
+  "autoPlayInterval": 3500,
+  "slides": [
+    {
+      "url": "https://www.alto-lille.fr/uploads/f2010149-5520-4995-987b-82bed5dfbded.jpeg",
+      "alt": "Lampe Focus.01 Rouge",
+      "order": 1
+    },
+    {
+      "url": "https://www.alto-lille.fr/uploads/7430a650-8622-461a-b724-3bb5f43f69b7.jpeg",
+      "alt": "Lampe Focus.01 Blanche",
+      "order": 2
+    },
+    {
+      "url": "https://www.alto-lille.fr/uploads/79205ce8-c9e2-4642-b701-ae4673925032.jpeg",
+      "alt": "Lampe Focus.01 Orange",
+      "order": 3
+    },
+    {
+      "url": "https://www.alto-lille.fr/uploads/a0de865a-f812-4523-a685-ca83b972d469.jpeg",
+      "alt": "Lampe Focus.01 Bleue",
+      "order": 4
+    }
+  ]
+}
