@@ -367,24 +367,26 @@ export default function SliderConfig() {
             <CardContent>
               {pendingConfig && pendingConfig.slides.length > 0 ? (
                 <div className="space-y-4">
-                  <div className="aspect-video bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden relative">
-                    <img
-                      src={pendingConfig.slides.sort((a, b) => a.order - b.order)[previewIndex]?.url}
-                      alt={pendingConfig.slides.sort((a, b) => a.order - b.order)[previewIndex]?.alt}
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
-                      {pendingConfig.slides.map((_, index) => (
-                        <button
-                          key={index}
-                          onClick={() => setPreviewIndex(index)}
-                          className={`w-2 h-2 rounded-full transition-colors ${
-                            index === previewIndex
-                              ? "bg-white"
-                              : "bg-white/50 hover:bg-white/75"
-                          }`}
-                        />
-                      ))}
+                  <div className="flex justify-center">
+                    <div className="aspect-[3/4] w-full max-w-[280px] bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden relative shadow-lg">
+                      <img
+                        src={pendingConfig.slides.sort((a, b) => a.order - b.order)[previewIndex]?.url}
+                        alt={pendingConfig.slides.sort((a, b) => a.order - b.order)[previewIndex]?.alt}
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+                        {pendingConfig.slides.map((_, index) => (
+                          <button
+                            key={index}
+                            onClick={() => setPreviewIndex(index)}
+                            className={`w-2 h-2 rounded-full transition-colors ${
+                              index === previewIndex
+                                ? "bg-white"
+                                : "bg-white/50 hover:bg-white/75"
+                            }`}
+                          />
+                        ))}
+                      </div>
                     </div>
                   </div>
                   <div className="flex items-center justify-between">
@@ -411,10 +413,12 @@ export default function SliderConfig() {
                   </div>
                 </div>
               ) : (
-                <div className="aspect-video bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center">
-                  <div className="text-center text-muted-foreground">
-                    <Image className="h-12 w-12 mx-auto mb-2 opacity-50" />
-                    <p>Aucune image configurée</p>
+                <div className="flex justify-center">
+                  <div className="aspect-[3/4] w-full max-w-[280px] bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center shadow-lg">
+                    <div className="text-center text-muted-foreground">
+                      <Image className="h-12 w-12 mx-auto mb-2 opacity-50" />
+                      <p>Aucune image configurée</p>
+                    </div>
                   </div>
                 </div>
               )}
@@ -464,7 +468,7 @@ export default function SliderConfig() {
                           <ChevronDown className="h-4 w-4" />
                         </Button>
                       </div>
-                      <div className="w-24 h-16 bg-gray-200 dark:bg-gray-700 rounded overflow-hidden flex-shrink-0">
+                      <div className="w-16 h-[85px] bg-gray-200 dark:bg-gray-700 rounded overflow-hidden flex-shrink-0">
                         <img
                           src={slide.url}
                           alt={slide.alt}
@@ -547,16 +551,18 @@ export default function SliderConfig() {
               />
             </div>
             {newSlideUrl && (
-              <div className="aspect-video bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
-                <img
-                  src={newSlideUrl}
-                  alt="Aperçu"
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.style.display = "none";
-                  }}
-                />
+              <div className="flex justify-center">
+                <div className="aspect-[3/4] w-full max-w-[200px] bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden shadow-md">
+                  <img
+                    src={newSlideUrl}
+                    alt="Aperçu"
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = "none";
+                    }}
+                  />
+                </div>
               </div>
             )}
           </div>
