@@ -1,0 +1,46 @@
+{
+  "1": {
+    "sections": [
+      {
+        "id": "features",
+        "type": "features",
+        "enabled": true,
+        "items": [
+          { "icon": "leaf", "titleKey": "focus.features.eco" },
+          { "icon": "tree", "titleKey": "focus.features.wood" },
+          { "icon": "lightbulb", "titleKey": "focus.features.led" }
+        ]
+      },
+      {
+        "id": "details",
+        "type": "details",
+        "enabled": true,
+        "cards": [
+          { "icon": "leaf", "titleKey": "focus.sustainableMaterials", "textKey": "focus.sustainableMaterials.text" },
+          { "icon": "lightbulb", "titleKey": "focus.lighting.title", "textKey": "focus.lighting.text" },
+          { "icon": "tool", "titleKey": "focus.artisanalCrafting", "textKey": "focus.artisanalCrafting.text" }
+        ]
+      },
+      {
+        "id": "specs",
+        "type": "specifications",
+        "enabled": true,
+        "items": [
+          { "labelKey": "product.dimensions", "valueKey": "focus.dimensions.text" },
+          { "labelKey": "product.materials", "valueKey": "focus.materials.text" },
+          { "labelKey": "focus.lighting.label", "valueKey": "focus.lighting.details" }
+        ]
+      },
+      {
+        "id": "testimonials",
+        "type": "elfsight",
+        "enabled": true,
+        "widgetId": "4e4b87d4-745d-4e46-ab59-bc0b36f7d8ad"
+      }
+    ],
+    "images": {
+      "lifestyle1": "shopFocus.lifestyle1",
+      "lifestyle2": "shopFocus.lifestyle2"
+    }
+  }
+}

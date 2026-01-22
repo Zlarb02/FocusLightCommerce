@@ -49,7 +49,11 @@ import {
   BarChart3,
   Image,
   FileText,
+  Package,
+  ToggleLeft,
+  ToggleRight,
 } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { queryClient, apiRequest } from "@/lib/queryClient";
 import {
@@ -137,6 +141,26 @@ export default function Contenu() {
   // États pour le JSON des illustrations
   const [rawIllustrationsJsonValue, setRawIllustrationsJsonValue] = useState("");
 
+  // États pour les pages produits
+  const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
+
+  // Types pour le contenu produit
+  interface ProductContentSection {
+    id: string;
+    type: string;
+    enabled: boolean;
+  }
+
+  interface ProductContent {
+    sections: ProductContentSection[];
+    images?: Record<string, string>;
+  }
+
+  interface Product {
+    id: number;
+    name: string;
+  }
+
   // Hooks pour les illustrations
   const { data: illustrationsData, isLoading: illustrationsLoading } =
     useIllustrations(
@@ -147,6 +171,45 @@ export default function Contenu() {
     );
 
   const updateIllustrationMutation = useUpdateIllustration();
+
+  // Hooks pour les produits
+  const { data: products = [] } = useQuery<Product[]>({
+    queryKey: ["/api/products"],
+  });
+
+  // Hook pour le contenu d'un produit spécifique
+  const { data: productContent, isLoading: productContentLoading } = useQuery<ProductContent>({
+    queryKey: [`/api/products/${selectedProductId}/content`],
+    enabled: selectedProductId !== null && selectedProductId > 0,
+  });
+
+  // Mutation pour toggle une section
+  const toggleSectionMutation = useMutation({
+    mutationFn: async ({ productId, sectionId, enabled }: { productId: number; sectionId: string; enabled: boolean }) => {
+      return apiRequest("PUT", `/api/products/${productId}/content/sections/${sectionId}/toggle`, { enabled });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [`/api/products/${selectedProductId}/content`] });
+      toast({
+        title: "Succès",
+        description: "Section mise à jour",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Erreur",
+        description: "Erreur lors de la mise à jour de la section",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Sélectionner le premier produit par défaut
+  useEffect(() => {
+    if (products.length > 0 && selectedProductId === null) {
+      setSelectedProductId(products[0].id);
+    }
+  }, [products, selectedProductId]);
 
   // Debounce pour la recherche
   useEffect(() => {
@@ -590,6 +653,10 @@ export default function Contenu() {
             <TabsTrigger value="images" className="flex items-center gap-2">
               <Image className="h-4 w-4" />
               Images
+            </TabsTrigger>
+            <TabsTrigger value="produits" className="flex items-center gap-2">
+              <Package className="h-4 w-4" />
+              Pages Produits
             </TabsTrigger>
           </TabsList>
 
@@ -1281,6 +1348,94 @@ export default function Contenu() {
             </Card>
           </TabsContent>
         </Tabs>
+      </TabsContent>
+
+      {/* Onglet Pages Produits */}
+      <TabsContent value="produits" className="space-y-6">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Package className="h-5 w-5" />
+              Configuration des pages produits
+            </CardTitle>
+            <p className="text-sm text-muted-foreground">
+              Activez ou désactivez les sections spécifiques pour chaque page produit
+            </p>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {/* Sélecteur de produit */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Sélectionner un produit</label>
+              <div className="flex flex-wrap gap-2">
+                {products.map((product) => (
+                  <Button
+                    key={product.id}
+                    variant={selectedProductId === product.id ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setSelectedProductId(product.id)}
+                  >
+                    {product.name}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            {/* Sections du produit sélectionné */}
+            {selectedProductId && (
+              <div className="space-y-4">
+                <h3 className="font-medium">
+                  Sections pour : {products.find(p => p.id === selectedProductId)?.name}
+                </h3>
+
+                {productContentLoading ? (
+                  <div className="flex items-center justify-center py-8">
+                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
+                  </div>
+                ) : productContent?.sections && productContent.sections.length > 0 ? (
+                  <div className="space-y-3">
+                    {productContent.sections.map((section) => (
+                      <div
+                        key={section.id}
+                        className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg"
+                      >
+                        <div>
+                          <p className="font-medium capitalize">{section.id}</p>
+                          <p className="text-sm text-muted-foreground">
+                            Type : {section.type}
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-sm text-muted-foreground">
+                            {section.enabled ? "Activé" : "Désactivé"}
+                          </span>
+                          <Switch
+                            checked={section.enabled}
+                            onCheckedChange={(checked) => {
+                              toggleSectionMutation.mutate({
+                                productId: selectedProductId,
+                                sectionId: section.id,
+                                enabled: checked,
+                              });
+                            }}
+                            disabled={toggleSectionMutation.isPending}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-8 text-muted-foreground">
+                    <Package className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                    <p>Aucune section configurée pour ce produit</p>
+                    <p className="text-sm mt-2">
+                      Les sections par défaut (features, details, testimonials) sont disponibles uniquement pour le produit FOCUS.01
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </TabsContent>
     </Tabs>
   </div>

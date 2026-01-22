@@ -29,6 +29,7 @@ import Parametres from "./pages/gestion/Parametres";
 import Medias from "./pages/gestion/Medias";
 import { GestionStripeTest } from "./pages/gestion/StripeTest";
 import Versions from "./pages/gestion/Versions";
+import SliderConfig from "./pages/gestion/SliderConfig";
 import ProtectedGestionRoute from "./components/ProtectedGestionRoute";
 
 // Pages légales et services
@@ -203,6 +204,9 @@ function Router() {
         </Route>
         <Route path="/gestion/versions">
           <ProtectedGestionRoute component={Versions} />
+        </Route>
+        <Route path="/gestion/landing">
+          <ProtectedGestionRoute component={SliderConfig} />
         </Route>
         <Route path="/gestion/stripe-test">
           <ProtectedGestionRoute component={GestionStripeTest} />

@@ -31,6 +31,36 @@ export default function ProductDetail() {
     enabled: productId > 0,
   });
 
+  // Récupérer le contenu personnalisé du produit (CMS)
+  interface ProductContentSection {
+    id: string;
+    type: string;
+    enabled: boolean;
+    items?: Array<{ icon?: string; titleKey?: string }>;
+    cards?: Array<{ icon?: string; titleKey?: string; textKey?: string }>;
+    widgetId?: string;
+  }
+
+  interface ProductContent {
+    sections: ProductContentSection[];
+    images?: Record<string, string>;
+  }
+
+  const { data: productContent } = useQuery<ProductContent>({
+    queryKey: [`/api/products/${productId}/content`],
+    enabled: productId > 0,
+  });
+
+  // Vérifier si une section est activée
+  const isSectionEnabled = (sectionId: string): boolean => {
+    if (!productContent?.sections) {
+      // Fallback pour FOCUS.01 si pas de config
+      return productId === 1;
+    }
+    const section = productContent.sections.find((s) => s.id === sectionId);
+    return section?.enabled ?? false;
+  };
+
   // Pour la modal d'agrandissement d'image
   const [modalImage, setModalImage] = useState<{
     images: string[];
@@ -216,8 +246,8 @@ export default function ProductDetail() {
               <p className="mb-6 md:mb-8 text-gray-600 max-w-md text-base md:text-lg leading-relaxed text-center md:text-left mx-auto md:mx-0 dark:text-white dark:font-medium">
                 {product.description}
               </p>
-              {/* Features icons - spécifiques au produit FOCUS.01 */}
-              {productId === 1 && (
+              {/* Features icons - configurables via CMS */}
+              {isSectionEnabled("features") && (
                 <div className="flex flex-wrap gap-4 md:gap-6 mb-6 md:mb-8 justify-center md:justify-start">
                   <div className="flex items-center text-xs md:text-sm">
                     <Leaf className="text-green-500 mr-2 h-3 w-3 md:h-4 md:w-4" />
@@ -365,8 +395,8 @@ export default function ProductDetail() {
           </section>
         )}
 
-        {/* Product Details Section - Spécifique FOCUS.01 */}
-        {productId === 1 && (
+        {/* Product Details Section - configurable via CMS */}
+        {isSectionEnabled("details") && (
           <section id="product-details" className="py-20 animate fade-in">
             <div className="container mx-auto max-w-5xl">
               <h2
@@ -627,8 +657,8 @@ export default function ProductDetail() {
           </div>
         )}
 
-        {/* Testimonials Section - Avis Google Elfsight - Spécifique FOCUS.01 */}
-        {productId === 1 && (
+        {/* Testimonials Section - Avis Google Elfsight - configurable via CMS */}
+        {isSectionEnabled("testimonials") && (
           <section className="py-20 container mx-auto animate fade-in">
             <h2
               className="font-heading text-3xl md:text-4xl text-center mb-16"

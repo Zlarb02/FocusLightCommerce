@@ -1257,6 +1257,20 @@
         border: 1px solid rgba(25, 142, 206, 0.25);
       }
 
+      .catalogue-link {
+        cursor: pointer;
+        transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .catalogue-link:hover {
+        transform: scale(1.03);
+        box-shadow: 0 4px 12px rgba(25, 142, 206, 0.2);
+      }
+
+      .catalogue-link:active {
+        transform: scale(0.98);
+      }
+
       .availability-dot {
         width: 8px;
         height: 8px;
@@ -2604,10 +2618,8 @@
       <div id="scroll-indicator">
         <div class="scroll-content">
           <div class="product-highlight">
-            <h3 class="product-name">Lampe Focus.01</h3>
-            <div class="scroll-badge">
-              <span class="availability-dot"></span>
-              <p id="scroll-message">Disponible à la vente</p>
+            <div class="scroll-badge catalogue-link" onclick="navigateToCatalogue()">
+              <p id="scroll-message">Accéder au catalogue</p>
             </div>
           </div>
           <div class="scroll-action-wrapper">
@@ -3265,8 +3277,71 @@
 
       /* ===== SLIDER FOCUS VARIABLES ===== */
       let currentSlide = 0;
-      const slides = 4;
+      let slides = 4;
       let sliderInterval = null;
+      let autoPlayInterval = 3500;
+
+      /* ===== LOAD SLIDER CONFIG FROM API ===== */
+      async function loadSliderConfig() {
+        try {
+          const response = await fetch("/api/slider/config");
+          if (!response.ok) {
+            console.warn("Slider config not available, using defaults");
+            return;
+          }
+          const config = await response.json();
+
+          // Mettre à jour l'intervalle
+          if (config.autoPlayInterval) {
+            autoPlayInterval = config.autoPlayInterval;
+          }
+
+          // Générer les slides dynamiquement si on a des slides dans la config
+          if (config.slides && config.slides.length > 0) {
+            const track = document.getElementById("sliderTrack");
+            if (track) {
+              // Vider le track
+              track.innerHTML = "";
+
+              // Trier les slides par ordre
+              const sortedSlides = config.slides.sort((a, b) => a.order - b.order);
+
+              // Ajouter les slides originaux
+              sortedSlides.forEach((slide) => {
+                const div = document.createElement("div");
+                div.className = "slider-slide";
+                div.innerHTML = `<img src="${slide.url}" alt="${slide.alt}" />`;
+                track.appendChild(div);
+              });
+
+              // Dupliquer les slides pour la boucle infinie
+              sortedSlides.forEach((slide) => {
+                const div = document.createElement("div");
+                div.className = "slider-slide";
+                div.innerHTML = `<img src="${slide.url}" alt="${slide.alt}" />`;
+                track.appendChild(div);
+              });
+
+              // Mettre à jour le nombre de slides
+              slides = sortedSlides.length;
+
+              // Mettre à jour le CSS du slider (12.5% = 1/8 pour 4 slides dupliquées = 8 total)
+              const slideWidth = 100 / (slides * 2);
+              const slideElements = track.querySelectorAll(".slider-slide");
+              slideElements.forEach((el) => {
+                el.style.width = slideWidth + "%";
+              });
+
+              // Réinitialiser la position
+              currentSlide = 0;
+              track.style.transition = "none";
+              track.style.transform = "translateX(0%)";
+            }
+          }
+        } catch (error) {
+          console.warn("Error loading slider config:", error);
+        }
+      }
 
       /* ===== BOUTON REPLAY VARIABLES ===== */
       let replayButtonVisible = false;
@@ -3939,7 +4014,7 @@
           cap4: "LED 60 W E14 incluse",
           cap5: "Emballage éco‑responsable",
           cta: "Visiter la boutique",
-          scroll: "Produit disponible à la vente",
+          scroll: "Accéder au catalogue",
           scrollAction: "Scroll vers le bas",
           footer: "© 2025 Alto Lille - Tous droits réservés",
           designInAction: "Design en action",
@@ -3959,7 +4034,7 @@
           cap4: "60W E14 LED bulb included",
           cap5: "Eco-responsible packaging",
           cta: "Visit the shop",
-          scroll: "Product available for purchase",
+          scroll: "Go to catalogue",
           scrollAction: "Scroll down",
           footer: "© 2025 Alto Lille - All rights reserved",
           designInAction: "Design in action",
@@ -4093,13 +4168,14 @@
           applyLanguage(newLang);
         }
       }); // Exécuter au chargement initial
-      document.addEventListener("DOMContentLoaded", function () {
+      document.addEventListener("DOMContentLoaded", async function () {
         handleNavigation();
         updateEcoIndexBadges(); // Configurer les badges EcoIndex selon le thème initial
 
-        // Démarrer l'auto-play du slider si on est sur la landing
+        // Charger la config du slider depuis l'API
         const path = window.location.pathname;
         if (path === "/" || path === "") {
+          await loadSliderConfig();
           startSliderAutoPlay();
         }
       });
@@ -4224,21 +4300,23 @@
       function showSlide(index) {
         const track = document.getElementById("sliderTrack");
         if (track) {
-          // Mettre à jour la position du slider (12.5% par slide car width: 12.5% par slide)
-          track.style.transform = `translateX(-${index * 12.5}%)`;
+          // Calculer le pourcentage dynamique basé sur le nombre de slides
+          const slidePercent = 100 / (slides * 2);
+          track.style.transform = `translateX(-${index * slidePercent}%)`;
           currentSlide = index;
         }
       }
 
       function nextSlide() {
         currentSlide++;
+        const slidePercent = 100 / (slides * 2);
 
-        // Si on atteint la fin des images originales (slide 4), on revient au début
+        // Si on atteint la fin des images originales, on revient au début
         if (currentSlide >= slides) {
           const track = document.getElementById("sliderTrack");
           if (track) {
-            // Aller à la première image dupliquée (slide 4) avec transition
-            track.style.transform = `translateX(-${currentSlide * 12.5}%)`;
+            // Aller à la première image dupliquée avec transition
+            track.style.transform = `translateX(-${currentSlide * slidePercent}%)`;
 
             // Après la transition, revenir instantanément au début
             setTimeout(() => {
@@ -4267,7 +4345,7 @@
         // Démarrer un nouveau auto-play uniquement si on est sur la landing
         const path = window.location.pathname;
         if (path === "/" || path === "") {
-          sliderInterval = setInterval(nextSlide, 3500); // Change toutes les 3.5 secondes
+          sliderInterval = setInterval(nextSlide, autoPlayInterval);
         }
       }
 
@@ -4297,6 +4375,27 @@
           menuOverlay.classList.remove("active");
           menuSidebar.classList.remove("active");
           document.body.style.overflow = ""; // Restaurer le scroll
+        }
+
+        // Fonction de navigation directe vers le catalogue (sans animation)
+        function navigateToCatalogue() {
+          // Arrêter l'auto-play du slider
+          stopSliderAutoPlay();
+
+          // Arrêter l'animation Three.js
+          animationActive = false;
+          if (animFrameId) {
+            cancelAnimationFrame(animFrameId);
+            animFrameId = null;
+          }
+
+          // Navigation directe vers /shop sans animation
+          history.pushState({}, "", "/shop");
+          document.getElementById("landing-container").style.display = "none";
+          document.getElementById("root").style.display = "block";
+          window.dispatchEvent(
+            new CustomEvent("routeChange", { detail: { path: "/shop" } })
+          );
         }
 
         // Fonction de navigation

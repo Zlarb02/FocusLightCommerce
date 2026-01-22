@@ -19,6 +19,7 @@ import {
   ImageIcon,
   Palette,
   TestTube,
+  LayoutDashboard,
 } from "lucide-react";
 
 interface DashboardLayoutProps {
@@ -60,6 +61,7 @@ export default function DashboardLayout({
     { name: "Médias", href: "/gestion/medias", icon: ImageIcon },
     { name: "Contenu du site", href: "/gestion/contenu", icon: FileText },
     { name: "Décorations", href: "/gestion/versions", icon: Palette },
+    { name: "Landing Page", href: "/gestion/landing", icon: LayoutDashboard },
     { name: "Test Stripe", href: "/gestion/stripe-test", icon: TestTube },
     { name: "Paramètres", href: "/gestion/parametres", icon: Settings },
   ];
