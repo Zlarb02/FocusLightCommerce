@@ -76,7 +76,7 @@ router.get("/config", async (req: Request, res: Response) => {
     // Récupérer le nom du produit depuis la base de données
     let productName = "Lampe Focus.01"; // Valeur par défaut
     try {
-      const product = await storage.getProduct(config.featuredProductId);
+      const product = await storage.getProductById(config.featuredProductId);
       if (product) {
         productName = product.name;
       }
@@ -264,7 +264,7 @@ router.put("/featured-product", requireAuth, async (req: Request, res: Response)
     }
 
     // Vérifier que le produit existe
-    const product = await storage.getProduct(productId);
+    const product = await storage.getProductById(productId);
     if (!product) {
       res.status(404).json({ error: "Produit non trouvé" });
       return;
