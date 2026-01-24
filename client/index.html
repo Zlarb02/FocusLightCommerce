@@ -3325,12 +3325,9 @@
               // Mettre à jour le nombre de slides
               slides = sortedSlides.length;
 
-              // Mettre à jour la largeur du track selon le nombre de slides
-              const totalSlides = slides * 2; // Originaux + dupliqués
-              track.style.width = (totalSlides * 100) + "%";
-
-              // Mettre à jour le CSS des slides
-              const slideWidth = 100 / totalSlides;
+              // Mettre à jour le CSS du slider (calcul dynamique pour supporter un nombre variable de slides)
+              // La largeur du track reste gérée par CSS (800%), les animations calculent le % dynamiquement
+              const slideWidth = 100 / (slides * 2);
               const slideElements = track.querySelectorAll(".slider-slide");
               slideElements.forEach((el) => {
                 el.style.width = slideWidth + "%";
