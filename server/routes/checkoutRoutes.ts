@@ -304,7 +304,7 @@ router.get(
 
       const orderData = {
         id: order.id,
-        orderNumber: order.orderNumber || `FC-${order.id}`,
+        orderNumber: order.orderNumber || `ALTO-${order.id}`,
         status: order.status,
         totalAmount: order.totalAmount,
         createdAt: order.createdAt,

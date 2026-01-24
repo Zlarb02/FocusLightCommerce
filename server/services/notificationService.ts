@@ -283,9 +283,7 @@ class NotificationService {
                   <tfoot>
                     <tr style="background: #f3f4f6;">
                       <td style="padding: 15px; font-weight: 700; color: #1f2937;" colspan="2">Total payé</td>
-                      <td style="padding: 15px; text-align: right; font-weight: 700; color: #059669; font-size: 18px;">${(
-                        data.totalAmount * 100
-                      ).toFixed(2)} €</td>
+                      <td style="padding: 15px; text-align: right; font-weight: 700; color: #059669; font-size: 18px;">${(data.totalAmount * 100).toFixed(2)} €</td>
                     </tr>
                   </tfoot>
                 </table>
@@ -428,9 +426,7 @@ class NotificationService {
           <div style="background: #eff6ff; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
             <h3 style="margin-top: 0; color: #1e40af;">📦 ARTICLES À EXPÉDIER</h3>
             <div style="background: white; padding: 15px; border-radius: 5px; font-family: monospace; white-space: pre-line;">${itemsList}</div>
-            <p><strong>Total :</strong> ${(data.totalAmount * 100).toFixed(
-              2
-            )} €</p>
+            <p><strong>Total :</strong> ${(data.totalAmount * 100).toFixed(2)} €</p>
           </div>
 
           <div style="background: #fef3c7; padding: 20px; border-radius: 8px; margin-bottom: 20px;">

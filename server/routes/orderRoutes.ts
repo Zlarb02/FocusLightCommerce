@@ -15,7 +15,7 @@ router.get(
           ...order,
           customer: await storage.getCustomerById(order.customerId),
           items: await storage.getOrderItemsByOrderId(order.id),
-          orderNumber: `FC-${new Date(
+          orderNumber: order.orderNumber || `ALTO-${new Date(
             order.createdAt || new Date()
           ).getFullYear()}${order.id.toString().padStart(4, "0")}`,
         }))
@@ -43,7 +43,7 @@ router.get(
         ...order,
         customer: await storage.getCustomerById(order.customerId),
         items: await storage.getOrderItemsByOrderId(order.id),
-        orderNumber: `FC-${new Date(
+        orderNumber: order.orderNumber || `ALTO-${new Date(
           order.createdAt || new Date()
         ).getFullYear()}${order.id.toString().padStart(4, "0")}`,
       });

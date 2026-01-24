@@ -339,12 +339,12 @@ export class InvoiceService {
         productName: item.productName,
         variationValue: item.variationValue || "",
         quantity: item.quantity,
-        unitPrice: item.price * 100, // Convertir vers euros normaux
-        totalPrice: item.price * item.quantity * 100, // Convertir vers euros normaux
+        unitPrice: item.price * 100,
+        totalPrice: item.price * item.quantity * 100,
       })),
-      subtotal: orderData.totalAmount * 100, // Convertir vers euros normaux
+      subtotal: orderData.totalAmount * 100,
       shipping: 0, // Livraison gratuite
-      totalAmount: orderData.totalAmount * 100, // Convertir vers euros normaux
+      totalAmount: orderData.totalAmount * 100,
       issueDate: now.toLocaleDateString("fr-FR"),
       relayPoint: orderData.relayPoint,
     };
@@ -414,12 +414,12 @@ export class InvoiceService {
         productName: item.productName,
         variationValue: item.variationValue || "",
         quantity: item.quantity,
-        unitPrice: item.price * 100, // Convertir vers euros normaux
-        totalPrice: item.price * item.quantity * 100, // Convertir vers euros normaux
+        unitPrice: item.price * 100,
+        totalPrice: item.price * item.quantity * 100,
       })),
-      subtotal: orderData.totalAmount * 100, // Convertir vers euros normaux
+      subtotal: orderData.totalAmount * 100,
       shipping: 0, // Livraison gratuite
-      totalAmount: orderData.totalAmount * 100, // Convertir vers euros normaux
+      totalAmount: orderData.totalAmount * 100,
       issueDate: now.toLocaleDateString("fr-FR"),
       relayPoint: orderData.relayPoint,
     };
