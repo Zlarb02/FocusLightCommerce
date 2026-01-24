@@ -52,6 +52,7 @@ import {
   Package,
   ToggleLeft,
   ToggleRight,
+  Plus,
 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -129,6 +130,8 @@ export default function Contenu() {
   const [pendingChanges, setPendingChanges] = useState<TranslationEntry[]>([]);
   const [rawJsonValue, setRawJsonValue] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [showAddTranslationDialog, setShowAddTranslationDialog] = useState(false);
+  const [newTranslation, setNewTranslation] = useState({ key: "", fr: "", en: "" });
 
   // États pour la gestion des images
   const [imageSearchQuery, setImageSearchQuery] = useState("");
@@ -358,6 +361,33 @@ export default function Contenu() {
     },
   });
 
+  // Mutation pour ajouter une nouvelle traduction
+  const addTranslationMutation = useMutation({
+    mutationFn: async (data: { key: string; fr: string; en: string }) => {
+      return apiRequest("POST", "/api/translations", data);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/translations"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/translations/stats"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/translations/public"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/translations/full"] });
+      setShowAddTranslationDialog(false);
+      setNewTranslation({ key: "", fr: "", en: "" });
+      window.dispatchEvent(new CustomEvent("translationsUpdated"));
+      toast({
+        title: "Succès",
+        description: "Traduction ajoutée avec succès",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Erreur",
+        description: error.message || "Erreur lors de l'ajout de la traduction",
+        variant: "destructive",
+      });
+    },
+  });
+
   // Mutation pour mise à jour complète via JSON
   const updateFullJsonMutation = useMutation({
     mutationFn: async (data: any) => {
@@ -532,6 +562,35 @@ export default function Contenu() {
 
     setShowEditDialog(false);
     setEditingTranslation(null);
+  };
+
+  const handleAddTranslation = () => {
+    if (!newTranslation.key.trim()) {
+      toast({
+        title: "Erreur",
+        description: "La clé de traduction est obligatoire",
+        variant: "destructive",
+      });
+      return;
+    }
+    addTranslationMutation.mutate(newTranslation);
+  };
+
+  const handleDownloadTranslationsJson = () => {
+    if (!fullTranslations) return;
+    const blob = new Blob([JSON.stringify(fullTranslations, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `translations-backup-${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    toast({
+      title: "Téléchargement",
+      description: "Fichier de traductions téléchargé",
+    });
   };
 
   const handleEditIllustration = (illustration: Illustration) => {
@@ -749,11 +808,15 @@ export default function Contenu() {
               {/* Interface simple d'édition */}
               <TabsContent value="editor" className="space-y-6">
                 <Card>
-                  <CardHeader>
+                  <CardHeader className="flex flex-row items-center justify-between">
                     <CardTitle className="flex items-center gap-2">
                       <Languages className="h-5 w-5" />
                       Gestion des traductions - Interface simple
                     </CardTitle>
+                    <Button onClick={() => setShowAddTranslationDialog(true)}>
+                      <Plus className="h-4 w-4 mr-2" />
+                      Ajouter une traduction
+                    </Button>
                   </CardHeader>
                   <CardContent className="space-y-6">
                     {/* Contrôles de filtrage */}
@@ -1013,18 +1076,46 @@ export default function Contenu() {
 
               {/* Mode JSON brut */}
               <TabsContent value="json" className="space-y-6">
-                <Card>              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Edit className="h-5 w-5" />
-                  Édition JSON brute
-                </CardTitle>
-                <p className="text-sm text-muted-foreground">
-                  Mode avancé : éditez directement le fichier JSON de
-                  traductions.
-                  <strong className="text-red-600"> Attention</strong> : une
-                  syntaxe incorrecte peut casser le site. Pour les gros fichiers (&gt;5MB), la sauvegarde peut prendre jusqu'à 30 secondes.
-                </p>
-              </CardHeader>
+                {/* Avertissement important */}
+                <Card className="border-red-200 bg-red-50">
+                  <CardContent className="pt-6">
+                    <div className="flex items-start gap-3">
+                      <AlertTriangle className="h-5 w-5 text-red-600 mt-0.5 flex-shrink-0" />
+                      <div className="space-y-2">
+                        <p className="font-medium text-red-900">
+                          Mode avancé - Écrasement complet
+                        </p>
+                        <p className="text-sm text-red-800 leading-relaxed">
+                          <strong>Attention :</strong> La sauvegarde du JSON remplace <strong>intégralement</strong> le fichier de traductions existant.
+                          Toutes les traductions actuelles seront écrasées par le contenu ci-dessous.
+                          <br />
+                          <strong>Conseil :</strong> Téléchargez une copie de sauvegarde avant toute modification.
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between">
+                    <div>
+                      <CardTitle className="flex items-center gap-2">
+                        <Edit className="h-5 w-5" />
+                        Édition JSON brute
+                      </CardTitle>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        Pour les gros fichiers (&gt;5MB), la sauvegarde peut prendre jusqu'à 30 secondes.
+                      </p>
+                    </div>
+                    <Button
+                      variant="outline"
+                      onClick={handleDownloadTranslationsJson}
+                      disabled={!fullTranslations}
+                    >
+                      <Download className="h-4 w-4 mr-2" />
+                      Télécharger backup
+                    </Button>
+                  </CardHeader>
                   <CardContent className="space-y-4">
                     <Textarea
                       value={rawJsonValue}
@@ -1047,9 +1138,10 @@ export default function Contenu() {
                       <Button
                         onClick={handleSaveJsonChanges}
                         disabled={updateFullJsonMutation.isPending}
+                        className="bg-red-600 hover:bg-red-700"
                       >
                         <Save className="h-4 w-4 mr-2" />
-                        Sauvegarder JSON
+                        Écraser et sauvegarder
                       </Button>
                     </div>
                   </CardContent>
@@ -1494,6 +1586,75 @@ export default function Contenu() {
             >
               <Save className="h-4 w-4 mr-2" />
               Enregistrer
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Dialog d'ajout de traduction */}
+      <Dialog open={showAddTranslationDialog} onOpenChange={setShowAddTranslationDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Ajouter une traduction</DialogTitle>
+            <DialogDescription>
+              Créez une nouvelle clé de traduction avec ses valeurs en français et anglais.
+              La clé doit être unique et suivre le format <code className="bg-muted px-1 py-0.5 rounded">section.nom</code> (ex: nav.home, product.title).
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium mb-2">
+                Clé de traduction <span className="text-red-500">*</span>
+              </label>
+              <Input
+                value={newTranslation.key}
+                onChange={(e) =>
+                  setNewTranslation((prev) => ({ ...prev, key: e.target.value }))
+                }
+                placeholder="ex: nav.catalogue, product.description..."
+                className="font-mono"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">
+                Texte français
+              </label>
+              <Textarea
+                value={newTranslation.fr}
+                onChange={(e) =>
+                  setNewTranslation((prev) => ({ ...prev, fr: e.target.value }))
+                }
+                className="min-h-[80px]"
+                placeholder="Texte en français..."
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">
+                Texte anglais
+              </label>
+              <Textarea
+                value={newTranslation.en}
+                onChange={(e) =>
+                  setNewTranslation((prev) => ({ ...prev, en: e.target.value }))
+                }
+                className="min-h-[80px]"
+                placeholder="English text..."
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => {
+              setShowAddTranslationDialog(false);
+              setNewTranslation({ key: "", fr: "", en: "" });
+            }}>
+              Annuler
+            </Button>
+            <Button
+              onClick={handleAddTranslation}
+              disabled={addTranslationMutation.isPending || !newTranslation.key.trim()}
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Ajouter
             </Button>
           </DialogFooter>
         </DialogContent>
