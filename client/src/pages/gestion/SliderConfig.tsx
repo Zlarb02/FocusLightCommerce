@@ -46,6 +46,8 @@ import {
   Pause,
   ChevronUp,
   ChevronDown,
+  AlertTriangle,
+  CheckCircle,
 } from "lucide-react";
 
 interface Slide {
@@ -84,6 +86,36 @@ export default function SliderConfig() {
   const [pendingConfig, setPendingConfig] = useState<SliderConfig | null>(null);
   const [isPreviewPlaying, setIsPreviewPlaying] = useState(false);
   const [previewIndex, setPreviewIndex] = useState(0);
+  const [imageRatios, setImageRatios] = useState<Record<string, { width: number; height: number; ratio: number; isGood: boolean }>>({});
+  const [newSlideRatio, setNewSlideRatio] = useState<{ width: number; height: number; ratio: number; isGood: boolean } | null>(null);
+
+  // Ratio cible du slider (3:4 portrait)
+  const TARGET_RATIO = 3 / 4; // 0.75
+  const RATIO_TOLERANCE = 0.15; // Tolérance de 15%
+
+  // Vérifier si un ratio est acceptable
+  const checkRatio = (width: number, height: number): { width: number; height: number; ratio: number; isGood: boolean } => {
+    const ratio = width / height;
+    const deviation = Math.abs(ratio - TARGET_RATIO) / TARGET_RATIO;
+    return {
+      width,
+      height,
+      ratio,
+      isGood: deviation <= RATIO_TOLERANCE,
+    };
+  };
+
+  // Charger les dimensions d'une image
+  const loadImageDimensions = (url: string, callback: (result: { width: number; height: number; ratio: number; isGood: boolean }) => void) => {
+    const img = new window.Image();
+    img.onload = () => {
+      callback(checkRatio(img.naturalWidth, img.naturalHeight));
+    };
+    img.onerror = () => {
+      callback({ width: 0, height: 0, ratio: 0, isGood: false });
+    };
+    img.src = url;
+  };
 
   // Charger la config du slider
   const { data: sliderConfig, isLoading: configLoading } = useQuery<SliderConfig>({
@@ -116,6 +148,30 @@ export default function SliderConfig() {
       return () => clearInterval(interval);
     }
   }, [isPreviewPlaying, pendingConfig]);
+
+  // Charger les dimensions des images du slider
+  useEffect(() => {
+    if (pendingConfig?.slides) {
+      pendingConfig.slides.forEach((slide) => {
+        if (!imageRatios[slide.url]) {
+          loadImageDimensions(slide.url, (result) => {
+            setImageRatios((prev) => ({ ...prev, [slide.url]: result }));
+          });
+        }
+      });
+    }
+  }, [pendingConfig?.slides]);
+
+  // Charger les dimensions de la nouvelle image
+  useEffect(() => {
+    if (newSlideUrl) {
+      loadImageDimensions(newSlideUrl, (result) => {
+        setNewSlideRatio(result);
+      });
+    } else {
+      setNewSlideRatio(null);
+    }
+  }, [newSlideUrl]);
 
   // Mutation pour mettre à jour la config complète
   const updateConfigMutation = useMutation({
@@ -441,6 +497,20 @@ export default function SliderConfig() {
           <CardContent>
             {pendingConfig && pendingConfig.slides.length > 0 ? (
               <div className="space-y-3">
+                {/* Alerte si des images ont un ratio non optimal */}
+                {pendingConfig.slides.some(s => imageRatios[s.url] && !imageRatios[s.url].isGood) && (
+                  <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700 rounded-lg p-3 flex items-start gap-3">
+                    <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-sm font-medium text-amber-800 dark:text-amber-200">
+                        Certaines images ont un format non optimal
+                      </p>
+                      <p className="text-xs text-amber-600 dark:text-amber-400 mt-1">
+                        Elles seront recadrées automatiquement (object-fit: cover). Pour un meilleur rendu, utilisez des images au format portrait 3:4.
+                      </p>
+                    </div>
+                  </div>
+                )}
                 {pendingConfig.slides
                   .sort((a, b) => a.order - b.order)
                   .map((slide, index) => (
@@ -484,6 +554,21 @@ export default function SliderConfig() {
                         <p className="text-xs text-muted-foreground truncate">
                           {slide.url}
                         </p>
+                        {imageRatios[slide.url] && (
+                          <div className="flex items-center gap-2 mt-1">
+                            {imageRatios[slide.url].isGood ? (
+                              <span className="text-xs text-green-600 dark:text-green-400 flex items-center gap-1">
+                                <CheckCircle className="h-3 w-3" />
+                                Ratio OK ({imageRatios[slide.url].width}×{imageRatios[slide.url].height})
+                              </span>
+                            ) : (
+                              <span className="text-xs text-amber-600 dark:text-amber-400 flex items-center gap-1">
+                                <AlertTriangle className="h-3 w-3" />
+                                Ratio non optimal ({imageRatios[slide.url].width}×{imageRatios[slide.url].height}) - recadrage auto
+                              </span>
+                            )}
+                          </div>
+                        )}
                       </div>
                       <Badge variant="outline">#{slide.order}</Badge>
                       <Button
@@ -522,7 +607,10 @@ export default function SliderConfig() {
           <DialogHeader>
             <DialogTitle>Ajouter une image au slider</DialogTitle>
             <DialogDescription>
-              Entrez l'URL de l'image ou sélectionnez-la depuis vos médias
+              Entrez l'URL de l'image ou sélectionnez-la depuis vos médias.
+              <span className="block mt-1 text-primary font-medium">
+                Format recommandé : portrait 3:4 (ex: 600×800, 900×1200)
+              </span>
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
@@ -551,18 +639,44 @@ export default function SliderConfig() {
               />
             </div>
             {newSlideUrl && (
-              <div className="flex justify-center">
-                <div className="aspect-[3/4] w-full max-w-[200px] bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden shadow-md">
-                  <img
-                    src={newSlideUrl}
-                    alt="Aperçu"
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.style.display = "none";
-                    }}
-                  />
+              <div className="space-y-3">
+                <div className="flex justify-center">
+                  <div className="aspect-[3/4] w-full max-w-[200px] bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden shadow-md relative">
+                    <img
+                      src={newSlideUrl}
+                      alt="Aperçu"
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = "none";
+                      }}
+                    />
+                    {/* Indicateur de recadrage */}
+                    {newSlideRatio && !newSlideRatio.isGood && (
+                      <div className="absolute inset-0 border-2 border-dashed border-amber-500 pointer-events-none" />
+                    )}
+                  </div>
                 </div>
+                {newSlideRatio && (
+                  <div className="text-center">
+                    {newSlideRatio.isGood ? (
+                      <p className="text-sm text-green-600 dark:text-green-400 flex items-center justify-center gap-2">
+                        <CheckCircle className="h-4 w-4" />
+                        Format optimal ({newSlideRatio.width}×{newSlideRatio.height})
+                      </p>
+                    ) : (
+                      <div className="space-y-1">
+                        <p className="text-sm text-amber-600 dark:text-amber-400 flex items-center justify-center gap-2">
+                          <AlertTriangle className="h-4 w-4" />
+                          Format non optimal ({newSlideRatio.width}×{newSlideRatio.height})
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          L'image sera recadrée automatiquement. Format idéal : portrait 3:4 (ex: 600×800)
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             )}
           </div>
