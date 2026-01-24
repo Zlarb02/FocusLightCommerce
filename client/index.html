@@ -3300,16 +3300,32 @@
           if (config.slides && config.slides.length > 0) {
             const track = document.getElementById("sliderTrack");
             if (track) {
-              // Vider le track
-              track.innerHTML = "";
-
               // Trier les slides par ordre
               const sortedSlides = config.slides.sort((a, b) => a.order - b.order);
 
-              // Ajouter les slides originaux
+              // Mettre à jour le nombre de slides
+              slides = sortedSlides.length;
+              const totalSlides = slides * 2; // Originaux + dupliqués
+
+              // Calculer les dimensions
+              const trackWidth = totalSlides * 100; // ex: 800% pour 4 slides
+              const slideWidth = 100 / totalSlides; // ex: 12.5% pour 4 slides
+
+              console.log(`Slider config: ${slides} slides, track=${trackWidth}%, slide=${slideWidth}%`);
+
+              // Mettre à jour la largeur du track AVANT d'ajouter les slides
+              track.style.width = trackWidth + "%";
+
+              // Vider le track
+              track.innerHTML = "";
+
+              // Ajouter les slides originaux avec dimensions inline
               sortedSlides.forEach((slide) => {
                 const div = document.createElement("div");
                 div.className = "slider-slide";
+                div.style.width = slideWidth + "%";
+                div.style.height = "100%";
+                div.style.flexShrink = "0";
                 div.innerHTML = `<img src="${slide.url}" alt="${slide.alt}" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;" />`;
                 track.appendChild(div);
               });
@@ -3318,25 +3334,28 @@
               sortedSlides.forEach((slide) => {
                 const div = document.createElement("div");
                 div.className = "slider-slide";
+                div.style.width = slideWidth + "%";
+                div.style.height = "100%";
+                div.style.flexShrink = "0";
                 div.innerHTML = `<img src="${slide.url}" alt="${slide.alt}" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;" />`;
                 track.appendChild(div);
-              });
-
-              // Mettre à jour le nombre de slides
-              slides = sortedSlides.length;
-
-              // Mettre à jour le CSS du slider (calcul dynamique pour supporter un nombre variable de slides)
-              // La largeur du track reste gérée par CSS (800%), les animations calculent le % dynamiquement
-              const slideWidth = 100 / (slides * 2);
-              const slideElements = track.querySelectorAll(".slider-slide");
-              slideElements.forEach((el) => {
-                el.style.width = slideWidth + "%";
               });
 
               // Réinitialiser la position
               currentSlide = 0;
               track.style.transition = "none";
               track.style.transform = "translateX(0%)";
+
+              // Forcer le reflow pour que le navigateur applique les changements
+              void track.offsetWidth;
+
+              // Utiliser requestAnimationFrame pour remettre la transition après le rendu
+              requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                  track.style.transition = "transform 0.5s ease-in-out";
+                  console.log("Slider initialized successfully");
+                });
+              });
             }
           }
         } catch (error) {
