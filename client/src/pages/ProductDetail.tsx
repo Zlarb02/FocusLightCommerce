@@ -16,7 +16,13 @@ import {
 } from "@/components/ProductAddedIndicator";
 import { useEnhancedToast } from "@/hooks/useEnhancedToast";
 import { Leaf, Lightbulb, Trees } from "lucide-react";
-import { formatPrice, getColorInfo, getSliderImages } from "@/lib/utils";
+import {
+  formatPrice,
+  getColorInfo,
+  getSliderImages,
+  isProductOutOfStock,
+  isVariationOutOfStock,
+} from "@/lib/utils";
 import { useCart } from "@/hooks/useCart";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Separator } from "@/components/ui/separator";
@@ -88,6 +94,15 @@ export default function ProductDetail() {
   const { showIndicator, isProductAdded } = useProductAddedIndicators();
   const { t } = useLanguage();
 
+  // Traduction par produit : `product.<id>.<suffixe>` (éditable dans
+  // gestion > Traductions) prime sur la clé générique `focus.<suffixe>`,
+  // pour que chaque produit puisse avoir sa page complète sans code.
+  const pt = (suffix: string): string => {
+    const productKey = `product.${productId}.${suffix}`;
+    const value = t(productKey);
+    return value === productKey ? t(`focus.${suffix}`) : value;
+  };
+
   // Sélectionner la première variation par défaut quand le produit charge
   useEffect(() => {
     if (product && product.variations && product.variations.length > 0 && !selectedVariation) {
@@ -100,7 +115,7 @@ export default function ProductDetail() {
   };
 
   const handleAddToCart = () => {
-    if (product && selectedVariation) {
+    if (product && selectedVariation && (selectedVariation.stock ?? 0) > 0) {
       const productWithVariation = {
         ...selectedVariation,
         productName: product.name,
@@ -128,6 +143,12 @@ export default function ProductDetail() {
 
   // Variations du produit (ordre d'arrivée API)
   const variations = product?.variations || [];
+
+  // Rupture de stock : pas de prix affiché, pas d'ajout au panier
+  const productOutOfStock = product ? isProductOutOfStock(product) : false;
+  const selectedOutOfStock =
+    productOutOfStock ||
+    (selectedVariation ? isVariationOutOfStock(selectedVariation) : false);
 
   // Loading state
   if (isLoading) {
@@ -259,25 +280,31 @@ export default function ProductDetail() {
                 <div className="flex flex-wrap gap-4 md:gap-6 mb-6 md:mb-8 justify-center md:justify-start">
                   <div className="flex items-center text-xs md:text-sm">
                     <Leaf className="text-green-500 mr-2 h-3 w-3 md:h-4 md:w-4" />
-                    <span>{t("focus.features.eco")}</span>
+                    <span>{pt("features.eco")}</span>
                   </div>
                   <div className="flex items-center text-xs md:text-sm">
                     <Trees className="text-amber-700 mr-2 h-3 w-3 md:h-4 md:w-4" />
-                    <span>{t("focus.features.wood")}</span>
+                    <span>{pt("features.wood")}</span>
                   </div>
                   <div className="flex items-center text-xs md:text-sm">
                     <Lightbulb className="text-yellow-400 mr-2 h-3 w-3 md:h-4 md:w-4" />
-                    <span>{t("focus.features.led")}</span>
+                    <span>{pt("features.led")}</span>
                   </div>
                 </div>
               )}
               <div className="flex flex-col gap-3 md:gap-4 mb-6 md:mb-8 px-4 md:px-0">
-                <AnimatedAddToCartButton
-                  onClick={handleAddToCart}
-                  disabled={!selectedVariation}
-                  price={formatPrice(selectedVariation?.price || product.price)}
-                  className="w-full md:w-auto mobile-tap-highlight rounded-full bg-alto-orange text-alto-cream hover:bg-alto-orange-soft focus:bg-alto-orange-soft transition-all"
-                />
+                {selectedOutOfStock ? (
+                  <div className="w-full md:w-auto md:self-start rounded-full bg-muted px-8 py-3 text-center text-base font-semibold text-muted-foreground">
+                    {t("shop.outOfStock")}
+                  </div>
+                ) : (
+                  <AnimatedAddToCartButton
+                    onClick={handleAddToCart}
+                    disabled={!selectedVariation}
+                    price={formatPrice(selectedVariation?.price || product.price)}
+                    className="w-full md:w-auto mobile-tap-highlight rounded-full bg-alto-orange text-alto-cream hover:bg-alto-orange-soft focus:bg-alto-orange-soft transition-all"
+                  />
+                )}
                 <Button
                   variant="outline"
                   size="lg"
@@ -294,7 +321,9 @@ export default function ProductDetail() {
               </div>
               <div className="flex items-center justify-center md:justify-start text-gray-500 text-xs md:text-sm">
                 <span className="inline-block border-l-2 border-gray-300 pl-3">
-                  {t("focus.freeShipping")}
+                  {productOutOfStock
+                    ? t("shop.outOfStock.detail")
+                    : t("focus.freeShipping")}
                 </span>
               </div>
             </div>
@@ -423,10 +452,10 @@ export default function ProductDetail() {
                     className="font-heading text-xl mb-3 dark:text-gray-100"
                     style={{ fontFamily: "var(--font-titles)" }}
                   >
-                    {t("focus.sustainableMaterials")}
+                    {pt("sustainableMaterials")}
                   </h3>
                   <p className="text-gray-600 dark:text-gray-300">
-                    {t("focus.sustainableMaterials.text")}
+                    {pt("sustainableMaterials.text")}
                   </p>
                 </div>
 
@@ -438,10 +467,10 @@ export default function ProductDetail() {
                     className="font-heading text-xl mb-3 dark:text-gray-100"
                     style={{ fontFamily: "var(--font-titles)" }}
                   >
-                    {t("focus.lighting.title")}
+                    {pt("lighting.title")}
                   </h3>
                   <p className="text-gray-600 dark:text-gray-300">
-                    {t("focus.lighting.text")}
+                    {pt("lighting.text")}
                   </p>
                 </div>
 
@@ -464,10 +493,10 @@ export default function ProductDetail() {
                     className="font-heading text-xl mb-3 dark:text-gray-100"
                     style={{ fontFamily: "var(--font-titles)" }}
                   >
-                    {t("focus.artisanalCrafting")}
+                    {pt("artisanalCrafting")}
                   </h3>
                   <p className="text-gray-600 dark:text-gray-300">
-                    {t("focus.artisanalCrafting.text")}
+                    {pt("artisanalCrafting.text")}
                   </p>
                 </div>
               </div>
@@ -506,7 +535,7 @@ export default function ProductDetail() {
                           {t("product.dimensions")}
                         </span>
                         <p className="text-gray-600 dark:text-gray-300">
-                          {t("focus.dimensions.text")}
+                          {pt("dimensions.text")}
                         </p>
                       </div>
                     </li>
@@ -521,7 +550,7 @@ export default function ProductDetail() {
                           {t("product.materials")}
                         </span>
                         <p className="text-gray-600 dark:text-gray-300">
-                          {t("focus.materials.text")}
+                          {pt("materials.text")}
                         </p>
                       </div>
                     </li>
@@ -533,10 +562,10 @@ export default function ProductDetail() {
                       </span>
                       <div>
                         <span className="font-medium block mb-1 dark:text-gray-100">
-                          {t("focus.lighting.label")}
+                          {pt("lighting.label")}
                         </span>
                         <p className="text-gray-600 dark:text-gray-300">
-                          {t("focus.lighting.details")}
+                          {pt("lighting.details")}
                         </p>
                       </div>
                     </li>
@@ -563,7 +592,7 @@ export default function ProductDetail() {
               {t("shop.focus.colors")}
             </h2>
             <p className="text-gray-600 text-center max-w-2xl mx-auto mb-16 dark:text-white dark:font-medium">
-              {t("focus.colorSelection")}
+              {pt("colorSelection")}
             </p>
 
             <div className="grid grid-cols-1 min-[481px]:grid-cols-2 lg:grid-cols-4 gap-10">
@@ -654,9 +683,15 @@ export default function ProductDetail() {
                       >
                         {other.name}
                       </h3>
-                      <p className="font-bold text-primary">
-                        {formatPrice(other.price)}
-                      </p>
+                      {isProductOutOfStock(other) ? (
+                        <p className="font-medium text-muted-foreground">
+                          {t("shop.outOfStock")}
+                        </p>
+                      ) : (
+                        <p className="font-bold text-primary">
+                          {formatPrice(other.price)}
+                        </p>
+                      )}
                     </article>
                   </Link>
                 );

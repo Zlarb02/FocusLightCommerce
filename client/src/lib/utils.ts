@@ -19,6 +19,21 @@ export function generateOrderNumber(orderId: number): string {
   return `FC-${new Date().getFullYear()}${orderId.toString().padStart(4, "0")}`;
 }
 
+// Rupture de stock : le prix n'est jamais affiché pour un produit épuisé
+// (produits ajoutés au catalogue avant que leur prix soit fixé).
+export function isVariationOutOfStock(variation: {
+  stock: number | null;
+}): boolean {
+  return (variation.stock ?? 0) <= 0;
+}
+
+export function isProductOutOfStock(product: {
+  variations?: Array<{ stock: number | null }>;
+}): boolean {
+  if (!product.variations || product.variations.length === 0) return true;
+  return product.variations.every((v) => isVariationOutOfStock(v));
+}
+
 export interface LampColor {
   name: string;
   displayName: string;

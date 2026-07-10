@@ -6,7 +6,7 @@ import { ProductWithVariations } from "@shared/schema";
 import { Input } from "@/components/ui/input";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Search } from "lucide-react";
-import { formatPrice } from "@/lib/utils";
+import { formatPrice, isProductOutOfStock } from "@/lib/utils";
 
 /**
  * Catalogue — grille de la maquette : photos sur tuiles blanches,
@@ -76,6 +76,7 @@ export default function Shop() {
                 const previewVariation = product.variations?.[0];
                 const previewImage = previewVariation?.images?.[0]?.url;
                 const variationCount = product.variations?.length || 0;
+                const outOfStock = isProductOutOfStock(product);
 
                 return (
                   <Link key={product.id} href={`/shop/${product.id}`}>
@@ -117,9 +118,15 @@ export default function Shop() {
                       >
                         {product.name}
                       </h3>
-                      <p className="mt-1 text-lg font-bold text-primary">
-                        {formatPrice(product.price)}
-                      </p>
+                      {outOfStock ? (
+                        <p className="mt-1 text-lg font-medium text-muted-foreground">
+                          {t("shop.outOfStock")}
+                        </p>
+                      ) : (
+                        <p className="mt-1 text-lg font-bold text-primary">
+                          {formatPrice(product.price)}
+                        </p>
+                      )}
                     </article>
                   </Link>
                 );

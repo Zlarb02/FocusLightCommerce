@@ -35,6 +35,9 @@ export function ProductQuantityCounter({
     e.preventDefault();
     e.stopPropagation();
 
+    // Pas d'ajout au panier pour une variation en rupture de stock
+    if ((variation.stock ?? 0) <= 0) return;
+
     const productWithVariation = {
       ...variation,
       productName,

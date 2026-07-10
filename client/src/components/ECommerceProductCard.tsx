@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { ProductVariation, ProductWithVariations } from "@shared/schema";
-import { formatPrice, getSliderImages, translateColor } from "@/lib/utils";
+import {
+  formatPrice,
+  getSliderImages,
+  isVariationOutOfStock,
+  translateColor,
+} from "@/lib/utils";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ProductQuantityCounter } from "./ProductQuantityCounter";
 
@@ -108,9 +113,15 @@ export function ECommerceProductCard(props: ECommerceProductCardProps) {
 
         {/* Price and Counter Section */}
         <div className="flex items-center justify-between mb-3">
-          <span className="text-xl font-bold text-primary dark:text-[#7eaaff]">
-            {formatPrice(variation.price || product.price)}
-          </span>
+          {isVariationOutOfStock(variation) ? (
+            <span className="text-base font-medium text-gray-500 dark:text-gray-400">
+              {t("shop.outOfStock")}
+            </span>
+          ) : (
+            <span className="text-xl font-bold text-primary dark:text-[#7eaaff]">
+              {formatPrice(variation.price || product.price)}
+            </span>
+          )}
           {hasMultipleImages && (
             <span className="text-xs text-gray-500 dark:text-gray-400">
               {images.length} {t("product.images")}
@@ -119,16 +130,18 @@ export function ECommerceProductCard(props: ECommerceProductCardProps) {
         </div>
 
         {/* Product Quantity Counter */}
-        <div className="flex justify-center">
-          <ProductQuantityCounter
-            productId={variation.id}
-            variation={variation}
-            productName={product.name}
-            productDescription={product.description}
-            basePrice={product.price}
-            className="w-full max-w-[200px]"
-          />
-        </div>
+        {!isVariationOutOfStock(variation) && (
+          <div className="flex justify-center">
+            <ProductQuantityCounter
+              productId={variation.id}
+              variation={variation}
+              productName={product.name}
+              productDescription={product.description}
+              basePrice={product.price}
+              className="w-full max-w-[200px]"
+            />
+          </div>
+        )}
       </div>
     </div>
   );

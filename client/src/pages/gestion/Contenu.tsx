@@ -63,6 +63,7 @@ import {
   type Illustration,
   type IllustrationEntry,
 } from "@/hooks/use-illustrations";
+import { ProductPageEditor } from "./ProductPageEditor";
 
 interface Translation {
   key: string;
@@ -1520,10 +1521,21 @@ export default function Contenu() {
                     <Package className="h-12 w-12 mx-auto mb-4 opacity-50" />
                     <p>Aucune section configurée pour ce produit</p>
                     <p className="text-sm mt-2">
-                      Les sections par défaut (features, details, testimonials) sont disponibles uniquement pour le produit FOCUS.01
+                      Créez la page détaillée ci-dessous pour activer les
+                      sections (points forts, caractéristiques, avis) comme sur
+                      FOCUS.01
                     </p>
                   </div>
                 )}
+
+                {/* Éditeur des textes de la page produit */}
+                <ProductPageEditor
+                  productId={selectedProductId}
+                  hasSections={
+                    !!productContent?.sections &&
+                    productContent.sections.length > 0
+                  }
+                />
               </div>
             )}
           </CardContent>
