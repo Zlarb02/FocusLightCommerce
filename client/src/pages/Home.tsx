@@ -644,7 +644,7 @@ export default function Home() {
           <button
             ref={ctaRef}
             onClick={goToShop}
-            className="group pointer-events-none absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-500"
+            className="group pointer-events-none absolute inset-0 flex items-center justify-center pr-[18vw] opacity-0 transition-opacity duration-500 md:pr-[14vw]"
           >
             <span
               className="text-[clamp(32px,6vw,72px)] font-bold text-foreground transition-colors duration-300 group-hover:text-primary"

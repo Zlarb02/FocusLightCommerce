@@ -42,9 +42,10 @@ const STEP_MEDIA: StepMediaDef[] = [
 
 function StepMedia({ media }: { media: StepMediaDef }) {
   if (media.type === "video") {
+    // Ratio natif conservé : les vidéos (dont une verticale) ne sont jamais coupées
     return (
       <video
-        className="aspect-video w-full object-cover"
+        className="mx-auto max-h-[72vh] w-auto max-w-full"
         src={media.src}
         poster={media.poster}
         autoPlay
@@ -184,7 +185,7 @@ export default function DesignEnAction() {
         />
         <div className="relative aspect-[3/4] w-full overflow-hidden bg-white">
           <video
-            className="h-full w-full object-cover object-[25%_center]"
+            className="h-full w-full object-contain"
             src="/videos/fabrication-assemblage.mp4"
             poster="/images/alto/poster-assemblage.jpg"
             autoPlay
