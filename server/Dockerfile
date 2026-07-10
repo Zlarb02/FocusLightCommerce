@@ -1,4 +1,4 @@
-FROM node:18-alpine AS builder
+FROM node:22-alpine AS builder
 
 WORKDIR /app
 
@@ -19,7 +19,7 @@ RUN cd server && npm install
 RUN cd server && npm run build
 
 # Étape 2 : Image finale légère
-FROM node:18-alpine
+FROM node:22-alpine
 
 # Installer postgresql-client pour pg_isready
 RUN apk add --no-cache postgresql-client

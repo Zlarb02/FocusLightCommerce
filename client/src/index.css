@@ -4,40 +4,43 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Identité Alto Lille — maquette RARE.design
+       crème #FEF7E8 · brun #4A2020 · orange #F54501 · bleu #1B5EC4 · encre #161615 */
+    --background: 41 92% 95%;
+    --foreground: 60 2% 8%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 60 2% 8%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 41 92% 97%;
+    --popover-foreground: 60 2% 8%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 17 99% 48%;
+    --primary-foreground: 41 92% 95%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 0 40% 21%;
+    --secondary-foreground: 41 92% 95%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 40 45% 89%;
+    --muted-foreground: 20 15% 38%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 40 45% 89%;
+    --accent-foreground: 0 40% 21%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 38 35% 82%;
+    --input: 38 35% 82%;
+    --ring: 17 99% 48%;
 
     --radius: 0.5rem;
 
     /* Polices principales */
-    --font-primary: "futura-pt", sans-serif;
-    --font-heading: "helvetica-neue-lt-pro", sans-serif;
-    --font-accent: "helvetica-neue-lt-pro", sans-serif;
+    --font-primary: "Geist Sans", "Geist", -apple-system, BlinkMacSystemFont,
+      "Segoe UI", sans-serif;
+    --font-heading: var(--font-primary);
+    --font-accent: var(--font-primary);
 
     /* Variantes fonctionnelles par usage */
     --font-body: var(--font-primary);
@@ -78,33 +81,34 @@
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    /* Thème sombre maquette : fond bordeaux #4A2020, texte crème */
+    --background: 0 40% 21%;
+    --foreground: 41 92% 95%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 0 42% 15%;
+    --card-foreground: 41 92% 95%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 0 42% 15%;
+    --popover-foreground: 41 92% 95%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 17 99% 52%;
+    --primary-foreground: 41 92% 95%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 8 60% 8%;
+    --secondary-foreground: 41 92% 95%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 0 40% 27%;
+    --muted-foreground: 39 45% 80%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 0 40% 27%;
+    --accent-foreground: 41 92% 95%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --border: 0 33% 32%;
+    --input: 0 33% 32%;
+    --ring: 17 99% 52%;
   }
 
   * {
@@ -117,6 +121,13 @@
     font-size: var(--fs-base);
     line-height: var(--lh-normal);
     font-weight: var(--fw-regular);
+    overflow-x: hidden;
+  }
+
+  img,
+  video {
+    max-width: 100%;
+    height: auto;
   }
 
   h1 {
@@ -186,6 +197,22 @@
   font-weight: var(--fw-medium);
   letter-spacing: var(--ls-wide);
   text-transform: uppercase;
+}
+
+/* Panneau « Caractéristique » de la fiche produit (fond brun maquette).
+   Force la couleur crème sur le contenu hérité du CMS. */
+.alto-caracteristique {
+  background-color: #4a2020;
+  color: #fef7e8;
+}
+.dark .alto-caracteristique {
+  background-color: #35120f;
+}
+.alto-caracteristique :is(h2, h3, p, span, div, li) {
+  color: #fef7e8;
+}
+.alto-caracteristique :is(svg) {
+  color: #fef7e8;
 }
 
 /* Styles pour améliorer l'expérience mobile */

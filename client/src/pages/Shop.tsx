@@ -5,9 +5,13 @@ import { Layout } from "@/components/Layout";
 import { ProductWithVariations } from "@shared/schema";
 import { Input } from "@/components/ui/input";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Search, ArrowRight } from "lucide-react";
+import { Search } from "lucide-react";
 import { formatPrice } from "@/lib/utils";
 
+/**
+ * Catalogue — grille de la maquette : photos sur tuiles blanches,
+ * nom et prix en orange sous chaque produit.
+ */
 export default function Shop() {
   const { data: products = [], isLoading } = useQuery<ProductWithVariations[]>({
     queryKey: ["/api/products"],
@@ -16,7 +20,6 @@ export default function Shop() {
   const [searchTerm, setSearchTerm] = useState("");
   const { t } = useLanguage();
 
-  // Filtrer les produits selon la recherche
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
       return (
@@ -28,25 +31,20 @@ export default function Shop() {
   }, [products, searchTerm]);
 
   return (
-    <Layout>
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-        <div className="container mx-auto py-12 px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h1
-              className="text-4xl md:text-5xl font-bold mb-4 text-gray-900 dark:text-gray-100"
-              style={{ fontFamily: "var(--font-titles)" }}
-            >
-              Catalogue
-            </h1>
-            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-lg">
-              Découvrez nos créations artisanales
-            </p>
-          </div>
+    <Layout headerTone="brown" footerTone="brown">
+      <div className="mx-auto max-w-[1600px] px-4 py-10 md:px-10 md:py-14">
+        <div className="mb-10 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+          <h1
+            className="text-4xl font-bold text-alto-blue md:text-5xl dark:text-alto-cream"
+            style={{ fontFamily: "var(--font-titles)" }}
+          >
+            Catalogue
+          </h1>
 
-          {/* Barre de recherche */}
-          <div className="relative max-w-md mx-auto mb-12">
+          {/* Recherche */}
+          <div className="relative w-full max-w-xs">
             <Search
-              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500"
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
               size={18}
             />
             <Input
@@ -54,94 +52,70 @@ export default function Shop() {
               placeholder={t("shop.general.search")}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 w-full bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 rounded-lg"
+              className="w-full rounded-full border-border bg-card pl-10"
             />
           </div>
-
-          {/* Loading state */}
-          {isLoading && (
-            <div className="flex justify-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 dark:border-white"></div>
-            </div>
-          )}
-
-          {/* Affichage des produits */}
-          {!isLoading && (
-            <div className="flex flex-wrap justify-center gap-8 max-w-6xl mx-auto">
-              {filteredProducts.length === 0 ? (
-                <div className="w-full text-center text-gray-500 dark:text-gray-400 py-12">
-                  {searchTerm
-                    ? t("shop.general.noResults")
-                    : "Aucun produit disponible"}
-                </div>
-              ) : (
-                filteredProducts.map((product) => {
-                  // Prendre la première variation pour l'image de prévisualisation
-                  const previewVariation = product.variations?.[0];
-                  const previewImage = previewVariation?.images?.[0]?.url;
-                  const variationCount = product.variations?.length || 0;
-
-                  return (
-                    <Link key={product.id} href={`/shop/${product.id}`}>
-                      <article className="group bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 dark:border-gray-700 hover:border-gray-200 dark:hover:border-gray-600 transform hover:-translate-y-1 w-[280px] sm:w-[300px]">
-                        {/* Image container */}
-                        <div className="relative aspect-square overflow-hidden bg-gray-100 dark:bg-gray-700">
-                          {previewImage ? (
-                            <img
-                              src={previewImage}
-                              alt={product.name}
-                              className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-500"
-                              loading="lazy"
-                            />
-                          ) : (
-                            <div className="w-full h-full flex items-center justify-center text-gray-400 dark:text-gray-500">
-                              <span className="text-4xl">📦</span>
-                            </div>
-                          )}
-
-                          {/* Badge nombre de variations */}
-                          {variationCount > 1 && (
-                            <div className="absolute top-3 left-3 bg-black/80 dark:bg-white/90 text-white dark:text-gray-900 text-xs font-medium px-2 py-1 rounded-full">
-                              {variationCount} coloris
-                            </div>
-                          )}
-
-                          {/* Overlay au hover */}
-                          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 dark:group-hover:bg-white/5 transition-colors duration-300" />
-                        </div>
-
-                        {/* Content */}
-                        <div className="p-5">
-                          <h3
-                            className="font-semibold text-lg text-gray-900 dark:text-white mb-2 group-hover:text-primary dark:group-hover:text-blue-400 transition-colors"
-                            style={{ fontFamily: "var(--font-titles)" }}
-                          >
-                            {product.name}
-                          </h3>
-
-                          <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-2">
-                            {product.description}
-                          </p>
-
-                          <div className="flex items-center justify-between">
-                            <span className="text-xl font-bold text-gray-900 dark:text-white">
-                              {formatPrice(product.price)}
-                            </span>
-
-                            <span className="flex items-center text-sm text-gray-500 dark:text-gray-400 group-hover:text-primary dark:group-hover:text-blue-400 transition-colors">
-                              Voir le produit
-                              <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                            </span>
-                          </div>
-                        </div>
-                      </article>
-                    </Link>
-                  );
-                })
-              )}
-            </div>
-          )}
         </div>
+
+        {isLoading && (
+          <div className="flex justify-center py-16">
+            <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-primary"></div>
+          </div>
+        )}
+
+        {!isLoading && (
+          <div className="grid grid-cols-2 gap-x-6 gap-y-12 md:grid-cols-3 md:gap-x-10 xl:grid-cols-4">
+            {filteredProducts.length === 0 ? (
+              <div className="col-span-full py-16 text-center text-muted-foreground">
+                {searchTerm
+                  ? t("shop.general.noResults")
+                  : "Aucun produit disponible"}
+              </div>
+            ) : (
+              filteredProducts.map((product) => {
+                const previewVariation = product.variations?.[0];
+                const previewImage = previewVariation?.images?.[0]?.url;
+                const variationCount = product.variations?.length || 0;
+
+                return (
+                  <Link key={product.id} href={`/shop/${product.id}`}>
+                    <article className="group cursor-pointer">
+                      <div className="relative aspect-[7/8] overflow-hidden bg-white">
+                        {previewImage ? (
+                          <img
+                            src={previewImage}
+                            alt={product.name}
+                            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                            loading="lazy"
+                          />
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center text-muted-foreground">
+                            <span className="text-4xl">💡</span>
+                          </div>
+                        )}
+                        {variationCount > 1 && (
+                          <span className="absolute left-3 top-3 rounded-full bg-alto-brown/85 px-2.5 py-1 text-xs font-medium text-alto-cream">
+                            {variationCount} coloris
+                          </span>
+                        )}
+                      </div>
+
+                      <h3
+                        className="mt-4 text-xl font-bold text-primary md:text-2xl"
+                        style={{ fontFamily: "var(--font-titles)" }}
+                      >
+                        {product.name}
+                      </h3>
+                      <p className="mt-1 text-lg font-bold text-primary">
+                        {formatPrice(product.price)}
+                      </p>
+                    </article>
+                  </Link>
+                );
+              })
+            )}
+          </div>
+        )}
       </div>
     </Layout>
   );

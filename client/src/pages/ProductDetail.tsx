@@ -51,6 +51,14 @@ export default function ProductDetail() {
     enabled: productId > 0,
   });
 
+  // Autres produits du catalogue (maquette : bloc « Autres produits »)
+  const { data: allProducts = [] } = useQuery<ProductWithVariations[]>({
+    queryKey: ["/api/products"],
+  });
+  const otherProducts = allProducts
+    .filter((p) => p.id !== productId)
+    .slice(0, 4);
+
   // Vérifier si une section est activée
   const isSectionEnabled = (sectionId: string): boolean => {
     if (!productContent?.sections) {
@@ -160,14 +168,14 @@ export default function ProductDetail() {
   }
 
   return (
-    <Layout>
+    <Layout headerTone="surface" footerTone="brown">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Bouton retour */}
         <div className="pt-4 md:pt-8">
           <Link href="/shop">
-            <Button variant="ghost" size="sm" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+            <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Retour à la boutique
+              Retour au catalogue
             </Button>
           </Link>
         </div>
@@ -238,12 +246,12 @@ export default function ProductDetail() {
           <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
             <div className="order-2 md:order-1 z-10 px-4 md:px-0">
               <h1
-                className="font-heading text-3xl md:text-6xl mb-4 md:mb-6 tracking-tight text-center md:text-left"
+                className="font-heading text-4xl md:text-6xl font-bold uppercase text-primary mb-4 md:mb-6 tracking-tight text-center md:text-left"
                 style={{ fontFamily: "var(--font-titles)" }}
               >
                 {product.name}
               </h1>
-              <p className="mb-6 md:mb-8 text-gray-600 max-w-md text-base md:text-lg leading-relaxed text-center md:text-left mx-auto md:mx-0 dark:text-white dark:font-medium">
+              <p className="mb-6 md:mb-8 max-w-md text-base md:text-lg leading-relaxed text-center md:text-left mx-auto md:mx-0 text-foreground/90">
                 {product.description}
               </p>
               {/* Features icons - configurables via CMS */}
@@ -268,7 +276,7 @@ export default function ProductDetail() {
                   onClick={handleAddToCart}
                   disabled={!selectedVariation}
                   price={formatPrice(selectedVariation?.price || product.price)}
-                  className="w-full md:w-auto mobile-tap-highlight bg-black text-white dark:bg-[#3a5fcf] dark:text-white dark:hover:bg-[#5477e6] dark:focus:bg-[#5477e6] transition-all"
+                  className="w-full md:w-auto mobile-tap-highlight rounded-full bg-alto-orange text-alto-cream hover:bg-alto-orange-soft focus:bg-alto-orange-soft transition-all"
                 />
                 <Button
                   variant="outline"
@@ -278,7 +286,7 @@ export default function ProductDetail() {
                       .getElementById("product-details")
                       ?.scrollIntoView({ behavior: "smooth" })
                   }
-                  className="w-full md:w-auto rounded-none border-black text-black hover:bg-black hover:text-white dark:bg-transparent dark:text-white dark:border-white dark:hover:bg-white/10 dark:hover:text-white dark:focus:bg-white/10 transition-all hover:translate-y-[-2px] mobile-tap-highlight"
+                  className="w-full md:w-auto rounded-full border-0 bg-alto-brown text-alto-cream hover:bg-alto-brown-deep hover:text-alto-cream dark:bg-alto-brown-deep dark:hover:bg-alto-brown transition-all hover:translate-y-[-2px] mobile-tap-highlight"
                   style={{ fontFamily: "var(--font-buttons)" }}
                 >
                   {t("product.viewDetails")}
@@ -397,17 +405,17 @@ export default function ProductDetail() {
 
         {/* Product Details Section - configurable via CMS */}
         {isSectionEnabled("details") && (
-          <section id="product-details" className="py-20 animate fade-in">
-            <div className="container mx-auto max-w-5xl">
+          <section id="product-details" className="py-12 md:py-20 animate fade-in">
+            <div className="alto-caracteristique px-6 py-12 md:px-14 md:py-16">
               <h2
-                className="font-heading text-3xl md:text-4xl mb-16 text-center dark:text-gray-100"
+                className="font-heading text-3xl md:text-5xl font-bold mb-12"
                 style={{ fontFamily: "var(--font-titles)" }}
               >
-                {t("focus.conceptDetails")}
+                Caractéristique
               </h2>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
-                <div className="p-6 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 animate fade-in-right delay-1">
+                <div className="p-6 animate fade-in-right delay-1">
                   <div className="w-12 h-12 bg-primary/5 dark:bg-blue-400/10 flex items-center justify-center mb-4">
                     <Leaf className="text-[var(--color-text)] dark:text-blue-400 h-6 w-6" />
                   </div>
@@ -422,7 +430,7 @@ export default function ProductDetail() {
                   </p>
                 </div>
 
-                <div className="p-6 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 animate fade-in-up delay-2">
+                <div className="p-6 animate fade-in-up delay-2">
                   <div className="w-12 h-12 bg-primary/5 dark:bg-blue-400/10 flex items-center justify-center mb-4">
                     <Lightbulb className="text-[var(--color-text)] dark:text-blue-400 h-6 w-6" />
                   </div>
@@ -437,7 +445,7 @@ export default function ProductDetail() {
                   </p>
                 </div>
 
-                <div className="p-6 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 animate fade-in-left delay-3">
+                <div className="p-6 animate fade-in-left delay-3">
                   <div className="w-12 h-12 bg-primary/5 dark:bg-blue-400/10 flex items-center justify-center mb-4">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -533,6 +541,12 @@ export default function ProductDetail() {
                       </div>
                     </li>
                   </ul>
+                  <Link
+                    href="/design-en-action"
+                    className="inline-block rounded-full bg-alto-orange px-10 py-3.5 text-lg font-bold text-alto-cream transition-transform hover:scale-105"
+                  >
+                    Fabrication
+                  </Link>
                 </div>
               </div>
             </div>
@@ -600,6 +614,48 @@ export default function ProductDetail() {
           </section>
         )}
 
+        {/* Autres produits (maquette) */}
+        {otherProducts.length > 0 && (
+          <section className="py-16 animate fade-in">
+            <h2
+              className="mb-10 text-3xl md:text-4xl font-bold text-alto-blue dark:text-alto-cream"
+              style={{ fontFamily: "var(--font-titles)" }}
+            >
+              Autres produits
+            </h2>
+            <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-4 md:gap-x-10">
+              {otherProducts.map((other) => {
+                const previewImage = other.variations?.[0]?.images?.[0]?.url;
+                return (
+                  <Link key={other.id} href={`/shop/${other.id}`}>
+                    <article className="group cursor-pointer">
+                      <div className="aspect-square overflow-hidden bg-white">
+                        {previewImage && (
+                          <img
+                            src={previewImage}
+                            alt={other.name}
+                            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                            loading="lazy"
+                          />
+                        )}
+                      </div>
+                      <h3
+                        className="mt-3 text-lg font-bold text-primary md:text-xl"
+                        style={{ fontFamily: "var(--font-titles)" }}
+                      >
+                        {other.name}
+                      </h3>
+                      <p className="font-bold text-primary">
+                        {formatPrice(other.price)}
+                      </p>
+                    </article>
+                  </Link>
+                );
+              })}
+            </div>
+          </section>
+        )}
+
         {/* Modal d'agrandissement d'image */}
         {modalImage && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm animate fade-in">
@@ -661,10 +717,10 @@ export default function ProductDetail() {
         {isSectionEnabled("testimonials") && (
           <section className="py-20 container mx-auto animate fade-in">
             <h2
-              className="font-heading text-3xl md:text-4xl text-center mb-16"
+              className="mb-10 text-3xl md:text-4xl font-bold text-alto-blue dark:text-alto-cream"
               style={{ fontFamily: "var(--font-titles)" }}
             >
-              {t("focus.testimonials")}
+              Avis
             </h2>
 
             {/* Elfsight Google Reviews Widget */}

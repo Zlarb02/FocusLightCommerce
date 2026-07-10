@@ -24,7 +24,13 @@ interface ThemeProviderProps {
 
 export function ThemeProvider({ children }: ThemeProviderProps) {
   const [theme, setThemeState] = useState<Theme>(() => {
-    // Vérifier d'abord localStorage
+    // Paramètre d'URL (tests / captures) prioritaire
+    const urlTheme = new URLSearchParams(window.location.search).get("theme");
+    if (urlTheme === "dark" || urlTheme === "light") {
+      return urlTheme;
+    }
+
+    // Vérifier ensuite localStorage
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme === "dark" || savedTheme === "light") {
       return savedTheme;

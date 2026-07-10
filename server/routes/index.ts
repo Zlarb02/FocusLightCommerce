@@ -77,6 +77,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.set("trust proxy", 1);
 
+  if (isProd && !process.env.SESSION_SECRET) {
+    throw new Error(
+      "SESSION_SECRET doit être défini en production (les sessions seraient falsifiables avec un secret par défaut)."
+    );
+  }
+
   app.use(
     session({
       name: "alto.sid",

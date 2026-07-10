@@ -22,9 +22,14 @@ export class PgUserStorage {
       );
 
       if (result.rowCount === 0 || result.rowCount === undefined) {
-        // Créer l'utilisateur admin avec un mot de passe par défaut ou celui fourni
-        const password = adminPassword || "admin";
-        const hashedPassword = await bcrypt.hash(password, 10);
+        if (!adminPassword) {
+          console.error(
+            "⚠️ ADMIN_PASSWORD non défini : aucun utilisateur admin créé. " +
+              "Définissez ADMIN_PASSWORD puis redémarrez pour créer le compte admin."
+          );
+          return;
+        }
+        const hashedPassword = await bcrypt.hash(adminPassword, 10);
 
         await db.execute(
           sql`INSERT INTO users (username, password, is_admin) 

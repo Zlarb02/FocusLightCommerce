@@ -1,6 +1,5 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import themePlugin from "@replit/vite-plugin-shadcn-theme-json";
 import * as path from "path";
 import { dirname } from "path";
 import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
@@ -34,7 +33,7 @@ export default defineConfig(async () => {
   }
 
   return {
-    plugins: [react(), themePlugin(), ...devPlugins], // Supprimer runtimeErrorOverlay() temporairement
+    plugins: [react(), ...devPlugins], // Tokens gérés dans index.css (identité Alto), plugin theme.json retiré
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "src"),

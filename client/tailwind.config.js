@@ -6,6 +6,7 @@ module.exports = {
     "./components/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
+    "./index.html",
   ],
   prefix: "",
   theme: {
@@ -50,6 +51,16 @@ module.exports = {
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
+        },
+        // Palette Alto Lille (maquette RARE.design)
+        alto: {
+          cream: "#FEF7E8",
+          brown: "#4A2020",
+          "brown-deep": "#35120F",
+          orange: "#F54501",
+          "orange-soft": "#FF7402",
+          blue: "#1B5EC4",
+          ink: "#161615",
         },
       },
       fontFamily: {
