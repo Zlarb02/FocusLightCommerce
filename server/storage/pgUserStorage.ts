@@ -88,6 +88,19 @@ export class PgUserStorage {
   }
 
   /**
+   * Met à jour le mot de passe d'un utilisateur (hashé avec bcrypt)
+   */
+  async updatePassword(userId: number, newPassword: string): Promise<boolean> {
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    const result = await db.execute(
+      sql`UPDATE users SET password = ${hashedPassword} WHERE id = ${userId}`
+    );
+
+    return (result.rowCount ?? 0) > 0;
+  }
+
+  /**
    * Vérifie les identifiants d'un utilisateur
    */
   async verifyUser(

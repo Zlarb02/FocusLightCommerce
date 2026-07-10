@@ -65,7 +65,8 @@ export default function Dashboard() {
     ordersTotal: orders.length,
     ordersPending: pendingOrders.length,
     ordersCompleted: completedOrders.length,
-    revenueMonth: formatPrice(revenueMonth / 100),
+    // totalAmount est stocké en euros en BDD
+    revenueMonth: formatPrice(revenueMonth),
   };
 
   return (
@@ -108,7 +109,7 @@ export default function Dashboard() {
           <CardContent>
             <div className="text-2xl font-bold">{stats.ordersCompleted}</div>
             <p className="text-xs text-muted-foreground mt-1">
-              Sur les 30 derniers jours
+              Depuis le lancement
             </p>
           </CardContent>
         </Card>

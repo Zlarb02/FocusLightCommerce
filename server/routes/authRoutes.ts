@@ -1,6 +1,6 @@
 import { Router, Request, Response } from "express";
 import { storage } from "../storage/index.js";
-import { handleError } from "../middleware/middlewares.js";
+import { handleError, requireAuth } from "../middleware/middlewares.js";
 
 const router = Router();
 
@@ -48,6 +48,49 @@ router.post("/login", async (req: Request, res: Response): Promise<void> => {
     handleError(res, error);
   }
 });
+
+router.post(
+  "/change-password",
+  requireAuth,
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { currentPassword, newPassword } = req.body;
+      if (!currentPassword || !newPassword) {
+        res.status(400).json({
+          message: "Current and new passwords are required",
+        });
+        return;
+      }
+
+      if (typeof newPassword !== "string" || newPassword.length < 6) {
+        res.status(400).json({
+          message: "New password must be at least 6 characters long",
+        });
+        return;
+      }
+
+      const sessionUser = req.session.user!;
+      const user = await storage.verifyUser(
+        sessionUser.username,
+        currentPassword
+      );
+      if (!user) {
+        res.status(401).json({ message: "Current password is incorrect" });
+        return;
+      }
+
+      const updated = await storage.updatePassword(user.id, newPassword);
+      if (!updated) {
+        res.status(500).json({ message: "Could not update password" });
+        return;
+      }
+
+      res.json({ message: "Password updated successfully" });
+    } catch (error) {
+      handleError(res, error);
+    }
+  }
+);
 
 router.post("/logout", (req: Request, res: Response): void => {
   req.session.destroy((err) => {

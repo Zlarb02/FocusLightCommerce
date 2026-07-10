@@ -352,11 +352,11 @@ export default function Medias() {
             <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
           </div>
           {!isStorageLoading && storageData && (
-            <div className="ml-4 flex items-center text-sm text-gray-500 dark:text-gray-400">
+            <div className="ml-4 flex items-center text-sm text-muted-foreground">
               <span>
                 {storageData.usedFormatted} / {storageData.totalFormatted}
               </span>
-              <div className="w-32 h-2 bg-gray-200 dark:bg-gray-700 rounded-full ml-2">
+              <div className="w-32 h-2 bg-muted rounded-full ml-2">
                 <div
                   className={`h-2 rounded-full ${
                     storageData.percentage > 90
@@ -391,7 +391,7 @@ export default function Medias() {
 
           {["all", "images", "videos", "others"].map((tabValue) => (
             <TabsContent key={tabValue} value={tabValue}>
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow">
+              <div className="bg-card text-card-foreground rounded-lg border shadow-sm">
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -432,7 +432,7 @@ export default function Medias() {
                                   />
                                 </div>
                               ) : (
-                                <div className="w-10 h-10 bg-gray-100 dark:bg-gray-700 flex items-center justify-center rounded">
+                                <div className="w-10 h-10 bg-muted flex items-center justify-center rounded">
                                   {getMediaIcon(media.type)}
                                 </div>
                               )}

@@ -429,8 +429,8 @@ export default function Traductions() {
                         key={translation.key}
                         className={`grid grid-cols-12 gap-4 p-4 border rounded-lg ${
                           hasPendingChanges(translation.key)
-                            ? "bg-yellow-50 border-yellow-200"
-                            : "bg-gray-50"
+                            ? "bg-yellow-50 border-yellow-200 dark:bg-yellow-900/20 dark:border-yellow-800"
+                            : "bg-muted/50"
                         }`}
                       >
                         {/* Clé */}

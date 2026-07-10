@@ -1,8 +1,14 @@
 import { useEffect, useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { CheckCircle, MapPin, Home } from "lucide-react";
+import {
+  CheckCircle,
+  MapPin,
+  Home,
+  Mail,
+  Smartphone,
+  FileText,
+} from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -45,6 +51,8 @@ interface OrderConfirmationProps {
   onBackToHome: () => void;
 }
 
+const titleFont = { fontFamily: "var(--font-titles)" } as const;
+
 export function OrderConfirmation({
   orderNumber,
   onBackToHome,
@@ -70,12 +78,10 @@ export function OrderConfirmation({
 
     const fetchOrderData = async () => {
       try {
-        console.log("🔍 Récupération commande:", orderNumber);
         const data = await apiRequest(
           "GET",
           `/api/checkout/order/${orderNumber}`
         );
-        console.log("✅ Données commande récupérées:", data);
         setOrderData(data);
       } catch (err) {
         console.error("Erreur lors de la récupération de la commande:", err);
@@ -88,166 +94,195 @@ export function OrderConfirmation({
     fetchOrderData();
   }, [orderNumber]);
 
+  // Ouvre la facture HTML jointe à la commande dans un nouvel onglet
+  const openInvoice = () => {
+    if (!orderData?.invoice?.html) return;
+    const win = window.open("", "_blank");
+    if (win) {
+      win.document.write(orderData.invoice.html);
+      win.document.close();
+    }
+  };
+
   if (loading) {
     return (
-      <div className="container max-w-4xl mx-auto p-6">
-        <div className="text-center py-8">
-          <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">{t("checkout.confirmation.loading")}</p>
+      <Layout showCart={false} headerTone="brown" footerTone="none">
+        <div className="mx-auto max-w-4xl px-6 py-24 text-center">
+          <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+          <p className="text-muted-foreground">
+            {t("checkout.confirmation.loading")}
+          </p>
         </div>
-      </div>
+      </Layout>
     );
   }
 
   if (error || !orderData) {
     return (
-      <div className="container max-w-4xl mx-auto p-6">
-        <Alert variant="destructive">
-          <AlertDescription>
-            {error || t("checkout.confirmation.error")}
-          </AlertDescription>
-        </Alert>
-        <Button onClick={onBackToHome} className="mt-4">
-          <Home className="w-4 h-4 mr-2" />
-          {t("checkout.confirmation.backHome")}
-        </Button>
-      </div>
+      <Layout showCart={false} headerTone="brown" footerTone="none">
+        <div className="mx-auto max-w-xl px-6 py-24 text-center">
+          <div className="border-l-4 border-[#B3261E] bg-card p-5 text-left">
+            <p className="font-semibold">
+              {error || t("checkout.confirmation.error")}
+            </p>
+          </div>
+          <Button
+            onClick={onBackToHome}
+            className="mt-6 rounded-none bg-alto-orange font-bold text-alto-cream hover:bg-alto-orange-soft"
+            style={titleFont}
+          >
+            <Home className="mr-2 h-4 w-4" />
+            {t("checkout.confirmation.backHome")}
+          </Button>
+        </div>
+      </Layout>
     );
   }
 
   return (
-    <div className="container max-w-4xl mx-auto p-6">
-      {/* Header de confirmation */}
-      <div className="text-center mb-8">
-        <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-          <CheckCircle className="w-10 h-10 text-green-600" />
-        </div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          {t("checkout.confirmation.title")}
-        </h1>
-        <p className="text-xl text-gray-600 mb-4">
-          {t("checkout.confirmation.subtitle")}
-        </p>
-        <div className="bg-green-50 border border-green-200 rounded-lg p-4 inline-block">
-          <p className="text-green-800">
-            <strong>
-              {t("checkout.confirmation.orderNumber")} {orderData.orderNumber}
-            </strong>
-          </p>
-          <p className="text-green-600 text-sm">
-            {t("checkout.confirmation.orderDate")}{" "}
-            {new Date(orderData.createdAt).toLocaleDateString("fr-FR")}
-          </p>
-        </div>
-      </div>
-
-      {/* Notification email et SMS améliorée */}
-      <div className="mb-6 bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-900/20 dark:to-green-900/20 rounded-xl border border-blue-200 dark:border-blue-800 p-6">
-        <div className="flex items-start gap-4">
-          <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center flex-shrink-0">
-            <span className="text-2xl">📧</span>
+    <Layout showCart={false} headerTone="brown" footerTone="brown">
+      <div className="mx-auto max-w-4xl px-4 py-10 md:px-6 md:py-16">
+        {/* En-tête de confirmation */}
+        <div className="mb-10 text-center">
+          <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-alto-orange">
+            <CheckCircle className="h-9 w-9 text-alto-cream" />
           </div>
-          <div className="flex-1">
-            <h3 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">
-              {t("checkout.confirmation.emailSent")}
-            </h3>
-            <p className="text-blue-800 dark:text-blue-200 mb-3">
-              {t("checkout.confirmation.emailTo")}{" "}
-              <strong>{orderData.customer.email}</strong>
+          <h1
+            className="mb-2 text-3xl font-bold text-alto-brown dark:text-alto-cream md:text-5xl"
+            style={titleFont}
+          >
+            {t("checkout.confirmation.title")}
+          </h1>
+          <p className="mb-6 text-lg text-muted-foreground md:text-xl">
+            {t("checkout.confirmation.subtitle")}
+          </p>
+          <div className="inline-block bg-alto-brown px-6 py-4 text-alto-cream dark:bg-alto-brown-deep">
+            <p className="font-bold" style={titleFont}>
+              {t("checkout.confirmation.orderNumber")}{" "}
+              <span className="text-alto-orange-soft">
+                {orderData.orderNumber}
+              </span>
             </p>
+            <p className="mt-1 text-sm text-alto-cream/70">
+              {t("checkout.confirmation.orderDate")}{" "}
+              {new Date(orderData.createdAt).toLocaleDateString("fr-FR")}
+            </p>
+          </div>
+        </div>
 
-            <div className="bg-blue-100 dark:bg-blue-900/30 rounded-lg p-3 mb-3">
-              <p className="text-sm text-blue-700 dark:text-blue-300 flex items-center gap-2">
-                <span>💡</span>
-                {t("checkout.confirmation.checkSpam")}
-              </p>
+        {/* Email + SMS */}
+        <div className="mb-6 border-2 border-alto-brown/15 bg-card p-5 dark:border-alto-cream/15 md:p-6">
+          <div className="flex items-start gap-4">
+            <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center bg-alto-orange">
+              <Mail className="h-5 w-5 text-alto-cream" />
             </div>
+            <div className="flex-1">
+              <h3 className="mb-2 font-bold" style={titleFont}>
+                {t("checkout.confirmation.emailSent")}
+              </h3>
+              <p className="mb-3 text-sm">
+                {t("checkout.confirmation.emailTo")}{" "}
+                <strong>{orderData.customer.email}</strong>
+              </p>
 
-            <div className="space-y-2 text-sm text-blue-600 dark:text-blue-400">
-              <p className="flex items-center gap-2">
-                <span>📱</span>
-                <span>
-                  <strong>SMS :</strong> {t("checkout.confirmation.smsTrackingShort")} <strong>{orderData.customer.phone}</strong>
-                </span>
-              </p>
-              <p className="text-xs text-blue-500 dark:text-blue-400 italic">
-                {t("checkout.confirmation.wrongContact")}
-              </p>
+              <div className="mb-3 border-l-4 border-alto-orange bg-primary/5 p-3">
+                <p className="text-sm">{t("checkout.confirmation.checkSpam")}</p>
+              </div>
+
+              <div className="space-y-1 text-sm text-muted-foreground">
+                <p className="flex items-center gap-2">
+                  <Smartphone className="h-4 w-4 shrink-0" />
+                  <span>
+                    <strong>SMS :</strong>{" "}
+                    {t("checkout.confirmation.smsTrackingShort")}{" "}
+                    <strong>{orderData.customer.phone}</strong>
+                  </span>
+                </p>
+                <p className="text-xs italic">
+                  {t("checkout.confirmation.wrongContact")}
+                </p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Message simple et sympathique */}
-        <Card>
-          <CardContent className="pt-6">
-            <div className="text-center py-8">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-3xl">😊</span>
-              </div>
-              <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-                {t("checkout.confirmation.simpleMessage")}
-              </p>
-            </div>
-          </CardContent>
-        </Card>
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          {/* Message simple et sympathique */}
+          <div className="flex items-center border-2 border-alto-brown/15 bg-card p-6 dark:border-alto-cream/15">
+            <p className="text-lg leading-relaxed">
+              {t("checkout.confirmation.simpleMessage")}
+            </p>
+          </div>
 
-        {/* Informations de livraison */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <MapPin className="w-5 h-5" />
-              {t("checkout.confirmation.deliveryInfo")}
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            {orderData.relayPoint ? (
-              <div className="space-y-2">
-                <p className="font-medium">
-                  {t("checkout.confirmation.relaySelected")}
-                </p>
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                  <p className="font-semibold text-blue-900">
-                    {orderData.relayPoint.name}
+          {/* Informations de livraison */}
+          <div className="border-2 border-alto-brown/15 bg-card dark:border-alto-cream/15">
+            <header className="flex items-center gap-3 border-b-2 border-alto-brown/15 px-5 py-4 dark:border-alto-cream/15">
+              <MapPin className="h-5 w-5 text-primary" />
+              <h2 className="font-bold" style={titleFont}>
+                {t("checkout.confirmation.deliveryInfo")}
+              </h2>
+            </header>
+            <div className="p-5">
+              {orderData.relayPoint ? (
+                <div className="space-y-2">
+                  <p className="font-medium">
+                    {t("checkout.confirmation.relaySelected")}
                   </p>
-                  <p className="text-blue-700">
-                    {orderData.relayPoint.address}
-                  </p>
-                  <p className="text-blue-700">
-                    {orderData.relayPoint.postalCode}{" "}
-                    {orderData.relayPoint.city}
+                  <div className="border-l-4 border-alto-blue bg-alto-blue/5 p-3 dark:border-alto-cream/60 dark:bg-alto-cream/5">
+                    <p className="font-bold" style={titleFont}>
+                      {orderData.relayPoint.name}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      {orderData.relayPoint.address}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      {orderData.relayPoint.postalCode}{" "}
+                      {orderData.relayPoint.city}
+                    </p>
+                  </div>
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    {t("checkout.confirmation.deliveryDelay")}
                   </p>
                 </div>
-                <p className="text-sm text-gray-600 mt-2">
-                  {t("checkout.confirmation.deliveryDelay")}
+              ) : (
+                <p className="text-muted-foreground">
+                  {t("checkout.confirmation.noDeliveryMode")}
                 </p>
-              </div>
-            ) : (
-              <p className="text-gray-600">
-                {t("checkout.confirmation.noDeliveryMode")}
-              </p>
-            )}
-          </CardContent>
-        </Card>
-      </div>
+              )}
+            </div>
+          </div>
+        </div>
 
-      {/* Actions */}
-      <div className="mt-8 flex justify-center">
-        <Button onClick={onBackToHome} className="flex items-center gap-2">
-          <Home className="w-4 h-4" />
-          {t("checkout.confirmation.backHome")}
-        </Button>
-      </div>
+        {/* Actions */}
+        <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          {orderData.invoice?.html && (
+            <Button
+              onClick={openInvoice}
+              className="w-full rounded-none bg-alto-orange font-bold text-alto-cream hover:bg-alto-orange-soft sm:w-auto"
+              style={titleFont}
+            >
+              <FileText className="mr-2 h-4 w-4" />
+              {t("checkout.confirmation.viewInvoice")}
+            </Button>
+          )}
+          <Button
+            onClick={onBackToHome}
+            variant="outline"
+            className="w-full rounded-none sm:w-auto"
+            style={titleFont}
+          >
+            <Home className="mr-2 h-4 w-4" />
+            {t("checkout.confirmation.backHome")}
+          </Button>
+        </div>
 
-      {/* Message rassurant */}
-      <Alert className="mt-8 bg-blue-50 border-blue-200">
-        <AlertDescription className="text-blue-800">
+        {/* Message rassurant */}
+        <div className="mt-10 border-l-4 border-primary bg-primary/5 p-4 text-sm">
           {t("checkout.confirmation.emailConfirmation")}
           <br />
           {t("checkout.confirmation.smsTracking")}
-        </AlertDescription>
-      </Alert>
-    </div>
+        </div>
+      </div>
+    </Layout>
   );
 }

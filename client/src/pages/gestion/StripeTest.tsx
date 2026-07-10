@@ -101,7 +101,7 @@ export function GestionStripeTest() {
                       <h3 className="font-semibold">
                         {productInfo.product.name}
                       </h3>
-                      <p className="text-sm text-gray-600">
+                      <p className="text-sm text-muted-foreground">
                         {productInfo.variation.variationType}:{" "}
                         {translateColor(
                           productInfo.variation.variationValue,
@@ -142,7 +142,7 @@ export function GestionStripeTest() {
             <TestTube className="w-8 h-8 text-blue-600" />
             <div>
               <h1 className="text-3xl font-bold">🧪 Test Stripe Admin</h1>
-              <p className="text-gray-600">
+              <p className="text-muted-foreground">
                 Interface de test sécurisée pour l'intégration Stripe
               </p>
             </div>
@@ -169,51 +169,57 @@ export function GestionStripeTest() {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
-              <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
-                <div className="font-semibold text-green-800">
+              <div className="p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
+                <div className="font-semibold text-green-800 dark:text-green-200">
                   ✅ Carte valide
                 </div>
                 <div className="font-mono">4242 4242 4242 4242</div>
-                <div className="text-green-600">
+                <div className="text-green-600 dark:text-green-400">
                   Expiration: future, CVC: 3 chiffres
                 </div>
               </div>
-              <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-                <div className="font-semibold text-red-800">
+              <div className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+                <div className="font-semibold text-red-800 dark:text-red-200">
                   ❌ Carte refusée
                 </div>
                 <div className="font-mono">4000 0000 0000 0002</div>
-                <div className="text-red-600">Simule un paiement refusé</div>
+                <div className="text-red-600 dark:text-red-400">
+                  Simule un paiement refusé
+                </div>
               </div>
-              <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-                <div className="font-semibold text-yellow-800">
+              <div className="p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
+                <div className="font-semibold text-yellow-800 dark:text-yellow-200">
                   ⚠️ 3D Secure
                 </div>
                 <div className="font-mono">4000 0025 0000 3155</div>
-                <div className="text-yellow-600">
+                <div className="text-yellow-600 dark:text-yellow-400">
                   Nécessite authentification
                 </div>
               </div>
-              <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                <div className="font-semibold text-blue-800">
+              <div className="p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+                <div className="font-semibold text-blue-800 dark:text-blue-200">
                   🔄 Fonds insuffisants
                 </div>
                 <div className="font-mono">4000 0000 0000 9995</div>
-                <div className="text-blue-600">Simule fonds insuffisants</div>
+                <div className="text-blue-600 dark:text-blue-400">
+                  Simule fonds insuffisants
+                </div>
               </div>
-              <div className="p-3 bg-purple-50 border border-purple-200 rounded-lg">
-                <div className="font-semibold text-purple-800">
+              <div className="p-3 bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg">
+                <div className="font-semibold text-purple-800 dark:text-purple-200">
                   ⏰ Traitement
                 </div>
                 <div className="font-mono">4000 0000 0000 9979</div>
-                <div className="text-purple-600">Traitement en cours</div>
-              </div>
-              <div className="p-3 bg-gray-50 border border-gray-200 rounded-lg">
-                <div className="font-semibold text-gray-800">
-                  🚫 CVC incorrect
+                <div className="text-purple-600 dark:text-purple-400">
+                  Traitement en cours
                 </div>
+              </div>
+              <div className="p-3 bg-muted border rounded-lg">
+                <div className="font-semibold">🚫 CVC incorrect</div>
                 <div className="font-mono">4000 0000 0000 0127</div>
-                <div className="text-gray-600">Échec de vérification CVC</div>
+                <div className="text-muted-foreground">
+                  Échec de vérification CVC
+                </div>
               </div>
             </div>
           </CardContent>
@@ -233,14 +239,16 @@ export function GestionStripeTest() {
               >
                 <CardHeader>
                   <CardTitle className="text-lg">{product.name}</CardTitle>
-                  <p className="text-sm text-gray-600">{product.description}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {product.description}
+                  </p>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
                     {product.variations?.map((variation) => (
                       <div
                         key={variation.id}
-                        className="flex items-center justify-between p-3 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                        className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50 transition-colors"
                       >
                         <div className="flex items-center gap-3">
                           <img
@@ -253,7 +261,7 @@ export function GestionStripeTest() {
                               {variation.variationType}:{" "}
                               {translateColor(variation.variationValue, t)}
                             </div>
-                            <div className="text-sm text-gray-500">
+                            <div className="text-sm text-muted-foreground">
                               Stock: {variation.stock}
                             </div>
                           </div>
@@ -295,20 +303,20 @@ export function GestionStripeTest() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Environment:</span>
-                  <span className="font-mono bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">
+                  <span className="text-muted-foreground">Environment:</span>
+                  <span className="font-mono bg-muted px-2 py-1 rounded">
                     {window.ENV?.NODE_ENV || "development"}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">API URL:</span>
-                  <span className="font-mono bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-xs">
+                  <span className="text-muted-foreground">API URL:</span>
+                  <span className="font-mono bg-muted px-2 py-1 rounded text-xs">
                     {window.ENV?.API_URL || "http://localhost:5000"}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Stripe Key:</span>
-                  <span className="font-mono bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-xs">
+                  <span className="text-muted-foreground">Stripe Key:</span>
+                  <span className="font-mono bg-muted px-2 py-1 rounded text-xs">
                     {window.ENV?.STRIPE_PUBLISHABLE_KEY?.substring(0, 12)}...
                   </span>
                 </div>

@@ -75,6 +75,7 @@ export interface IStorage {
   getUserByUsername(username: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
   verifyUser(username: string, password: string): Promise<User | undefined>;
+  updatePassword(userId: number, newPassword: string): Promise<boolean>;
 
   // Media
   getAllMedias(): Promise<Media[]>;

@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(sips -g pixelWidth -g pixelHeight images/alto/surmesure-lampe.jpg images/alto/poster-assemblage.jpg)",
+      "Bash(ls -la videos/)"
+    ]
+  }
+}

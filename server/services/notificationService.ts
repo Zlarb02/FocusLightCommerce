@@ -114,7 +114,7 @@ class NotificationService {
       const mailOptions = {
         from: this.shopEmail,
         to: data.customerEmail,
-        subject: `✅ Commande ${data.orderNumber} confirmée - Facture ${invoice.invoiceNumber}`,
+        subject: `Alto Lille — Commande ${data.orderNumber} confirmée · Facture ${invoice.invoiceNumber}`,
         html: emailHtml,
         attachments: [
           {
@@ -130,7 +130,7 @@ class NotificationService {
       console.log(`De: ${this.shopEmail}`);
       console.log(`À: ${data.customerEmail}`);
       console.log(
-        `Sujet: ✅ Commande ${data.orderNumber} confirmée - Facture ${invoice.invoiceNumber}`
+        `Sujet: Alto Lille — Commande ${data.orderNumber} confirmée · Facture ${invoice.invoiceNumber}`
       );
       console.log("---");
     } catch (error) {
@@ -140,7 +140,7 @@ class NotificationService {
       console.log(`De: ${this.shopEmail}`);
       console.log(`À: ${data.customerEmail}`);
       console.log(
-        `Sujet: ✅ Commande ${data.orderNumber} confirmée - Facture ${invoice.invoiceNumber}`
+        `Sujet: Alto Lille — Commande ${data.orderNumber} confirmée · Facture ${invoice.invoiceNumber}`
       );
       console.log("---");
     }
@@ -156,7 +156,7 @@ class NotificationService {
       const mailOptions = {
         from: this.shopEmail,
         to: this.adminEmail,
-        subject: `🚨 NOUVELLE COMMANDE ${data.orderNumber} - Facture ${invoice.invoiceNumber}`,
+        subject: `🔔 Nouvelle commande ${data.orderNumber} à préparer · Facture ${invoice.invoiceNumber}`,
         html: adminHtml,
         attachments: [
           {
@@ -172,7 +172,7 @@ class NotificationService {
       console.log(`De: ${this.shopEmail}`);
       console.log(`À: ${this.adminEmail}`);
       console.log(
-        `Sujet: 🚨 NOUVELLE COMMANDE ${data.orderNumber} - Facture ${invoice.invoiceNumber}`
+        `Sujet: 🔔 Nouvelle commande ${data.orderNumber} à préparer · Facture ${invoice.invoiceNumber}`
       );
       console.log("---");
     } catch (error) {
@@ -182,12 +182,16 @@ class NotificationService {
       console.log(`De: ${this.shopEmail}`);
       console.log(`À: ${this.adminEmail}`);
       console.log(
-        `Sujet: 🚨 NOUVELLE COMMANDE ${data.orderNumber} - Facture ${invoice.invoiceNumber}`
+        `Sujet: 🔔 Nouvelle commande ${data.orderNumber} à préparer · Facture ${invoice.invoiceNumber}`
       );
       console.log("---");
     }
   }
 
+  /**
+   * Email client — identité Alto Lille (maquette RARE.design) :
+   * crème #FEF7E8, brun #4A2020, orange #F54501, bleu #1B5EC4, encre #161615.
+   */
   private generateCustomerEmailHtml(
     data: OrderConfirmationData,
     invoice?: { invoiceNumber: string; invoiceHTML: string }
@@ -196,16 +200,20 @@ class NotificationService {
       .map(
         (item) => `
       <tr>
-        <td style="padding: 12px; border-bottom: 1px solid #e5e7eb;">
-          <div style="font-weight: 500;">${item.productName}</div>
-          <div style="color: #6b7280; font-size: 14px;">${
-            item.variationValue
+        <td style="padding: 12px 16px; border-bottom: 1px solid #EADFC9;">
+          <div style="font-weight: 700; color: #161615;">${
+            item.productName
           }</div>
+          ${
+            item.variationValue
+              ? `<div style="color: #7a6a5a; font-size: 13px;">${item.variationValue}</div>`
+              : ""
+          }
         </td>
-        <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; text-align: center;">
+        <td style="padding: 12px 16px; border-bottom: 1px solid #EADFC9; text-align: center; color: #161615;">
           ${item.quantity}
         </td>
-        <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; text-align: right; font-weight: 500;">
+        <td style="padding: 12px 16px; border-bottom: 1px solid #EADFC9; text-align: right; font-weight: 700; color: #161615;">
           ${(item.price * item.quantity * 100).toFixed(2)} €
         </td>
       </tr>
@@ -215,98 +223,90 @@ class NotificationService {
 
     return `
       <!DOCTYPE html>
-      <html>
+      <html lang="fr">
       <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Votre commande est confirmée !</title>
+        <title>Votre commande est confirmée — Alto Lille</title>
       </head>
-      <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #374151; margin: 0; padding: 0; background-color: #f9fafb;">
-        <div style="max-width: 600px; margin: 0 auto; background-color: white;">
-          <!-- Header avec gradient moderne -->
-          <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px 30px; text-align: center;">
-            <div style="font-size: 48px; margin-bottom: 10px;">🎉</div>
-            <h1 style="margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -0.5px;">C'est parti !</h1>
-            <p style="margin: 15px 0 0 0; font-size: 18px; opacity: 0.9;">Votre commande N° ${
-              data.orderNumber
-            } est confirmée</p>
+      <body style="font-family: 'Geist Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #161615; margin: 0; padding: 0; background-color: #FEF7E8;">
+        <div style="max-width: 600px; margin: 0 auto; background-color: #FEF7E8;">
+          <!-- Bandeau brun maquette -->
+          <div style="background: #4A2020; color: #FEF7E8; padding: 36px 30px; text-align: center;">
+            <div style="font-size: 30px; font-weight: 800; letter-spacing: 0.04em; margin-bottom: 4px;">ALTO</div>
+            <div style="font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(254,247,232,0.7); margin-bottom: 22px;">Design &amp; fabrication — Lille</div>
+            <h1 style="margin: 0; font-size: 26px; font-weight: 800;">Votre commande est confirmée</h1>
+            <p style="margin: 12px 0 0 0; font-size: 15px;">
+              <span style="display: inline-block; background: #F54501; color: #FEF7E8; font-weight: 700; padding: 6px 14px;">N° ${
+                data.orderNumber
+              }</span>
+            </p>
           </div>
-          
+
           <!-- Corps principal -->
-          <div style="padding: 40px 30px;">
-            <!-- Message d'accueil personnalisé -->
-            <div style="text-align: center; margin-bottom: 30px;">
-              <h2 style="color: #1f2937; margin: 0 0 15px 0; font-size: 24px;">Bonjour ${
+          <div style="padding: 36px 30px;">
+            <!-- Message d'accueil -->
+            <div style="margin-bottom: 28px;">
+              <h2 style="color: #4A2020; margin: 0 0 12px 0; font-size: 21px; font-weight: 800;">Bonjour ${
                 data.customerName
-              } ! 👋</h2>
-              <p style="color: #6b7280; font-size: 16px; margin: 0; line-height: 1.5;">
-                Super nouvelle : votre paiement est validé et nous nous chargeons de tout maintenant !<br>
-                Installez-vous confortablement, on s'occupe de la suite.
+              },</h2>
+              <p style="color: #161615; font-size: 15px; margin: 0;">
+                Votre paiement est validé — merci ! L'atelier prend le relais :
+                chaque pièce est vérifiée et emballée à la main avant de partir de Montreuil-sur-Mer.
               </p>
             </div>
 
-            <!-- Timeline du processus -->
-            <div style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); padding: 25px; border-radius: 12px; margin: 30px 0; border: 1px solid #bae6fd;">
-              <h3 style="margin: 0 0 20px 0; color: #0c4a6e; font-size: 18px; display: flex; align-items: center;">
-                <span style="display: inline-block; width: 24px; height: 24px; background: #0ea5e9; border-radius: 50%; color: white; text-align: center; line-height: 24px; margin-right: 10px; font-size: 14px;">✓</span>
-                Voici ce qui se passe maintenant
-              </h3>
-              
-              <div style="display: flex; flex-wrap: wrap; gap: 15px;">
-                <div style="flex: 1; min-width: 200px; background: white; padding: 15px; border-radius: 8px; border-left: 3px solid #f59e0b;">
-                  <div style="font-weight: 600; color: #92400e; margin-bottom: 5px;">⚡ Préparation express</div>
-                  <div style="font-size: 14px; color: #6b7280;">24-48h max • On fait au plus vite !</div>
-                </div>
-                
-                <div style="flex: 1; min-width: 200px; background: white; padding: 15px; border-radius: 8px; border-left: 3px solid #10b981;">
-                  <div style="font-weight: 600; color: #065f46; margin-bottom: 5px;">📦 Expédition gratuite</div>
-                  <div style="font-size: 14px; color: #6b7280;">Suivi par email • Livraison 2-3 jours</div>
-                </div>
+            <!-- Les prochaines étapes -->
+            <div style="margin: 28px 0;">
+              <h3 style="margin: 0 0 12px 0; color: #4A2020; font-size: 12px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;">Les prochaines étapes</h3>
+              <div style="background: #FFFFFF; border-left: 4px solid #F54501; padding: 14px 16px; margin-bottom: 10px;">
+                <div style="font-weight: 700; color: #161615; margin-bottom: 2px;">01 — Préparation à l'atelier</div>
+                <div style="font-size: 14px; color: #7a6a5a;">Sous 24 à 48 h maximum</div>
+              </div>
+              <div style="background: #FFFFFF; border-left: 4px solid #1B5EC4; padding: 14px 16px;">
+                <div style="font-weight: 700; color: #161615; margin-bottom: 2px;">02 — Expédition offerte</div>
+                <div style="font-size: 14px; color: #7a6a5a;">Suivi par email · livraison en 2-3 jours</div>
               </div>
             </div>
 
-            <!-- Récapitulatif de commande moderne -->
-            <div style="margin: 30px 0;">
-              <h3 style="color: #1f2937; margin: 0 0 15px 0; font-size: 18px;">📋 Récap de votre commande</h3>
-              <div style="background: #f9fafb; border-radius: 12px; overflow: hidden; border: 1px solid #e5e7eb;">
-                <table style="width: 100%; border-collapse: collapse;">
-                  <thead>
-                    <tr style="background: #374151; color: white;">
-                      <th style="padding: 15px; text-align: left; font-weight: 600;">Produit</th>
-                      <th style="padding: 15px; text-align: center; font-weight: 600; width: 80px;">Qté</th>
-                      <th style="padding: 15px; text-align: right; font-weight: 600; width: 100px;">Prix</th>
-                    </tr>
-                  </thead>
-                  <tbody style="background: white;">
-                    ${itemsHtml}
-                  </tbody>
-                  <tfoot>
-                    <tr style="background: #f3f4f6;">
-                      <td style="padding: 15px; font-weight: 700; color: #1f2937;" colspan="2">Total payé</td>
-                      <td style="padding: 15px; text-align: right; font-weight: 700; color: #059669; font-size: 18px;">${(data.totalAmount * 100).toFixed(2)} €</td>
-                    </tr>
-                  </tfoot>
-                </table>
-              </div>
+            <!-- Récapitulatif de commande -->
+            <div style="margin: 28px 0;">
+              <h3 style="margin: 0 0 12px 0; color: #4A2020; font-size: 12px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;">Votre commande</h3>
+              <table style="width: 100%; border-collapse: collapse; background: #FFFFFF;">
+                <thead>
+                  <tr style="background: #4A2020; color: #FEF7E8;">
+                    <th style="padding: 12px 16px; text-align: left; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;">Produit</th>
+                    <th style="padding: 12px 16px; text-align: center; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; width: 60px;">Qté</th>
+                    <th style="padding: 12px 16px; text-align: right; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; width: 100px;">Prix</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${itemsHtml}
+                </tbody>
+                <tfoot>
+                  <tr style="background: #F54501; color: #FEF7E8;">
+                    <td style="padding: 14px 16px; font-weight: 800;" colspan="2">Total payé</td>
+                    <td style="padding: 14px 16px; text-align: right; font-weight: 800; font-size: 17px;">${(data.totalAmount * 100).toFixed(2)} €</td>
+                  </tr>
+                </tfoot>
+              </table>
             </div>
 
-            <!-- Point relais avec style moderne -->
+            <!-- Point relais -->
             ${
               data.relayPoint
                 ? `
-            <div style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); padding: 25px; border-radius: 12px; margin: 30px 0; border: 1px solid #a7f3d0;">
-              <h3 style="margin: 0 0 15px 0; color: #065f46; font-size: 18px; display: flex; align-items: center;">
-                📍 Votre point relais
-              </h3>
-              <div style="background: white; padding: 20px; border-radius: 8px; border-left: 4px solid #10b981;">
-                <div style="font-weight: 700; color: #1f2937; font-size: 16px; margin-bottom: 8px;">${data.relayPoint.name}</div>
-                <div style="color: #6b7280; line-height: 1.4;">
+            <div style="margin: 28px 0;">
+              <h3 style="margin: 0 0 12px 0; color: #4A2020; font-size: 12px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;">Votre point relais</h3>
+              <div style="background: #FFFFFF; border-left: 4px solid #1B5EC4; padding: 16px;">
+                <div style="font-weight: 700; color: #161615; font-size: 16px; margin-bottom: 6px;">${data.relayPoint.name}</div>
+                <div style="color: #7a6a5a; line-height: 1.5;">
                   ${data.relayPoint.address}<br>
                   ${data.relayPoint.postalCode} ${data.relayPoint.city}
                 </div>
-                <div style="margin-top: 15px; padding: 10px; background: #fef3c7; border-radius: 6px; border-left: 3px solid #f59e0b;">
-                  <div style="font-size: 14px; color: #92400e;">
-                    <strong>💡 Pour le retrait :</strong> Munissez-vous de votre pièce d'identité et du SMS/email de confirmation que vous recevrez.
+                <div style="margin-top: 12px; padding: 10px 12px; background: #FEF7E8; border-left: 3px solid #F54501;">
+                  <div style="font-size: 13px; color: #4A2020;">
+                    <strong>Pour le retrait :</strong> munissez-vous de votre pièce d'identité et du SMS ou de l'email de confirmation que vous recevrez.
                   </div>
                 </div>
               </div>
@@ -315,13 +315,12 @@ class NotificationService {
                 : ""
             }
 
-            <!-- Message rassurant sur la confidentialité -->
-            <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 20px; border-radius: 12px; margin: 30px 0; border: 1px solid #93c5fd; text-align: center;">
-              <div style="font-size: 24px; margin-bottom: 10px;">🔒</div>
-              <div style="font-weight: 600; color: #1e40af; margin-bottom: 8px;">Promesse tenue !</div>
-              <div style="color: #3730a3; font-size: 14px; line-height: 1.4;">
-                Vos données ne servent QUE pour cette commande.<br>
-                <strong>Zéro spam, zéro revente, zéro stress.</strong>
+            <!-- Confidentialité -->
+            <div style="background: #4A2020; color: #FEF7E8; padding: 18px 20px; margin: 28px 0;">
+              <div style="font-weight: 700; margin-bottom: 6px;">Promesse tenue</div>
+              <div style="font-size: 14px; color: rgba(254,247,232,0.85);">
+                Vos données ne servent que pour cette commande.
+                <strong style="color: #FF7402;">Zéro spam, zéro revente.</strong>
               </div>
             </div>
 
@@ -329,39 +328,32 @@ class NotificationService {
               invoice
                 ? `
             <!-- Facture -->
-            <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); padding: 20px; border-radius: 12px; margin: 30px 0; border: 1px solid #86efac; text-align: center;">
-              <div style="font-size: 24px; margin-bottom: 10px;">📄</div>
-              <div style="font-weight: 600; color: #166534; margin-bottom: 8px;">Votre facture</div>
-              <div style="color: #15803d; font-size: 14px; line-height: 1.4; margin-bottom: 15px;">
-                Facture N° ${invoice.invoiceNumber}<br>
-                <strong>Consultez le fichier joint à cet email</strong>
-              </div>
-              <div style="color: #166534; font-size: 12px;">
-                💡 Cette facture fait foi pour vos déclarations et garanties
+            <div style="background: #FFFFFF; border-left: 4px solid #F54501; padding: 16px 20px; margin: 28px 0;">
+              <div style="font-weight: 700; color: #161615; margin-bottom: 4px;">Votre facture N° ${invoice.invoiceNumber}</div>
+              <div style="color: #7a6a5a; font-size: 14px;">
+                Elle est jointe à cet email — elle fait foi pour vos garanties (2 ans) et vos déclarations.
               </div>
             </div>
             `
                 : ""
             }
 
-            <!-- Contact amical -->
-            <div style="text-align: center; margin: 40px 0;">
-              <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0;">
-                <div style="font-size: 20px; margin-bottom: 10px;">💬</div>
-                <div style="color: #475569; font-size: 14px;">
-                  <strong>Une question ? Un souci ?</strong><br>
-                  Répondez simplement à cet email, on est là ! 😊
-                </div>
+            <!-- Contact -->
+            <div style="text-align: center; margin: 32px 0 0;">
+              <div style="color: #161615; font-size: 14px;">
+                <strong>Une question ? Un souci ?</strong><br>
+                Répondez simplement à cet email, nous sommes là.
               </div>
             </div>
 
-            <!-- Footer chaleureux -->
-            <div style="text-align: center; margin-top: 40px; padding-top: 30px; border-top: 1px solid #e5e7eb;">
-              <div style="color: #6b7280; font-size: 16px; margin-bottom: 10px;">
-                Merci de votre confiance ! ❤️
+            <!-- Footer -->
+            <div style="text-align: center; margin-top: 32px; padding-top: 24px; border-top: 1px solid #EADFC9;">
+              <div style="color: #4A2020; font-size: 15px; font-weight: 700; margin-bottom: 6px;">
+                Merci de votre confiance,
               </div>
-              <div style="color: #9ca3af; font-size: 14px;">
-                L'équipe Alto Lille
+              <div style="color: #7a6a5a; font-size: 14px;">
+                Anatole — Alto Lille<br>
+                <a href="https://www.alto-lille.fr" style="color: #F54501; text-decoration: none;">www.alto-lille.fr</a>
               </div>
             </div>
           </div>
@@ -386,65 +378,70 @@ class NotificationService {
 
     return `
       <!DOCTYPE html>
-      <html>
+      <html lang="fr">
       <head>
         <meta charset="utf-8">
-        <title>Nouvelle commande à traiter</title>
+        <title>Nouvelle commande à préparer — Alto Lille</title>
       </head>
-      <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-        <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
-          <div style="background: #dc2626; color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-            <h1 style="margin: 0;">🚨 NOUVELLE COMMANDE À TRAITER</h1>
-            <h2 style="margin: 10px 0 0 0;">N° ${data.orderNumber}</h2>
+      <body style="font-family: 'Geist Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #161615; margin: 0; padding: 0; background: #FEF7E8;">
+        <div style="max-width: 600px; margin: 0 auto; background: #FEF7E8; padding-bottom: 24px;">
+          <div style="background: #F54501; color: #FEF7E8; padding: 24px 26px;">
+            <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 6px;">Alto Lille — Gestion</div>
+            <h1 style="margin: 0; font-size: 22px; font-weight: 800;">Nouvelle commande à préparer</h1>
+            <h2 style="margin: 8px 0 0 0; font-size: 17px; font-weight: 700;">N° ${
+              data.orderNumber
+            }</h2>
           </div>
 
-          <div style="background: #f3f4f6; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-            <h3 style="margin-top: 0; color: #1f2937;">👤 INFORMATIONS CLIENT</h3>
-            <p><strong>Nom :</strong> ${data.customerName}</p>
-            <p><strong>Email :</strong> <a href="mailto:${
+          <div style="background: #FFFFFF; border-left: 4px solid #4A2020; padding: 16px 20px; margin: 20px 26px 0;">
+            <h3 style="margin: 0 0 8px; color: #4A2020; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase;">Informations client</h3>
+            <p style="margin: 4px 0;"><strong>Nom :</strong> ${
+              data.customerName
+            }</p>
+            <p style="margin: 4px 0;"><strong>Email :</strong> <a href="mailto:${
               data.customerEmail
-            }">${data.customerEmail}</a></p>
-            <p><strong>Téléphone :</strong> <a href="tel:${
+            }" style="color: #F54501;">${data.customerEmail}</a></p>
+            <p style="margin: 4px 0;"><strong>Téléphone :</strong> <a href="tel:${
               data.customerPhone
-            }">${data.customerPhone}</a></p>
+            }" style="color: #F54501;">${data.customerPhone}</a></p>
           </div>
 
-          <div style="background: #ecfdf5; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-            <h3 style="margin-top: 0; color: #065f46;">🎯 ACTIONS À FAIRE</h3>
+          <div style="background: #FFFFFF; border-left: 4px solid #F54501; padding: 16px 20px; margin: 16px 26px 0;">
+            <h3 style="margin: 0 0 8px; color: #4A2020; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase;">Actions à faire</h3>
             <ol style="margin: 0; padding-left: 20px;">
               <li><strong>Préparer les articles</strong> (voir liste ci-dessous)</li>
               ${
                 data.relayPoint
-                  ? `<li><strong>Imprimer étiquette</strong> pour ${data.relayPoint.name}</li>`
+                  ? `<li><strong>Imprimer l'étiquette</strong> pour ${data.relayPoint.name}</li>`
                   : ""
               }
               <li><strong>Envoyer le colis</strong> avec Mondial Relay</li>
-              <li><strong>Envoyer email</strong> avec lien de suivi au client</li>
+              <li><strong>Envoyer l'email</strong> avec le lien de suivi au client</li>
             </ol>
           </div>
 
-          <div style="background: #eff6ff; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-            <h3 style="margin-top: 0; color: #1e40af;">📦 ARTICLES À EXPÉDIER</h3>
-            <div style="background: white; padding: 15px; border-radius: 5px; font-family: monospace; white-space: pre-line;">${itemsList}</div>
-            <p><strong>Total :</strong> ${(data.totalAmount * 100).toFixed(2)} €</p>
+          <div style="background: #FFFFFF; border-left: 4px solid #1B5EC4; padding: 16px 20px; margin: 16px 26px 0;">
+            <h3 style="margin: 0 0 8px; color: #4A2020; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase;">Articles à expédier</h3>
+            <div style="background: #FEF7E8; padding: 14px; font-family: monospace; white-space: pre-line;">${itemsList}</div>
+            <p style="margin: 10px 0 0;"><strong>Total :</strong> <span style="color: #F54501; font-weight: 800;">${(data.totalAmount * 100).toFixed(2)} €</span></p>
           </div>
 
-          <div style="background: #fef3c7; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-            <h3 style="margin-top: 0; color: #92400e;">📍 ADRESSE POINT RELAIS</h3>
-            <div style="background: white; padding: 15px; border-radius: 5px;">
+          <div style="background: #4A2020; color: #FEF7E8; padding: 16px 20px; margin: 16px 26px 0;">
+            <h3 style="margin: 0 0 8px; color: #FF7402; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase;">Adresse point relais</h3>
+            <div>
               ${
                 data.relayPoint
                   ? `<strong>${data.relayPoint.name}</strong><br>${data.relayPoint.address}<br>${data.relayPoint.postalCode} ${data.relayPoint.city}`
                   : "<strong>Point relais non spécifié</strong>"
               }
             </div>
-            <p style="margin-top: 10px; font-size: 14px; color: #92400e;">
-              ⚠️ <strong>Important :</strong> Bien vérifier l'adresse sur l'étiquette Mondial Relay
+            <p style="margin: 10px 0 0; font-size: 13px; color: rgba(254,247,232,0.8);">
+              <strong>Important :</strong> bien vérifier l'adresse sur l'étiquette Mondial Relay.
             </p>
           </div>
 
-          <div style="background: #f9fafb; padding: 15px; border-radius: 8px; text-align: center;">
-            <p style="margin: 0; font-size: 14px; color: #6b7280;">
+          <div style="text-align: center; padding: 20px 26px 0;">
+            <p style="margin: 0; font-size: 13px; color: #7a6a5a;">
               Email envoyé automatiquement le ${new Date().toLocaleString(
                 "fr-FR"
               )}

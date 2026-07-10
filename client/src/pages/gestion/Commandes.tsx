@@ -54,13 +54,12 @@ type OrderWithDetails = {
     id: number;
     orderId: number;
     productId: number;
+    productName: string;
+    variationType: string | null;
+    variationValue: string | null;
     quantity: number;
-    price: number;
-    product?: {
-      name: string;
-      color: string;
-      imageUrl: string;
-    };
+    unitPrice: number;
+    totalPrice: number;
   }>;
 };
 
@@ -171,7 +170,7 @@ export default function Commandes() {
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
         </div>
       ) : (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow">
+        <div className="bg-card text-card-foreground rounded-lg border shadow-sm">
           <Table>
             <TableHeader>
               <TableRow>
@@ -202,6 +201,7 @@ export default function Commandes() {
                     <TableCell>
                       {new Date(order.createdAt).toLocaleDateString()}
                     </TableCell>
+                    {/* totalAmount est stocké en euros en BDD */}
                     <TableCell>{formatPrice(order.totalAmount)}</TableCell>
                     <TableCell>{getStatusBadge(order.status)}</TableCell>
                     <TableCell className="text-right">
@@ -258,7 +258,7 @@ export default function Commandes() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <h3 className="font-medium mb-2">Informations client</h3>
-                <div className="bg-slate-50 dark:bg-gray-700 p-4 rounded-md">
+                <div className="bg-muted p-4 rounded-md">
                   <p>
                     {selectedOrder.customer.firstName}{" "}
                     {selectedOrder.customer.lastName}
@@ -266,7 +266,7 @@ export default function Commandes() {
                   <p>{selectedOrder.customer.email}</p>
                   <p>{selectedOrder.customer.phone}</p>
                   {selectedOrder.customer.address && (
-                    <div className="mt-2 pt-2 border-t border-slate-200 dark:border-gray-600">
+                    <div className="mt-2 pt-2 border-t">
                       <p>{selectedOrder.customer.address}</p>
                       <p>
                         {selectedOrder.customer.postalCode}{" "}
@@ -286,34 +286,28 @@ export default function Commandes() {
 
               <div>
                 <h3 className="font-medium mb-2">Produits commandés</h3>
-                <div className="bg-slate-50 dark:bg-gray-700 p-4 rounded-md">
-                  <ul className="divide-y divide-slate-200 dark:divide-gray-600">
+                <div className="bg-muted p-4 rounded-md">
+                  <ul className="divide-y divide-border">
                     {selectedOrder.items.map((item) => (
                       <li
                         key={item.id}
                         className="py-2 flex items-center gap-2"
                       >
-                        {item.product?.imageUrl && (
-                          <img
-                            src={item.product.imageUrl}
-                            alt={item.product?.name || "Produit"}
-                            className="w-10 h-10 object-contain"
-                          />
-                        )}
                         <div className="flex-grow">
                           <p>
-                            {item.product?.name || "FOCUS.01"}{" "}
-                            {item.product?.color && `(${item.product.color})`}
+                            {item.productName}{" "}
+                            {item.variationValue && `(${item.variationValue})`}
                           </p>
                           <div className="flex justify-between text-sm text-muted-foreground">
                             <span>Qté: {item.quantity}</span>
-                            <span>{formatPrice(item.price)}</span>
+                            {/* total_price est stocké en euros/100 par checkoutRoutes */}
+                            <span>{formatPrice(item.totalPrice * 100)}</span>
                           </div>
                         </div>
                       </li>
                     ))}
                   </ul>
-                  <div className="pt-2 mt-2 border-t border-slate-200 dark:border-gray-600 flex justify-between font-medium">
+                  <div className="pt-2 mt-2 border-t flex justify-between font-medium">
                     <span>Total</span>
                     <span>{formatPrice(selectedOrder.totalAmount)}</span>
                   </div>

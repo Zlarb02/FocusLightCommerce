@@ -43,7 +43,7 @@ export default function GestionLogin() {
   }, []);
 
   // Vérifier le statut d'authentification
-  const { data: authStatus } = useQuery({
+  const { data: authStatus, isLoading: isAuthLoading } = useQuery({
     queryKey: ["authStatus"],
     queryFn: async () => {
       try {
@@ -115,19 +115,19 @@ export default function GestionLogin() {
   };
 
   // Afficher un loader pendant la vérification
-  if (authStatus?.isLoading) {
+  if (isAuthLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-        <div className="text-center text-gray-500 dark:text-gray-400">Chargement...</div>
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center text-muted-foreground">Chargement...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen flex items-center justify-center bg-background">
       <div className="w-full max-w-md px-4">
         <div className="mb-8 text-center">
-          <h1 className="font-heading font-bold text-3xl mb-2 text-gray-900 dark:text-gray-100">Alto</h1>
+          <h1 className="font-heading font-bold text-3xl mb-2">Alto</h1>
           <p className="text-muted-foreground">Espace de gestion</p>
         </div>
 
@@ -151,7 +151,11 @@ export default function GestionLogin() {
                     <FormItem>
                       <FormLabel>Nom d'utilisateur</FormLabel>
                       <FormControl>
-                        <Input placeholder="Votre identifiant" {...field} />
+                        <Input
+                          placeholder="Votre identifiant"
+                          autoComplete="username"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -168,6 +172,7 @@ export default function GestionLogin() {
                         <Input
                           type="password"
                           placeholder="Mot de passe"
+                          autoComplete="current-password"
                           {...field}
                         />
                       </FormControl>

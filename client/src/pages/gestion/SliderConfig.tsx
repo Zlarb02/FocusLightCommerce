@@ -424,7 +424,7 @@ export default function SliderConfig() {
               {pendingConfig && pendingConfig.slides.length > 0 ? (
                 <div className="space-y-4">
                   <div className="flex justify-center">
-                    <div className="aspect-[3/4] w-full max-w-[280px] bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden relative shadow-lg">
+                    <div className="aspect-[3/4] w-full max-w-[280px] bg-muted rounded-lg overflow-hidden relative shadow-lg">
                       <img
                         src={pendingConfig.slides.sort((a, b) => a.order - b.order)[previewIndex]?.url}
                         alt={pendingConfig.slides.sort((a, b) => a.order - b.order)[previewIndex]?.alt}
@@ -470,7 +470,7 @@ export default function SliderConfig() {
                 </div>
               ) : (
                 <div className="flex justify-center">
-                  <div className="aspect-[3/4] w-full max-w-[280px] bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center shadow-lg">
+                  <div className="aspect-[3/4] w-full max-w-[280px] bg-muted rounded-lg flex items-center justify-center shadow-lg">
                     <div className="text-center text-muted-foreground">
                       <Image className="h-12 w-12 mx-auto mb-2 opacity-50" />
                       <p>Aucune image configurée</p>
@@ -516,7 +516,7 @@ export default function SliderConfig() {
                   .map((slide, index) => (
                     <div
                       key={slide.order}
-                      className="flex items-center gap-4 p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg"
+                      className="flex items-center gap-4 p-3 bg-muted/50 rounded-lg"
                     >
                       <div className="flex flex-col gap-1">
                         <Button
@@ -538,7 +538,7 @@ export default function SliderConfig() {
                           <ChevronDown className="h-4 w-4" />
                         </Button>
                       </div>
-                      <div className="w-16 h-[85px] bg-gray-200 dark:bg-gray-700 rounded overflow-hidden flex-shrink-0">
+                      <div className="w-16 h-[85px] bg-muted rounded overflow-hidden flex-shrink-0">
                         <img
                           src={slide.url}
                           alt={slide.alt}
@@ -641,7 +641,7 @@ export default function SliderConfig() {
             {newSlideUrl && (
               <div className="space-y-3">
                 <div className="flex justify-center">
-                  <div className="aspect-[3/4] w-full max-w-[200px] bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden shadow-md relative">
+                  <div className="aspect-[3/4] w-full max-w-[200px] bg-muted rounded-lg overflow-hidden shadow-md relative">
                     <img
                       src={newSlideUrl}
                       alt="Aperçu"
@@ -707,7 +707,7 @@ export default function SliderConfig() {
                 <button
                   key={media.id}
                   onClick={() => handleSelectMedia(media)}
-                  className="aspect-video bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden hover:ring-2 hover:ring-primary transition-all"
+                  className="aspect-video bg-muted rounded-lg overflow-hidden hover:ring-2 hover:ring-primary transition-all"
                 >
                   <img
                     src={media.path}

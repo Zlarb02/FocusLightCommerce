@@ -1340,7 +1340,7 @@ export default function Contenu() {
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {illustrationsData?.illustrations.map((illustration) => (
                       <Card key={illustration.key} className="overflow-hidden">
-                        <div className="aspect-video bg-gray-100 overflow-hidden">
+                        <div className="aspect-video bg-muted overflow-hidden">
                           <img
                             src={illustration.url}
                             alt={illustration.title}
@@ -1488,7 +1488,7 @@ export default function Contenu() {
                     {productContent.sections.map((section) => (
                       <div
                         key={section.id}
-                        className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg"
+                        className="flex items-center justify-between p-4 bg-muted/50 rounded-lg"
                       >
                         <div>
                           <p className="font-medium capitalize">{section.id}</p>

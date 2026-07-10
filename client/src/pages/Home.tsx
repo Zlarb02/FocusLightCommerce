@@ -571,16 +571,25 @@ export default function Home() {
               <Menu className="h-6 w-6" />
             </button>
             <Link
-              href="/"
-              className="absolute left-1/2 flex -translate-x-1/2 items-center gap-3 text-primary"
-              aria-label="Alto Lille"
+              href="/shop"
+              className="group absolute left-1/2 flex -translate-x-1/2 items-center gap-3 text-primary"
+              aria-label={t("landing.cta")}
             >
-              <AltoMark className="h-8 w-8 md:h-10 md:w-10" />
-              <span
-                className="text-lg font-bold md:text-xl"
-                style={{ fontFamily: "var(--font-titles)" }}
-              >
-                Alto Lille
+              <AltoMark className="h-8 w-8 transition-transform duration-300 group-hover:rotate-6 md:h-10 md:w-10" />
+              <span className="flex flex-col">
+                <span
+                  className="text-lg font-bold leading-tight md:text-xl"
+                  style={{ fontFamily: "var(--font-titles)" }}
+                >
+                  Alto Lille
+                </span>
+                <span
+                  className="flex items-center gap-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-foreground/60 transition-colors duration-300 group-hover:text-primary md:text-[11px]"
+                  style={{ fontFamily: "var(--font-nav)" }}
+                >
+                  {t("nav.shop")}
+                  <ArrowRight className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-1" />
+                </span>
               </span>
             </Link>
             <span className="flex items-center gap-1 text-foreground">

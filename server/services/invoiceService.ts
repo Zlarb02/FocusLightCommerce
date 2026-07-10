@@ -55,26 +55,31 @@ export class InvoiceService {
   };
 
   /**
-   * Génère une facture en HTML
+   * Génère une facture en HTML — identité Alto Lille (maquette RARE.design) :
+   * crème #FEF7E8, brun #4A2020, orange #F54501, encre #161615.
    */
   generateInvoiceHTML(data: InvoiceData): string {
     const itemsHTML = data.items
       .map(
         (item) => `
         <tr>
-          <td style="padding: 12px; border-bottom: 1px solid #e5e7eb;">
-            <div style="font-weight: 500;">${item.productName}</div>
-            <div style="color: #6b7280; font-size: 14px;">${
-              item.variationValue
+          <td style="padding: 14px 16px; border-bottom: 1px solid #EADFC9;">
+            <div style="font-weight: 700; color: #161615;">${
+              item.productName
             }</div>
+            ${
+              item.variationValue
+                ? `<div style="color: #7a6a5a; font-size: 13px;">${item.variationValue}</div>`
+                : ""
+            }
           </td>
-          <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; text-align: center;">
+          <td style="padding: 14px 16px; border-bottom: 1px solid #EADFC9; text-align: center; color: #161615;">
             ${item.quantity}
           </td>
-          <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; text-align: right;">
+          <td style="padding: 14px 16px; border-bottom: 1px solid #EADFC9; text-align: right; color: #161615;">
             ${item.unitPrice.toFixed(2)} €
           </td>
-          <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; text-align: right; font-weight: 500;">
+          <td style="padding: 14px 16px; border-bottom: 1px solid #EADFC9; text-align: right; font-weight: 700; color: #161615;">
             ${item.totalPrice.toFixed(2)} €
           </td>
         </tr>
@@ -84,145 +89,161 @@ export class InvoiceService {
 
     return `
       <!DOCTYPE html>
-      <html>
+      <html lang="fr">
       <head>
         <meta charset="utf-8">
-        <title>Facture ${data.invoiceNumber}</title>
+        <title>Facture ${data.invoiceNumber} — Alto Lille</title>
         <style>
-          body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-          .invoice-container { max-width: 800px; margin: 0 auto; padding: 20px; }
-          .header { display: flex; justify-content: space-between; margin-bottom: 40px; }
-          .company-info { font-size: 14px; line-height: 1.5; }
-          .invoice-title { font-size: 24px; font-weight: bold; color: #1f2937; }
-          .invoice-details { background: #f9fafb; padding: 20px; border-radius: 8px; margin: 20px 0; }
-          .customer-info { margin: 20px 0; }
-          .items-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-          .items-table th { background: #374151; color: white; padding: 12px; text-align: left; }
-          .totals { text-align: right; margin: 20px 0; }
-          .total-line { display: flex; justify-content: space-between; margin: 5px 0; }
-          .total-final { font-weight: bold; font-size: 18px; color: #059669; }
-          .footer { margin-top: 40px; font-size: 12px; color: #6b7280; text-align: center; }
-          @media print { body { margin: 0; } .invoice-container { margin: 0; padding: 15px; } }
+          * { box-sizing: border-box; }
+          body {
+            font-family: 'Geist Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, sans-serif;
+            color: #161615;
+            margin: 0;
+            background: #FEF7E8;
+          }
+          .invoice-container { max-width: 800px; margin: 0 auto; background: #FEF7E8; }
+          .band {
+            background: #4A2020;
+            color: #FEF7E8;
+            padding: 32px 36px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+          }
+          .brand { font-size: 34px; font-weight: 800; letter-spacing: 0.02em; margin: 0; }
+          .brand small { display: block; font-size: 12px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(254,247,232,0.7); margin-top: 4px; }
+          .invoice-meta { text-align: right; }
+          .invoice-title { font-size: 22px; font-weight: 800; letter-spacing: 0.14em; }
+          .invoice-number { color: #FF7402; font-weight: 700; margin-top: 6px; }
+          .invoice-date { color: rgba(254,247,232,0.7); font-size: 13px; margin-top: 4px; }
+          .content { padding: 28px 36px 36px; }
+          .grid { display: flex; gap: 16px; margin: 0 0 20px; }
+          .box { flex: 1; background: #FFFFFF; border-left: 4px solid #F54501; padding: 14px 16px; font-size: 14px; line-height: 1.55; }
+          .box.blue { border-left-color: #1B5EC4; }
+          .box h3 { margin: 0 0 6px; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #4A2020; }
+          .order-strip { background: #4A2020; color: #FEF7E8; padding: 12px 16px; font-size: 13px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+          .order-strip strong { color: #FF7402; }
+          .items-table { width: 100%; border-collapse: collapse; margin: 0 0 8px; background: #FFFFFF; }
+          .items-table th {
+            background: #4A2020; color: #FEF7E8; padding: 12px 16px; text-align: left;
+            font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+          }
+          .totals { margin: 20px 0 0; margin-left: auto; width: 300px; font-size: 14px; }
+          .total-line { display: flex; justify-content: space-between; padding: 5px 0; }
+          .total-final {
+            background: #F54501; color: #FEF7E8; font-weight: 800; font-size: 17px;
+            padding: 12px 16px; margin-top: 10px; display: flex; justify-content: space-between;
+          }
+          .footer { margin-top: 40px; font-size: 11px; color: #7a6a5a; text-align: center; line-height: 1.7; border-top: 1px solid #EADFC9; padding-top: 20px; }
+          .footer strong { color: #4A2020; }
+          @media print { body { margin: 0; } .content { padding: 24px 28px 28px; } }
         </style>
       </head>
       <body>
         <div class="invoice-container">
-          <!-- En-tête -->
-          <div class="header">
+          <!-- Bandeau brun maquette -->
+          <div class="band">
             <div>
-              <h1 style="margin: 0; color: #1f2937; font-size: 28px;">${
-                this.companyInfo.name
-              }</h1>
-              <div class="company-info">
+              <h1 class="brand">ALTO<small>Design &amp; fabrication — Lille</small></h1>
+              <div style="font-size: 13px; line-height: 1.6; margin-top: 14px; color: rgba(254,247,232,0.85);">
                 ${this.companyInfo.address}<br>
                 ${this.companyInfo.postalCode} ${this.companyInfo.city}<br>
-                Tél: ${this.companyInfo.phone}<br>
-                Email: ${this.companyInfo.email}<br>
-                ${
-                  this.companyInfo.siret
-                    ? `SIRET: ${this.companyInfo.siret}<br>`
-                    : ""
-                }
-                ${this.companyInfo.tva ? `TVA: ${this.companyInfo.tva}` : ""}
+                ${this.companyInfo.phone} · ${this.companyInfo.email}<br>
+                ${this.companyInfo.website}
               </div>
             </div>
-            <div style="text-align: right;">
+            <div class="invoice-meta">
               <div class="invoice-title">FACTURE</div>
-              <div style="font-size: 18px; margin: 10px 0;">N° ${
-                data.invoiceNumber
-              }</div>
-              <div style="color: #6b7280;">Date: ${data.issueDate}</div>
+              <div class="invoice-number">N° ${data.invoiceNumber}</div>
+              <div class="invoice-date">Émise le ${data.issueDate}</div>
             </div>
           </div>
 
-          <!-- Informations client -->
-          <div class="customer-info">
-            <h3 style="color: #1f2937; margin-bottom: 10px;">Facturé à :</h3>
-            <div style="background: #f9fafb; padding: 15px; border-radius: 8px;">
-              <strong>${data.customerName}</strong><br>
-              ${data.customerEmail}<br>
-              ${data.customerPhone}<br>
-              ${data.customerAddress}
+          <div class="content">
+            <!-- Client + livraison -->
+            <div class="grid">
+              <div class="box">
+                <h3>Facturé à</h3>
+                <strong>${data.customerName}</strong><br>
+                ${data.customerEmail}<br>
+                ${data.customerPhone}<br>
+                ${data.customerAddress}
+              </div>
+              ${
+                data.relayPoint
+                  ? `
+              <div class="box blue">
+                <h3>Livraison en point relais</h3>
+                <strong>${data.relayPoint.name}</strong><br>
+                ${data.relayPoint.address}<br>
+                ${data.relayPoint.postalCode} ${data.relayPoint.city}
+              </div>
+              `
+                  : ""
+              }
             </div>
-          </div>
 
-          <!-- Point relais si applicable -->
-          ${
-            data.relayPoint
-              ? `
-          <div class="customer-info">
-            <h3 style="color: #1f2937; margin-bottom: 10px;">Livraison en point relais :</h3>
-            <div style="background: #ecfdf5; padding: 15px; border-radius: 8px; border: 1px solid #a7f3d0;">
-              <strong>${data.relayPoint.name}</strong><br>
-              ${data.relayPoint.address}<br>
-              ${data.relayPoint.postalCode} ${data.relayPoint.city}
+            <!-- Détails de la commande -->
+            <div class="order-strip">
+              <span>Commande <strong>N° ${data.orderNumber}</strong></span>
+              <span>Paiement : carte bancaire (Stripe)</span>
+              <span>Statut : <strong>Payé</strong></span>
             </div>
-          </div>
-          `
-              : ""
-          }
 
-          <!-- Détails de la commande -->
-          <div class="invoice-details">
-            <strong>Commande N° ${data.orderNumber}</strong><br>
-            Méthode de paiement: Carte bancaire (Stripe)<br>
-            Statut: Payé
-          </div>
+            <!-- Articles -->
+            <table class="items-table">
+              <thead>
+                <tr>
+                  <th>Article</th>
+                  <th style="text-align: center; width: 70px;">Qté</th>
+                  <th style="text-align: right; width: 110px;">Prix unit.</th>
+                  <th style="text-align: right; width: 110px;">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${itemsHTML}
+              </tbody>
+            </table>
 
-          <!-- Articles -->
-          <table class="items-table">
-            <thead>
-              <tr>
-                <th>Article</th>
-                <th style="text-align: center; width: 80px;">Qté</th>
-                <th style="text-align: right; width: 100px;">Prix unit.</th>
-                <th style="text-align: right; width: 100px;">Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${itemsHTML}
-            </tbody>
-          </table>
-
-          <!-- Totaux -->
-          <div class="totals">
-            <div class="total-line">
-              <span>Sous-total:</span>
-              <span>${data.subtotal.toFixed(2)} €</span>
+            <!-- Totaux -->
+            <div class="totals">
+              <div class="total-line">
+                <span>Sous-total</span>
+                <span>${data.subtotal.toFixed(2)} €</span>
+              </div>
+              <div class="total-line">
+                <span>Livraison</span>
+                <span style="color: #1B5EC4; font-weight: 700;">${
+                  data.shipping === 0
+                    ? "Offerte"
+                    : data.shipping.toFixed(2) + " €"
+                }</span>
+              </div>
+              <div class="total-final">
+                <span>TOTAL TTC</span>
+                <span>${data.totalAmount.toFixed(2)} €</span>
+              </div>
             </div>
-            <div class="total-line">
-              <span>Livraison:</span>
-              <span style="color: #059669;">${
-                data.shipping === 0
-                  ? "Gratuite"
-                  : data.shipping.toFixed(2) + " €"
-              }</span>
-            </div>
-            <hr style="margin: 10px 0;">
-            <div class="total-line total-final">
-              <span>TOTAL TTC (TVA incluse):</span>
-              <span>${data.totalAmount.toFixed(2)} €</span>
-            </div>
-          </div>
 
-          <!-- Pied de page légal -->
-          <div class="footer">
-            <p><strong>Conditions de vente et mentions légales</strong></p>
-            <p>
-              Facture générée automatiquement le ${new Date().toLocaleDateString(
-                "fr-FR"
-              )} à ${new Date().toLocaleTimeString("fr-FR")}<br>
-              Paiement effectué par carte bancaire via Stripe - Transaction sécurisée<br>
-              ${this.companyInfo.name} - ${
-      this.companyInfo.siret ? `SIRET: ${this.companyInfo.siret}` : ""
-    } - ${this.companyInfo.tva ? `TVA: ${this.companyInfo.tva}` : ""}
-            </p>
-            <p style="margin-top: 20px;">
-              <strong>Garantie et retours :</strong> Produits garantis 2 ans - Retour possible sous 30 jours<br>
-              <strong>Contact :</strong> ${this.companyInfo.email} - ${
+            <!-- Pied de page légal -->
+            <div class="footer">
+              <p><strong>Conditions de vente et mentions légales</strong></p>
+              <p>
+                Facture générée automatiquement le ${new Date().toLocaleDateString(
+                  "fr-FR"
+                )} à ${new Date().toLocaleTimeString("fr-FR")}<br>
+                Paiement effectué par carte bancaire via Stripe — transaction sécurisée<br>
+                ${this.companyInfo.name} ${
+      this.companyInfo.siret ? `— SIRET : ${this.companyInfo.siret}` : ""
+    } ${this.companyInfo.tva ? `— TVA : ${this.companyInfo.tva}` : ""}
+              </p>
+              <p style="margin-top: 16px;">
+                <strong>Garantie et retours :</strong> produits garantis 2 ans — retour possible sous 30 jours<br>
+                <strong>Contact :</strong> ${this.companyInfo.email} · ${
       this.companyInfo.phone
     }
-            </p>
+              </p>
+            </div>
           </div>
         </div>
       </body>

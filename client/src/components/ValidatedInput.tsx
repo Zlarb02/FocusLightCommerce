@@ -127,9 +127,9 @@ export const ValidatedInput: React.FC<ValidatedInputProps> = ({
   return (
     <div className={cn("space-y-2", className)}>
       <Label htmlFor={id} className="flex items-center gap-2 font-medium">
-        <Icon className="w-4 h-4 text-gray-500" />
+        <Icon className="w-4 h-4 text-muted-foreground" />
         {label}
-        {required && <span className="text-red-500">*</span>}
+        {required && <span className="text-primary">*</span>}
       </Label>
 
       <div className="relative">
@@ -143,11 +143,10 @@ export const ValidatedInput: React.FC<ValidatedInputProps> = ({
           placeholder={placeholder}
           disabled={disabled}
           autoComplete={autoComplete}
-          className={cn("pr-10 transition-all duration-200", {
-            "border-green-500 bg-green-50/30 dark:bg-green-900/10":
-              isValid && touched,
-            "border-red-500 bg-red-50/30 dark:bg-red-900/10": error && touched,
-            "focus:border-blue-500": !error && !isValid,
+          className={cn("rounded-sm pr-10 transition-all duration-200", {
+            "border-alto-orange bg-primary/5": isValid && touched,
+            "border-[#B3261E] bg-[#B3261E]/5": error && touched,
+            "focus:border-alto-blue": !error && !isValid,
           })}
         />
 
@@ -162,7 +161,7 @@ export const ValidatedInput: React.FC<ValidatedInputProps> = ({
                 exit={{ scale: 0, opacity: 0 }}
                 transition={{ duration: 0.2 }}
               >
-                <Check className="w-4 h-4 text-green-500" />
+                <Check className="w-4 h-4 text-primary" />
               </motion.div>
             ) : error && touched ? (
               <motion.div
@@ -172,7 +171,7 @@ export const ValidatedInput: React.FC<ValidatedInputProps> = ({
                 exit={{ scale: 0, opacity: 0 }}
                 transition={{ duration: 0.2 }}
               >
-                <AlertCircle className="w-4 h-4 text-red-500" />
+                <AlertCircle className="w-4 h-4 text-[#B3261E] dark:text-[#F2B8B5]" />
               </motion.div>
             ) : null}
           </AnimatePresence>
@@ -188,7 +187,7 @@ export const ValidatedInput: React.FC<ValidatedInputProps> = ({
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.2 }}
-            className="text-sm text-red-600 dark:text-red-400 flex items-center gap-1"
+            className="flex items-center gap-1 text-sm text-[#B3261E] dark:text-[#F2B8B5]"
           >
             <AlertCircle className="w-3 h-3" />
             {error}
@@ -200,7 +199,7 @@ export const ValidatedInput: React.FC<ValidatedInputProps> = ({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="text-xs text-gray-500 dark:text-gray-400"
+            className="text-xs text-muted-foreground"
           >
             {helperText}
           </motion.p>
@@ -211,7 +210,7 @@ export const ValidatedInput: React.FC<ValidatedInputProps> = ({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="text-xs text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-2"
+            className="rounded-sm border-l-4 border-alto-blue bg-alto-blue/5 p-2 text-xs text-alto-blue dark:border-alto-cream/60 dark:bg-alto-cream/5 dark:text-alto-cream/80"
           >
             🔒 {privacyNote}
           </motion.div>

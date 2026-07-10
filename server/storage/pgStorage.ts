@@ -182,6 +182,10 @@ export class PgStorage implements IStorage {
     return this.userStorage.verifyUser(username, password);
   }
 
+  async updatePassword(userId: number, newPassword: string): Promise<boolean> {
+    return this.userStorage.updatePassword(userId, newPassword);
+  }
+
   // Media
   async getAllMedias(): Promise<Media[]> {
     return this.mediaStorage.getAllMedias();

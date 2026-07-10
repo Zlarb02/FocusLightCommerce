@@ -549,7 +549,7 @@ export default function Stocks() {
                 </p>
               </div>
             </div>
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow">
+            <div className="bg-card text-card-foreground rounded-lg border shadow-sm">
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -606,7 +606,7 @@ export default function Stocks() {
                                             alt={`${product.name} ${variation.variationValue}`}
                                             className="w-32 h-32 object-cover rounded shadow-lg border-2 border-white"
                                           />
-                                          <div className="text-center text-xs text-gray-600 mt-1 bg-white px-2 py-1 rounded shadow">
+                                          <div className="text-center text-xs text-popover-foreground mt-1 bg-popover px-2 py-1 rounded shadow">
                                             {variation.images.length > 1
                                               ? `Voir les ${variation.images.length} images`
                                               : "Voir l'image"}
@@ -618,7 +618,7 @@ export default function Stocks() {
                                       {variation.images.length > 1 && (
                                         <Badge
                                           variant="secondary"
-                                          className="text-xs cursor-pointer hover:bg-gray-300 transition-colors flex-shrink-0"
+                                          className="text-xs cursor-pointer hover:bg-muted transition-colors flex-shrink-0"
                                           onClick={() =>
                                             openImagesModal(
                                               variation,
@@ -632,9 +632,9 @@ export default function Stocks() {
                                       )}
                                     </>
                                   ) : (
-                                    <div className="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded border dark:border-gray-600 flex items-center justify-center flex-shrink-0">
+                                    <div className="w-12 h-12 bg-muted rounded border flex items-center justify-center flex-shrink-0">
                                       <svg
-                                        className="w-6 h-6 text-gray-400"
+                                        className="w-6 h-6 text-muted-foreground"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -709,7 +709,7 @@ export default function Stocks() {
                                       openDeleteVariationAlert(variation)
                                     }
                                     title="Supprimer la variation"
-                                    className="text-red-500 hover:bg-red-50"
+                                    className="text-destructive hover:text-destructive hover:bg-destructive/10"
                                   >
                                     <Trash2 className="h-4 w-4" />
                                   </Button>
@@ -748,7 +748,7 @@ export default function Stocks() {
                 </p>
               </div>
             </div>
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow">
+            <div className="bg-card text-card-foreground rounded-lg border shadow-sm">
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -804,7 +804,7 @@ export default function Stocks() {
                           <Button
                             variant="outline"
                             size="sm"
-                            className="text-red-500 hover:bg-red-50"
+                            className="text-destructive hover:text-destructive hover:bg-destructive/10"
                             onClick={() => openDeleteProductAlert(product)}
                           >
                             <Trash2 className="h-3 w-3 mr-1" /> Supprimer
@@ -1042,7 +1042,7 @@ export default function Stocks() {
                         {field.value.map((img, idx) => (
                           <div
                             key={idx}
-                            className="flex gap-3 items-center p-3 border dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700"
+                            className="flex gap-3 items-center p-3 border rounded-lg bg-muted/50"
                           >
                             {/* Miniature de l'image */}
                             <div className="w-16 h-16 flex-shrink-0">
@@ -1058,11 +1058,11 @@ export default function Stocks() {
                                     }}
                                   />
                                   <div
-                                    className="absolute inset-0 w-full h-full bg-gray-200 rounded border flex items-center justify-center"
+                                    className="absolute inset-0 w-full h-full bg-muted rounded border flex items-center justify-center"
                                     style={{ display: "none" }}
                                   >
                                     <svg
-                                      className="w-6 h-6 text-gray-400"
+                                      className="w-6 h-6 text-muted-foreground"
                                       fill="none"
                                       stroke="currentColor"
                                       viewBox="0 0 24 24"
@@ -1077,9 +1077,9 @@ export default function Stocks() {
                                   </div>
                                 </div>
                               ) : (
-                                <div className="w-full h-full bg-gray-200 dark:bg-gray-600 rounded border dark:border-gray-500 flex items-center justify-center">
+                                <div className="w-full h-full bg-muted rounded border flex items-center justify-center">
                                   <svg
-                                    className="w-6 h-6 text-gray-400 dark:text-gray-300"
+                                    className="w-6 h-6 text-muted-foreground"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -1107,7 +1107,7 @@ export default function Stocks() {
                                 }}
                               />
                               <div className="flex gap-2 items-center">
-                                <label className="text-sm text-gray-600 dark:text-gray-400 font-medium">
+                                <label className="text-sm text-muted-foreground font-medium">
                                   Ordre:
                                 </label>
                                 <Input
@@ -1142,7 +1142,7 @@ export default function Stocks() {
                                     : [{ url: "", order: 0 }]
                                 );
                               }}
-                              className="text-red-500 hover:bg-red-50"
+                              className="text-destructive hover:text-destructive hover:bg-destructive/10"
                               title="Supprimer cette image"
                             >
                               <Trash2 className="h-4 w-4" />

@@ -159,28 +159,35 @@ export const EditableOrderSummary: React.FC<EditableOrderSummaryProps> = ({
 
   if (items.length === 0) {
     return (
-      <Card className={`${className}`}>
+      <Card
+        className={`${className} rounded-none border-2 border-alto-brown/15 shadow-none dark:border-alto-cream/15`}
+      >
         <CardContent className="p-6 text-center">
-          <ShoppingBag className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-          <p className="text-gray-500">{t("cart.empty")}</p>
+          <ShoppingBag className="w-12 h-12 text-muted-foreground/40 mx-auto mb-4" />
+          <p className="text-muted-foreground">{t("cart.empty")}</p>
         </CardContent>
       </Card>
     );
   }
 
   return (
-    <Card className={`${className} overflow-hidden`}>
+    <Card
+      className={`${className} overflow-hidden rounded-none border-2 border-alto-brown/15 shadow-none dark:border-alto-cream/15`}
+    >
       {showTitle && (
-        <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-b">
+        <CardHeader className="border-b-2 border-alto-brown/15 dark:border-alto-cream/15">
           <CardTitle className="flex items-center gap-3">
-            <div className="flex items-center justify-center w-10 h-10 bg-blue-100 dark:bg-blue-800 rounded-lg">
-              <ShoppingBag className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+            <div className="flex h-10 w-10 items-center justify-center bg-alto-orange">
+              <ShoppingBag className="h-5 w-5 text-alto-cream" />
             </div>
             <div>
-              <h3 className="text-lg font-semibold">
+              <h3
+                className="text-lg font-bold"
+                style={{ fontFamily: "var(--font-titles)" }}
+              >
                 {t("checkout.confirmation.orderDetails")}
               </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400 font-normal">
+              <p className="text-sm font-normal text-muted-foreground">
                 {getTotalItems()}{" "}
                 {getTotalItems() > 1
                   ? t("checkout.cart.items_plural")
@@ -193,7 +200,7 @@ export const EditableOrderSummary: React.FC<EditableOrderSummaryProps> = ({
 
       <CardContent className="p-0">
         <AnimatePresence mode="wait">
-          <div className="divide-y divide-gray-100 dark:divide-gray-800">
+          <div className="divide-y divide-border">
             {items.map((item, index) => (
               <motion.div
                 key={item.product.id}
@@ -201,7 +208,7 @@ export const EditableOrderSummary: React.FC<EditableOrderSummaryProps> = ({
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, x: -100 }}
                 transition={{ duration: 0.3, delay: index * 0.1 }}
-                className="p-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
+                className="p-4 transition-colors hover:bg-muted/40"
               >
                 <div className="flex items-start gap-4">
                   {/* Image produit */}
@@ -210,15 +217,15 @@ export const EditableOrderSummary: React.FC<EditableOrderSummaryProps> = ({
                       <img
                         src={item.product.images[0].url}
                         alt={item.product.productName}
-                        className="w-16 h-16 object-cover rounded-lg border border-gray-200 dark:border-gray-700"
+                        className="w-16 h-16 rounded-sm border border-border object-cover"
                       />
                     ) : (
-                      <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 flex items-center justify-center">
-                        <ImageIcon className="w-6 h-6 text-gray-400" />
+                      <div className="flex h-16 w-16 items-center justify-center rounded-sm border border-border bg-muted">
+                        <ImageIcon className="w-6 h-6 text-muted-foreground/60" />
                       </div>
                     )}
                     {item.product.variationValue && (
-                      <div className="absolute -top-2 -right-2 bg-blue-100 dark:bg-blue-800 text-blue-700 dark:text-blue-300 text-xs px-2 py-1 rounded-full border border-blue-200 dark:border-blue-700">
+                      <div className="absolute -top-2 -right-2 bg-alto-brown px-2 py-1 text-xs text-alto-cream dark:bg-alto-brown-deep">
                         {item.product.variationValue}
                       </div>
                     )}
@@ -226,7 +233,7 @@ export const EditableOrderSummary: React.FC<EditableOrderSummaryProps> = ({
 
                   {/* Informations produit */}
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-medium text-gray-900 dark:text-gray-100 truncate">
+                    <h4 className="truncate font-medium text-foreground">
                       {item.product.productName}
                     </h4>
 
@@ -360,14 +367,14 @@ export const EditableOrderSummary: React.FC<EditableOrderSummaryProps> = ({
                     })()}
 
                     {item.product.productDescription && (
-                      <p className="text-xs text-gray-500 dark:text-gray-500 mt-1 line-clamp-2">
+                      <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">
                         {item.product.productDescription}
                       </p>
                     )}
 
                     {/* Prix unitaire */}
                     <div className="flex items-center gap-2 mt-2">
-                      <span className="font-semibold text-gray-900 dark:text-gray-100">
+                      <span className="font-semibold text-foreground">
                         {formatPrice(
                           item.product.price || item.product.basePrice
                         )}
@@ -379,14 +386,14 @@ export const EditableOrderSummary: React.FC<EditableOrderSummaryProps> = ({
                   <div className="flex flex-col items-end gap-3">
                     {/* Prix total pour cet article */}
                     <div className="text-right">
-                      <p className="font-semibold text-gray-900 dark:text-gray-100">
+                      <p className="font-semibold text-foreground">
                         {formatPrice(
                           (item.product.price || item.product.basePrice) *
                             item.quantity
                         )}
                       </p>
                       {item.quantity > 1 && (
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-muted-foreground">
                           {item.quantity} ×{" "}
                           {formatPrice(
                             item.product.price || item.product.basePrice
@@ -426,7 +433,7 @@ export const EditableOrderSummary: React.FC<EditableOrderSummaryProps> = ({
                         variant="ghost"
                         size="sm"
                         onClick={() => handleRemoveItem(item.product.id)}
-                        className="w-8 h-8 p-0 text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20"
+                        className="h-8 w-8 p-0 text-[#B3261E] hover:bg-[#B3261E]/10 hover:text-[#8C1D18] dark:text-[#F2B8B5] dark:hover:text-[#F2B8B5]"
                       >
                         <Trash2 className="w-3 h-3" />
                       </Button>
@@ -439,47 +446,51 @@ export const EditableOrderSummary: React.FC<EditableOrderSummaryProps> = ({
         </AnimatePresence>
 
         {/* Résumé des coûts */}
-        <div className="border-t border-gray-200 dark:border-gray-700 bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900/20 p-6 space-y-3">
+        <div className="space-y-3 border-t-2 border-alto-brown/15 bg-muted/40 p-6 dark:border-alto-cream/15">
           <div className="flex justify-between items-center text-sm">
-            <span className="text-gray-600 dark:text-gray-400">
-              {t("cart.subtotal")}
-            </span>
+            <span className="text-muted-foreground">{t("cart.subtotal")}</span>
             <span className="font-medium">{formatPrice(getTotalPrice())}</span>
           </div>
 
           <div className="flex justify-between items-center text-sm">
-            <span className="text-gray-600 dark:text-gray-400 flex items-center gap-2">
+            <span className="flex items-center gap-2 text-muted-foreground">
               <Truck className="w-4 h-4" />
               {t("cart.shipping")}
             </span>
-            <span className="font-medium text-green-600 dark:text-green-400 flex items-center gap-1">
+            <span className="flex items-center gap-1 font-medium text-primary">
               <Star className="w-3 h-3" />
               {t("cart.freeShipping")}
             </span>
           </div>
 
-          <div className="border-t border-gray-300 dark:border-gray-600 pt-3">
+          <div className="border-t border-border pt-3">
             <div className="flex justify-between items-center">
-              <span className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+              <span
+                className="text-lg font-bold"
+                style={{ fontFamily: "var(--font-titles)" }}
+              >
                 {t("cart.total")}
               </span>
-              <span className="text-xl font-bold text-blue-600 dark:text-blue-400">
+              <span
+                className="text-xl font-bold text-primary"
+                style={{ fontFamily: "var(--font-titles)" }}
+              >
                 {formatPrice(getTotalPrice())}
               </span>
             </div>
           </div>
 
           {/* Badge livraison gratuite */}
-          <div className="bg-green-100 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-lg p-3 mt-4">
+          <div className="mt-4 border-l-4 border-alto-orange bg-primary/5 p-3">
             <div className="flex items-center gap-2">
-              <div className="flex items-center justify-center w-6 h-6 bg-green-500 rounded-full">
-                <Heart className="w-3 h-3 text-white" />
+              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-alto-orange">
+                <Heart className="h-3 w-3 text-alto-cream" />
               </div>
               <div className="flex-1">
-                <p className="text-sm font-medium text-green-800 dark:text-green-200">
+                <p className="text-sm font-medium">
                   {t("checkout.freeShipping")}
                 </p>
-                <p className="text-xs text-green-600 dark:text-green-400">
+                <p className="text-xs text-muted-foreground">
                   {t("checkout.delivery.free.description")}
                 </p>
               </div>

@@ -108,26 +108,26 @@ export const EnhancedToast = React.forwardRef<
     const getIcon = () => {
       switch (type) {
         case "success":
-          return <CheckCircle className="h-5 w-5 text-green-500" />;
+          return <CheckCircle className="h-5 w-5 text-alto-orange" />;
         case "cart":
-          return <ShoppingCart className="h-5 w-5 text-blue-500" />;
+          return <ShoppingCart className="h-5 w-5 text-alto-blue dark:text-alto-cream" />;
         case "error":
-          return <AlertCircle className="h-5 w-5 text-red-500" />;
+          return <AlertCircle className="h-5 w-5 text-[#B3261E] dark:text-[#F2B8B5]" />;
         default:
-          return <Package className="h-5 w-5 text-blue-500" />;
+          return <Package className="h-5 w-5 text-alto-blue dark:text-alto-cream" />;
       }
     };
 
     const getBgColor = () => {
       switch (type) {
         case "success":
-          return "bg-green-50 border-green-200 dark:bg-green-900 dark:border-green-700";
+          return "border-l-alto-orange";
         case "cart":
-          return "bg-blue-50 border-blue-200 dark:bg-blue-900 dark:border-blue-700";
+          return "border-l-alto-blue dark:border-l-alto-cream/70";
         case "error":
-          return "bg-red-50 border-red-200 dark:bg-red-900 dark:border-red-700";
+          return "border-l-[#B3261E]";
         default:
-          return "bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700";
+          return "border-l-alto-brown dark:border-l-alto-cream/70";
       }
     };
 
@@ -141,15 +141,14 @@ export const EnhancedToast = React.forwardRef<
         animate="visible"
         exit="exit"
         className={cn(
-          "relative overflow-hidden rounded-lg border p-4 shadow-lg max-w-sm",
-          getBgColor(),
-          "text-gray-900 dark:text-gray-100"
+          "relative max-w-sm overflow-hidden rounded-sm border border-l-4 border-border bg-popover p-4 text-popover-foreground shadow-[0_12px_32px_-12px_rgba(22,22,21,0.35)]",
+          getBgColor()
         )}
         style={{ fontFamily: "var(--font-body)" }}
       >
         {/* Barre de progression */}
         <motion.div
-          className="absolute top-0 left-0 h-1 bg-primary/30"
+          className="absolute top-0 left-0 h-1 bg-alto-orange/40"
           variants={progressVariants}
           initial="initial"
           animate="animate"
@@ -170,7 +169,7 @@ export const EnhancedToast = React.forwardRef<
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 }}
-                  className="text-sm font-semibold text-gray-900 dark:text-gray-100"
+                  className="font-heading text-sm font-bold text-foreground"
                 >
                   {title}
                 </motion.h4>
@@ -179,7 +178,7 @@ export const EnhancedToast = React.forwardRef<
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
-                    className="text-sm text-gray-600 dark:text-gray-300 mt-1"
+                    className="mt-1 text-sm text-muted-foreground"
                   >
                     {description}
                   </motion.p>
@@ -191,7 +190,7 @@ export const EnhancedToast = React.forwardRef<
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={handleClose}
-                className="flex-shrink-0 ml-2 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors"
+                className="ml-2 flex-shrink-0 text-foreground/40 transition-colors hover:text-foreground"
               >
                 <X className="h-4 w-4" />
               </motion.button>
@@ -203,18 +202,18 @@ export const EnhancedToast = React.forwardRef<
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
-                className="mt-3 flex items-center gap-3 p-2 bg-white/50 dark:bg-gray-800/70 rounded-md"
+                className="mt-3 flex items-center gap-3 rounded-sm bg-muted/60 p-2"
               >
                 <img
                   src={productImage}
                   alt={productName}
-                  className="w-10 h-10 object-cover rounded"
+                  className="h-10 w-10 rounded-sm object-cover"
                 />
                 <div className="flex-1 min-w-0">
-                  <p className="text-xs font-medium text-gray-900 dark:text-gray-100 truncate">
+                  <p className="truncate text-xs font-medium text-foreground">
                     {productName}
                   </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-300">
+                  <p className="text-xs text-muted-foreground">
                     Quantité: {quantity}
                   </p>
                 </div>

@@ -7,8 +7,7 @@ import {
   Elements,
 } from "@stripe/react-stripe-js";
 import { Button } from "@/components/ui/button";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Shield, CreditCard } from "lucide-react";
+import { Shield, CreditCard, MapPin } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useToast } from "@/hooks/use-toast";
 import { formatPrice } from "@/lib/utils";
@@ -114,18 +113,28 @@ export function StripePaymentForm({
       <div className="flex items-center justify-center p-8">
         <div className="text-center">
           <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
-          <p className="text-sm text-gray-600 dark:text-gray-400">
-            Initialisation du paiement...
+          <p className="text-sm text-muted-foreground">
+            {t("checkout.payment.init")}
           </p>
         </div>
       </div>
     );
   }
 
+  // Apparence Stripe accordée à la palette Alto (maquette RARE.design)
+  const isDark = document.documentElement.classList.contains("dark");
   const options = {
     clientSecret,
     appearance: {
-      theme: "stripe" as const,
+      theme: isDark ? ("night" as const) : ("stripe" as const),
+      variables: {
+        colorPrimary: "#F54501",
+        colorBackground: isDark ? "#35120F" : "#FFFFFF",
+        colorText: isDark ? "#FEF7E8" : "#161615",
+        borderRadius: "4px",
+        fontFamily:
+          "'Geist Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+      },
     },
   };
 
@@ -247,8 +256,8 @@ function StripePaymentFormInner({
 
     if (!stripe || !elements || !clientSecret) {
       toast({
-        title: "Erreur",
-        description: "Le système de paiement n'est pas prêt",
+        title: t("checkout.error.payment"),
+        description: t("checkout.payment.notReady"),
         variant: "destructive",
       });
       return;
@@ -336,30 +345,36 @@ function StripePaymentFormInner({
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h2 className="font-heading font-bold text-xl md:text-2xl mb-2 text-gray-900 dark:text-gray-100">
+        <h2
+          className="mb-2 text-xl font-bold text-alto-brown dark:text-alto-cream md:text-2xl"
+          style={{ fontFamily: "var(--font-titles)" }}
+        >
           {t("checkout.payment")}
         </h2>
-        <p className="text-sm text-gray-600 dark:text-gray-400">
-          Total à payer :{" "}
-          <span className="font-bold text-lg">{formatPrice(amount)}</span>
+        <p className="text-sm text-muted-foreground">
+          {t("checkout.payment.totalToPay")}{" "}
+          <span className="text-lg font-bold text-primary">
+            {formatPrice(amount)}
+          </span>
         </p>
       </div>
 
-      <Alert className="bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800">
-        <Shield className="h-4 w-4 text-green-600 dark:text-green-400" />
-        <AlertDescription className="text-sm text-green-800 dark:text-green-200">
-          🔒 Paiement sécurisé par Stripe - Vos données sont protégées
-        </AlertDescription>
-      </Alert>
+      <div className="flex items-center gap-3 border-l-4 border-alto-blue bg-alto-blue/5 p-4 dark:border-alto-cream/60 dark:bg-alto-cream/5">
+        <Shield className="h-4 w-4 shrink-0 text-alto-blue dark:text-alto-cream" />
+        <p className="text-sm">{t("checkout.payment.securityNote")}</p>
+      </div>
 
       {clientSecret ? (
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Formulaire de paiement Stripe */}
           <div className="space-y-4">
-            <div className="flex items-center gap-2 mb-4">
-              <CreditCard className="h-5 w-5 text-gray-600 dark:text-gray-400" />
-              <h3 className="font-medium text-gray-900 dark:text-gray-100">
-                Informations de paiement
+            <div className="mb-4 flex items-center gap-2">
+              <CreditCard className="h-5 w-5 text-primary" />
+              <h3
+                className="font-bold"
+                style={{ fontFamily: "var(--font-titles)" }}
+              >
+                {t("checkout.payment.infoTitle")}
               </h3>
             </div>
 
@@ -372,9 +387,15 @@ function StripePaymentFormInner({
 
           {/* Adresse de facturation */}
           <div className="space-y-4">
-            <h3 className="font-medium text-gray-900 dark:text-gray-100 flex items-center gap-2">
-              📍 Adresse de facturation
-            </h3>
+            <div className="flex items-center gap-2">
+              <MapPin className="h-5 w-5 text-primary" />
+              <h3
+                className="font-bold"
+                style={{ fontFamily: "var(--font-titles)" }}
+              >
+                {t("checkout.payment.billing")}
+              </h3>
+            </div>
             <AddressElement
               options={{
                 mode: "billing",
@@ -384,39 +405,38 @@ function StripePaymentFormInner({
           </div>
 
           {/* Boutons */}
-          <div className="pt-4 flex flex-col sm:flex-row gap-3">
+          <div className="flex flex-col gap-3 pt-4 sm:flex-row">
             <Button
               type="button"
               variant="outline"
-              className="w-full sm:w-1/3 h-12 text-base"
+              className="h-12 w-full rounded-none text-base sm:w-1/3"
               onClick={onBack}
               disabled={isLoading}
             >
-              ← Retour
+              ← {t("checkout.payment.back")}
             </Button>
 
             <Button
               type="submit"
-              className="w-full sm:w-2/3 h-12 text-base font-semibold"
+              className="h-12 w-full rounded-none bg-alto-orange text-base font-bold text-alto-cream hover:bg-alto-orange-soft sm:w-2/3"
+              style={{ fontFamily: "var(--font-titles)" }}
               disabled={!stripe || !elements || isLoading || isSubmitted}
             >
               {isLoading ? (
                 <div className="flex items-center gap-2">
                   <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  Traitement en cours...
+                  {t("checkout.payment.processing")}
                 </div>
               ) : (
-                `💳 Payer ${formatPrice(amount)}`
+                `${t("checkout.payment.pay")} ${formatPrice(amount)}`
               )}
             </Button>
           </div>
         </form>
       ) : (
-        <div className="text-center py-8">
-          <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-gray-600 dark:text-gray-400">
-            Initialisation du paiement sécurisé...
-          </p>
+        <div className="py-8 text-center">
+          <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+          <p className="text-muted-foreground">{t("checkout.payment.init")}</p>
         </div>
       )}
     </div>
