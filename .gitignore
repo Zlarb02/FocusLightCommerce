@@ -20,3 +20,7 @@ server/orders-backup/ALTO-1752595772046-SLH81Y_1752595779596.json
 server/orders-backup/ALTO-1752596602452-XQWEVS_1752596609799.json
 server/orders-backup/ALTO-1752613287692-P9KUJA_1752613294223.json
 server/orders-backup/ALTO-1752614975821-GVM4ID_1752614984140.json
+.vercel
+
+# Sauvegardes DB prod (à pousser dans le repo privé de backup, jamais ici)
+backups/
