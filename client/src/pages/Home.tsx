@@ -91,13 +91,16 @@ const CAPTION_POS = [
   "md:left-[6vw] md:top-[16%]", // cap4
   "md:bottom-[14%] md:left-[6vw]", // cap5
 ];
+/* Sur mobile : alternance design entre les coins haut/bas, jamais deux
+   légendes consécutives dans la même zone (pas de chevauchement pendant
+   les fondus), et le centre reste libre pour la lampe. */
 const CAPTION_MOBILE_SLOT = [
-  "max-md:top-[76px]",
-  "max-md:top-[132px]",
-  "max-md:top-[76px]",
-  "max-md:top-[132px]",
-  "max-md:top-[76px]",
-  "max-md:top-[132px]",
+  "max-md:top-[84px] max-md:left-[6vw] max-md:text-left",
+  "max-md:bottom-[112px] max-md:right-[6vw] max-md:text-right",
+  "max-md:top-[84px] max-md:right-[6vw] max-md:text-right",
+  "max-md:bottom-[112px] max-md:left-[6vw] max-md:text-left",
+  "max-md:top-[84px] max-md:left-[6vw] max-md:text-left",
+  "max-md:bottom-[112px] max-md:right-[6vw] max-md:text-right",
 ];
 
 function LinkCard({
@@ -593,7 +596,7 @@ export default function Home() {
               ref={(el) => {
                 capRefs.current[i] = el;
               }}
-              className={`pointer-events-none absolute text-lg font-bold leading-snug text-primary opacity-0 transition-opacity duration-300 md:max-w-[34vw] md:text-3xl max-md:left-1/2 max-md:w-[88vw] max-md:-translate-x-1/2 max-md:text-center ${CAPTION_POS[i]} ${CAPTION_MOBILE_SLOT[i]}`}
+              className={`pointer-events-none absolute text-xl font-bold leading-snug text-primary opacity-0 transition-opacity duration-300 md:max-w-[34vw] md:text-3xl max-md:max-w-[64vw] ${CAPTION_POS[i]} ${CAPTION_MOBILE_SLOT[i]}`}
               style={{ fontFamily: "var(--font-titles)" }}
             >
               {t(`landing.cap${i}`)}
@@ -636,14 +639,19 @@ export default function Home() {
             · {t("footer.design")}
           </div>
 
-          {/* CTA fin de parcours */}
+          {/* CTA fin de parcours : texte centré, la lampe termine la
+              phrase à droite (clin d'œil Pixar, comme l'ancienne landing) */}
           <button
             ref={ctaRef}
             onClick={goToShop}
-            className="pointer-events-none absolute bottom-[14vh] left-1/2 -translate-x-1/2 rounded-full bg-alto-orange px-12 py-5 text-xl font-bold text-alto-cream opacity-0 shadow-lg transition-transform hover:scale-105 md:text-2xl"
-            style={{ fontFamily: "var(--font-titles)" }}
+            className="group pointer-events-none absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-500"
           >
-            {t("landing.cta")}
+            <span
+              className="text-[clamp(32px,6vw,72px)] font-bold text-foreground transition-colors duration-300 group-hover:text-primary"
+              style={{ fontFamily: "var(--font-titles)" }}
+            >
+              {t("landing.cta")}
+            </span>
           </button>
 
           {/* Rejouer l'animation */}

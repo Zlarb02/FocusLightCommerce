@@ -182,9 +182,9 @@ export default function DesignEnAction() {
           className="aspect-[3/4] w-full object-cover"
           loading="lazy"
         />
-        <div className="relative flex aspect-[3/4] w-full flex-col justify-between bg-white p-4">
+        <div className="relative aspect-[3/4] w-full overflow-hidden bg-white">
           <video
-            className="min-h-0 w-full flex-1 object-contain"
+            className="h-full w-full object-cover object-[25%_center]"
             src="/videos/fabrication-assemblage.mp4"
             poster="/images/alto/poster-assemblage.jpg"
             autoPlay
@@ -194,7 +194,7 @@ export default function DesignEnAction() {
             preload="metadata"
             aria-label="Vidéo d'assemblage d'une lampe"
           />
-          <span className="mt-3 whitespace-pre-line text-xl font-medium text-alto-brown">
+          <span className="absolute bottom-3 left-3 whitespace-pre-line bg-alto-cream/90 px-3 py-1.5 text-lg font-bold leading-tight text-alto-brown">
             {t("fab.videoAssemblage")}
           </span>
         </div>
