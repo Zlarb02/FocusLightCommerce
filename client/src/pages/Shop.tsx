@@ -82,12 +82,23 @@ export default function Shop() {
                     <article className="group cursor-pointer">
                       <div className="relative aspect-[7/8] overflow-hidden bg-white">
                         {previewImage ? (
-                          <img
-                            src={previewImage}
-                            alt={product.name}
-                            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                            loading="lazy"
-                          />
+                          <>
+                            {/* Fond flouté : la photo garde son ratio d'origine
+                                (choisi en gestion) sans être coupée */}
+                            <img
+                              src={previewImage}
+                              alt=""
+                              aria-hidden
+                              className="absolute inset-0 h-full w-full scale-110 object-cover blur-lg"
+                              loading="lazy"
+                            />
+                            <img
+                              src={previewImage}
+                              alt={product.name}
+                              className="absolute inset-0 h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.03]"
+                              loading="lazy"
+                            />
+                          </>
                         ) : (
                           <div className="flex h-full w-full items-center justify-center text-muted-foreground">
                             <span className="text-4xl">💡</span>

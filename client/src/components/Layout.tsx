@@ -240,14 +240,33 @@ function AltoFooter({ tone }: { tone: "brown" | "blue" }) {
             />
           </a>
           <a
+            href="https://www.instagram.com/rare_design/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 hover:underline"
+          >
+            <img
+              src="/images/credits/rare-design.jpg"
+              alt="RARE Design"
+              className="h-5 w-5 rounded-full"
+              loading="lazy"
+            />
+            {t("credits.design")}
+          </a>
+          <a
             href="https://pogodev.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:underline"
+            className="flex items-center gap-1.5 hover:underline"
           >
-            Développé par Etienne Pogoda
+            <img
+              src="/images/credits/pogodev-logo.svg"
+              alt="pogodev.com"
+              className="h-5 w-5 rounded-[3px]"
+              loading="lazy"
+            />
+            {t("credits.dev")}
           </a>
-          <span>{t("footer.design")}</span>
         </div>
       </div>
     </footer>

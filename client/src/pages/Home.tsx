@@ -29,7 +29,19 @@ const FALLBACK_SLIDES: Slide[] = [
 ];
 
 /** Cartes de navigation autour du slider (redessinées, palette Alto). */
-const LINK_CARDS: Array<{ labelKey: string; href: string; img: string; alt: string }> = [
+const LINK_CARDS: Array<{
+  labelKey: string;
+  href: string;
+  img: string;
+  alt: string;
+  /** Cadrage de l'image dans la carte desktop (object-position). */
+  imgPos?: string;
+  /** Vignette carrée de la grille mobile quand l'image carte ne s'y prête pas. */
+  thumb?: string;
+  thumbPos?: string;
+  /** Texte affiché sur l'image (façon tagline de la page Studio). */
+  overlayKey?: string;
+}> = [
   {
     labelKey: "nav.fabrication",
     href: "/design-en-action",
@@ -39,14 +51,19 @@ const LINK_CARDS: Array<{ labelKey: string; href: string; img: string; alt: stri
   {
     labelKey: "nav.studio",
     href: "/about",
-    img: "/images/alto/studio-portrait.jpg",
-    alt: "Anatole Collet dans son atelier",
+    img: "/images/alto/studio-card.jpg",
+    alt: "Fond gris du studio photo Alto Lille",
+    overlayKey: "home.tagline",
+    thumb: "/images/alto/studio-portrait.jpg",
+    thumbPos: "object-[15%_30%]",
   },
   {
     labelKey: "nav.surMesure",
     href: "/creations-sur-mesure",
     img: "/images/alto/surmesure-lampe.jpg",
     alt: "Lampe sur-mesure chêne et PLA orange",
+    imgPos: "object-[50%_18%]",
+    thumbPos: "object-[50%_25%]",
   },
   {
     labelKey: "nav.catalogue",
@@ -115,13 +132,20 @@ function LinkCard({
       href={card.href}
       className="group flex min-h-0 flex-1 flex-col overflow-hidden"
     >
-      <div className="min-h-0 flex-1 overflow-hidden bg-white">
+      <div className="relative min-h-0 flex-1 overflow-hidden bg-white">
         <img
           src={card.img}
           alt={card.alt}
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+          className={`h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04] ${card.imgPos ?? ""}`}
           loading="lazy"
         />
+        {card.overlayKey && (
+          <span
+            className="pointer-events-none absolute bottom-3 right-3 whitespace-pre-line text-right text-lg font-medium leading-snug text-alto-cream drop-shadow md:text-xl"
+          >
+            {t(card.overlayKey).replace(", ", ",\n")}
+          </span>
+        )}
       </div>
       <span
         className="mt-2 flex items-center justify-between text-sm font-bold text-primary md:text-base"
@@ -197,13 +221,22 @@ export default function Home() {
     if (!canvas || !stage || !track) return;
 
     const isLargeScreen = window.innerWidth > 1440;
-    const renderer = new THREE.WebGLRenderer({
-      canvas,
-      antialias: true,
-      powerPreference: "high-performance",
-      precision: isLargeScreen ? "highp" : "mediump",
-      stencil: false,
-    });
+    let renderer: THREE.WebGLRenderer;
+    try {
+      renderer = new THREE.WebGLRenderer({
+        canvas,
+        antialias: true,
+        powerPreference: "high-performance",
+        precision: isLargeScreen ? "highp" : "mediump",
+        stencil: false,
+      });
+    } catch {
+      // Pas de WebGL disponible : on garde l'intro (slider + cartes)
+      // utilisable au lieu d'une page blanche, sans le parcours 3D.
+      canvas.style.display = "none";
+      track.style.height = "100vh";
+      return;
+    }
     rendererRef.current = renderer;
     renderer.setSize(stage.clientWidth, stage.clientHeight);
     renderer.setPixelRatio(
@@ -509,16 +542,28 @@ export default function Home() {
                 aria-label={t("landing.cta")}
               >
                 <AnimatePresence initial={false}>
-                  <motion.img
+                  {/* Fond = la photo elle-même floutée : aucun recadrage de la
+                      photo quelle que soit la taille d'écran, pas de bandes */}
+                  <motion.div
                     key={`${slide.url}-${slideIndex}`}
-                    src={slide.url}
-                    alt={slide.alt ?? "Création Alto Lille"}
-                    className="absolute inset-0 h-full w-full object-cover"
+                    className="absolute inset-0"
                     initial={{ x: "100%", y: "10%" }}
                     animate={{ x: 0, y: 0 }}
                     exit={{ opacity: 0, scale: 1.02 }}
                     transition={{ duration: 0.7, ease: [0.32, 0.72, 0.22, 1] }}
-                  />
+                  >
+                    <img
+                      src={slide.url}
+                      alt=""
+                      aria-hidden
+                      className="absolute inset-0 h-full w-full scale-110 object-cover blur-xl"
+                    />
+                    <img
+                      src={slide.url}
+                      alt={slide.alt ?? "Création Alto Lille"}
+                      className="absolute inset-0 h-full w-full object-contain"
+                    />
+                  </motion.div>
                 </AnimatePresence>
                 <span
                   className="absolute bottom-4 left-4 rounded-full bg-alto-orange px-5 py-2 text-sm font-bold text-alto-cream opacity-0 transition-opacity duration-300 group-hover:opacity-100"
@@ -543,9 +588,9 @@ export default function Home() {
                     className="group flex items-center gap-3"
                   >
                     <img
-                      src={card.img}
+                      src={card.thumb ?? card.img}
                       alt={card.alt}
-                      className="h-14 w-14 flex-shrink-0 object-cover"
+                      className={`h-14 w-14 flex-shrink-0 object-cover ${card.thumbPos ?? ""}`}
                       loading="lazy"
                     />
                     <span
@@ -634,18 +679,37 @@ export default function Home() {
           {/* Crédits (pendant l'animation) */}
           <div
             ref={creditsRef}
-            className="landing-indicator absolute bottom-4 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap text-xs text-foreground/60"
+            className="landing-indicator absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 items-center gap-4 whitespace-nowrap text-xs text-foreground/70"
           >
-            © 2025 Alto Lille ·{" "}
+            <span>© 2025 Alto Lille</span>
+            <a
+              href="https://www.instagram.com/rare_design/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 transition-colors hover:text-foreground"
+            >
+              <img
+                src="/images/credits/rare-design.jpg"
+                alt="RARE Design"
+                className="h-5 w-5 rounded-full"
+                loading="lazy"
+              />
+              {t("credits.design")}
+            </a>
             <a
               href="https://pogodev.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:underline"
+              className="flex items-center gap-1.5 transition-colors hover:text-foreground"
             >
-              Développé par Etienne Pogoda
-            </a>{" "}
-            · {t("footer.design")}
+              <img
+                src="/images/credits/pogodev-logo.svg"
+                alt="pogodev.com"
+                className="h-5 w-5 rounded-[3px]"
+                loading="lazy"
+              />
+              {t("credits.dev")}
+            </a>
           </div>
 
           {/* CTA fin de parcours : texte centré, la lampe termine la

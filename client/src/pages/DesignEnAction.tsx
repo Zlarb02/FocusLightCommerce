@@ -183,9 +183,18 @@ export default function DesignEnAction() {
           className="aspect-[3/4] w-full object-cover"
           loading="lazy"
         />
-        <div className="relative aspect-[3/4] w-full overflow-hidden bg-white">
+        <div className="relative aspect-[3/4] w-full overflow-hidden">
+          {/* Le poster flouté comble les côtés : la vidéo verticale reste
+              entière, sans bandes blanches */}
+          <img
+            src="/images/alto/poster-assemblage.jpg"
+            alt=""
+            aria-hidden
+            className="absolute inset-0 h-full w-full scale-110 object-cover blur-lg"
+            loading="lazy"
+          />
           <video
-            className="h-full w-full object-contain"
+            className="absolute inset-0 h-full w-full object-contain"
             src="/videos/fabrication-assemblage.mp4"
             poster="/images/alto/poster-assemblage.jpg"
             autoPlay

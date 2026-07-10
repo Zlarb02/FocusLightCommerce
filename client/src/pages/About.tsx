@@ -26,12 +26,21 @@ export default function About() {
 
   return (
     <Layout headerTone="surface" footerTone="blue">
-      {/* Hero portrait + tagline */}
-      <section className="relative">
+      {/* Hero portrait + tagline. Sur desktop la photo est montrée en pleine
+          hauteur ancrée à gauche (jamais coupée en haut/bas) ; l'écran plus
+          large que la photo est comblé par un dégradé qui prolonge le fond
+          gris du studio, et un écran plus étroit coupe la droite, pas la
+          gauche où se trouve Anatole. */}
+      <section
+        className="relative overflow-hidden md:h-[75vh] md:max-h-[900px]"
+        style={{
+          background: "linear-gradient(180deg, #777a81 0%, #797b83 55%, #6b6c70 100%)",
+        }}
+      >
         <img
           src="/images/alto/studio-portrait.jpg"
           alt="Anatole Collet dans son atelier, entouré de ses luminaires"
-          className="h-[60vh] max-h-[780px] w-full object-cover object-[25%_center] md:h-[75vh]"
+          className="h-[60vh] max-h-[780px] w-full object-cover object-[25%_center] md:h-full md:max-h-none md:w-auto md:max-w-none"
         />
         <p className="absolute bottom-8 right-6 text-right text-2xl font-medium text-alto-cream drop-shadow md:bottom-14 md:right-14 md:text-4xl">
           {t("home.tagline").split(", ").map((part, i, arr) => (
@@ -44,8 +53,9 @@ export default function About() {
         </p>
       </section>
 
-      {/* Anatole Collet — manifeste (orange en thème sombre, fidèle à la maquette) */}
-      <section className="bg-alto-brown text-alto-cream dark:bg-alto-orange">
+      {/* Anatole Collet — manifeste (brun profond en thème sombre : l'orange
+          de la maquette était trop criard à la lecture) */}
+      <section className="bg-alto-brown text-alto-cream dark:bg-alto-brown-deep">
         <div className="mx-auto max-w-3xl px-6 py-16 md:py-24">
           <h1
             className="text-center text-4xl font-bold md:text-6xl"

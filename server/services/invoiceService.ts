@@ -144,6 +144,9 @@ export class InvoiceService {
           <!-- Bandeau brun maquette -->
           <div class="band">
             <div>
+              <svg width="30" height="30" viewBox="0 0 100 100" style="display: block; margin-bottom: 10px;" aria-hidden="true">
+                <path fill="#F54501" fill-rule="evenodd" d="M0 0h100v100H0V0zm50 1.5A48.5 48.5 0 1 0 50 98.5 48.5 48.5 0 0 0 50 1.5z"/>
+              </svg>
               <h1 class="brand">ALTO<small>Design &amp; fabrication — Lille</small></h1>
               <div style="font-size: 13px; line-height: 1.6; margin-top: 14px; color: rgba(254,247,232,0.85);">
                 ${this.companyInfo.address}<br>

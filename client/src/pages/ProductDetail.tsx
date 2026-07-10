@@ -629,14 +629,23 @@ export default function ProductDetail() {
                 return (
                   <Link key={other.id} href={`/shop/${other.id}`}>
                     <article className="group cursor-pointer">
-                      <div className="aspect-square overflow-hidden bg-white">
+                      <div className="relative aspect-square overflow-hidden bg-white">
                         {previewImage && (
-                          <img
-                            src={previewImage}
-                            alt={other.name}
-                            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                            loading="lazy"
-                          />
+                          <>
+                            <img
+                              src={previewImage}
+                              alt=""
+                              aria-hidden
+                              className="absolute inset-0 h-full w-full scale-110 object-cover blur-lg"
+                              loading="lazy"
+                            />
+                            <img
+                              src={previewImage}
+                              alt={other.name}
+                              className="absolute inset-0 h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.03]"
+                              loading="lazy"
+                            />
+                          </>
                         )}
                       </div>
                       <h3

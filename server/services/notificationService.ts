@@ -233,6 +233,7 @@ class NotificationService {
         <div style="max-width: 600px; margin: 0 auto; background-color: #FEF7E8;">
           <!-- Bandeau brun maquette -->
           <div style="background: #4A2020; color: #FEF7E8; padding: 36px 30px; text-align: center;">
+            <img src="https://www.alto-lille.fr/images/alto/favicon.png" alt="" width="34" height="34" style="display: block; margin: 0 auto 10px;" />
             <div style="font-size: 30px; font-weight: 800; letter-spacing: 0.04em; margin-bottom: 4px;">ALTO</div>
             <div style="font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(254,247,232,0.7); margin-bottom: 22px;">Design &amp; fabrication — Lille</div>
             <h1 style="margin: 0; font-size: 26px; font-weight: 800;">Votre commande est confirmée</h1>

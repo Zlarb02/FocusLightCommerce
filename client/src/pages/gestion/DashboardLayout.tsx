@@ -216,9 +216,9 @@ export default function DashboardLayout({
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-foreground text-xs transition-colors"
-                title="Site développé par Etienne Pogoda"
+                title="Développement éco-conçu — pogodev.com"
               >
-                Développé par Etienne Pogoda
+                Développé par pogodev.com
               </a>
             </div>
           </div>
