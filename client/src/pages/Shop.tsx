@@ -38,7 +38,7 @@ export default function Shop() {
             className="text-4xl font-bold text-alto-blue md:text-5xl dark:text-alto-cream"
             style={{ fontFamily: "var(--font-titles)" }}
           >
-            Catalogue
+            {t("shop.title")}
           </h1>
 
           {/* Recherche */}
@@ -69,7 +69,7 @@ export default function Shop() {
               <div className="col-span-full py-16 text-center text-muted-foreground">
                 {searchTerm
                   ? t("shop.general.noResults")
-                  : "Aucun produit disponible"}
+                  : t("shop.noProducts")}
               </div>
             ) : (
               filteredProducts.map((product) => {
@@ -95,7 +95,7 @@ export default function Shop() {
                         )}
                         {variationCount > 1 && (
                           <span className="absolute left-3 top-3 rounded-full bg-alto-brown/85 px-2.5 py-1 text-xs font-medium text-alto-cream">
-                            {variationCount} coloris
+                            {variationCount} {t("shop.colorCount")}
                           </span>
                         )}
                       </div>

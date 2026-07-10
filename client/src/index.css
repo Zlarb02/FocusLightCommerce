@@ -121,7 +121,8 @@
     font-size: var(--fs-base);
     line-height: var(--lh-normal);
     font-weight: var(--fw-regular);
-    overflow-x: hidden;
+    /* clip (et non hidden) : évite de casser position:sticky */
+    overflow-x: clip;
   }
 
   img,
@@ -197,6 +198,17 @@
   font-weight: var(--fw-medium);
   letter-spacing: var(--ls-wide);
   text-transform: uppercase;
+}
+
+/* Indicateur de scroll de la landing 3D */
+.landing-indicator {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+.landing-indicator.landing-visible {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 /* Panneau « Caractéristique » de la fiche produit (fond brun maquette).

@@ -3,11 +3,12 @@ import { Link, useLocation } from "wouter";
 import { CartOverlay } from "@/components/CartOverlay";
 import { AnimatedCartIcon } from "@/components/AnimatedCartIcon";
 import { useCart } from "@/hooks/useCart";
-import { X, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { AltoMark, AltoLogotype } from "@/components/alto/AltoBrand";
+import { AltoMenu, NAV_ITEMS, scrollToContact } from "@/components/alto/AltoMenu";
 import ThemeDecorator from "@/components/decorations/ThemeDecorator";
 import { useQuery } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
@@ -23,21 +24,7 @@ interface LayoutProps {
   footerTone?: "brown" | "blue" | "none";
 }
 
-const NAV_ITEMS: Array<{ label: string; href: string }> = [
-  { label: "Catalogue", href: "/shop" },
-  { label: "Fabrication", href: "/design-en-action" },
-  { label: "Studio", href: "/about" },
-  { label: "Sur mesure", href: "/creations-sur-mesure" },
-];
-
-function scrollToContact() {
-  const el = document.getElementById("footer-contact");
-  if (el) {
-    el.scrollIntoView({ behavior: "smooth" });
-  } else {
-    window.location.href = "mailto:altolille@gmail.com";
-  }
-}
+const INSTAGRAM_URL = "https://www.instagram.com/alto_lille/";
 
 export function Layout({
   children,
@@ -109,14 +96,14 @@ export function Layout({
                   location === item.href ? "underline underline-offset-8" : ""
                 }`}
               >
-                {item.label}
+                {t(item.labelKey)}
               </Link>
             ))}
             <button
               onClick={scrollToContact}
               className={`${linkClasses} transition-colors`}
             >
-              Contact
+              {t("nav.contact")}
             </button>
           </nav>
 
@@ -139,53 +126,7 @@ export function Layout({
         </div>
       </header>
 
-      {/* Menu mobile plein écran */}
-      {menuOpen && (
-        <div className="fixed inset-0 z-[60] flex flex-col bg-alto-brown text-alto-cream dark:bg-alto-brown-deep">
-          <div className="flex h-16 items-center justify-between px-4">
-            <AltoMark className="h-9 w-9" />
-            <button
-              onClick={() => setMenuOpen(false)}
-              className="p-2"
-              aria-label={t("nav.close")}
-            >
-              <X className="h-7 w-7" />
-            </button>
-          </div>
-          <nav className="flex flex-1 flex-col justify-center gap-2 px-8">
-            <Link
-              href="/"
-              onClick={() => setMenuOpen(false)}
-              className="py-3 text-3xl font-bold"
-            >
-              Accueil
-            </Link>
-            {NAV_ITEMS.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setMenuOpen(false)}
-                className="py-3 text-3xl font-bold"
-              >
-                {item.label}
-              </Link>
-            ))}
-            <button
-              onClick={() => {
-                setMenuOpen(false);
-                setTimeout(scrollToContact, 300);
-              }}
-              className="py-3 text-left text-3xl font-bold"
-            >
-              Contact
-            </button>
-          </nav>
-          <div className="flex items-center gap-6 px-8 pb-10">
-            <LanguageToggle variant="switch" size="default" showLabel={true} />
-            <ThemeToggle size="md" />
-          </div>
-        </div>
-      )}
+      <AltoMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
 
       <main className="flex-1">{children}</main>
 
@@ -218,13 +159,13 @@ function AltoFooter({ tone }: { tone: "brown" | "blue" }) {
         <div className="grid grid-cols-2 gap-10 text-[16px] md:text-[17px]">
           <div className="space-y-4">
             <Link href="/shop" className="block font-bold hover:underline">
-              Catalogue
+              {t("nav.catalogue")}
             </Link>
             <Link
               href="/design-en-action"
               className="block font-bold hover:underline"
             >
-              Fabrication
+              {t("nav.fabrication")}
             </Link>
             <div className="pt-4">
               <p className="mb-2 font-bold">{t("footer.contact")}</p>
@@ -246,7 +187,7 @@ function AltoFooter({ tone }: { tone: "brown" | "blue" }) {
           </div>
           <div className="space-y-4">
             <a
-              href="https://www.instagram.com/altolille"
+              href={INSTAGRAM_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="block font-bold hover:underline"
@@ -254,7 +195,7 @@ function AltoFooter({ tone }: { tone: "brown" | "blue" }) {
               Instagram
             </a>
             <Link href="/about" className="block font-bold hover:underline">
-              Studio
+              {t("nav.studio")}
             </Link>
             <div className="pt-4">
               <p className="mb-2 font-bold">{t("services.title")}</p>
@@ -306,7 +247,7 @@ function AltoFooter({ tone }: { tone: "brown" | "blue" }) {
           >
             Développé par Etienne Pogoda
           </a>
-          <span>Design par RARE.design</span>
+          <span>{t("footer.design")}</span>
         </div>
       </div>
     </footer>

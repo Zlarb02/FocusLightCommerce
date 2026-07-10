@@ -1,31 +1,9 @@
 import { Layout } from "@/components/Layout";
 import { AltoMark } from "@/components/alto/AltoBrand";
-
-const PROCESS: Array<{ n: number; title: string; text: string }> = [
-  {
-    n: 1,
-    title: "Echange",
-    text: "Échange sur vos besoins, contraintes et vision esthétique",
-  },
-  {
-    n: 2,
-    title: "Conception",
-    text: "Création de croquis et modélisation 3D de votre projet",
-  },
-  {
-    n: 3,
-    title: "Validation",
-    text: "Ajustements et validation du design final avec devis",
-  },
-  {
-    n: 4,
-    title: "Fabrication",
-    text: "Fabrication artisanale avec suivi régulier d'avancement",
-  },
-];
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const REALISATIONS: Array<{ src: string; alt: string }> = [
-  { src: "/images/alto/fab-orange-base.jpg", alt: "Détail d'une lampe sur-mesure orange" },
+  { src: "/images/alto/fab-orange-base.jpg", alt: "Détail du socle orange d'une lampe sur-mesure" },
   { src: "/images/alto/atelier.jpg", alt: "Lampe sur-mesure dans un atelier de création" },
   { src: "/images/alto/surmesure-lampe.jpg", alt: "Lampe de table sur-mesure, chêne et PLA orange" },
 ];
@@ -35,6 +13,8 @@ const REALISATIONS: Array<{ src: string; alt: string }> = [
  * intro, process en 4 étapes, appel à devis, réalisations.
  */
 export default function CreationsSurMesure() {
+  const { t } = useLanguage();
+
   return (
     <Layout headerTone="surface" footerTone="blue">
       {/* Titre + intro */}
@@ -43,45 +23,37 @@ export default function CreationsSurMesure() {
           className="text-5xl font-bold text-primary md:text-7xl"
           style={{ fontFamily: "var(--font-titles)" }}
         >
-          Sur-mesure
+          {t("sm.title")}
         </h1>
         <div className="mt-10 max-w-3xl space-y-5 text-lg leading-relaxed text-primary md:text-xl">
-          <p className="font-bold">Une création pensée pour vous</p>
-          <p>
-            Parce que chaque intérieur est unique, je conçois des objets sur
-            mesure adaptés à vos envies et à votre environnement.
-          </p>
-          <p>
-            Après une phase d'échange et de conception, je développe un design
-            exclusif que nous affinons ensemble jusqu'à validation. Votre
-            design est ensuite fabriqué dans l'atelier lillois avec le même
-            niveau d'exigence et d'attention porté à chacune de nos créations.
-          </p>
+          <p className="font-bold">{t("sm.lead")}</p>
+          <p>{t("sm.p1")}</p>
+          <p>{t("sm.p2")}</p>
         </div>
       </section>
 
       {/* Process en 4 étapes */}
       <section className="mx-auto max-w-[1400px] px-6 py-16 md:px-10 md:py-24">
         <ol className="grid grid-cols-2 gap-x-6 gap-y-12 md:grid-cols-4">
-          {PROCESS.map((step) => (
-            <li key={step.n} className="text-center">
+          {[1, 2, 3, 4].map((n) => (
+            <li key={n} className="text-center">
               <div className="relative mx-auto h-20 w-20 text-alto-blue md:h-24 md:w-24">
-                <AltoMark className="h-full w-full" title={`Étape ${step.n}`} />
+                <AltoMark className="h-full w-full" title={`Étape ${n}`} />
                 <span
                   className="absolute inset-0 flex items-center justify-center text-3xl font-bold md:text-4xl"
                   style={{ fontFamily: "var(--font-titles)" }}
                 >
-                  {step.n}
+                  {n}
                 </span>
               </div>
               <h2
                 className="mt-5 text-xl font-bold text-primary md:text-2xl"
                 style={{ fontFamily: "var(--font-titles)" }}
               >
-                {step.title}
+                {t(`sm.step${n}.title`)}
               </h2>
               <p className="mx-auto mt-2 max-w-[220px] text-sm leading-relaxed md:text-base">
-                {step.text}
+                {t(`sm.step${n}.text`)}
               </p>
             </li>
           ))}
@@ -95,12 +67,10 @@ export default function CreationsSurMesure() {
             className="text-4xl font-bold md:text-6xl"
             style={{ fontFamily: "var(--font-titles)" }}
           >
-            Un projet sur-mesure&nbsp;?
+            {t("sm.cta.title")}
           </h2>
           <p className="mt-6 max-w-xl text-lg leading-relaxed">
-            Contactez-moi pour discuter de votre projet et recevoir un devis
-            personnalisé. Chaque création est unique et adaptée à vos besoins
-            spécifiques.
+            {t("sm.cta.text")}
           </p>
           <div className="mt-10 flex flex-col items-start gap-6 md:flex-row md:items-center">
             <a
@@ -112,7 +82,7 @@ export default function CreationsSurMesure() {
                 alt=""
                 className="h-6 w-6 object-contain"
               />
-              Demander un devis
+              {t("sm.cta.button")}
             </a>
             <a
               href="tel:+33782086690"
@@ -126,17 +96,13 @@ export default function CreationsSurMesure() {
               +33 7 82 08 66 90
             </a>
           </div>
-          <p className="mt-10 text-sm opacity-80">
-            Délai de réalisation : 3 à 6 semaines selon la complexité du projet
-          </p>
+          <p className="mt-10 text-sm opacity-80">{t("sm.cta.delay")}</p>
         </div>
       </section>
 
       {/* Réalisations */}
       <section className="mx-auto max-w-[1400px] px-6 py-16 md:px-10 md:py-24">
-        <p className="mb-8 text-lg font-medium">
-          Prestations sur mesure réalisées&nbsp;:
-        </p>
+        <p className="mb-8 text-lg font-medium">{t("sm.realisations")}</p>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
           {REALISATIONS.map((photo) => (
             <img

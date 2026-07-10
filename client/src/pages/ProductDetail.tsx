@@ -175,7 +175,7 @@ export default function ProductDetail() {
           <Link href="/shop">
             <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Retour au catalogue
+              {t("product.back")}
             </Button>
           </Link>
         </div>
@@ -411,7 +411,7 @@ export default function ProductDetail() {
                 className="font-heading text-3xl md:text-5xl font-bold mb-12"
                 style={{ fontFamily: "var(--font-titles)" }}
               >
-                Caractéristique
+                {t("product.caracteristique")}
               </h2>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
@@ -545,7 +545,7 @@ export default function ProductDetail() {
                     href="/design-en-action"
                     className="inline-block rounded-full bg-alto-orange px-10 py-3.5 text-lg font-bold text-alto-cream transition-transform hover:scale-105"
                   >
-                    Fabrication
+                    {t("product.fabricationBtn")}
                   </Link>
                 </div>
               </div>
@@ -621,7 +621,7 @@ export default function ProductDetail() {
               className="mb-10 text-3xl md:text-4xl font-bold text-alto-blue dark:text-alto-cream"
               style={{ fontFamily: "var(--font-titles)" }}
             >
-              Autres produits
+              {t("product.others")}
             </h2>
             <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-4 md:gap-x-10">
               {otherProducts.map((other) => {
@@ -720,7 +720,7 @@ export default function ProductDetail() {
               className="mb-10 text-3xl md:text-4xl font-bold text-alto-blue dark:text-alto-cream"
               style={{ fontFamily: "var(--font-titles)" }}
             >
-              Avis
+              {t("product.reviews")}
             </h2>
 
             {/* Elfsight Google Reviews Widget */}

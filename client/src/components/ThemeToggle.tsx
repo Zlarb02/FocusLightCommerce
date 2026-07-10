@@ -31,7 +31,7 @@ export function ThemeToggle({
     return (
       <button
         onClick={toggleTheme}
-        className="p-3 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-all duration-300 ease-out opacity-70 hover:opacity-100 hover:scale-110"
+        className="p-2 text-current opacity-80 hover:opacity-100 transition-all duration-300 ease-out hover:scale-110"
         aria-label={`Changer vers le thème ${
           theme === "light" ? "sombre" : "clair"
         }`}

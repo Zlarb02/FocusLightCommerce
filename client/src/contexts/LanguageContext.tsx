@@ -40,7 +40,13 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
       // Ajouter timestamp pour éviter le cache
       const timestamp = Date.now();
       const newTranslations = await apiRequest("GET", `/api/translations/public/full?t=${timestamp}`);
-      setTranslations(newTranslations);
+      // Fusionner avec le fichier local : l'API (éditable en admin) surcharge
+      // les défauts, mais les clés absentes côté serveur restent traduites.
+      const localData = translationsData as Translations;
+      setTranslations({
+        fr: { ...localData.fr, ...(newTranslations?.fr ?? {}) },
+        en: { ...localData.en, ...(newTranslations?.en ?? {}) },
+      });
       console.log("Traductions mises à jour depuis l'API");
     } catch (error) {
       console.warn("Impossible de récupérer les traductions depuis l'API, utilisation du fichier local", error);
