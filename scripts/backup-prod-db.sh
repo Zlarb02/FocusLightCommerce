@@ -13,7 +13,7 @@ mkdir -p "$OUT_DIR"
 STAMP="$(date +%Y%m%d-%H%M%S)"
 OUT="$OUT_DIR/focuslight-prod-$STAMP.sql.gz"
 
-echo "Dump de la base de prod (alto-db) vers $OUT…"
+echo "Dump de la base de prod (alto-db) vers ${OUT} ..."
 # Les $(…) sont entre quotes simples : ils s'exécutent sur le VPS.
 ssh "$HOST" 'docker exec alto-db pg_dump --no-owner -U "$(docker exec alto-db printenv POSTGRES_USER)" "$(docker exec alto-db printenv POSTGRES_DB)"' | gzip > "$OUT"
 

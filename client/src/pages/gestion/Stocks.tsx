@@ -497,19 +497,49 @@ export default function Stocks() {
 
   return (
     <DashboardLayout title="Gestion des stocks">
-      <div className="flex items-center justify-between mb-6">
-        <div className="relative w-64">
-          <Input
-            placeholder="Rechercher un produit..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
-          />
-          <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+      {/* En-tête éditorial du catalogue (identité Alto) */}
+      <div className="mb-6">
+        <p
+          className="mb-1 text-xs font-bold uppercase tracking-[0.25em] text-alto-orange"
+          style={{ fontFamily: "var(--font-titles)" }}
+        >
+          Catalogue · gestion
+        </p>
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <h2
+              className="text-3xl font-bold text-alto-blue dark:text-alto-cream"
+              style={{ fontFamily: "var(--font-titles)" }}
+            >
+              Produits
+            </h2>
+            {products && (
+              <span className="rounded-full bg-muted px-3 py-1 text-xs font-medium text-muted-foreground">
+                {products.length} produit{products.length > 1 ? "s" : ""} ·{" "}
+                {products.reduce((n, p) => n + (p.variations?.length || 0), 0)}{" "}
+                variations
+              </span>
+            )}
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="relative w-64">
+              <Input
+                placeholder="Rechercher un produit..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="rounded-full pl-10"
+              />
+              <Search className="absolute left-3.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            </div>
+            <Button
+              onClick={openProductDialog}
+              className="rounded-full bg-alto-orange text-alto-cream hover:bg-alto-orange-soft"
+              style={{ fontFamily: "var(--font-buttons)" }}
+            >
+              <Plus className="h-4 w-4 mr-2" /> Ajouter un produit
+            </Button>
+          </div>
         </div>
-        <Button onClick={openProductDialog}>
-          <Plus className="h-4 w-4 mr-2" /> Ajouter un produit
-        </Button>
       </div>
 
       {isLoading ? (
@@ -748,48 +778,94 @@ export default function Stocks() {
                 </p>
               </div>
             </div>
-            <div className="bg-card text-card-foreground rounded-lg border shadow-sm">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="w-12">ID</TableHead>
-                    <TableHead>Produit</TableHead>
-                    <TableHead>Description</TableHead>
-                    <TableHead>Prix de base</TableHead>
-                    <TableHead>Variations</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredProducts.length === 0 ? (
-                    <TableRow>
-                      <TableCell colSpan={6} className="h-24 text-center">
-                        Aucun produit trouvé
-                      </TableCell>
-                    </TableRow>
-                  ) : (
-                    filteredProducts.map((product) => (
-                      <TableRow key={product.id}>
-                        <TableCell className="font-medium">
-                          {product.id}
-                        </TableCell>
-                        <TableCell>{product.name}</TableCell>
-                        <TableCell>
-                          <span className="line-clamp-2">
-                            {product.description}
+            {filteredProducts.length === 0 ? (
+              <div className="rounded-lg border bg-card py-16 text-center text-muted-foreground">
+                Aucun produit trouvé
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {filteredProducts.map((product) => {
+                  const previewImage = product.variations?.[0]?.images?.[0]?.url;
+                  const totalStock = (product.variations || []).reduce(
+                    (n, v) => n + (v.stock || 0),
+                    0
+                  );
+                  return (
+                    <div
+                      key={product.id}
+                      className="flex flex-col gap-4 rounded-lg border bg-card p-4 sm:flex-row sm:items-center"
+                    >
+                      {/* Photo sur tuile blanche, fond flouté (pattern du site) */}
+                      <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden bg-white">
+                        {previewImage ? (
+                          <>
+                            <img
+                              src={previewImage}
+                              alt=""
+                              aria-hidden
+                              className="absolute inset-0 h-full w-full scale-110 object-cover blur-md"
+                            />
+                            <img
+                              src={previewImage}
+                              alt={product.name}
+                              className="absolute inset-0 h-full w-full object-contain"
+                            />
+                          </>
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center text-2xl text-muted-foreground">
+                            💡
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="min-w-0 flex-1">
+                        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                          <h3
+                            className="text-xl font-bold text-primary"
+                            style={{ fontFamily: "var(--font-titles)" }}
+                          >
+                            {product.name}
+                          </h3>
+                          <span
+                            className="font-bold"
+                            style={{ fontFamily: "var(--font-titles)" }}
+                          >
+                            {formatPrice(product.price)}
                           </span>
-                        </TableCell>
-                        <TableCell>{formatPrice(product.price)}</TableCell>
-                        <TableCell>
-                          <Badge>
-                            {product.variations ? product.variations.length : 0}{" "}
-                            variation(s)
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="text-right space-x-2">
+                          {totalStock <= 0 && (
+                            <span className="rounded-full bg-alto-brown/85 px-2.5 py-0.5 text-xs font-medium text-alto-cream">
+                              Rupture de stock — prix masqué sur le site
+                            </span>
+                          )}
+                        </div>
+                        <p className="mt-1 line-clamp-1 text-sm text-muted-foreground">
+                          {product.description}
+                        </p>
+                        <div className="mt-2 flex flex-wrap gap-1.5">
+                          {(product.variations || []).map((v) => (
+                            <Badge
+                              key={v.id}
+                              variant={v.stock <= 0 ? "secondary" : "outline"}
+                              className="text-xs"
+                            >
+                              {v.variationValue} · {v.stock > 0 ? `${v.stock}` : "épuisé"}
+                            </Badge>
+                          ))}
+                          {(!product.variations ||
+                            product.variations.length === 0) && (
+                            <Badge variant="secondary" className="text-xs">
+                              Aucune variation
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="flex flex-wrap items-center gap-2 sm:flex-col sm:items-end">
+                        <div className="flex gap-2">
                           <Button
                             variant="outline"
                             size="sm"
+                            className="rounded-full"
                             onClick={() => openVariationDialog(product)}
                           >
                             <Plus className="h-3 w-3 mr-1" /> Variation
@@ -797,6 +873,7 @@ export default function Stocks() {
                           <Button
                             variant="outline"
                             size="sm"
+                            className="rounded-full"
                             onClick={() => openProductEditDialog(product)}
                           >
                             <Edit className="h-3 w-3 mr-1" /> Éditer
@@ -804,18 +881,34 @@ export default function Stocks() {
                           <Button
                             variant="outline"
                             size="sm"
-                            className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                            className="rounded-full text-destructive hover:text-destructive hover:bg-destructive/10"
                             onClick={() => openDeleteProductAlert(product)}
                           >
                             <Trash2 className="h-3 w-3 mr-1" /> Supprimer
                           </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))
-                  )}
-                </TableBody>
-              </Table>
-            </div>
+                        </div>
+                        <div className="flex gap-3 text-xs">
+                          <a
+                            href={`/shop/${product.id}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-alto-orange hover:underline"
+                          >
+                            Voir la page ↗
+                          </a>
+                          <a
+                            href="/gestion/contenu"
+                            className="text-muted-foreground hover:underline"
+                          >
+                            Textes de la page
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </TabsContent>
         </Tabs>
       )}
