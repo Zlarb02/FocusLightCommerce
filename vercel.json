@@ -1,6 +1,6 @@
 {
   "framework": "vite",
-  "buildCommand": "cd client && npm install && npm run build",
+  "buildCommand": "cd client && npm install --include=dev && npm run build",
   "outputDirectory": "client/dist",
   "routes": [
     { "handle": "filesystem" },

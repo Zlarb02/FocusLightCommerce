@@ -51,8 +51,9 @@ const LINK_CARDS: Array<{
   {
     labelKey: "nav.studio",
     href: "/about",
-    img: "/images/alto/studio-card.jpg",
-    alt: "Fond gris du studio photo Alto Lille",
+    img: "/images/alto/atelier.jpg",
+    alt: "Lampe FOCUS.01 allumée sur l'établi de l'atelier Alto Lille",
+    imgPos: "object-[18%_82%] xl:object-[32%_68%]",
     overlayKey: "home.tagline",
     thumb: "/images/alto/studio-portrait.jpg",
     thumbPos: "object-[15%_30%]",
@@ -141,7 +142,7 @@ function LinkCard({
         />
         {card.overlayKey && (
           <span
-            className="pointer-events-none absolute bottom-3 right-3 whitespace-pre-line text-right text-lg font-medium leading-snug text-alto-cream drop-shadow md:text-xl"
+            className="pointer-events-none absolute bottom-3 left-3 whitespace-pre-line text-left text-lg font-medium leading-snug text-alto-cream drop-shadow md:text-xl"
           >
             {t(card.overlayKey).replace(", ", ",\n")}
           </span>
