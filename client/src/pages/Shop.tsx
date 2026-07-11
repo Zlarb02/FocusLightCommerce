@@ -68,10 +68,14 @@ export default function Shop() {
     );
   }, [products, searchTerm]);
 
-  // Produit à la une : le premier disponible à la vente, sinon le premier
+  // Produit à la une : le produit phare = le plus gros stock disponible
   const featured = useMemo(() => {
     if (searchTerm !== "" || filteredProducts.length === 0) return null;
-    return filteredProducts.find((p) => !isProductOutOfStock(p)) ?? filteredProducts[0];
+    const inStock = filteredProducts.filter((p) => !isProductOutOfStock(p));
+    if (inStock.length === 0) return filteredProducts[0];
+    const stockOf = (p: ProductWithVariations) =>
+      (p.variations || []).reduce((n, v) => n + (v.stock || 0), 0);
+    return inStock.reduce((a, b) => (stockOf(b) > stockOf(a) ? b : a));
   }, [filteredProducts, searchTerm]);
 
   const gridProducts = featured
