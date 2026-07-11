@@ -157,6 +157,24 @@ export class PgStorage implements IStorage {
     return this.orderStorage.updateOrderStatus(id, status);
   }
 
+  async markShippingNotificationSent(
+    id: number,
+    emailSent: boolean,
+    smsSent: boolean
+  ): Promise<OrderWithParsedRelay | undefined> {
+    return this.orderStorage.markShippingNotificationSent(
+      id,
+      emailSent,
+      smsSent
+    );
+  }
+
+  async clearShippingSmsSent(
+    id: number
+  ): Promise<OrderWithParsedRelay | undefined> {
+    return this.orderStorage.clearShippingSmsSent(id);
+  }
+
   // Order Items
   async getOrderItemsByOrderId(orderId: number): Promise<OrderItem[]> {
     return this.orderStorage.getOrderItemsByOrderId(orderId);

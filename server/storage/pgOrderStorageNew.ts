@@ -216,6 +216,12 @@ export class PgOrderStorage {
       createdAt: row.created_at ? new Date(row.created_at) : null,
       shippedAt: row.shipped_at ? new Date(row.shipped_at) : null,
       deliveredAt: row.delivered_at ? new Date(row.delivered_at) : null,
+      shippingEmailSentAt: row.shipping_email_sent_at
+        ? new Date(row.shipping_email_sent_at)
+        : null,
+      shippingSmsSentAt: row.shipping_sms_sent_at
+        ? new Date(row.shipping_sms_sent_at)
+        : null,
     };
   }
 

@@ -133,6 +133,53 @@ export class PgOrderStorage {
   }
 
   /**
+   * Enregistre l'envoi de la notification d'expédition (email et/ou SMS)
+   * et passe la commande en "shipped" si elle ne l'était pas encore.
+   */
+  async markShippingNotificationSent(
+    id: number,
+    emailSent: boolean,
+    smsSent: boolean
+  ): Promise<OrderWithParsedRelay | undefined> {
+    const result = await db.execute(
+      sql`UPDATE orders
+          SET status = CASE WHEN status IN ('pending', 'processing') THEN 'shipped' ELSE status END,
+              shipped_at = COALESCE(shipped_at, NOW())
+              ${emailSent ? sql`, shipping_email_sent_at = NOW()` : sql``}
+              ${smsSent ? sql`, shipping_sms_sent_at = NOW()` : sql``}
+          WHERE id = ${id}
+          RETURNING *`
+    );
+
+    if (result.rowCount === 0 || result.rowCount === undefined) {
+      return undefined;
+    }
+
+    return this.mapRowToOrder(result.rows[0]);
+  }
+
+  /**
+   * Annule le marquage "SMS envoyé" (fausse manip depuis la gestion).
+   * Ne touche pas au statut de la commande.
+   */
+  async clearShippingSmsSent(
+    id: number
+  ): Promise<OrderWithParsedRelay | undefined> {
+    const result = await db.execute(
+      sql`UPDATE orders
+          SET shipping_sms_sent_at = NULL
+          WHERE id = ${id}
+          RETURNING *`
+    );
+
+    if (result.rowCount === 0 || result.rowCount === undefined) {
+      return undefined;
+    }
+
+    return this.mapRowToOrder(result.rows[0]);
+  }
+
+  /**
    * Récupère tous les éléments d'une commande spécifique
    */
   async getOrderItemsByOrderId(orderId: number): Promise<OrderItem[]> {
@@ -230,6 +277,12 @@ export class PgOrderStorage {
       createdAt: row.created_at ? new Date(row.created_at) : null,
       shippedAt: row.shipped_at ? new Date(row.shipped_at) : null,
       deliveredAt: row.delivered_at ? new Date(row.delivered_at) : null,
+      shippingEmailSentAt: row.shipping_email_sent_at
+        ? new Date(row.shipping_email_sent_at)
+        : null,
+      shippingSmsSentAt: row.shipping_sms_sent_at
+        ? new Date(row.shipping_sms_sent_at)
+        : null,
     };
   }
 

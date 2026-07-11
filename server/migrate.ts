@@ -142,6 +142,28 @@ async function migrateOrderColumns() {
       console.log("✅ Colonnes de suivi existent déjà");
     }
 
+    // Ajouter les colonnes de suivi des notifications d'expédition
+    const hasShippingEmailSentAt = await db.execute(sql`
+      SELECT column_name
+      FROM information_schema.columns
+      WHERE table_name = 'orders' AND column_name = 'shipping_email_sent_at'
+    `);
+
+    if (
+      !hasShippingEmailSentAt.rowCount ||
+      hasShippingEmailSentAt.rowCount === 0
+    ) {
+      await db.execute(
+        sql`ALTER TABLE orders ADD COLUMN shipping_email_sent_at timestamp`
+      );
+      await db.execute(
+        sql`ALTER TABLE orders ADD COLUMN shipping_sms_sent_at timestamp`
+      );
+      console.log("✅ Colonnes de notifications d'expédition ajoutées");
+    } else {
+      console.log("✅ Colonnes de notifications d'expédition existent déjà");
+    }
+
     // 2. Enrichir la table order_items
     console.log("Migration de la table order_items...");
 
@@ -320,7 +342,9 @@ async function createTablesDirectly() {
         status TEXT NOT NULL DEFAULT 'pending',
         created_at TIMESTAMP DEFAULT NOW(),
         shipped_at TIMESTAMP,
-        delivered_at TIMESTAMP
+        delivered_at TIMESTAMP,
+        shipping_email_sent_at TIMESTAMP,
+        shipping_sms_sent_at TIMESTAMP
       )
     `);
 

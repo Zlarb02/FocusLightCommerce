@@ -110,6 +110,9 @@ export const orders = pgTable("orders", {
   createdAt: timestamp("created_at").defaultNow(),
   shippedAt: timestamp("shipped_at"),
   deliveredAt: timestamp("delivered_at"),
+  // Suivi des notifications d'expédition (null = pas encore envoyé)
+  shippingEmailSentAt: timestamp("shipping_email_sent_at"),
+  shippingSmsSentAt: timestamp("shipping_sms_sent_at"),
 });
 
 export const insertOrderSchema = createInsertSchema(orders).omit({

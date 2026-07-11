@@ -66,6 +66,12 @@ export interface IStorage {
     id: number,
     status: string
   ): Promise<OrderWithParsedRelay | undefined>;
+  markShippingNotificationSent(
+    id: number,
+    emailSent: boolean,
+    smsSent: boolean
+  ): Promise<OrderWithParsedRelay | undefined>;
+  clearShippingSmsSent(id: number): Promise<OrderWithParsedRelay | undefined>;
 
   // Order Items
   getOrderItemsByOrderId(orderId: number): Promise<OrderItem[]>;

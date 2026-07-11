@@ -25,6 +25,25 @@ interface OrderConfirmationData {
   } | null;
 }
 
+export interface ShippingNotificationData {
+  orderNumber: string;
+  customerName: string;
+  customerEmail: string;
+  customerPhone: string;
+  relayPoint: {
+    name: string;
+    address: string;
+    city: string;
+    postalCode: string;
+  } | null;
+}
+
+export interface ShippingNotificationResult {
+  emailSent: boolean;
+  smsSent: boolean;
+  smsConfigured: boolean;
+}
+
 class NotificationService {
   private adminEmail = process.env.ADMIN_EMAIL || "altolille@gmail.com";
   private shopEmail = process.env.SHOP_EMAIL || "altolille@gmail.com";
@@ -102,6 +121,194 @@ class NotificationService {
       console.error("❌ =============== FIN ERREUR ===============");
       throw error;
     }
+  }
+
+  /**
+   * Notification d'expédition déclenchée manuellement depuis la gestion des commandes.
+   * Envoie toujours l'email ; envoie aussi un SMS si BREVO_API_KEY est configurée
+   * et que le client a un numéro de téléphone valide.
+   */
+  async sendShippingNotification(
+    data: ShippingNotificationData
+  ): Promise<ShippingNotificationResult> {
+    const result: ShippingNotificationResult = {
+      emailSent: false,
+      smsSent: false,
+      smsConfigured: Boolean(process.env.BREVO_API_KEY),
+    };
+
+    // 1. Email générique "colis expédié"
+    try {
+      const info = await this.transporter.sendMail({
+        from: this.shopEmail,
+        to: data.customerEmail,
+        subject: `Alto Lille — Votre commande ${data.orderNumber} est en route 📦`,
+        html: this.generateShippingEmailHtml(data),
+      });
+      result.emailSent = true;
+      console.log(
+        `📧 Email d'expédition envoyé à ${data.customerEmail}:`,
+        info.messageId
+      );
+    } catch (error) {
+      console.error("❌ Erreur envoi email d'expédition:", error);
+    }
+
+    // 2. SMS (si configuré et téléphone exploitable)
+    const phone = this.normalizeFrenchPhone(data.customerPhone);
+    if (result.smsConfigured && phone) {
+      result.smsSent = await this.sendSms(
+        phone,
+        `Alto Lille : votre commande ${data.orderNumber} est en route !${
+          data.relayPoint
+            ? ` Retrait au point relais ${data.relayPoint.name} (${data.relayPoint.city}) d'ici 2-3 jours ouvres. Piece d'identite requise.`
+            : " Livraison prevue d'ici 2-3 jours ouvres."
+        }`
+      );
+    } else if (!result.smsConfigured) {
+      console.log("ℹ️ SMS non envoyé : BREVO_API_KEY non configurée");
+    } else {
+      console.log(
+        `ℹ️ SMS non envoyé : numéro invalide (${data.customerPhone})`
+      );
+    }
+
+    return result;
+  }
+
+  /**
+   * Envoi d'un SMS transactionnel via l'API Brevo (aucune dépendance npm requise).
+   * Variables d'env : BREVO_API_KEY (obligatoire), SMS_SENDER (défaut "ALTO", max 11 car. alphanum).
+   */
+  private async sendSms(phoneE164: string, message: string): Promise<boolean> {
+    try {
+      const response = await fetch(
+        "https://api.brevo.com/v3/transactionalSMS/sms",
+        {
+          method: "POST",
+          headers: {
+            "api-key": process.env.BREVO_API_KEY as string,
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({
+            type: "transactional",
+            sender: (process.env.SMS_SENDER || "ALTO").substring(0, 11),
+            recipient: phoneE164,
+            content: message,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorBody = await response.text();
+        console.error(
+          `❌ Erreur API Brevo SMS (${response.status}):`,
+          errorBody
+        );
+        return false;
+      }
+
+      console.log(`📱 SMS d'expédition envoyé à ${phoneE164}`);
+      return true;
+    } catch (error) {
+      console.error("❌ Erreur envoi SMS:", error);
+      return false;
+    }
+  }
+
+  /**
+   * Normalise un numéro français vers le format E.164 (+33...).
+   * Retourne null si le numéro n'est pas exploitable pour un SMS (mobile requis).
+   */
+  private normalizeFrenchPhone(phone: string): string | null {
+    if (!phone) return null;
+    const digits = phone.replace(/[\s.\-()]/g, "");
+    if (/^\+33[67]\d{8}$/.test(digits)) return digits;
+    if (/^0033[67]\d{8}$/.test(digits)) return `+${digits.substring(2)}`;
+    if (/^0[67]\d{8}$/.test(digits)) return `+33${digits.substring(1)}`;
+    return null;
+  }
+
+  /** Email générique "colis expédié" — même identité visuelle que l'email de confirmation. */
+  private generateShippingEmailHtml(data: ShippingNotificationData): string {
+    return `
+      <!DOCTYPE html>
+      <html lang="fr">
+      <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Votre colis est en route — Alto Lille</title>
+      </head>
+      <body style="font-family: 'Geist Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #161615; margin: 0; padding: 0; background-color: #FEF7E8;">
+        <div style="max-width: 600px; margin: 0 auto; background-color: #FEF7E8;">
+          <div style="background: #4A2020; color: #FEF7E8; padding: 36px 30px; text-align: center;">
+            <img src="https://www.alto-lille.fr/images/alto/favicon.png" alt="" width="34" height="34" style="display: block; margin: 0 auto 10px;" />
+            <div style="font-size: 30px; font-weight: 800; letter-spacing: 0.04em; margin-bottom: 4px;">ALTO</div>
+            <div style="font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(254,247,232,0.7); margin-bottom: 22px;">Design &amp; fabrication — Lille</div>
+            <h1 style="margin: 0; font-size: 26px; font-weight: 800;">📦 Votre colis est en route !</h1>
+            <p style="margin: 12px 0 0 0; font-size: 15px;">
+              <span style="display: inline-block; background: #F54501; color: #FEF7E8; font-weight: 700; padding: 6px 14px;">N° ${
+                data.orderNumber
+              }</span>
+            </p>
+          </div>
+
+          <div style="padding: 36px 30px;">
+            <div style="margin-bottom: 28px;">
+              <h2 style="color: #4A2020; margin: 0 0 12px 0; font-size: 21px; font-weight: 800;">Bonjour ${
+                data.customerName
+              },</h2>
+              <p style="color: #161615; font-size: 15px; margin: 0;">
+                Bonne nouvelle : votre commande vient d'être expédiée avec Mondial Relay.
+                Comptez <strong>2 à 3 jours ouvrés</strong> avant son arrivée.
+              </p>
+            </div>
+
+            ${
+              data.relayPoint
+                ? `
+            <div style="margin: 28px 0;">
+              <h3 style="margin: 0 0 12px 0; color: #4A2020; font-size: 12px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;">Votre point relais</h3>
+              <div style="background: #FFFFFF; border-left: 4px solid #1B5EC4; padding: 16px;">
+                <div style="font-weight: 700; color: #161615; font-size: 16px; margin-bottom: 6px;">${data.relayPoint.name}</div>
+                <div style="color: #7a6a5a; line-height: 1.5;">
+                  ${data.relayPoint.address}<br>
+                  ${data.relayPoint.postalCode} ${data.relayPoint.city}
+                </div>
+                <div style="margin-top: 12px; padding: 10px 12px; background: #FEF7E8; border-left: 3px solid #F54501;">
+                  <div style="font-size: 13px; color: #4A2020;">
+                    <strong>Pour le retrait :</strong> munissez-vous de votre pièce d'identité.
+                    Mondial Relay vous préviendra par SMS ou email dès l'arrivée du colis.
+                  </div>
+                </div>
+              </div>
+            </div>
+            `
+                : ""
+            }
+
+            <div style="text-align: center; margin: 32px 0 0;">
+              <div style="color: #161615; font-size: 14px;">
+                <strong>Une question ? Un souci ?</strong><br>
+                Répondez simplement à cet email, nous sommes là.
+              </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 32px; padding-top: 24px; border-top: 1px solid #EADFC9;">
+              <div style="color: #4A2020; font-size: 15px; font-weight: 700; margin-bottom: 6px;">
+                Merci de votre confiance,
+              </div>
+              <div style="color: #7a6a5a; font-size: 14px;">
+                Anatole — Alto Lille<br>
+                <a href="https://www.alto-lille.fr" style="color: #F54501; text-decoration: none;">www.alto-lille.fr</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </body>
+      </html>
+    `;
   }
 
   private async sendCustomerEmail(
