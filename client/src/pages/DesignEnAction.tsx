@@ -204,9 +204,6 @@ export default function DesignEnAction() {
             preload="metadata"
             aria-label="Vidéo d'assemblage d'une lampe"
           />
-          <span className="absolute bottom-3 left-3 whitespace-pre-line bg-alto-cream/90 px-3 py-1.5 text-lg font-bold leading-tight text-alto-brown">
-            {t("fab.videoAssemblage")}
-          </span>
         </div>
         <img
           src="/images/alto/fab-orange-base.jpg"

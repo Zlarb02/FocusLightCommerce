@@ -677,12 +677,25 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Crédits (pendant l'animation) */}
+          {/* Crédits (pendant l'animation) — mobile first : nom + logo */}
           <div
             ref={creditsRef}
-            className="landing-indicator absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 items-center gap-4 whitespace-nowrap text-xs text-foreground/70"
+            className="landing-indicator absolute inset-x-0 bottom-3 z-10 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 px-4 text-xs text-foreground/70 md:bottom-4 md:gap-x-6"
           >
-            <span>© 2025 Alto Lille</span>
+            <a
+              href="https://www.instagram.com/alto_lille/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 transition-colors hover:text-foreground"
+            >
+              <img
+                src="/images/credits/alto-lille.jpg"
+                alt="Alto Lille"
+                className="h-5 w-5 rounded-full"
+                loading="lazy"
+              />
+              Alto Lille
+            </a>
             <a
               href="https://www.instagram.com/rare_design/"
               target="_blank"
@@ -691,11 +704,11 @@ export default function Home() {
             >
               <img
                 src="/images/credits/rare-design.jpg"
-                alt="RARE Design"
+                alt="RARE.design"
                 className="h-5 w-5 rounded-full"
                 loading="lazy"
               />
-              {t("credits.design")}
+              RARE.design
             </a>
             <a
               href="https://pogodev.com"
@@ -709,7 +722,7 @@ export default function Home() {
                 className="h-5 w-5 rounded-[3px]"
                 loading="lazy"
               />
-              {t("credits.dev")}
+              pogodev.com
             </a>
           </div>
 
