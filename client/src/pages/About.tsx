@@ -28,20 +28,34 @@ export default function About() {
     <Layout headerTone="surface" footerTone="blue">
       {/* Hero portrait + tagline. Sur desktop la photo est montrée en pleine
           hauteur ancrée à gauche (jamais coupée en haut/bas) ; l'écran plus
-          large que la photo est comblé par un dégradé qui prolonge le fond
-          gris du studio, et un écran plus étroit coupe la droite, pas la
-          gauche où se trouve Anatole. */}
+          large que la photo est comblé par studio-backdrop-tile.jpg : la
+          tranche droite (gris pur) de la photo suivie de son miroir, répétée
+          en x. La tuile démarre sur le pixel du bord droit de la photo donc
+          le raccord est invisible, et Anatole ne peut jamais apparaître en
+          double. Un écran plus étroit coupe la droite, pas la gauche où se
+          trouve Anatole. */}
       <section
         className="relative overflow-hidden md:h-[75vh] md:max-h-[900px]"
         style={{
           background: "linear-gradient(180deg, #777a81 0%, #797b83 55%, #6b6c70 100%)",
         }}
       >
-        <img
-          src="/images/alto/studio-portrait.jpg"
-          alt="Anatole Collet dans son atelier, entouré de ses luminaires"
-          className="h-[60vh] max-h-[780px] w-full object-cover object-[25%_center] md:h-full md:max-h-none md:w-auto md:max-w-none"
-        />
+        <div className="md:flex md:h-full">
+          <img
+            src="/images/alto/studio-portrait.jpg"
+            alt="Anatole Collet dans son atelier, entouré de ses luminaires"
+            className="h-[60vh] max-h-[780px] w-full object-cover object-[25%_center] md:h-full md:max-h-none md:w-auto md:max-w-none md:shrink-0"
+          />
+          <div
+            aria-hidden="true"
+            className="hidden md:block md:h-full md:flex-1"
+            style={{
+              backgroundImage: "url(/images/alto/studio-backdrop-tile.jpg)",
+              backgroundSize: "auto 100%",
+              backgroundRepeat: "repeat-x",
+            }}
+          />
+        </div>
         <p className="absolute bottom-8 right-6 text-right text-2xl font-medium text-alto-cream drop-shadow md:bottom-14 md:right-14 md:text-4xl">
           {t("home.tagline").split(", ").map((part, i, arr) => (
             <span key={part}>
