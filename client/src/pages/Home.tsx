@@ -1,5 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation } from "wouter";
+import { useQuery } from "@tanstack/react-query";
+import { AnimatePresence, motion } from "framer-motion";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
@@ -9,15 +11,31 @@ import { AltoHeader } from "@/components/Layout";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 
+/** Hero slider (piloté depuis /gestion) : la 1re image reste la photo lampe
+ *  soignée, calée exactement ; les slides admin défilent au même emplacement. */
+interface Slide {
+  url: string;
+  alt?: string;
+  order?: number;
+}
+interface SliderConfig {
+  slides?: Slide[];
+  autoPlayInterval?: number;
+}
+const HERO_SLIDE: Slide = {
+  url: "/images/alto/hero.jpg",
+  alt: "Lampe FOCUS.01 allumée — Alto Lille",
+};
+
 /* ===== Config de l'animation 3D (reprise de l'ancienne landing) ===== */
 const CFG = {
   urls: [
     "/images/focus.glb",
     "https://raw.githubusercontent.com/Zlarb02/test-landing/main/src/assets/focus.glb",
   ],
-  intro: 0.08,
+  intro: 0.02,
   rotEnd: 0.75,
-  timeScale: 1.2,
+  timeScale: 1.35,
   legend: { seg: 0.12, fade: 0.04 },
   slideRight: { start: 0.6, end: 0.9 },
 };
@@ -77,6 +95,32 @@ export default function Home() {
   const capRefs = useRef<Array<HTMLParagraphElement | null>>([]);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const autoScrollingRef = useRef(false);
+
+  /* ----- Hero slider (config /gestion) : 1re image = photo lampe soignée ----- */
+  const { data: sliderConfig } = useQuery<SliderConfig>({
+    queryKey: ["/api/slider/config"],
+  });
+  const heroSlides = useMemo(() => {
+    const admin = (sliderConfig?.slides ?? [])
+      .filter((s) => s.url && s.url !== HERO_SLIDE.url)
+      .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+    return [HERO_SLIDE, ...admin];
+  }, [sliderConfig]);
+
+  const [heroIndex, setHeroIndex] = useState(0);
+  useEffect(() => {
+    if (heroSlides.length < 2) return;
+    const base = Math.max(sliderConfig?.autoPlayInterval ?? 3500, 2500);
+    // La 1re image (compo soignée) reste affichée 1 s de plus que les autres
+    const delay = heroIndex === 0 ? base + 1000 : base;
+    const id = window.setTimeout(
+      () => setHeroIndex((i) => (i + 1) % heroSlides.length),
+      delay
+    );
+    return () => window.clearTimeout(id);
+  }, [heroIndex, heroSlides.length, sliderConfig?.autoPlayInterval]);
+
+  const heroSlide = heroSlides[heroIndex % heroSlides.length];
 
   /* ----- Couleur de fond du rendu selon le thème ----- */
   useEffect(() => {
@@ -335,7 +379,10 @@ export default function Home() {
     };
   }, []);
 
-  /* ----- Visite guidée : défilement automatique (9 s) ----- */
+  /* ----- Visite guidée : défilement automatique, interruptible -----
+     Un peu accéléré (6,5 s). L'utilisateur reprend la main à tout moment :
+     un scroll manuel (molette, tactile, clavier) annule l'auto-scroll sans
+     bloquer — on détecte l'écart entre la position posée et la position réelle. */
   const guidedScroll = (fromTop: boolean) => {
     const run = () => {
       autoScrollingRef.current = true;
@@ -343,22 +390,43 @@ export default function Home() {
       const startPos = window.scrollY;
       const target = document.body.scrollHeight - window.innerHeight;
       const distance = target - startPos;
-      const duration = 9000;
+      const duration = 6500;
+      let expected = startPos; // position posée à la frame précédente
+
+      const cancel = () => {
+        autoScrollingRef.current = false;
+        removeEventListener("wheel", onUserScroll);
+        removeEventListener("touchmove", onUserScroll);
+        removeEventListener("keydown", onUserScroll);
+      };
+      // Intention explicite de scroller à la main → on rend la main aussitôt
+      const onUserScroll = () => cancel();
+      addEventListener("wheel", onUserScroll, { passive: true });
+      addEventListener("touchmove", onUserScroll, { passive: true });
+      addEventListener("keydown", onUserScroll);
+
       const step = (now: number) => {
+        if (!autoScrollingRef.current) return; // annulé par l'utilisateur
+        // Sécurité : si la position réelle a dévié de ce qu'on a posé, l'utilisateur a repris la main
+        if (Math.abs(window.scrollY - expected) > 4 && now - startTime > 60) {
+          cancel();
+          return;
+        }
         const p = Math.min((now - startTime) / duration, 1);
         let e;
         if (p < 0.2) e = (p / 0.2) * 0.25;
         else if (p < 0.9) e = 0.25 + ((p - 0.2) / 0.7) * 0.65;
         else e = 0.9 + (1 - Math.pow(1 - (p - 0.9) / 0.1, 1.5)) * 0.1;
-        window.scrollTo(0, startPos + distance * e);
+        expected = startPos + distance * e;
+        window.scrollTo(0, expected);
         if (p < 1) requestAnimationFrame(step);
-        else autoScrollingRef.current = false;
+        else cancel();
       };
       requestAnimationFrame(step);
     };
     if (fromTop) {
       window.scrollTo({ top: 0, behavior: "smooth" });
-      setTimeout(run, 800);
+      setTimeout(run, 700);
     } else {
       run();
     }
@@ -374,34 +442,26 @@ export default function Home() {
       {/* Header maquette sticky (demande Anatole : reste visible au scroll) */}
       <AltoHeader tone="brown" />
 
-      {/* Premier viewport fidèle à la maquette (Web 1920–9 / iPhone–1) */}
+      {/* Premier viewport (Web 1920–9 / iPhone–1) — mobile-first, structure
+          unique : bloc texte + photo carrée côte à côte, jamais en absolu.
+          Mobile : empilé (tagline|logo en ligne, puis photo dessous).
+          Desktop : grille 2 colonnes (texte à gauche, photo à droite). */}
       <section
         ref={introRef}
-        className="relative w-full overflow-hidden bg-background md:h-[calc(100svh-96px)]"
+        className="flex w-full flex-col justify-center bg-background min-h-[calc(100svh-57px)] md:grid md:grid-cols-2 md:items-center md:gap-6 md:min-h-0 md:h-[calc(100svh-96px)] md:px-14"
       >
-        {/* ---------- Desktop : composition maquette en absolu ---------- */}
-        <div className="hidden md:block">
-          {/* Photo lampe allumée — colonne droite pleine hauteur */}
-          <img
-            src="/images/alto/hero.jpg"
-            alt="Lampe FOCUS.01 allumée — Alto Lille"
-            className="absolute bottom-0 right-0 h-full w-[40vw] object-cover"
-          />
-
-          {/* Tagline (haut-gauche) */}
+        {/* Bloc texte : tagline + logotype */}
+        <div className="flex flex-row items-start justify-between gap-4 px-6 pb-10 pt-6 md:flex-col md:items-start md:justify-center md:gap-10 md:px-0 md:pb-0 md:pt-0">
           <p
-            className="absolute left-[8.3vw] top-[40%] max-w-[42vw] text-[clamp(22px,1.9vw,36px)] font-medium leading-snug text-alto-brown dark:text-alto-cream"
+            className="max-w-[52%] font-medium leading-snug text-alto-brown dark:text-alto-cream md:max-w-none text-[clamp(15px,1.875vw,36px)]"
             style={{ fontFamily: "var(--font-nav)" }}
           >
             {t("home.tagline")}
           </p>
-
-          {/* Logotype orange géant, calé en bas-gauche (reste dans la colonne
-              crème, bord droit avant la photo à 60vw) */}
           <button
             onClick={goToShop}
             aria-label={t("landing.cta")}
-            className="group absolute bottom-0 left-[1.4vw] w-[58vw] max-w-[calc(60vw-1.4vw)]"
+            className="group w-[42%] shrink-0 md:w-full"
           >
             <AltoLogotype
               color="orange"
@@ -409,11 +469,34 @@ export default function Home() {
               className="w-full transition-transform duration-300 group-hover:scale-[1.01]"
             />
           </button>
+        </div>
 
-          {/* Invitation à défiler vers le parcours 3D (sur la photo, bas-droite) */}
+        {/* Hero slider — portrait, ratio fixe (~3:4), jamais déformé. 1re image =
+            photo lampe soignée (cadrage object-[center_22%]) ; slides admin
+            au même emplacement. Desktop : hauteur de la cellule ; mobile : pleine largeur. */}
+        <div className="relative mx-6 mb-10 md:mx-0 md:mb-0 md:flex md:h-full md:items-center md:justify-end">
+          <button
+            onClick={goToShop}
+            aria-label={t("landing.cta")}
+            className="group relative block aspect-[3/4] w-full overflow-hidden md:h-[88%] md:w-auto md:aspect-[3/4]"
+          >
+            <AnimatePresence initial={false}>
+              <motion.img
+                key={`${heroSlide.url}-${heroIndex}`}
+                src={heroSlide.url}
+                alt={heroSlide.alt ?? "Création Alto Lille"}
+                className="absolute inset-0 h-full w-full object-cover object-[center_22%]"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.6, ease: [0.32, 0.72, 0.22, 1] }}
+              />
+            </AnimatePresence>
+          </button>
+          {/* Invitation à défiler (desktop, sur la photo) */}
           <button
             onClick={() => guidedScroll(false)}
-            className="absolute bottom-6 right-8 z-10 flex flex-col items-center gap-1 text-alto-cream/80 transition-colors hover:text-alto-cream"
+            className="absolute bottom-4 right-4 z-10 hidden flex-col items-center gap-1 text-alto-cream/80 transition-colors hover:text-alto-cream md:flex"
             aria-label={t("landing.scroll")}
           >
             <ChevronsDown className="h-6 w-6 animate-bounce" />
@@ -422,34 +505,10 @@ export default function Home() {
             </span>
           </button>
         </div>
-
-        {/* ---------- Mobile : flux vertical (iPhone–1) ---------- */}
-        <div className="flex flex-col md:hidden">
-          <div className="flex items-start justify-between gap-4 px-[6vw] pb-8 pt-12">
-            <p
-              className="max-w-[52%] text-[clamp(15px,4.4vw,19px)] font-medium leading-snug text-alto-brown dark:text-alto-cream"
-              style={{ fontFamily: "var(--font-nav)" }}
-            >
-              {t("home.tagline")}
-            </p>
-            <button
-              onClick={goToShop}
-              aria-label={t("landing.cta")}
-              className="w-[42%] shrink-0"
-            >
-              <AltoLogotype color="orange" alt="ALTO Lille" className="w-full" />
-            </button>
-          </div>
-          <img
-            src="/images/alto/hero.jpg"
-            alt="Lampe FOCUS.01 allumée — Alto Lille"
-            className="mx-[6vw] mb-10 aspect-[360/540] object-cover"
-          />
-        </div>
       </section>
 
       {/* Parcours 3D piloté par le scroll (démarre sous le viewport maquette) */}
-      <div ref={trackRef} className="relative h-[800vh]">
+      <div ref={trackRef} className="relative h-[550vh]">
         <div
           ref={stageRef}
           className="sticky top-0 h-screen overflow-hidden"
