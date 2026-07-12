@@ -37,7 +37,7 @@
     --radius: 0.5rem;
 
     /* Polices principales */
-    --font-primary: "Geist Sans", "Geist", -apple-system, BlinkMacSystemFont,
+    --font-primary: "Geist", "Geist Sans", -apple-system, BlinkMacSystemFont,
       "Segoe UI", sans-serif;
     --font-heading: var(--font-primary);
     --font-accent: var(--font-primary);

@@ -385,7 +385,7 @@ export default function Home() {
           <img
             src="/images/alto/hero.jpg"
             alt="Lampe FOCUS.01 allumée — Alto Lille"
-            className="absolute bottom-0 right-0 h-full w-[44vw] object-cover"
+            className="absolute bottom-0 right-0 h-full w-[40vw] object-cover"
           />
 
           {/* Tagline (haut-gauche) */}
@@ -396,11 +396,12 @@ export default function Home() {
             {t("home.tagline")}
           </p>
 
-          {/* Logotype orange géant, calé en bas-gauche (chevauche le bas) */}
+          {/* Logotype orange géant, calé en bas-gauche (reste dans la colonne
+              crème, bord droit avant la photo à 60vw) */}
           <button
             onClick={goToShop}
             aria-label={t("landing.cta")}
-            className="group absolute bottom-0 left-[1.4vw] w-[58vw]"
+            className="group absolute bottom-0 left-[1.4vw] w-[58vw] max-w-[calc(60vw-1.4vw)]"
           >
             <AltoLogotype
               color="orange"

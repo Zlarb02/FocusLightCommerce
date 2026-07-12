@@ -56,7 +56,7 @@ export default function About() {
             }}
           />
         </div>
-        <p className="absolute bottom-8 right-6 text-right text-2xl font-medium text-alto-cream drop-shadow md:bottom-14 md:right-14 md:text-4xl">
+        <p className="absolute bottom-8 right-6 text-right font-normal text-alto-cream drop-shadow md:bottom-14 md:right-14 text-[clamp(26px,4.2vw,81px)] leading-none">
           {t("home.tagline").split(", ").map((part, i, arr) => (
             <span key={part}>
               {part}
@@ -67,20 +67,20 @@ export default function About() {
         </p>
       </section>
 
-      {/* Anatole Collet — manifeste (brun profond en thème sombre : l'orange
-          de la maquette était trop criard à la lecture) */}
+      {/* Anatole Collet — manifeste (maquette : nom Bold aligné à gauche,
+          rôle Regular calé à droite, manifeste pleine largeur) */}
       <section className="bg-alto-brown text-alto-cream dark:bg-alto-brown-deep">
-        <div className="mx-auto max-w-3xl px-6 py-16 md:py-24">
+        <div className="mx-auto max-w-[1920px] px-6 py-16 md:px-[2.5vw] md:py-24">
           <h1
-            className="text-center text-4xl font-bold md:text-6xl"
+            className="font-bold leading-none text-[clamp(48px,5.3vw,102px)]"
             style={{ fontFamily: "var(--font-titles)" }}
           >
             {t("studio.name")}
           </h1>
-          <p className="mt-3 text-center text-lg opacity-90">
+          <p className="mt-4 text-[clamp(18px,1.8vw,35px)] opacity-90 md:pl-[60%]">
             {t("studio.role")}
           </p>
-          <div className="mt-12 space-y-6 text-lg leading-relaxed md:text-xl">
+          <div className="mt-12 max-w-[1557px] space-y-6 leading-relaxed text-[clamp(18px,2vw,39px)]">
             <p>{t("studio.manifesto1")}</p>
             <p>{t("studio.manifesto2")}</p>
           </div>
@@ -98,7 +98,7 @@ export default function About() {
                 className="mx-auto h-24 w-24 object-contain md:h-28 md:w-28"
                 loading="lazy"
               />
-              <figcaption className="mt-3 text-sm font-semibold text-primary md:text-base">
+              <figcaption className="mt-3 text-[clamp(14px,1.1vw,21px)] font-normal text-alto-orange">
                 {t(value.labelKey)}
               </figcaption>
             </figure>
@@ -107,12 +107,12 @@ export default function About() {
 
         <div className="max-w-xl">
           <h2
-            className="whitespace-pre-line text-3xl font-bold md:text-5xl"
+            className="whitespace-pre-line font-bold leading-none text-alto-brown dark:text-alto-cream text-[clamp(32px,3.3vw,64px)]"
             style={{ fontFamily: "var(--font-titles)" }}
           >
             {t("studio.noObjects.title")}
           </h2>
-          <div className="mt-8 space-y-5 leading-relaxed text-foreground/90">
+          <div className="mt-8 space-y-5 leading-relaxed text-foreground/90 text-[clamp(15px,1.5vw,23px)]">
             <p>{t("studio.noObjects.p1")}</p>
             <p className="font-semibold">{t("studio.noObjects.strong")}</p>
             <p>{t("studio.noObjects.p2")}</p>
@@ -125,7 +125,7 @@ export default function About() {
       {/* Instagram */}
       <section className="mx-auto max-w-[1400px] px-6 pb-20 md:px-10 md:pb-28">
         <h2
-          className="text-3xl font-bold text-primary md:text-5xl"
+          className="font-bold text-alto-orange text-[clamp(32px,4.1vw,78px)]"
           style={{ fontFamily: "var(--font-titles)" }}
         >
           {t("studio.instagram")}
@@ -142,7 +142,7 @@ export default function About() {
               <img
                 src={post.src}
                 alt={post.alt}
-                className="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                className="aspect-[2/3] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                 loading="lazy"
               />
             </a>
