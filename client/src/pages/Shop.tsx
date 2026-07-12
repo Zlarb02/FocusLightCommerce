@@ -5,16 +5,21 @@ import { motion } from "motion/react";
 import { Layout } from "@/components/Layout";
 import { ProductWithVariations } from "@shared/schema";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Search, ArrowRight } from "lucide-react";
-import { formatPrice, isProductOutOfStock } from "@/lib/utils";
+import { Search } from "lucide-react";
+import { isProductOutOfStock } from "@/lib/utils";
 
 /**
- * Catalogue — refonte dans l'identité Alto (maquette RARE.design) :
- * grand titre éditorial, produit à la une, grille numérotée sur tuiles
- * blanches au fond flouté (les photos ne sont jamais recadrées).
+ * Catalogue — grille simple fidèle à la maquette (RARE.design, Web 1920–5) :
+ * tuiles sur fond gris clair, nom et prix orange en Bold. Pas de produit à
+ * la une ni de bandeau manifeste (retirés vs l'ancienne version éditoriale).
  */
 
-/** Photo produit sur tuile : copie floutée en fond, image entière devant. */
+/** Prix catalogue au format maquette « 25.00€ » (2 décimales, sans espace). */
+function catalogPrice(price: number): string {
+  return `${price.toFixed(2)}€`;
+}
+
+/** Photo produit sur tuile grise : copie floutée en fond, image entière devant. */
 function ProductTile({
   url,
   alt,
@@ -25,7 +30,7 @@ function ProductTile({
   className?: string;
 }) {
   return (
-    <div className={`relative overflow-hidden bg-white ${className}`}>
+    <div className={`relative overflow-hidden bg-[#F6F5F3] ${className}`}>
       {url ? (
         <>
           <img
@@ -68,59 +73,30 @@ export default function Shop() {
     );
   }, [products, searchTerm]);
 
-  // Produit à la une : le produit phare = le plus gros stock disponible
-  const featured = useMemo(() => {
-    if (searchTerm !== "" || filteredProducts.length === 0) return null;
-    const inStock = filteredProducts.filter((p) => !isProductOutOfStock(p));
-    if (inStock.length === 0) return filteredProducts[0];
-    const stockOf = (p: ProductWithVariations) =>
-      (p.variations || []).reduce((n, v) => n + (v.stock || 0), 0);
-    return inStock.reduce((a, b) => (stockOf(b) > stockOf(a) ? b : a));
-  }, [filteredProducts, searchTerm]);
-
-  const gridProducts = featured
-    ? filteredProducts.filter((p) => p.id !== featured.id)
-    : filteredProducts;
-
-  const featuredImage = featured?.variations?.[0]?.images?.[0]?.url;
-
   return (
     <Layout headerTone="brown" footerTone="brown">
       <div className="mx-auto max-w-[1500px] px-4 pb-16 pt-10 md:px-10 md:pb-24 md:pt-16">
-        {/* En-tête éditorial */}
-        <header className="mb-10 md:mb-16">
-          <p
-            className="mb-3 text-xs font-bold uppercase tracking-[0.25em] text-alto-orange md:text-sm"
+        {/* En-tête : titre bleu + recherche discrète */}
+        <header className="mb-10 flex flex-col gap-4 md:mb-14 md:flex-row md:items-center md:justify-between">
+          <h1
+            className="text-[clamp(28px,2vw,40px)] font-bold leading-none text-alto-blue dark:text-alto-cream"
             style={{ fontFamily: "var(--font-titles)" }}
           >
-            {t("shop.kicker")}
-          </p>
-          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-            <h1
-              className="text-5xl font-bold leading-[0.95] text-alto-blue md:text-7xl dark:text-alto-cream"
-              style={{ fontFamily: "var(--font-titles)" }}
-            >
-              {t("shop.title")}
-            </h1>
-            <div className="flex items-center gap-6">
-              <p className="hidden max-w-[220px] text-sm leading-snug text-muted-foreground md:block">
-                {t("shop.tagline")}
-              </p>
-              {/* Recherche */}
-              <div className="relative w-full max-w-xs md:w-64">
-                <Search
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground"
-                  size={16}
-                />
-                <input
-                  type="text"
-                  placeholder={t("shop.general.search")}
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full rounded-full border border-border bg-card py-2.5 pl-11 pr-4 text-sm outline-none transition-colors focus:border-alto-orange"
-                />
-              </div>
-            </div>
+            {t("shop.title")}
+          </h1>
+          {/* Recherche discrète à droite */}
+          <div className="relative w-full max-w-xs md:w-64">
+            <Search
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground"
+              size={16}
+            />
+            <input
+              type="text"
+              placeholder={t("shop.general.search")}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full rounded-full border border-border bg-card py-2.5 pl-11 pr-4 text-sm outline-none transition-colors focus:border-alto-orange"
+            />
           </div>
         </header>
 
@@ -136,71 +112,11 @@ export default function Shop() {
           </div>
         )}
 
-        {/* Produit à la une */}
-        {!isLoading && featured && (
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: [0.32, 0.72, 0.22, 1] }}
-          >
-            <Link href={`/shop/${featured.id}`}>
-              <article className="group mb-14 grid cursor-pointer overflow-hidden md:mb-20 md:grid-cols-[1.5fr_1fr]">
-                <ProductTile
-                  url={featuredImage}
-                  alt={featured.name}
-                  className="aspect-[4/3] md:aspect-auto md:min-h-[460px]"
-                />
-                <div className="flex flex-col justify-between gap-8 bg-alto-brown p-8 text-alto-cream md:p-12 dark:bg-alto-brown-deep">
-                  <div>
-                    <p
-                      className="mb-4 text-xs font-bold uppercase tracking-[0.25em] text-alto-orange"
-                      style={{ fontFamily: "var(--font-titles)" }}
-                    >
-                      {t("shop.featured")}
-                    </p>
-                    <h2
-                      className="mb-5 text-4xl font-bold leading-none md:text-5xl"
-                      style={{ fontFamily: "var(--font-titles)" }}
-                    >
-                      {featured.name}
-                    </h2>
-                    <p className="line-clamp-4 max-w-md leading-relaxed text-alto-cream/80">
-                      {featured.description}
-                    </p>
-                  </div>
-                  <div className="flex items-center justify-between gap-4">
-                    {isProductOutOfStock(featured) ? (
-                      <span className="text-sm font-medium text-alto-cream/60">
-                        {t("shop.outOfStock")}
-                      </span>
-                    ) : (
-                      <span
-                        className="text-2xl font-bold"
-                        style={{ fontFamily: "var(--font-titles)" }}
-                      >
-                        {formatPrice(featured.price)}
-                      </span>
-                    )}
-                    <span
-                      className="inline-flex items-center gap-2 rounded-full bg-alto-orange px-6 py-2.5 text-sm font-bold text-alto-cream transition-transform group-hover:translate-x-1"
-                      style={{ fontFamily: "var(--font-titles)" }}
-                    >
-                      {t("shop.discover")}
-                      <ArrowRight size={16} />
-                    </span>
-                  </div>
-                </div>
-              </article>
-            </Link>
-          </motion.div>
-        )}
-
-        {/* Grille éditoriale numérotée */}
-        {!isLoading && gridProducts.length > 0 && (
-          <div className="grid grid-cols-2 gap-x-5 gap-y-12 md:grid-cols-3 md:gap-x-8 md:gap-y-16 xl:grid-cols-4">
-            {gridProducts.map((product, index) => {
+        {/* Grille produits — 2 colonnes mobile / 4 desktop */}
+        {!isLoading && filteredProducts.length > 0 && (
+          <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-4 md:gap-x-6 md:gap-y-14">
+            {filteredProducts.map((product, index) => {
               const previewImage = product.variations?.[0]?.images?.[0]?.url;
-              const variationCount = product.variations?.length || 0;
               const outOfStock = isProductOutOfStock(product);
 
               return (
@@ -220,70 +136,36 @@ export default function Shop() {
                         <ProductTile
                           url={previewImage}
                           alt={product.name}
-                          className="aspect-[7/8]"
+                          className="aspect-[4/3.5]"
                         />
-                        {/* Index éditorial */}
-                        <span
-                          className="absolute left-3 top-3 text-xs font-bold tracking-widest text-alto-brown/60 dark:text-alto-brown"
-                          style={{ fontFamily: "var(--font-titles)" }}
-                        >
-                          {String(index + (featured ? 2 : 1)).padStart(2, "0")}
-                        </span>
                         {outOfStock && (
                           <span className="absolute right-3 top-3 rounded-full bg-alto-brown/85 px-3 py-1 text-xs font-medium text-alto-cream">
                             {t("shop.outOfStock")}
                           </span>
                         )}
-                        {/* CTA au survol, comme le slider de la landing */}
-                        <span
-                          className="pointer-events-none absolute bottom-3 left-3 rounded-full bg-alto-orange px-4 py-1.5 text-xs font-bold text-alto-cream opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                          style={{ fontFamily: "var(--font-titles)" }}
-                        >
-                          {t("shop.discover")}
-                        </span>
                       </div>
 
-                      <div className="mt-4 flex items-baseline justify-between gap-3">
-                        <h3
-                          className="text-lg font-bold leading-tight text-primary md:text-xl"
-                          style={{ fontFamily: "var(--font-titles)" }}
-                        >
-                          {product.name}
-                        </h3>
-                        {!outOfStock && (
-                          <p
-                            className="shrink-0 text-lg font-bold text-primary"
-                            style={{ fontFamily: "var(--font-titles)" }}
-                          >
-                            {formatPrice(product.price)}
-                          </p>
-                        )}
-                      </div>
-                      <p className="mt-1 text-sm text-muted-foreground">
+                      {/* Nom orange Bold */}
+                      <h3
+                        className="mt-4 text-[clamp(22px,2.4vw,46px)] font-bold leading-tight text-alto-orange"
+                        style={{ fontFamily: "var(--font-titles)" }}
+                      >
+                        {product.name}
+                      </h3>
+                      {/* Prix orange Bold, format 25.00€ */}
+                      <p
+                        className="text-[clamp(22px,2.4vw,46px)] font-bold leading-tight text-alto-orange"
+                        style={{ fontFamily: "var(--font-titles)" }}
+                      >
                         {outOfStock
                           ? t("shop.outOfStock")
-                          : variationCount > 1
-                            ? `${variationCount} ${t("shop.colorCount")}`
-                            : t("shop.singleColor")}
+                          : catalogPrice(product.price)}
                       </p>
                     </article>
                   </Link>
                 </motion.div>
               );
             })}
-          </div>
-        )}
-
-        {/* Bandeau manifeste */}
-        {!isLoading && (
-          <div className="mt-20 border-t border-border pt-10 text-center md:mt-28">
-            <p
-              className="mx-auto max-w-xl text-2xl font-bold leading-snug text-alto-blue md:text-3xl dark:text-alto-cream"
-              style={{ fontFamily: "var(--font-titles)" }}
-            >
-              {t("shop.manifesto")}
-            </p>
-            <p className="mt-3 text-sm text-muted-foreground">{t("shop.manifesto.sub")}</p>
           </div>
         )}
       </div>
