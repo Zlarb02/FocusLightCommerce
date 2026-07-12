@@ -1,22 +1,21 @@
-import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "wouter";
 import { motion } from "motion/react";
 import { Layout } from "@/components/Layout";
 import { ProductWithVariations } from "@shared/schema";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Search } from "lucide-react";
 import { isProductOutOfStock } from "@/lib/utils";
 
 /**
- * Catalogue — grille simple fidèle à la maquette (RARE.design, Web 1920–5) :
- * tuiles sur fond gris clair, nom et prix orange en Bold. Pas de produit à
- * la une ni de bandeau manifeste (retirés vs l'ancienne version éditoriale).
+ * Catalogue — maquette XD `cffd37ec` (Web 1920–5) : sous le header, une grille
+ * de 3 colonnes seulement. Valeurs natives 1920 : vignettes 479×508 à x=200,
+ * 725, 1250 (gap 46) ; nom Geist Bold 50px et prix Bold 40px en brun #4A2020.
+ * Ni titre de page, ni recherche dans l'artboard.
  */
 
-/** Prix catalogue au format maquette « 25.00€ » (2 décimales, sans espace). */
+/** Prix catalogue au format maquette « 25.00 € ». */
 function catalogPrice(price: number): string {
-  return `${price.toFixed(2)}€`;
+  return `${price.toFixed(2)} €`;
 }
 
 /** Photo produit sur tuile grise : copie floutée en fond, image entière devant. */
@@ -61,61 +60,28 @@ export default function Shop() {
     queryKey: ["/api/products"],
   });
 
-  const [searchTerm, setSearchTerm] = useState("");
   const { t } = useLanguage();
-
-  const filteredProducts = useMemo(() => {
-    return products.filter(
-      (product) =>
-        searchTerm === "" ||
-        product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.description.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  }, [products, searchTerm]);
 
   return (
     <Layout headerTone="brown" footerTone="brown">
-      <div className="mx-auto max-w-[1500px] px-4 pb-16 pt-10 md:px-10 md:pb-24 md:pt-16">
-        {/* En-tête : titre bleu + recherche discrète */}
-        <header className="mb-10 flex flex-col gap-4 md:mb-14 md:flex-row md:items-center md:justify-between">
-          <h1
-            className="text-[clamp(28px,2vw,40px)] font-bold leading-none text-alto-blue dark:text-alto-cream"
-            style={{ fontFamily: "var(--font-titles)" }}
-          >
-            {t("shop.title")}
-          </h1>
-          {/* Recherche discrète à droite */}
-          <div className="relative w-full max-w-xs md:w-64">
-            <Search
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground"
-              size={16}
-            />
-            <input
-              type="text"
-              placeholder={t("shop.general.search")}
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full rounded-full border border-border bg-card py-2.5 pl-11 pr-4 text-sm outline-none transition-colors focus:border-alto-orange"
-            />
-          </div>
-        </header>
-
+      {/* Marges maquette : 200/1920 = 10.42% ; grille limitée à 1920 comme l'artboard */}
+      <div className="mx-auto max-w-[1920px] px-[6vw] pb-16 pt-[6vw] md:px-[10.42vw] md:pb-24 md:pt-[5.6vw]">
         {isLoading && (
           <div className="flex justify-center py-24">
             <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-primary"></div>
           </div>
         )}
 
-        {!isLoading && filteredProducts.length === 0 && (
+        {!isLoading && products.length === 0 && (
           <div className="py-24 text-center text-muted-foreground">
-            {searchTerm ? t("shop.general.noResults") : t("shop.noProducts")}
+            {t("shop.noProducts")}
           </div>
         )}
 
-        {/* Grille produits — 2 colonnes mobile / 4 desktop */}
-        {!isLoading && filteredProducts.length > 0 && (
-          <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-4 md:gap-x-6 md:gap-y-14">
-            {filteredProducts.map((product, index) => {
+        {/* Grille : 2 colonnes mobile / 3 desktop (maquette), gap 46/1920 = 2.4% */}
+        {!isLoading && products.length > 0 && (
+          <div className="grid grid-cols-2 gap-x-[4vw] gap-y-[7vw] md:grid-cols-3 md:gap-x-[2.4vw] md:gap-y-[3.9vw]">
+            {products.map((product, index) => {
               const previewImage = product.variations?.[0]?.images?.[0]?.url;
               const outOfStock = isProductOutOfStock(product);
 
@@ -133,10 +99,11 @@ export default function Shop() {
                   <Link href={`/shop/${product.id}`}>
                     <article className="group cursor-pointer">
                       <div className="relative">
+                        {/* Cadre maquette 479×508 */}
                         <ProductTile
                           url={previewImage}
                           alt={product.name}
-                          className="aspect-[4/3.5]"
+                          className="aspect-[479/508]"
                         />
                         {outOfStock && (
                           <span className="absolute right-3 top-3 rounded-full bg-alto-brown/85 px-3 py-1 text-xs font-medium text-alto-cream">
@@ -145,16 +112,16 @@ export default function Shop() {
                         )}
                       </div>
 
-                      {/* Nom orange Bold */}
+                      {/* Nom : Geist Bold 50px brun (maquette) */}
                       <h3
-                        className="mt-4 text-[clamp(22px,2.4vw,46px)] font-bold leading-tight text-alto-orange"
+                        className="mt-[1.4vw] text-[clamp(18px,2.6vw,50px)] font-bold leading-tight text-alto-brown dark:text-alto-cream"
                         style={{ fontFamily: "var(--font-titles)" }}
                       >
                         {product.name}
                       </h3>
-                      {/* Prix orange Bold, format 25.00€ */}
+                      {/* Prix : Geist Bold 40px brun, format « 25.00 € » */}
                       <p
-                        className="text-[clamp(22px,2.4vw,46px)] font-bold leading-tight text-alto-orange"
+                        className="mt-[0.6vw] text-[clamp(15px,2.08vw,40px)] font-bold leading-tight text-alto-brown dark:text-alto-cream"
                         style={{ fontFamily: "var(--font-titles)" }}
                       >
                         {outOfStock
