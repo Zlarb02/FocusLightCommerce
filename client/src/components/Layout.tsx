@@ -51,20 +51,21 @@ export function Layout({
       ),
   });
 
+  // Mobile : header toujours crème (maquette iPhone), le tone ne s'applique qu'à partir de md:
   const headerClasses = isBrown
-    ? "bg-alto-brown text-alto-cream dark:bg-alto-brown-deep"
-    : "bg-background text-primary";
+    ? "bg-background text-alto-brown dark:text-alto-cream md:bg-alto-brown md:text-alto-cream dark:md:bg-alto-brown-deep"
+    : "bg-background text-alto-brown dark:text-alto-cream md:text-primary";
   const linkClasses = isBrown
     ? "text-alto-cream/90 hover:text-alto-cream"
-    : "text-primary hover:text-alto-orange-soft";
+    : "text-primary hover:text-alto-orange-soft dark:text-alto-cream/90 dark:hover:text-alto-cream";
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       {themeData && <ThemeDecorator decoration={themeData.themeDecoration} />}
       <header
-        className={`sticky top-0 z-50 transition-colors duration-300 ${headerClasses}`}
+        className={`sticky top-0 z-50 transition-colors duration-300 border-b border-alto-brown/15 md:border-b-0 ${headerClasses}`}
       >
-        <div className="mx-auto flex h-16 md:h-20 max-w-[1600px] items-center justify-between px-4 md:px-10">
+        <div className="mx-auto flex h-14 md:h-24 max-w-[1920px] items-center px-4 md:px-[clamp(40px,4.7vw,90px)]">
           {/* Burger mobile */}
           <button
             onClick={() => setMenuOpen(true)}
@@ -80,12 +81,12 @@ export function Layout({
             aria-label="Accueil Alto Lille"
             className="absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0 transition-opacity hover:opacity-80"
           >
-            <AltoMark className="h-9 w-9 md:h-11 md:w-11" />
+            <AltoMark className="h-[34px] w-[34px] md:h-[74px] md:w-[74px]" />
           </Link>
 
-          {/* Navigation desktop */}
+          {/* Navigation desktop — alignée à gauche après le logo (maquette) */}
           <nav
-            className="hidden md:flex items-center gap-8 lg:gap-12 text-[17px] font-medium"
+            className="hidden md:flex items-center gap-[clamp(24px,5vw,96px)] md:ml-[clamp(16px,3.75vw,72px)] text-[clamp(16px,1.2vw,23px)] font-normal"
             style={{ fontFamily: "var(--font-nav)" }}
           >
             {NAV_ITEMS.map((item) => (
@@ -108,7 +109,7 @@ export function Layout({
           </nav>
 
           {/* Actions à droite */}
-          <div className="flex items-center gap-1 md:gap-2">
+          <div className="ml-auto flex items-center gap-1 md:gap-2">
             <span className="hidden md:flex items-center gap-1">
               <LanguageToggle variant="minimal" size="sm" showLabel={false} />
               <ThemeToggle variant="minimal" size="sm" showLabel={false} />
@@ -151,12 +152,12 @@ function AltoFooter({ tone }: { tone: "brown" | "blue" }) {
         <div className="flex items-end">
           <AltoLogotype
             color="cream"
-            className="w-full max-w-[280px] md:max-w-[480px] h-auto"
+            className="w-full max-w-[440px] lg:max-w-[706px] h-auto"
           />
         </div>
 
         {/* Colonnes de liens */}
-        <div className="grid grid-cols-2 gap-10 text-[16px] md:text-[17px]">
+        <div className="grid grid-cols-2 gap-10 text-[clamp(20px,1.56vw,30px)]">
           <div className="space-y-4">
             <Link href="/shop" className="block font-bold hover:underline">
               {t("nav.catalogue")}
@@ -214,7 +215,7 @@ function AltoFooter({ tone }: { tone: "brown" | "blue" }) {
       </div>
 
       {/* Ligne du bas */}
-      <div className="mx-auto flex max-w-[1600px] flex-col items-center justify-between gap-4 px-6 pb-8 text-[13px] text-alto-cream/80 md:flex-row md:px-14">
+      <div className="mx-auto flex max-w-[1600px] flex-col items-center justify-between gap-4 px-6 pb-8 text-[clamp(13px,1.04vw,20px)] text-alto-cream/80 md:flex-row md:px-14">
         <p>© 2025 Alto Lille — Tous droits réservés</p>
         <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
           <Link href="/mentions-legales" className="hover:underline">

@@ -50,8 +50,7 @@ export const lampColors: Record<string, LampColor> = {
     bgClass: "bg-gray-100",
     borderClass: "border-gray-200",
     textClass: "text-gray-700",
-    imagePath:
-      "https://www.alto-lille.fr/uploads/fbf9e3c1-9afe-446f-9e3d-5966f078b4c0.png",
+    imagePath: "/images/alto/swatch-blanc.png",
   },
   Bleu: {
     name: "Bleu",
@@ -59,8 +58,7 @@ export const lampColors: Record<string, LampColor> = {
     bgClass: "bg-blue-500",
     borderClass: "border-blue-600",
     textClass: "text-blue-500",
-    imagePath:
-      "https://www.alto-lille.fr/uploads/6b611585-bb6c-411c-85bf-342fe95950c6.png",
+    imagePath: "/images/alto/swatch-bleu.jpg",
   },
   Rouge: {
     name: "Rouge",
@@ -68,8 +66,7 @@ export const lampColors: Record<string, LampColor> = {
     bgClass: "bg-red-500",
     borderClass: "border-red-600",
     textClass: "text-red-500",
-    imagePath:
-      "https://www.alto-lille.fr/uploads/1f1cdf28-f233-4191-9c1a-f9d7e12b709f.png",
+    imagePath: "/images/alto/swatch-rouge.jpg",
   },
   Orange: {
     name: "Orange",
@@ -77,8 +74,7 @@ export const lampColors: Record<string, LampColor> = {
     bgClass: "bg-orange-500",
     borderClass: "border-orange-600",
     textClass: "text-orange-500",
-    imagePath:
-      "https://www.alto-lille.fr/uploads/a8e085a1-8bc5-4c90-a738-151c7ce4d8d0.png",
+    imagePath: "/images/alto/swatch-orange.jpg",
   },
 };
 
