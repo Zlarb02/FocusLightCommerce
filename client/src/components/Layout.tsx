@@ -26,12 +26,17 @@ interface LayoutProps {
 
 const INSTAGRAM_URL = "https://www.instagram.com/alto_lille/";
 
-export function Layout({
-  children,
+/**
+ * Header Alto partagé (maquette). Autonome : gère son propre panier et son
+ * menu overlay, donc réutilisable hors Layout (ex. premier viewport Home).
+ */
+export function AltoHeader({
+  tone = "surface",
   showCart = true,
-  headerTone = "surface",
-  footerTone = "brown",
-}: LayoutProps) {
+}: {
+  tone?: "brown" | "surface";
+  showCart?: boolean;
+}) {
   const [cartOpen, setCartOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const { getTotalItems } = useCart();
@@ -39,17 +44,7 @@ export function Layout({
   const { t } = useLanguage();
 
   const cartItemCount = getTotalItems();
-  const isBrown = headerTone === "brown";
-
-  // Décoration thématique saisonnière (gérée depuis l'admin)
-  const { data: themeData } = useQuery({
-    queryKey: ["themeDecoration"],
-    queryFn: async () =>
-      apiRequest<{ themeDecoration: ThemeDecoration }>(
-        "GET",
-        "/api/versions/theme-decoration"
-      ),
-  });
+  const isBrown = tone === "brown";
 
   // Mobile : header toujours crème (maquette iPhone), le tone ne s'applique qu'à partir de md:
   const headerClasses = isBrown
@@ -60,8 +55,7 @@ export function Layout({
     : "text-primary hover:text-alto-orange-soft dark:text-alto-cream/90 dark:hover:text-alto-cream";
 
   return (
-    <div className="flex flex-col min-h-screen bg-background text-foreground">
-      {themeData && <ThemeDecorator decoration={themeData.themeDecoration} />}
+    <>
       <header
         className={`sticky top-0 z-50 transition-colors duration-300 border-b border-alto-brown/15 md:border-b-0 ${headerClasses}`}
       >
@@ -128,12 +122,36 @@ export function Layout({
       </header>
 
       <AltoMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
+      {showCart && <CartOverlay open={cartOpen} onClose={() => setCartOpen(false)} />}
+    </>
+  );
+}
+
+export function Layout({
+  children,
+  showCart = true,
+  headerTone = "surface",
+  footerTone = "brown",
+}: LayoutProps) {
+  // Décoration thématique saisonnière (gérée depuis l'admin)
+  const { data: themeData } = useQuery({
+    queryKey: ["themeDecoration"],
+    queryFn: async () =>
+      apiRequest<{ themeDecoration: ThemeDecoration }>(
+        "GET",
+        "/api/versions/theme-decoration"
+      ),
+  });
+
+  return (
+    <div className="flex flex-col min-h-screen bg-background text-foreground">
+      {themeData && <ThemeDecorator decoration={themeData.themeDecoration} />}
+
+      <AltoHeader tone={headerTone} showCart={showCart} />
 
       <main className="flex-1">{children}</main>
 
       {footerTone !== "none" && <AltoFooter tone={footerTone} />}
-
-      <CartOverlay open={cartOpen} onClose={() => setCartOpen(false)} />
     </div>
   );
 }

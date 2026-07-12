@@ -1,78 +1,13 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { Link, useLocation } from "wouter";
-import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { useLocation } from "wouter";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
-import { RotateCcw, ChevronsDown, Menu, ArrowRight } from "lucide-react";
-import { AltoMark } from "@/components/alto/AltoBrand";
-import { AltoMenu } from "@/components/alto/AltoMenu";
-import { ThemeToggle } from "@/components/ThemeToggle";
-import { LanguageToggle } from "@/components/LanguageToggle";
+import { RotateCcw, ChevronsDown } from "lucide-react";
+import { AltoLogotype } from "@/components/alto/AltoBrand";
+import { AltoHeader } from "@/components/Layout";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useLanguage } from "@/contexts/LanguageContext";
-
-interface Slide {
-  url: string;
-  alt?: string;
-  order?: number;
-}
-
-interface SliderConfig {
-  slides?: Slide[];
-  autoPlayInterval?: number;
-}
-
-const FALLBACK_SLIDES: Slide[] = [
-  { url: "/images/alto/hero.jpg", alt: "Lampe Focus.01 — Alto Lille" },
-];
-
-/** Cartes de navigation autour du slider (redessinées, palette Alto). */
-const LINK_CARDS: Array<{
-  labelKey: string;
-  href: string;
-  img: string;
-  alt: string;
-  /** Cadrage de l'image dans la carte desktop (object-position). */
-  imgPos?: string;
-  /** Vignette carrée de la grille mobile quand l'image carte ne s'y prête pas. */
-  thumb?: string;
-  thumbPos?: string;
-  /** Texte affiché sur l'image (façon tagline de la page Studio). */
-  overlayKey?: string;
-}> = [
-  {
-    labelKey: "nav.fabrication",
-    href: "/design-en-action",
-    img: "/images/alto/fab-bois.jpg",
-    alt: "Tasseaux de chêne massif de réemploi",
-  },
-  {
-    labelKey: "nav.studio",
-    href: "/about",
-    img: "/images/alto/atelier.jpg",
-    alt: "Lampe FOCUS.01 allumée sur l'établi de l'atelier Alto Lille",
-    imgPos: "object-[18%_82%] xl:object-[32%_68%]",
-    overlayKey: "home.tagline",
-    thumb: "/images/alto/studio-portrait.jpg",
-    thumbPos: "object-[15%_30%]",
-  },
-  {
-    labelKey: "nav.surMesure",
-    href: "/creations-sur-mesure",
-    img: "/images/alto/surmesure-lampe.jpg",
-    alt: "Lampe sur-mesure chêne et PLA orange",
-    imgPos: "object-[50%_18%]",
-    thumbPos: "object-[50%_25%]",
-  },
-  {
-    labelKey: "nav.catalogue",
-    href: "/shop",
-    img: "/images/alto/prod-auferte.jpg",
-    alt: "Vide-poche Auferte.01",
-  },
-];
 
 /* ===== Config de l'animation 3D (reprise de l'ancienne landing) ===== */
 const CFG = {
@@ -121,54 +56,15 @@ const CAPTION_MOBILE_SLOT = [
   "max-md:bottom-[112px] max-md:right-[6vw] max-md:text-right",
 ];
 
-function LinkCard({
-  card,
-  t,
-}: {
-  card: (typeof LINK_CARDS)[number];
-  t: (k: string) => string;
-}) {
-  return (
-    <Link
-      href={card.href}
-      className="group flex min-h-0 flex-1 flex-col overflow-hidden"
-    >
-      <div className="relative min-h-0 flex-1 overflow-hidden bg-white">
-        <img
-          src={card.img}
-          alt={card.alt}
-          className={`h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04] ${card.imgPos ?? ""}`}
-          loading="lazy"
-        />
-        {card.overlayKey && (
-          <span
-            className="pointer-events-none absolute bottom-3 left-3 whitespace-pre-line text-left text-lg font-medium leading-snug text-alto-cream drop-shadow md:text-xl"
-          >
-            {t(card.overlayKey).replace(", ", ",\n")}
-          </span>
-        )}
-      </div>
-      <span
-        className="mt-2 flex items-center justify-between text-sm font-bold text-primary md:text-base"
-        style={{ fontFamily: "var(--font-titles)" }}
-      >
-        {t(card.labelKey)}
-        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-      </span>
-    </Link>
-  );
-}
-
 /**
- * Accueil — landing 3D historique remise aux couleurs Alto :
- * intro (slider produits + 4 cartes de navigation), puis animation 3D
- * de la lampe FOCUS.01 pilotée par le scroll, légendes, CTA et replay.
+ * Accueil — premier viewport fidèle à la maquette (tagline + logotype géant
+ * + photo lampe), puis animation 3D de la lampe FOCUS.01 pilotée par le
+ * scroll (légendes, CTA, replay). Le header Alto reste sticky au-dessus.
  */
 export default function Home() {
   const [, navigate] = useLocation();
   const { theme } = useTheme();
   const { t } = useLanguage();
-  const [menuOpen, setMenuOpen] = useState(false);
 
   const trackRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
@@ -181,30 +77,6 @@ export default function Home() {
   const capRefs = useRef<Array<HTMLParagraphElement | null>>([]);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const autoScrollingRef = useRef(false);
-
-  /* ----- Slider produits (config admin) pendant l'intro ----- */
-  const { data: config } = useQuery<SliderConfig>({
-    queryKey: ["/api/slider/config"],
-  });
-
-  const slides = useMemo(() => {
-    const list = (config?.slides ?? [])
-      .filter((s) => s.url)
-      .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-    return list.length > 0 ? list : FALLBACK_SLIDES;
-  }, [config]);
-
-  const [slideIndex, setSlideIndex] = useState(0);
-  useEffect(() => {
-    if (slides.length < 2) return;
-    const interval = window.setInterval(
-      () => setSlideIndex((i) => (i + 1) % slides.length),
-      Math.max(config?.autoPlayInterval ?? 4000, 2500)
-    );
-    return () => window.clearInterval(interval);
-  }, [slides.length, config?.autoPlayInterval]);
-
-  const slide = slides[slideIndex % slides.length];
 
   /* ----- Couleur de fond du rendu selon le thème ----- */
   useEffect(() => {
@@ -232,8 +104,8 @@ export default function Home() {
         stencil: false,
       });
     } catch {
-      // Pas de WebGL disponible : on garde l'intro (slider + cartes)
-      // utilisable au lieu d'une page blanche, sans le parcours 3D.
+      // Pas de WebGL disponible : on masque le canvas et on réduit le track
+      // (le premier viewport maquette reste, lui, toujours affiché au-dessus).
       canvas.style.display = "none";
       track.style.height = "100vh";
       return;
@@ -406,10 +278,6 @@ export default function Home() {
         indicatorRef.current?.classList.add("landing-visible");
         creditsRef.current?.classList.remove("landing-visible");
         canvas.style.opacity = "0";
-        if (introRef.current) {
-          introRef.current.style.opacity = "1";
-          introRef.current.style.pointerEvents = "auto";
-        }
         if (act && mixer) {
           act.time = clip - k * (clip - Math.min(5.2, clip));
           mixer.update(0);
@@ -436,15 +304,6 @@ export default function Home() {
         setCapOpacity(tt);
         indicatorRef.current?.classList.remove("landing-visible");
         creditsRef.current?.classList.add("landing-visible");
-
-        // L'intro s'efface avant la première légende
-        const introOpacity =
-          tt < CFG.legend.fade ? 1 - tt / CFG.legend.fade : 0;
-        if (introRef.current) {
-          introRef.current.style.opacity = String(introOpacity);
-          introRef.current.style.pointerEvents =
-            introOpacity > 0.5 ? "auto" : "none";
-        }
 
         if (ctaRef.current) {
           const o = tt > 0.95 ? clamp01((tt - 0.95) / 0.05) : 0;
@@ -512,6 +371,83 @@ export default function Home() {
 
   return (
     <div className="bg-background text-foreground">
+      {/* Header maquette sticky (demande Anatole : reste visible au scroll) */}
+      <AltoHeader tone="brown" />
+
+      {/* Premier viewport fidèle à la maquette (Web 1920–9 / iPhone–1) */}
+      <section
+        ref={introRef}
+        className="relative w-full overflow-hidden bg-background md:h-[calc(100svh-96px)]"
+      >
+        {/* ---------- Desktop : composition maquette en absolu ---------- */}
+        <div className="hidden md:block">
+          {/* Photo lampe allumée — colonne droite pleine hauteur */}
+          <img
+            src="/images/alto/hero.jpg"
+            alt="Lampe FOCUS.01 allumée — Alto Lille"
+            className="absolute bottom-0 right-0 h-full w-[44vw] object-cover"
+          />
+
+          {/* Tagline (haut-gauche) */}
+          <p
+            className="absolute left-[8.3vw] top-[40%] max-w-[42vw] text-[clamp(22px,1.9vw,36px)] font-medium leading-snug text-alto-brown dark:text-alto-cream"
+            style={{ fontFamily: "var(--font-nav)" }}
+          >
+            {t("home.tagline")}
+          </p>
+
+          {/* Logotype orange géant, calé en bas-gauche (chevauche le bas) */}
+          <button
+            onClick={goToShop}
+            aria-label={t("landing.cta")}
+            className="group absolute bottom-0 left-[1.4vw] w-[58vw]"
+          >
+            <AltoLogotype
+              color="orange"
+              alt="ALTO Lille"
+              className="w-full transition-transform duration-300 group-hover:scale-[1.01]"
+            />
+          </button>
+
+          {/* Invitation à défiler vers le parcours 3D (sur la photo, bas-droite) */}
+          <button
+            onClick={() => guidedScroll(false)}
+            className="absolute bottom-6 right-8 z-10 flex flex-col items-center gap-1 text-alto-cream/80 transition-colors hover:text-alto-cream"
+            aria-label={t("landing.scroll")}
+          >
+            <ChevronsDown className="h-6 w-6 animate-bounce" />
+            <span className="text-xs font-medium uppercase tracking-widest">
+              {t("landing.scroll")}
+            </span>
+          </button>
+        </div>
+
+        {/* ---------- Mobile : flux vertical (iPhone–1) ---------- */}
+        <div className="flex flex-col md:hidden">
+          <div className="flex items-start justify-between gap-4 px-[6vw] pb-8 pt-12">
+            <p
+              className="max-w-[52%] text-[clamp(15px,4.4vw,19px)] font-medium leading-snug text-alto-brown dark:text-alto-cream"
+              style={{ fontFamily: "var(--font-nav)" }}
+            >
+              {t("home.tagline")}
+            </p>
+            <button
+              onClick={goToShop}
+              aria-label={t("landing.cta")}
+              className="w-[42%] shrink-0"
+            >
+              <AltoLogotype color="orange" alt="ALTO Lille" className="w-full" />
+            </button>
+          </div>
+          <img
+            src="/images/alto/hero.jpg"
+            alt="Lampe FOCUS.01 allumée — Alto Lille"
+            className="mx-[6vw] mb-10 aspect-[360/540] object-cover"
+          />
+        </div>
+      </section>
+
+      {/* Parcours 3D piloté par le scroll (démarre sous le viewport maquette) */}
       <div ref={trackRef} className="relative h-[800vh]">
         <div
           ref={stageRef}
@@ -523,126 +459,6 @@ export default function Home() {
             aria-label="Visualisation 3D de la lampe FOCUS.01"
             className="absolute inset-0 h-full w-full opacity-0 transition-opacity duration-500"
           />
-
-          {/* Intro : slider produits + cartes de navigation */}
-          <div
-            ref={introRef}
-            className="absolute inset-0 flex flex-col bg-background px-4 pb-24 pt-20 transition-opacity duration-300 md:px-8 md:pb-28 md:pt-24"
-          >
-            <div className="mx-auto flex h-full w-full max-w-[1500px] min-h-0 flex-1 flex-col gap-4 md:grid md:grid-cols-[1fr_1.6fr_1fr] md:gap-8">
-              {/* Colonne gauche (desktop) */}
-              <div className="hidden min-h-0 flex-col gap-6 md:flex">
-                <LinkCard card={LINK_CARDS[0]} t={t} />
-                <LinkCard card={LINK_CARDS[1]} t={t} />
-              </div>
-
-              {/* Slider central → boutique */}
-              <button
-                onClick={goToShop}
-                className="group relative block min-h-0 flex-1 overflow-hidden bg-white md:flex-none"
-                aria-label={t("landing.cta")}
-              >
-                <AnimatePresence initial={false}>
-                  {/* Fond = la photo elle-même floutée : aucun recadrage de la
-                      photo quelle que soit la taille d'écran, pas de bandes */}
-                  <motion.div
-                    key={`${slide.url}-${slideIndex}`}
-                    className="absolute inset-0"
-                    initial={{ x: "100%", y: "10%" }}
-                    animate={{ x: 0, y: 0 }}
-                    exit={{ opacity: 0, scale: 1.02 }}
-                    transition={{ duration: 0.7, ease: [0.32, 0.72, 0.22, 1] }}
-                  >
-                    <img
-                      src={slide.url}
-                      alt=""
-                      aria-hidden
-                      className="absolute inset-0 h-full w-full scale-110 object-cover blur-xl"
-                    />
-                    <img
-                      src={slide.url}
-                      alt={slide.alt ?? "Création Alto Lille"}
-                      className="absolute inset-0 h-full w-full object-contain"
-                    />
-                  </motion.div>
-                </AnimatePresence>
-                <span
-                  className="absolute bottom-4 left-4 rounded-full bg-alto-orange px-5 py-2 text-sm font-bold text-alto-cream opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                  style={{ fontFamily: "var(--font-titles)" }}
-                >
-                  {t("landing.cta")}
-                </span>
-              </button>
-
-              {/* Colonne droite (desktop) */}
-              <div className="hidden min-h-0 flex-col gap-6 md:flex">
-                <LinkCard card={LINK_CARDS[2]} t={t} />
-                <LinkCard card={LINK_CARDS[3]} t={t} />
-              </div>
-
-              {/* Cartes en grille compacte sous le slider (mobile) */}
-              <div className="grid shrink-0 grid-cols-2 gap-x-4 gap-y-3 md:hidden">
-                {LINK_CARDS.map((card) => (
-                  <Link
-                    key={card.href}
-                    href={card.href}
-                    className="group flex items-center gap-3"
-                  >
-                    <img
-                      src={card.thumb ?? card.img}
-                      alt={card.alt}
-                      className={`h-14 w-14 flex-shrink-0 object-cover ${card.thumbPos ?? ""}`}
-                      loading="lazy"
-                    />
-                    <span
-                      className="flex min-w-0 flex-1 items-center justify-between gap-1 text-sm font-bold text-primary"
-                      style={{ fontFamily: "var(--font-titles)" }}
-                    >
-                      <span className="truncate">{t(card.labelKey)}</span>
-                      <ArrowRight className="h-4 w-4 flex-shrink-0 transition-transform group-hover:translate-x-1" />
-                    </span>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Habillage : burger, marque, toggles (persistant) */}
-          <div className="absolute inset-x-0 top-0 z-20 flex h-16 items-center justify-between px-4 md:h-20 md:px-8">
-            <button
-              onClick={() => setMenuOpen(true)}
-              className="p-2 text-foreground"
-              aria-label={t("nav.menu")}
-            >
-              <Menu className="h-6 w-6" />
-            </button>
-            <Link
-              href="/shop"
-              className="group absolute left-1/2 flex -translate-x-1/2 items-center gap-3 text-primary"
-              aria-label={t("landing.cta")}
-            >
-              <AltoMark className="h-8 w-8 transition-transform duration-300 group-hover:rotate-6 md:h-10 md:w-10" />
-              <span className="flex flex-col">
-                <span
-                  className="text-lg font-bold leading-tight md:text-xl"
-                  style={{ fontFamily: "var(--font-titles)" }}
-                >
-                  Alto Lille
-                </span>
-                <span
-                  className="flex items-center gap-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-foreground/60 transition-colors duration-300 group-hover:text-primary md:text-[11px]"
-                  style={{ fontFamily: "var(--font-nav)" }}
-                >
-                  {t("nav.shop")}
-                  <ArrowRight className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-1" />
-                </span>
-              </span>
-            </Link>
-            <span className="flex items-center gap-1 text-foreground">
-              <LanguageToggle variant="minimal" size="sm" showLabel={false} />
-              <ThemeToggle variant="minimal" size="sm" showLabel={false} />
-            </span>
-          </div>
 
           {/* Légendes autour de la lampe */}
           {[0, 1, 2, 3, 4, 5].map((i) => (
@@ -752,8 +568,6 @@ export default function Home() {
           </button>
         </div>
       </div>
-
-      <AltoMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
     </div>
   );
 }
