@@ -211,20 +211,25 @@
   pointer-events: auto;
 }
 
-/* Panneau « Caractéristique » de la fiche produit (fond brun maquette).
-   Force la couleur crème sur le contenu hérité du CMS. */
+/* Panneau « Caractéristique » de la fiche produit. Fonds/textes INVERSÉS
+   entre thèmes, fidèle aux maquettes -2 (clair) et -4 (sombre) :
+   clair = fond brun / texte crème ; sombre = fond crème / texte brun.
+   Force la couleur sur le contenu hérité du CMS. */
 .alto-caracteristique {
   background-color: #4a2020;
   color: #fef7e8;
 }
-.dark .alto-caracteristique {
-  background-color: #35120f;
-}
-.alto-caracteristique :is(h2, h3, p, span, div, li) {
-  color: #fef7e8;
-}
+.alto-caracteristique :is(h2, h3, p, span, div, li),
 .alto-caracteristique :is(svg) {
   color: #fef7e8;
+}
+.dark .alto-caracteristique {
+  background-color: #fef7e8;
+  color: #4a2020;
+}
+.dark .alto-caracteristique :is(h2, h3, p, span, div, li),
+.dark .alto-caracteristique :is(svg) {
+  color: #4a2020;
 }
 
 /* Styles pour améliorer l'expérience mobile */

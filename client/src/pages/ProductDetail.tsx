@@ -9,13 +9,12 @@ import { ECommerceProductCard } from "@/components/ECommerceProductCard";
 import { Button } from "@/components/ui/button";
 import { AnimatedAddToCartButton } from "@/components/AnimatedAddToCartButton";
 import { ToastContainer } from "@/components/EnhancedToast";
-import { DynamicImage } from "@/components/DynamicImage";
 import {
   ProductAddedIndicator,
   useProductAddedIndicators,
 } from "@/components/ProductAddedIndicator";
 import { useEnhancedToast } from "@/hooks/useEnhancedToast";
-import { Leaf, Lightbulb, Trees } from "lucide-react";
+import { Leaf } from "lucide-react";
 import {
   formatPrice,
   getColorInfo,
@@ -201,135 +200,13 @@ export default function ProductDetail() {
           </Link>
         </div>
 
-        {/* Sélecteur de variation mobile */}
-        {variations.length > 1 && (
-          <section
-            className="md:hidden bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-b border-gray-200/30 dark:border-gray-700/30"
-            style={{ paddingTop: "12px", paddingBottom: "12px" }}
-          >
-            <div className="container mx-auto px-6">
-              <div className="flex flex-col items-center gap-3">
-                <h3 className="text-base font-medium text-gray-900 dark:text-gray-100">
-                  {t("shop.focus.colorsAvailable")} :
-                </h3>
-                <div className="flex items-center gap-3 justify-center overflow-x-auto pb-2 px-3 pt-1">
-                  {variations.map((variation) => {
-                    const colorInfo = getColorInfo(variation.variationValue);
-                    const isSelected = selectedVariation?.id === variation.id;
-                    const primaryImage =
-                      variation.images && variation.images.length > 0
-                        ? variation.images[0]
-                        : undefined;
-
-                    return (
-                      <button
-                        key={variation.id}
-                        onClick={() => handleVariationSelect(variation)}
-                        className={`group relative w-12 h-12 transition-all duration-300 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden flex-shrink-0 ${
-                          isSelected
-                            ? "scale-105 shadow-lg border-2 border-gray-300 dark:border-gray-500"
-                            : "hover:scale-105 shadow-md hover:shadow-lg"
-                        } ${colorInfo?.bgClass || "bg-gray-50 dark:bg-gray-800"}`}
-                        aria-label={`Option ${variation.variationValue}`}
-                        title={variation.variationValue}
-                      >
-                        <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent"></div>
-                        {primaryImage ? (
-                          <img
-                            src={primaryImage.url}
-                            alt={`${product.name} - ${variation.variationValue}`}
-                            className="w-full h-full object-contain p-1.5 transition-transform duration-300 group-hover:scale-110"
-                            loading="lazy"
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center text-xs font-medium text-gray-600 dark:text-gray-300">
-                            {variation.variationValue?.substring(0, 1)}
-                          </div>
-                        )}
-                        {isSelected && (
-                          <div
-                            className="absolute left-1 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full shadow-md border border-white dark:border-gray-900"
-                            style={{ background: "#18181b" }}
-                          ></div>
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-          </section>
-        )}
-
-        {/* Hero Section */}
+        {/* Hero Section — maquette -2 (clair) / -4 (sombre) */}
         <section className="py-2 md:py-8 lg:py-10 animate fade-in-up">
-          <div className="hidden md:block md:mt-8 lg:mt-10"></div>
           <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
-            <div className="order-2 md:order-1 z-10 px-4 md:px-0">
-              <h1
-                className="font-heading text-4xl md:text-6xl font-bold uppercase text-primary mb-4 md:mb-6 tracking-tight text-center md:text-left"
-                style={{ fontFamily: "var(--font-titles)" }}
-              >
-                {product.name}
-              </h1>
-              <p className="mb-6 md:mb-8 max-w-md text-base md:text-lg leading-relaxed text-center md:text-left mx-auto md:mx-0 text-foreground/90">
-                {product.description}
-              </p>
-              {/* Features icons - configurables via CMS */}
-              {isSectionEnabled("features") && (
-                <div className="flex flex-wrap gap-4 md:gap-6 mb-6 md:mb-8 justify-center md:justify-start">
-                  <div className="flex items-center text-xs md:text-sm">
-                    <Leaf className="text-green-500 mr-2 h-3 w-3 md:h-4 md:w-4" />
-                    <span>{pt("features.eco")}</span>
-                  </div>
-                  <div className="flex items-center text-xs md:text-sm">
-                    <Trees className="text-amber-700 mr-2 h-3 w-3 md:h-4 md:w-4" />
-                    <span>{pt("features.wood")}</span>
-                  </div>
-                  <div className="flex items-center text-xs md:text-sm">
-                    <Lightbulb className="text-yellow-400 mr-2 h-3 w-3 md:h-4 md:w-4" />
-                    <span>{pt("features.led")}</span>
-                  </div>
-                </div>
-              )}
-              <div className="flex flex-col gap-3 md:gap-4 mb-6 md:mb-8 px-4 md:px-0">
-                {selectedOutOfStock ? (
-                  <div className="w-full md:w-auto md:self-start rounded-full bg-muted px-8 py-3 text-center text-base font-semibold text-muted-foreground">
-                    {t("shop.outOfStock")}
-                  </div>
-                ) : (
-                  <AnimatedAddToCartButton
-                    onClick={handleAddToCart}
-                    disabled={!selectedVariation}
-                    price={formatPrice(selectedVariation?.price || product.price)}
-                    className="w-full md:w-auto mobile-tap-highlight rounded-full bg-alto-orange text-alto-cream hover:bg-alto-orange-soft focus:bg-alto-orange-soft transition-all"
-                  />
-                )}
-                <Button
-                  variant="outline"
-                  size="lg"
-                  onClick={() =>
-                    document
-                      .getElementById("product-details")
-                      ?.scrollIntoView({ behavior: "smooth" })
-                  }
-                  className="w-full md:w-auto rounded-full border-0 bg-alto-brown text-alto-cream hover:bg-alto-brown-deep hover:text-alto-cream dark:bg-alto-brown-deep dark:hover:bg-alto-brown transition-all hover:translate-y-[-2px] mobile-tap-highlight"
-                  style={{ fontFamily: "var(--font-buttons)" }}
-                >
-                  {t("product.viewDetails")}
-                </Button>
-              </div>
-              <div className="flex items-center justify-center md:justify-start text-gray-500 text-xs md:text-sm">
-                <span className="inline-block border-l-2 border-gray-300 pl-3">
-                  {productOutOfStock
-                    ? t("shop.outOfStock.detail")
-                    : t("focus.freeShipping")}
-                </span>
-              </div>
-            </div>
-            <div className="order-1 md:order-2 relative flex justify-center items-center px-4 md:px-0">
+            {/* Photo produit (colonne gauche desktop) */}
+            <div className="order-1 relative flex justify-center items-center px-4 md:px-0">
               {selectedVariation && (
-                <div className="relative">
+                <div className="relative w-full max-w-[646px]">
                   <EnhancedHeroProductDisplay
                     product={product}
                     selectedVariation={selectedVariation}
@@ -366,216 +243,166 @@ export default function ProductDetail() {
                 </div>
               )}
             </div>
+
+            {/* Colonne texte (droite desktop) */}
+            <div className="order-2 z-10 px-4 md:px-0">
+              {/* Titre orange-soft Bold 70px */}
+              <h1
+                className="font-heading font-bold uppercase text-alto-orange-soft tracking-tight text-center md:text-left text-[clamp(44px,3.6vw,70px)]"
+                style={{ fontFamily: "var(--font-titles)" }}
+              >
+                {product.name}
+              </h1>
+
+              {/* Sous-titre bleu (masqué si la clé n'est pas traduite) */}
+              {(() => {
+                const subtitle = pt("subtitle");
+                const missing = subtitle === "focus.subtitle" || !subtitle;
+                return missing ? null : (
+                  <p
+                    className="mt-2 mb-4 text-center md:text-left font-bold text-[clamp(18px,1.5vw,23px)]"
+                    style={{ color: "#048EF3", fontFamily: "var(--font-titles)" }}
+                  >
+                    {subtitle}
+                  </p>
+                );
+              })()}
+
+              {/* Description brun/crème Regular 23px */}
+              <p className="mb-8 max-w-[785px] leading-relaxed text-center md:text-left mx-auto md:mx-0 text-alto-brown dark:text-alto-cream text-[clamp(16px,1.5vw,23px)]">
+                {product.description}
+              </p>
+
+              {/* Features verticales avec pictos dessinés */}
+              {isSectionEnabled("features") && (
+                <ul className="mb-8 flex flex-col gap-4 items-center md:items-start">
+                  {[
+                    { img: "/images/alto/value-pla.png", label: pt("features.eco") },
+                    { img: "/images/alto/value-chene.png", label: pt("features.wood") },
+                    { img: "/images/alto/value-conception.png", label: pt("features.led") },
+                  ].map((f) => (
+                    <li key={f.label} className="flex items-center gap-3">
+                      <img src={f.img} alt="" aria-hidden className="h-8 w-8 object-contain" />
+                      <span className="text-alto-brown dark:text-alto-cream text-[clamp(16px,1.5vw,23px)]">
+                        {f.label}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              {/* Couleurs disponibles + swatches matière */}
+              {variations.length > 1 && (
+                <div className="mb-6">
+                  <p className="mb-3 text-center md:text-left text-alto-brown dark:text-alto-cream text-[clamp(15px,1.3vw,20px)]">
+                    {t("shop.focus.colorsAvailable")} :
+                  </p>
+                  <div className="flex items-center gap-3 flex-wrap justify-center md:justify-start">
+                    {variations.map((variation) => {
+                      const colorInfo = getColorInfo(variation.variationValue);
+                      const isSelected = selectedVariation?.id === variation.id;
+                      return (
+                        <button
+                          key={variation.id}
+                          onClick={() => handleVariationSelect(variation)}
+                          className={`relative h-16 w-16 md:h-[86px] md:w-[86px] overflow-hidden transition-all duration-300 ${
+                            isSelected
+                              ? "scale-105 ring-2 ring-alto-orange ring-offset-2 ring-offset-background"
+                              : "hover:scale-105"
+                          }`}
+                          style={{
+                            backgroundImage: `url(${colorInfo.imagePath})`,
+                            backgroundSize: "cover",
+                            backgroundPosition: "center",
+                          }}
+                          aria-label={`Option ${variation.variationValue}`}
+                          aria-pressed={isSelected}
+                          title={variation.variationValue}
+                        />
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* CTA : ajouter au panier (texte orange Bold + filet) + voir détails (pill) */}
+              <div className="flex flex-col gap-5 mb-6">
+                {selectedOutOfStock ? (
+                  <div className="w-full md:w-auto md:self-start rounded-full bg-muted px-8 py-3 text-center text-base font-semibold text-muted-foreground">
+                    {t("shop.outOfStock")}
+                  </div>
+                ) : (
+                  <div className="border-b-2 border-alto-orange/40 pb-3">
+                    <AnimatedAddToCartButton
+                      onClick={handleAddToCart}
+                      disabled={!selectedVariation}
+                      price={formatPrice(selectedVariation?.price || product.price)}
+                      className="mobile-tap-highlight w-full bg-transparent text-alto-orange-soft hover:bg-transparent hover:text-alto-orange justify-center md:justify-start !text-[clamp(22px,2.2vw,32px)] font-bold"
+                    />
+                  </div>
+                )}
+                <button
+                  onClick={() =>
+                    document
+                      .getElementById("product-details")
+                      ?.scrollIntoView({ behavior: "smooth" })
+                  }
+                  className="mobile-tap-highlight flex h-[64px] md:h-[78px] w-full max-w-[801px] items-center justify-center rounded-[39px] bg-alto-brown text-alto-cream transition-transform hover:-translate-y-[2px] dark:bg-alto-cream dark:text-alto-brown text-[clamp(20px,2.2vw,32px)]"
+                  style={{ fontFamily: "var(--font-buttons)" }}
+                >
+                  {t("product.viewDetails")}
+                </button>
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* Sélecteur de variation desktop */}
-        {variations.length > 1 && (
-          <section className="hidden md:block py-3 md:py-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-y border-gray-200/50 dark:border-gray-700/50 animate fade-in">
-            <div className="max-w-6xl mx-auto px-4">
-              <div className="flex flex-col items-center gap-2 md:gap-3">
-                <div className="text-center">
-                  <h3 className="text-lg md:text-xl font-light text-gray-900 dark:text-gray-100 mb-1">
-                    {t("shop.focus.colorsAvailable")}
-                  </h3>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                    {variations.length} variation{variations.length > 1 ? "s" : ""}
-                  </p>
-                </div>
-
-                <div className="flex items-center gap-3 md:gap-4 flex-wrap justify-center">
-                  {variations.map((variation) => {
-                    const colorInfo = getColorInfo(variation.variationValue);
-                    const isSelected = selectedVariation?.id === variation.id;
-                    const primaryImage =
-                      variation.images && variation.images.length > 0
-                        ? variation.images[0]
-                        : undefined;
-
-                    return (
-                      <button
-                        key={variation.id}
-                        onClick={() => handleVariationSelect(variation)}
-                        className={`group relative w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 transition-all duration-300 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden flex-shrink-0 ${
-                          isSelected
-                            ? "scale-105 shadow-lg border-2 border-gray-300 dark:border-gray-500"
-                            : "hover:scale-105 shadow-md hover:shadow-lg"
-                        } ${colorInfo?.bgClass || "bg-gray-50 dark:bg-gray-800"}`}
-                        aria-label={`Option ${variation.variationValue}`}
-                        title={variation.variationValue}
-                      >
-                        <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent"></div>
-                        {primaryImage ? (
-                          <img
-                            src={primaryImage.url}
-                            alt={`${product.name} - ${variation.variationValue}`}
-                            className="w-full h-full object-contain p-2 transition-transform duration-300 group-hover:scale-110"
-                            loading="lazy"
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center text-xs md:text-sm font-medium text-gray-600 dark:text-gray-300">
-                            {variation.variationValue?.substring(0, 2)}
-                          </div>
-                        )}
-                        {isSelected && (
-                          <div
-                            className="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full shadow-md border border-white dark:border-gray-900"
-                            style={{ background: "#18181b" }}
-                          ></div>
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-          </section>
-        )}
-
-        {/* Product Details Section - configurable via CMS */}
+        {/* Section Caractéristique — maquette -2/-4 (fonds inversés via CSS) */}
         {isSectionEnabled("details") && (
           <section id="product-details" className="py-12 md:py-20 animate fade-in">
-            <div className="alto-caracteristique px-6 py-12 md:px-14 md:py-16">
-              <h2
-                className="font-heading text-3xl md:text-5xl font-bold mb-12"
-                style={{ fontFamily: "var(--font-titles)" }}
-              >
-                {t("product.caracteristique")}
-              </h2>
+            <div className="alto-caracteristique relative overflow-hidden px-6 py-12 md:px-16 md:py-20">
+              <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-10 md:gap-16 items-center">
+                {/* Colonne texte */}
+                <div>
+                  <h2
+                    className="font-heading font-bold mb-8 text-[clamp(40px,3.6vw,70px)] leading-none"
+                    style={{ fontFamily: "var(--font-titles)" }}
+                  >
+                    {t("product.caracteristique")}
+                  </h2>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
-                <div className="p-6 animate fade-in-right delay-1">
-                  <div className="w-12 h-12 bg-primary/5 dark:bg-blue-400/10 flex items-center justify-center mb-4">
-                    <Leaf className="text-[var(--color-text)] dark:text-blue-400 h-6 w-6" />
+                  <div className="mb-10 max-w-[760px] space-y-1 text-[clamp(16px,1.5vw,23px)] leading-relaxed">
+                    <p>{pt("sustainableMaterials.text")}</p>
+                    <p>{pt("lighting.text")}</p>
+                    <p>{pt("dimensions.text")}</p>
+                    <p>{pt("materials.text")}</p>
+                    <p>{pt("artisanalCrafting.text")}</p>
                   </div>
-                  <h3
-                    className="font-heading text-xl mb-3 dark:text-gray-100"
-                    style={{ fontFamily: "var(--font-titles)" }}
-                  >
-                    {pt("sustainableMaterials")}
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-300">
-                    {pt("sustainableMaterials.text")}
-                  </p>
-                </div>
 
-                <div className="p-6 animate fade-in-up delay-2">
-                  <div className="w-12 h-12 bg-primary/5 dark:bg-blue-400/10 flex items-center justify-center mb-4">
-                    <Lightbulb className="text-[var(--color-text)] dark:text-blue-400 h-6 w-6" />
-                  </div>
-                  <h3
-                    className="font-heading text-xl mb-3 dark:text-gray-100"
-                    style={{ fontFamily: "var(--font-titles)" }}
-                  >
-                    {pt("lighting.title")}
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-300">
-                    {pt("lighting.text")}
-                  </p>
-                </div>
-
-                <div className="p-6 animate fade-in-left delay-3">
-                  <div className="w-12 h-12 bg-primary/5 dark:bg-blue-400/10 flex items-center justify-center mb-4">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="text-[var(--color-text)] dark:text-blue-400 h-6 w-6"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
-                    </svg>
-                  </div>
-                  <h3
-                    className="font-heading text-xl mb-3 dark:text-gray-100"
-                    style={{ fontFamily: "var(--font-titles)" }}
-                  >
-                    {pt("artisanalCrafting")}
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-300">
-                    {pt("artisanalCrafting.text")}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex flex-col md:flex-row gap-16">
-                <div className="md:w-1/2 animate fade-in-right delay-4 flex flex-col items-center">
-                  <DynamicImage
-                    illustrationKey="shopFocus.lifestyle1"
-                    fallbackSrc="https://www.alto-lille.fr/uploads/f0d658a0-e71f-462d-9210-31b276408bdd.jpeg"
-                    alt={`${product.name} - Caractéristiques`}
-                    className="w-full max-h-[500px] object-contain block dark:hidden mt-8"
-                  />
-                  <DynamicImage
-                    illustrationKey="shopFocus.lifestyle2"
-                    fallbackSrc="https://www.alto-lille.fr/uploads/29ce9490-1000-4d95-8d92-cd5191e15b80.jpeg"
-                    alt={`${product.name} - Caractéristiques (sombre)`}
-                    className="w-full max-h-[500px] object-contain hidden dark:block mt-8"
-                  />
-                </div>
-                <div className="md:w-1/2 animate fade-in-left delay-4">
-                  <h3
-                    className="font-heading text-2xl mb-6 dark:text-gray-100"
-                    style={{ fontFamily: "var(--font-titles)" }}
-                  >
-                    {t("product.specifications")}
-                  </h3>
-                  <ul className="space-y-6 mb-8">
-                    <li className="flex items-start">
-                      <span className="bg-primary/5 dark:bg-blue-400/10 text-[var(--color-text)] dark:text-blue-400 p-1 mr-4 mt-1">
-                        <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                          <path d="M20 6L9 17l-5-5" />
-                        </svg>
-                      </span>
-                      <div>
-                        <span className="font-medium block mb-1 dark:text-gray-100">
-                          {t("product.dimensions")}
-                        </span>
-                        <p className="text-gray-600 dark:text-gray-300">
-                          {pt("dimensions.text")}
-                        </p>
-                      </div>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="bg-primary/5 dark:bg-blue-400/10 text-[var(--color-text)] dark:text-blue-400 p-1 mr-4 mt-1">
-                        <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                          <path d="M20 6L9 17l-5-5" />
-                        </svg>
-                      </span>
-                      <div>
-                        <span className="font-medium block mb-1 dark:text-gray-100">
-                          {t("product.materials")}
-                        </span>
-                        <p className="text-gray-600 dark:text-gray-300">
-                          {pt("materials.text")}
-                        </p>
-                      </div>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="bg-primary/5 dark:bg-blue-400/10 text-[var(--color-text)] dark:text-blue-400 p-1 mr-4 mt-1">
-                        <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                          <path d="M20 6L9 17l-5-5" />
-                        </svg>
-                      </span>
-                      <div>
-                        <span className="font-medium block mb-1 dark:text-gray-100">
-                          {pt("lighting.label")}
-                        </span>
-                        <p className="text-gray-600 dark:text-gray-300">
-                          {pt("lighting.details")}
-                        </p>
-                      </div>
-                    </li>
-                  </ul>
+                  {/* Bouton Fabrication — pill orange 409×114 */}
                   <Link
                     href="/design-en-action"
-                    className="inline-block rounded-full bg-alto-orange px-10 py-3.5 text-lg font-bold text-alto-cream transition-transform hover:scale-105"
+                    className="inline-flex h-[70px] w-full max-w-[409px] items-center justify-center rounded-[57px] bg-alto-orange font-bold text-alto-cream transition-transform hover:scale-[1.03] md:h-[114px] text-[clamp(28px,3.4vw,51px)]"
+                    style={{ fontFamily: "var(--font-titles)" }}
                   >
                     {t("product.fabricationBtn")}
                   </Link>
+                </div>
+
+                {/* Silhouette lampe — crème sur fond brun (clair) / brune sur crème (sombre) */}
+                <div className="flex justify-center md:justify-end">
+                  <img
+                    src="/images/alto/silhouette-focus-cream.png"
+                    alt=""
+                    aria-hidden
+                    className="block dark:hidden h-[280px] md:h-[420px] w-auto object-contain"
+                  />
+                  <img
+                    src="/images/alto/silhouette-focus-brown.png"
+                    alt=""
+                    aria-hidden
+                    className="hidden dark:block h-[280px] md:h-[420px] w-auto object-contain"
+                  />
                 </div>
               </div>
             </div>
