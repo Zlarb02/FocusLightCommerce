@@ -97,20 +97,22 @@ export default function DesignEnAction() {
           <img
             src="/images/alto/fab-macro-rouge.jpg"
             alt="Abat-jour Focus rouge imprimé en 3D, éclairé"
-            className="aspect-[4/3] w-full object-cover object-[center_22%] md:aspect-[1920/1010]"
+            className="aspect-[143/305] w-full object-cover object-[center_22%] md:aspect-[1920/1010]"
           />
           {/* Titre géant à gauche ; l'accroche se pose en bout de ligne, à
               droite, sur la dernière ligne du titre. */}
-          <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 px-[3%] pb-[1%] md:px-[3.3%]">
+          {/* Mobile : accroche au-dessus du titre, alignée à droite. Desktop :
+              en bout de la dernière ligne du titre. */}
+          <div className="absolute inset-x-0 bottom-0 px-[3%] pb-[2%] md:flex md:items-end md:justify-between md:gap-4 md:px-[3.3%] md:pb-[1%]">
+            <p className="order-2 text-right text-alto-cream drop-shadow text-[2.6vw] md:mb-[2%] md:shrink-0 md:text-[clamp(11px,1.56vw,30px)]">
+              {t("fab.quoteBy")}
+            </p>
             <h1
-              className="font-bold uppercase leading-[0.9] text-alto-cream drop-shadow text-[11vw] md:text-[clamp(64px,11.35vw,218px)]"
+              className="order-1 font-bold uppercase leading-[0.9] text-alto-cream drop-shadow text-[13vw] md:text-[clamp(64px,11.35vw,218px)]"
               style={{ fontFamily: "var(--font-titles)" }}
             >
               {t("nav.fabrication")}
             </h1>
-            <p className="mb-[2%] shrink-0 text-alto-cream drop-shadow text-[2.6vw] md:text-[clamp(11px,1.56vw,30px)]">
-              {t("fab.quoteBy")}
-            </p>
           </div>
         </section>
 
@@ -193,9 +195,9 @@ export default function DesignEnAction() {
         </section>
       </div>
 
-      {/* Bande Sur-mesure : brune avec CTA orange, en mobile comme en desktop
-          (l'orange/bleu venait de la version sombre de la maquette). */}
-      <section className="bg-alto-brown text-alto-cream">
+      {/* Bande Sur-mesure : brune en clair, ORANGE en sombre — comme le bandeau
+          Anatole (Studio) et le bloc devis (Sur-mesure). */}
+      <section className="bg-alto-brown text-alto-cream dark:bg-alto-orange">
         <div className="mx-auto max-w-[1920px] px-6 py-12 md:flex md:items-end md:justify-between md:px-[5.7vw] md:py-20">
           <div>
             <p className="text-[3.4vw] md:text-[clamp(11px,1vw,20px)]">
@@ -210,7 +212,7 @@ export default function DesignEnAction() {
           </div>
           <Link
             href="/creations-sur-mesure"
-            className="mt-8 inline-block shrink-0 rounded-full bg-alto-orange px-8 py-3 font-bold text-alto-cream transition-transform hover:scale-105 md:mt-0 md:px-10 md:py-4 text-[4vw] md:text-[clamp(13px,1.05vw,20px)]"
+            className="mt-8 inline-block shrink-0 rounded-full bg-alto-orange px-8 py-3 font-bold text-alto-cream transition-transform hover:scale-105 dark:bg-alto-blue md:mt-0 md:px-10 md:py-4 text-[4vw] md:text-[clamp(13px,1.05vw,20px)]"
             style={{ fontFamily: "var(--font-titles)" }}
           >
             {t("fab.surmesure.cta")}
