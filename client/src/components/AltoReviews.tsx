@@ -128,34 +128,42 @@ function GoogleLogo({ className = "" }: { className?: string }) {
   );
 }
 
-export function AltoReviews() {
+/**
+ * Le widget d'avis reste CLAIR dans les deux thèmes : la maquette le pose tel
+ * quel sur le panneau #F7F7F7, y compris sur le fond brun du thème sombre
+ * (web-4, iphone-6). Seul le titre « Avis » suit le fond de page — d'où
+ * `showTitle`, que la fiche produit désactive pour le sortir du panneau.
+ */
+export function AltoReviews({ showTitle = true }: { showTitle?: boolean }) {
   const { t, language } = useLanguage();
 
   return (
     <section className="animate fade-in">
-      <h2
-        className="mb-6 text-[clamp(28px,2.1vw,40px)] font-bold leading-none text-alto-blue dark:text-alto-cream"
-        style={{ fontFamily: "var(--font-titles)" }}
-      >
-        {t("product.reviews")}
-      </h2>
+      {showTitle && (
+        <h2
+          className="mb-6 text-[clamp(28px,2.1vw,40px)] font-bold leading-none text-alto-blue dark:text-alto-cream"
+          style={{ fontFamily: "var(--font-titles)" }}
+        >
+          {t("product.reviews")}
+        </h2>
+      )}
 
-      <div className="rounded-lg bg-[#F6F6F6] p-4 dark:bg-white/5 md:p-6">
+      <div className="rounded-lg bg-[#F6F6F6] p-4 md:p-6">
         {/* Bandeau : note globale + lien Google */}
         <div className="mb-5 flex flex-wrap items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2">
               <GoogleLogo className="h-5 w-5" />
-              <span className="text-lg font-semibold text-gray-800 dark:text-alto-cream">
+              <span className="text-lg font-semibold text-gray-800">
                 Reviews
               </span>
             </div>
             <div className="mt-1 flex items-center gap-2">
-              <span className="text-xl font-bold text-gray-900 dark:text-alto-cream">
+              <span className="text-xl font-bold text-gray-900">
                 {AVERAGE.toFixed(1)}
               </span>
               <Stars rating={AVERAGE} />
-              <span className="text-xs text-gray-500 dark:text-alto-cream/60">
+              <span className="text-xs text-gray-500">
                 ({REVIEWS.length})
               </span>
             </div>
@@ -176,7 +184,7 @@ export function AltoReviews() {
           {REVIEWS.map((r, i) => (
             <article
               key={r.author}
-              className="w-[280px] shrink-0 snap-start rounded-lg bg-white p-4 dark:bg-white/10"
+              className="w-[280px] shrink-0 snap-start rounded-lg bg-white p-4"
             >
               <div className="mb-2 flex items-center gap-3">
                 <div
@@ -187,16 +195,16 @@ export function AltoReviews() {
                   {r.author.charAt(0).toUpperCase()}
                 </div>
                 <div className="min-w-0">
-                  <p className="truncate text-sm font-semibold text-gray-900 dark:text-alto-cream">
+                  <p className="truncate text-sm font-semibold text-gray-900">
                     {r.author}
                   </p>
-                  <p className="text-xs text-gray-500 dark:text-alto-cream/60">
+                  <p className="text-xs text-gray-500">
                     {timeAgo(r.date, language)}
                   </p>
                 </div>
               </div>
               <Stars rating={r.rating} />
-              <p className="mt-2 text-sm leading-relaxed text-gray-700 dark:text-alto-cream/80">
+              <p className="mt-2 text-sm leading-relaxed text-gray-700">
                 {r.text}
               </p>
             </article>

@@ -357,10 +357,13 @@ export default function ProductDetail() {
           </div>
         </section>
 
-        {/* Section Caractéristique — maquette -2/-4 (fonds inversés via CSS) */}
-        {isSectionEnabled("details") && (
-          <section id="product-details" className="py-12 md:py-20 animate fade-in">
-            <div className="alto-caracteristique relative overflow-hidden px-6 py-12 md:px-16 md:py-20">
+      </div>
+
+      {/* Section Caractéristique — maquette -2/-4 : bandeau PLEINE LARGEUR, aux
+          fonds inversés (brun sur crème en clair, crème sur brun en sombre). */}
+      {isSectionEnabled("details") && (
+          <section id="product-details" className="animate fade-in">
+            <div className="alto-caracteristique relative overflow-hidden px-[6vw] py-12 md:px-[8.4vw] md:py-20">
               <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-10 md:gap-16 items-center">
                 {/* Colonne texte */}
                 <div>
@@ -409,6 +412,14 @@ export default function ProductDetail() {
           </section>
         )}
 
+      {/* Bas de page — relevé sur les 4 variantes :
+          « Autres produits » repose sur le panneau clair #F7F7F7 en DESKTOP
+          CLAIR seulement (web-2) ; ailleurs il repose sur le fond de page
+          (crème en mobile clair, brun en sombre). En desktop clair, la maquette
+          laisse ~75 px de crème entre le bandeau Caractéristique et le panneau.
+          Le panneau d'avis, lui, reste clair dans les QUATRE variantes. */}
+      <div className="md:mt-[75px] md:bg-alto-panel dark:md:bg-transparent">
+        <div className="mx-auto max-w-[1920px] px-[6vw] md:px-[8.4vw]">
         {/* Autres produits (maquette) */}
         {otherProducts.length > 0 && (
           <section className="py-16 animate fade-in">
@@ -523,13 +534,28 @@ export default function ProductDetail() {
           </div>
         )}
 
-        {/* Avis Google (maquette : bloc juste avant le footer) - configurable via CMS */}
+        {/* Titre « Avis » — sur le fond de page : bleu en clair, crème sur le
+            brun du sombre. Il reste HORS du panneau (web-4 / iphone-6). */}
         {isSectionEnabled("testimonials") && (
-          <div className="container mx-auto py-20">
-            <AltoReviews />
+          <h2
+            className="pt-6 text-[clamp(28px,2.1vw,40px)] font-bold leading-none text-alto-blue dark:text-alto-cream"
+            style={{ fontFamily: "var(--font-titles)" }}
+          >
+            {t("product.reviews")}
+          </h2>
+        )}
+        </div>
+
+        {/* Avis Google (maquette : bloc juste avant le footer) - configurable
+            via CMS. Panneau clair pleine largeur dans les quatre variantes : la
+            maquette le garde en #F7F7F7 jusque sur le fond brun du sombre. */}
+        {isSectionEnabled("testimonials") && (
+          <div className="bg-alto-panel">
+            <div className="mx-auto max-w-[1920px] px-[6vw] py-10 md:px-[8.4vw]">
+              <AltoReviews showTitle={false} />
+            </div>
           </div>
         )}
-
       </div>
 
       <ToastContainer toasts={toasts} onClose={removeToast} />

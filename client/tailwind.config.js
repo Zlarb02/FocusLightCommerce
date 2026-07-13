@@ -61,6 +61,9 @@ module.exports = {
           "orange-soft": "#FF7402",
           blue: "#1B5EC4",
           ink: "#161615",
+          /* Panneau clair du bas de la fiche produit (« Autres produits » et
+             « Avis ») — relevé sur web-2/web-4 : ce n'est pas du blanc pur. */
+          panel: "#F7F7F7",
         },
       },
       fontFamily: {
