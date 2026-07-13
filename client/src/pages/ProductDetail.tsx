@@ -548,10 +548,13 @@ export default function ProductDetail() {
 
         {/* Avis Google (maquette : bloc juste avant le footer) - configurable
             via CMS. Panneau clair pleine largeur dans les quatre variantes : la
-            maquette le garde en #F7F7F7 jusque sur le fond brun du sombre. */}
+            maquette le garde en #F7F7F7 jusque sur le fond brun du sombre.
+            La rangée d'avis y court quasiment bord à bord (x 75→1890 sur 1920) :
+            ses marges sont bien plus étroites que les 8,4vw du reste de la page,
+            sinon les cartes paraissent riquiqui dans un grand vide. */}
         {isSectionEnabled("testimonials") && (
           <div className="bg-alto-panel">
-            <div className="mx-auto max-w-[1920px] px-[6vw] py-10 md:px-[8.4vw]">
+            <div className="mx-auto max-w-[1920px] px-[6vw] py-10 md:px-[2.65vw]">
               <AltoReviews showTitle={false} />
             </div>
           </div>

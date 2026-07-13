@@ -184,7 +184,7 @@ export function AltoReviews({ showTitle = true }: { showTitle?: boolean }) {
           {REVIEWS.map((r, i) => (
             <article
               key={r.author}
-              className="w-[280px] shrink-0 snap-start rounded-lg bg-white p-4"
+              className="w-[280px] shrink-0 snap-start rounded-lg bg-white p-4 md:w-[calc((100%-3rem)/4)]"
             >
               <div className="mb-2 flex items-center gap-3">
                 <div

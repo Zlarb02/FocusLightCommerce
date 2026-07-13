@@ -137,13 +137,16 @@ export default function Shop() {
           </div>
         )}
 
-        {/* Avis Google, juste avant le footer (même bloc que la fiche produit) */}
-        {!isLoading && products.length > 0 && (
-          <div className="pt-[8vw] md:pt-[5vw]">
-            <AltoReviews />
-          </div>
-        )}
       </div>
+
+      {/* Avis Google, juste avant le footer (même bloc que la fiche produit).
+          Hors du conteneur de la grille : ses 10,42vw de marges étranglaient la
+          rangée d'avis, qui court presque bord à bord dans la maquette. */}
+      {!isLoading && products.length > 0 && (
+        <div className="mx-auto max-w-[1920px] px-[6vw] pb-16 pt-[8vw] md:px-[2.65vw] md:pb-24 md:pt-[5vw]">
+          <AltoReviews />
+        </div>
+      )}
     </Layout>
   );
 }
