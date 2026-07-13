@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { ShoppingBag } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface AnimatedCartIconProps {
@@ -90,7 +90,8 @@ export function AnimatedCartIcon({
         variants={bagVariants}
         animate={isAnimating ? "animate" : "initial"}
       >
-        <ShoppingBag size={size} className="text-current" />
+        {/* Chariot (maquette), et non un sac */}
+        <ShoppingCart size={size} className="text-current" />
       </motion.div>
 
       {/* Badge de compteur */}

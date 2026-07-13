@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "wouter";
-import { X, Maximize2, ArrowLeft, ArrowRight } from "lucide-react";
+import { X, Maximize2, ArrowLeft, ArrowRight, ChevronDown } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { Layout } from "@/components/Layout";
 import { EnhancedHeroProductDisplay } from "@/components/EnhancedHeroProductDisplay";
 import { ProductVariation, ProductWithVariations } from "@shared/schema";
-import { ECommerceProductCard } from "@/components/ECommerceProductCard";
+import { AltoReviews } from "@/components/AltoReviews";
 import { Button } from "@/components/ui/button";
 import { AnimatedAddToCartButton } from "@/components/AnimatedAddToCartButton";
 import { ToastContainer } from "@/components/EnhancedToast";
@@ -14,7 +14,6 @@ import {
   useProductAddedIndicators,
 } from "@/components/ProductAddedIndicator";
 import { useEnhancedToast } from "@/hooks/useEnhancedToast";
-import { Leaf } from "lucide-react";
 import {
   formatPrice,
   getColorInfo,
@@ -24,7 +23,6 @@ import {
 } from "@/lib/utils";
 import { useCart } from "@/hooks/useCart";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Separator } from "@/components/ui/separator";
 
 export default function ProductDetail() {
   const { id } = useParams<{ id: string }>();
@@ -79,11 +77,6 @@ export default function ProductDetail() {
     images: string[];
     index: number;
   } | null>(null);
-
-  // Pour suivre l'image courante de chaque variation
-  const [currentImageIndexes, setCurrentImageIndexes] = useState<
-    Record<number, number>
-  >({});
 
   const [selectedVariation, setSelectedVariation] =
     useState<ProductVariation | null>(null);
@@ -188,10 +181,11 @@ export default function ProductDetail() {
   }
 
   return (
-    <Layout headerTone="surface" footerTone="brown">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Bouton retour */}
-        <div className="pt-4 md:pt-8">
+    <Layout headerTone="surface" footerTone="blue">
+      {/* Marges maquette : 162/1920 = 8.4% de part et d'autre */}
+      <div className="mx-auto max-w-[1920px] px-[6vw] md:px-[8.4vw]">
+        {/* Bouton retour (hors maquette, conservé pour la navigation) */}
+        <div className="pt-4 md:pt-6">
           <Link href="/shop">
             <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
               <ArrowLeft className="mr-2 h-4 w-4" />
@@ -200,11 +194,12 @@ export default function ProductDetail() {
           </Link>
         </div>
 
-        {/* Hero Section — maquette -2 (clair) / -4 (sombre) */}
-        <section className="py-2 md:py-8 lg:py-10 animate fade-in-up">
-          <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
+        {/* Hero — maquette -2 (clair) / -4 (sombre) : photo 646×806 à gauche,
+            colonne texte à droite, alignées en haut. */}
+        <section className="animate fade-in-up pb-8 pt-2 md:pb-16">
+          <div className="grid grid-cols-1 items-start gap-8 md:grid-cols-[646fr_785fr] md:gap-[6vw]">
             {/* Photo produit (colonne gauche desktop) */}
-            <div className="order-1 relative flex justify-center items-center px-4 md:px-0">
+            <div className="relative order-1 flex items-start justify-center md:justify-start">
               {selectedVariation && (
                 <div className="relative w-full max-w-[646px]">
                   <EnhancedHeroProductDisplay
@@ -325,21 +320,25 @@ export default function ProductDetail() {
                 </div>
               )}
 
-              {/* CTA : ajouter au panier (texte orange Bold + filet) + voir détails (pill) */}
-              <div className="flex flex-col gap-5 mb-6">
+              {/* CTA maquette : deux pills 801×78 r39 empilés — « Ajouter au panier »
+                  en contour orange (texte Bold 32px orange), « Voir plus de détails »
+                  en brun plein (texte Regular 32px crème) avec chevron. */}
+              <div className="mb-6 flex flex-col gap-4">
                 {selectedOutOfStock ? (
-                  <div className="w-full md:w-auto md:self-start rounded-full bg-muted px-8 py-3 text-center text-base font-semibold text-muted-foreground">
+                  <div className="w-full max-w-[801px] rounded-[39px] bg-muted px-8 py-3 text-center text-base font-semibold text-muted-foreground">
                     {t("shop.outOfStock")}
                   </div>
                 ) : (
-                  <div className="border-b-2 border-alto-orange/40 pb-3">
-                    <AnimatedAddToCartButton
-                      onClick={handleAddToCart}
-                      disabled={!selectedVariation}
-                      price={formatPrice(selectedVariation?.price || product.price)}
-                      className="mobile-tap-highlight w-full bg-transparent text-alto-orange-soft hover:bg-transparent hover:text-alto-orange justify-center md:justify-start !text-[clamp(22px,2.2vw,32px)] font-bold"
-                    />
-                  </div>
+                  <AnimatedAddToCartButton
+                    onClick={handleAddToCart}
+                    disabled={!selectedVariation}
+                    hideIcon
+                    className="mobile-tap-highlight flex h-[64px] w-full max-w-[801px] items-center justify-center rounded-[39px] border border-alto-orange-soft bg-transparent !text-[clamp(20px,2.2vw,32px)] font-bold text-alto-orange-soft hover:bg-alto-orange-soft/10 hover:text-alto-orange-soft md:h-[78px]"
+                  >
+                    {`${t("button.addToCart")} : ${formatPrice(
+                      selectedVariation?.price || product.price
+                    )}`}
+                  </AnimatedAddToCartButton>
                 )}
                 <button
                   onClick={() =>
@@ -347,10 +346,11 @@ export default function ProductDetail() {
                       .getElementById("product-details")
                       ?.scrollIntoView({ behavior: "smooth" })
                   }
-                  className="mobile-tap-highlight flex h-[64px] md:h-[78px] w-full max-w-[801px] items-center justify-center rounded-[39px] bg-alto-brown text-alto-cream transition-transform hover:-translate-y-[2px] dark:bg-alto-cream dark:text-alto-brown text-[clamp(20px,2.2vw,32px)]"
+                  className="mobile-tap-highlight flex h-[64px] md:h-[78px] w-full max-w-[801px] items-center justify-center gap-3 rounded-[39px] bg-alto-brown text-alto-cream transition-transform hover:-translate-y-[2px] dark:bg-alto-cream dark:text-alto-brown text-[clamp(20px,2.2vw,32px)]"
                   style={{ fontFamily: "var(--font-buttons)" }}
                 >
                   {t("product.viewDetails")}
+                  <ChevronDown className="h-6 w-6" strokeWidth={2.5} />
                 </button>
               </div>
             </div>
@@ -405,67 +405,6 @@ export default function ProductDetail() {
                   />
                 </div>
               </div>
-            </div>
-          </section>
-        )}
-
-        {/* Grille des variations */}
-        {variations.length > 1 && (
-          <section className="py-20 container mx-auto animate fade-in">
-            <h2
-              className="font-heading text-3xl md:text-4xl text-center mb-6"
-              style={{ fontFamily: "var(--font-titles)" }}
-            >
-              {t("shop.focus.colors")}
-            </h2>
-            <p className="text-gray-600 text-center max-w-2xl mx-auto mb-16 dark:text-white dark:font-medium">
-              {pt("colorSelection")}
-            </p>
-
-            <div className="grid grid-cols-1 min-[481px]:grid-cols-2 lg:grid-cols-4 gap-10">
-              {variations.map((variation, index) => {
-                const sliderImages =
-                  variation.images && variation.images.length > 0
-                    ? getSliderImages(variation.images)
-                    : [];
-                const images =
-                  sliderImages.length > 0 ? sliderImages : variation.images || [];
-                const currentImageIndex = currentImageIndexes[variation.id] ?? 0;
-                const handleImageIndexChange = (newIndex: number) => {
-                  setCurrentImageIndexes((prev) => ({
-                    ...prev,
-                    [variation.id]: newIndex,
-                  }));
-                };
-
-                return (
-                  <div key={variation.id} className={`animate fade-in-up delay-${index + 1}`}>
-                    <div className="relative group">
-                      <ECommerceProductCard
-                        product={product}
-                        variation={variation}
-                        currentImageIndex={currentImageIndex}
-                        setCurrentImageIndex={handleImageIndexChange}
-                      />
-                      {images.length > 0 && (
-                        <button
-                          type="button"
-                          className="absolute top-2 right-2 z-20 bg-white/80 dark:bg-gray-900/80 rounded-full p-1 shadow hover:bg-white dark:hover:bg-gray-800 transition"
-                          title="Agrandir l'image"
-                          onClick={() =>
-                            setModalImage({
-                              images: images.map((img) => img.url),
-                              index: currentImageIndex,
-                            })
-                          }
-                        >
-                          <Maximize2 className="w-5 h-5 text-gray-700 dark:text-gray-200" />
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
             </div>
           </section>
         )}
@@ -584,152 +523,13 @@ export default function ProductDetail() {
           </div>
         )}
 
-        {/* Testimonials Section - Avis Google Elfsight - configurable via CMS */}
+        {/* Avis Google (maquette : bloc juste avant le footer) - configurable via CMS */}
         {isSectionEnabled("testimonials") && (
-          <section className="py-20 container mx-auto animate fade-in">
-            <h2
-              className="mb-10 text-3xl md:text-4xl font-bold text-alto-blue dark:text-alto-cream"
-              style={{ fontFamily: "var(--font-titles)" }}
-            >
-              {t("product.reviews")}
-            </h2>
-
-            {/* Elfsight Google Reviews Widget */}
-            <div
-              className="elfsight-app-4e4b87d4-745d-4e46-ab59-bc0b36f7d8ad relative overflow-visible"
-              data-elfsight-app-lazy
-              style={{ margin: "0 -40px", padding: 0 }}
-            />
-            <style>{`
-              .elfsight-app-4e4b87d4-745d-4e46-ab59-bc0b36f7d8ad [class*="es-widget-title"],
-              .elfsight-app-4e4b87d4-745d-4e46-ab59-bc0b36f7d8ad [class*="es-powered-by"] {
-                display: none;
-              }
-            `}</style>
-          </section>
+          <div className="container mx-auto py-20">
+            <AltoReviews />
+          </div>
         )}
 
-        {/* Avantages Section */}
-        <section className="py-16 animate fade-in">
-          <div className="flex flex-wrap justify-center items-center gap-10 md:gap-20">
-            <div className="text-center">
-              <div className="w-14 h-14 flex items-center justify-center mx-auto mb-3">
-                <Leaf className="text-green-600 h-5 w-5" />
-              </div>
-              <p className="font-medium text-sm">{t("focus.ecoResponsible")}</p>
-            </div>
-            <div className="text-center">
-              <div className="w-14 h-14 flex items-center justify-center mx-auto mb-3">
-                <svg
-                  className="text-blue-600 h-5 w-5"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                >
-                  <rect x="1" y="3" width="15" height="13" />
-                  <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
-                  <circle cx="5.5" cy="18.5" r="2.5" />
-                  <circle cx="18.5" cy="18.5" r="2.5" />
-                </svg>
-              </div>
-              <p className="font-medium text-sm">{t("focus.freeDelivery")}</p>
-            </div>
-            <div className="text-center">
-              <div className="w-14 h-14 flex items-center justify-center mx-auto mb-3">
-                <svg
-                  className="text-purple-600 h-5 w-5"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                >
-                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                </svg>
-              </div>
-              <p className="font-medium text-sm">{t("focus.securePayment")}</p>
-            </div>
-            <div className="text-center">
-              <div className="w-14 h-14 flex items-center justify-center mx-auto mb-3">
-                <svg
-                  className="text-orange-600 h-5 w-5"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                >
-                  <path d="M10 16l5-5-5-5" />
-                  <path d="M13.8 2.2C18.1 3.3 21 7.2 21 11.4c0 3.6-2.1 6.9-5.4 8.3-.5.2-1.1.4-1.6.5" />
-                  <path d="M12 22a10 10 0 0 1 0-20" />
-                </svg>
-              </div>
-              <p className="font-medium text-sm">{t("focus.return30")}</p>
-            </div>
-          </div>
-        </section>
-
-        {/* Contact Section */}
-        <section className="py-12 animate fade-in">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="border border-gray-200 dark:border-gray-700 p-8">
-              <div className="flex flex-col sm:flex-row items-center gap-6">
-                <div>
-                  <svg
-                    className="text-[var(--color-text)] dark:text-blue-400 h-8 w-8"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                  >
-                    <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"></path>
-                    <path d="M12 12v9"></path>
-                    <path d="m8 17 4 4 4-4"></path>
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="font-medium text-lg mb-2" style={{ fontFamily: "var(--font-titles)" }}>
-                    {t("focus.contactUs")}
-                  </h3>
-                  <p className="text-gray-600 dark:text-white dark:font-medium">
-                    {t("focus.contactUs.text")}{" "}
-                    <a href="mailto:altolille@gmail.com" className="text-primary hover:underline dark:text-blue-400">
-                      altolille@gmail.com
-                    </a>
-                  </p>
-                  <p className="text-gray-600 dark:text-white dark:font-semibold">+33 782 086 690</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="border border-gray-200 dark:border-gray-700 p-8">
-              <div className="flex flex-col sm:flex-row items-center gap-6">
-                <div>
-                  <svg
-                    className="text-[var(--color-text)] dark:text-blue-400 h-8 w-8"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                  >
-                    <path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path>
-                    <path d="M22 12A10 10 0 0 0 12 2v10z"></path>
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="font-medium text-lg mb-2" style={{ fontFamily: "var(--font-titles)" }}>
-                    {t("focus.custom.title")}
-                  </h3>
-                  <p className="text-gray-600 dark:text-white dark:font-medium">
-                    {t("focus.custom.text")}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <Separator className="my-12" />
       </div>
 
       <ToastContainer toasts={toasts} onClose={removeToast} />

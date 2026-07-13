@@ -136,7 +136,7 @@
     "focus.buyColor.default": "Acheter",
     "product.addToCart": "Ajouter au panier",
     "product.buyNow": "Acheter maintenant",
-    "product.viewDetails": "Voir les détails",
+    "product.viewDetails": "Voir plus de détails",
     "product.inStock": "En stock",
     "product.outOfStock": "Rupture de stock",
     "product.price": "Prix",
@@ -1359,7 +1359,9 @@
     "sm.cta.text": "Contactez-moi pour discuter de votre projet et recevoir un devis personnalisé. Chaque création est unique et adaptée à vos besoins spécifiques.",
     "sm.cta.button": "Demander un devis",
     "sm.cta.delay": "Délai de réalisation : 3 à 6 semaines selon la complexité du projet",
-    "sm.realisations": "Prestations sur mesure réalisées :"
+    "sm.realisations": "Prestations sur mesure réalisées :",
+    "product.reviews.google": "Donner mon avis sur Google",
+    "product.reviews.write": "Rédiger un avis"
   },
   "en": {
     "nav.home": "Home",
@@ -1498,7 +1500,7 @@
     "focus.buyColor.default": "Buy",
     "product.addToCart": "Add to cart",
     "product.buyNow": "Buy now",
-    "product.viewDetails": "View details",
+    "product.viewDetails": "View more details",
     "product.inStock": "In stock",
     "product.outOfStock": "Out of stock",
     "product.price": "Price",
@@ -2695,6 +2697,8 @@
     "sm.cta.text": "Contact me to discuss your project and receive a personalised quote. Each creation is unique and tailored to your specific needs.",
     "sm.cta.button": "Request a quote",
     "sm.cta.delay": "Lead time: 3 to 6 weeks depending on the complexity of the project",
-    "sm.realisations": "Completed bespoke projects:"
+    "sm.realisations": "Completed bespoke projects:",
+    "product.reviews.google": "Review us on Google",
+    "product.reviews.write": "Write a review"
   }
 }

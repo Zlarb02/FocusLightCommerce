@@ -13,6 +13,8 @@ interface AnimatedAddToCartButtonProps {
   size?: "sm" | "lg" | "default";
   className?: string;
   children?: React.ReactNode;
+  /** La maquette (fiche produit) affiche le CTA sans icône. */
+  hideIcon?: boolean;
 }
 
 export function AnimatedAddToCartButton({
@@ -22,6 +24,7 @@ export function AnimatedAddToCartButton({
   size = "lg",
   className,
   children,
+  hideIcon = false,
 }: AnimatedAddToCartButtonProps) {
   const [isAdding, setIsAdding] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
@@ -125,7 +128,7 @@ export function AnimatedAddToCartButton({
                 transition={{ duration: 0.3 }}
                 className="flex items-center"
               >
-                <ShoppingBag className="mr-2 h-4 w-4" />
+                {!hideIcon && <ShoppingBag className="mr-2 h-4 w-4" />}
                 {children ||
                   `${t("shop.focus.buy")}${price ? ` - ${price}` : ""}`}
               </motion.div>

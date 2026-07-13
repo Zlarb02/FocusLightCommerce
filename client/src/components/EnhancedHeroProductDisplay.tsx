@@ -23,7 +23,8 @@ export function EnhancedHeroProductDisplay({
 }: EnhancedHeroProductDisplayProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isImageHovered, setIsImageHovered] = useState(false);
-  const [isAutoSlideEnabled, setIsAutoSlideEnabled] = useState(true);
+  // Maquette : image fixe. Le défilement auto reste disponible mais éteint par défaut.
+  const [isAutoSlideEnabled, setIsAutoSlideEnabled] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Utiliser les images du slider (excluant la première image)
@@ -58,7 +59,6 @@ export function EnhancedHeroProductDisplay({
   // Reset auto-slide when variation changes
   useEffect(() => {
     setCurrentImageIndex(0);
-    setIsAutoSlideEnabled(true);
   }, [selectedVariation.id]);
 
   // Preload images for better user experience
@@ -104,7 +104,6 @@ export function EnhancedHeroProductDisplay({
 
   const handleVariationChange = (variation: ProductVariation) => {
     setCurrentImageIndex(0); // Reset to first image when changing color
-    setIsAutoSlideEnabled(true); // Re-enable auto-slide
     onVariationSelect(variation);
   };
 
@@ -118,7 +117,7 @@ export function EnhancedHeroProductDisplay({
 
   return (
     <div
-      className={`relative w-full max-w-sm md:max-w-md hero-product-display flex flex-col mobile-optimized ${className}`}
+      className={`hero-product-display mobile-optimized relative flex w-full max-w-[646px] flex-col ${className}`}
     >
       {/* Zone des contrôles en haut - Position absolue fixe */}
       <div className="absolute top-4 left-0 right-0 flex items-center justify-between px-4 md:px-8 z-40">
@@ -160,8 +159,8 @@ export function EnhancedHeroProductDisplay({
         </div>
       )}
 
-      {/* Zone centrale - Image avec navigation */}
-      <div className="flex-1 flex items-center justify-center relative min-h-[400px] md:min-h-[500px] mb-4">
+      {/* Zone centrale - Image avec navigation. Cadre au ratio maquette (646×806). */}
+      <div className="relative mb-4 flex aspect-[646/806] w-full items-center justify-center overflow-hidden">
         <ColorTransition
           colorKey={selectedVariation.variationValue}
           className="w-full h-full flex items-center justify-center"
@@ -171,16 +170,14 @@ export function EnhancedHeroProductDisplay({
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           >
-            {/* Container de l'image */}
-            <div className="relative w-full h-full flex items-center justify-center px-4 py-4">
-              <div className="relative w-full max-w-[90%] max-h-[90%] mx-auto bg-gray-50/20 dark:bg-gray-900/20 rounded-xl p-2">
-                <img
-                  src={images[currentImageIndex]?.url || ""}
-                  alt={`Lampe FOCUS.01 coloris ${selectedVariation.variationValue}`}
-                  className="w-full h-full object-contain z-10 mobile-optimized transition-transform duration-300 group-hover:scale-105"
-                  loading="eager"
-                />
-              </div>
+            {/* Container de l'image : la photo remplit le cadre, sans déformation */}
+            <div className="relative h-full w-full overflow-hidden">
+              <img
+                src={images[currentImageIndex]?.url || ""}
+                alt={`${product.name} coloris ${selectedVariation.variationValue}`}
+                className="mobile-optimized z-10 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                loading="eager"
+              />
             </div>
 
             {/* Flèches de navigation */}
@@ -230,32 +227,6 @@ export function EnhancedHeroProductDisplay({
         </ColorTransition>
       </div>
 
-      {/* Zone des contrôles auto-slide - Conditionnelle et compacte */}
-      {hasMultipleImages && (
-        <div className="flex justify-center py-3 z-40">
-          {isAutoSlideEnabled ? (
-            <div className="flex items-center space-x-2 bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm text-gray-800 dark:text-gray-200 px-3 py-1.5 rounded-full text-xs font-medium shadow-sm border border-gray-200/50 dark:border-gray-700/50">
-              <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
-              <span>Auto</span>
-            </div>
-          ) : (
-            <button
-              onClick={() => setIsAutoSlideEnabled(true)}
-              className="flex items-center space-x-2 bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm hover:bg-white dark:hover:bg-gray-800 text-gray-800 dark:text-gray-200 px-3 py-1.5 rounded-full text-xs font-medium shadow-sm border border-gray-200/50 dark:border-gray-700/50 transition-colors"
-              aria-label="Relancer le mode automatique"
-            >
-              <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                <path
-                  fillRule="evenodd"
-                  d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <span>Auto</span>
-            </button>
-          )}
-        </div>
-      )}
     </div>
   );
 }

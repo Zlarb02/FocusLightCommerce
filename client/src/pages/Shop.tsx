@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "wouter";
 import { motion } from "motion/react";
 import { Layout } from "@/components/Layout";
+import { AltoReviews } from "@/components/AltoReviews";
 import { ProductWithVariations } from "@shared/schema";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { isProductOutOfStock } from "@/lib/utils";
@@ -133,6 +134,13 @@ export default function Shop() {
                 </motion.div>
               );
             })}
+          </div>
+        )}
+
+        {/* Avis Google, juste avant le footer (même bloc que la fiche produit) */}
+        {!isLoading && products.length > 0 && (
+          <div className="pt-[8vw] md:pt-[5vw]">
+            <AltoReviews />
           </div>
         )}
       </div>

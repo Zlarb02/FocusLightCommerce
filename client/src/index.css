@@ -268,19 +268,10 @@
     perspective: 1000px;
   }
 
-  /* Robustesse pour la hero section */
-  .hero-product-display {
-    min-height: 300px;
-    max-height: 400px;
-    overflow: hidden;
-  }
-
+  /* Hero fiche produit : le cadre porte le ratio maquette (646×806) et la
+     photo le remplit — pas de hauteur imposée ici, sinon elle l'écrase. */
   .hero-product-display img {
     max-width: 100%;
-    max-height: 100%;
-    width: auto;
-    height: auto;
-    object-fit: contain;
     object-position: center;
   }
 
@@ -294,11 +285,6 @@
 
   /* Anti-débordement pour petits écrans */
   @media (max-width: 480px) {
-    .hero-product-display {
-      min-height: 250px;
-      max-height: 300px;
-    }
-
     .hero-overlay-element {
       min-width: 40px;
       min-height: 40px;

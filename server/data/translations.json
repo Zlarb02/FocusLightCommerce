@@ -136,7 +136,7 @@
     "focus.buyColor.default": "Acheter",
     "product.addToCart": "Ajouter au panier",
     "product.buyNow": "Acheter maintenant",
-    "product.viewDetails": "Voir les détails",
+    "product.viewDetails": "Voir plus de détails",
     "product.inStock": "En stock",
     "product.outOfStock": "Rupture de stock",
     "product.price": "Prix",
@@ -1280,7 +1280,9 @@
     "privacy.contact.email": "Email :",
     "privacy.contact.address": "Adresse :",
     "privacy.contact.phone": "Téléphone :",
-    "privacy.lastUpdate": "Dernière mise à jour : 11 juillet 2026"
+    "privacy.lastUpdate": "Dernière mise à jour : 11 juillet 2026",
+    "product.reviews.google": "Donner mon avis sur Google",
+    "product.reviews.write": "Rédiger un avis"
   },
   "en": {
     "nav.home": "Home",
@@ -1419,7 +1421,7 @@
     "focus.buyColor.default": "Buy",
     "product.addToCart": "Add to cart",
     "product.buyNow": "Buy now",
-    "product.viewDetails": "View details",
+    "product.viewDetails": "View more details",
     "product.inStock": "In stock",
     "product.outOfStock": "Out of stock",
     "product.price": "Price",
@@ -2537,6 +2539,8 @@
     "checkout.confirmation.deliveryModeNotSpecified": "Delivery method not specified",
     "checkout.confirmation.backToHome": "Back to home",
     "checkout.confirmation.finalMessage": "💌 A confirmation email has been sent with your invoice.",
-    "checkout.confirmation.smsShipping": "📱 You'll also receive an SMS as soon as your package is shipped with the tracking link."
+    "checkout.confirmation.smsShipping": "📱 You'll also receive an SMS as soon as your package is shipped with the tracking link.",
+    "product.reviews.google": "Review us on Google",
+    "product.reviews.write": "Write a review"
   }
 }
