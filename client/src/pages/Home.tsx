@@ -8,7 +8,6 @@ import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment
 import { RotateCcw, ChevronsDown } from "lucide-react";
 import { AltoLogotype } from "@/components/alto/AltoBrand";
 import { AltoHeader } from "@/components/Layout";
-import { useTheme } from "@/contexts/ThemeContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 /** Hero slider (piloté depuis /gestion) : la 1re image reste la photo lampe
@@ -62,17 +61,6 @@ const CAPTION_POS = [
   "md:left-[6vw] md:top-[16%]", // cap4
   "md:bottom-[14%] md:left-[6vw]", // cap5
 ];
-/**
- * Fond de page courant, pour que la scène 3D s'y fonde dans les deux thèmes.
- * --background est stocké au format HSL de Tailwind (« 41 92% 95% »), que
- * Three.js ne sait pas lire tel quel : on le repasse en hsl() CSS.
- */
-function readBackgroundColor(): string {
-  const raw = getComputedStyle(document.documentElement)
-    .getPropertyValue("--background")
-    .trim();
-  return raw ? `hsl(${raw})` : "#FEF7E8";
-}
 
 /* Sur mobile : alternance design entre les coins haut/bas, jamais deux
    légendes consécutives dans la même zone (pas de chevauchement pendant
@@ -93,7 +81,6 @@ const CAPTION_MOBILE_SLOT = [
  */
 export default function Home() {
   const [, navigate] = useLocation();
-  const { theme } = useTheme();
   const { t } = useLanguage();
 
   const trackRef = useRef<HTMLDivElement>(null);
@@ -134,13 +121,6 @@ export default function Home() {
 
   const heroSlide = heroSlides[heroIndex % heroSlides.length];
 
-  /* ----- Couleur de fond du rendu : celle du fond de page -----
-     Elle est lue sur --background plutôt que codée en dur, pour que la scène se
-     fonde dans la page dans les deux thèmes (crème en clair, quasi-noir en
-     sombre). Le brun de la marque n'est PAS un fond de thème. */
-  useEffect(() => {
-    rendererRef.current?.setClearColor(readBackgroundColor(), 1);
-  }, [theme]);
 
   /* ----- Scène Three.js + boucle liée au scroll ----- */
   useEffect(() => {
@@ -158,6 +138,7 @@ export default function Home() {
         powerPreference: "high-performance",
         precision: isLargeScreen ? "highp" : "mediump",
         stencil: false,
+        alpha: true, // canvas transparent : le fond vient de la page (voir plus bas)
       });
     } catch {
       // Pas de WebGL disponible : on masque le canvas et on réduit le track
@@ -171,10 +152,13 @@ export default function Home() {
     renderer.setPixelRatio(
       Math.min(window.devicePixelRatio, isLargeScreen ? 2 : 1.5)
     );
-    renderer.setClearColor(
-      readBackgroundColor(),
-      1
-    );
+    /* Canvas TRANSPARENT plutôt qu'une couleur d'effacement égale au fond.
+       Le tone mapping ACES ci-dessous s'applique à TOUTE l'image, couleur
+       d'effacement comprise : même exacte, elle ressortait transformée et la
+       scène ne se raccordait pas au hero. En laissant le canvas transparent,
+       c'est le fond CSS de la page qui traverse — donc exactement la même
+       couleur que le hero, dans les quatre variantes, sans conversion. */
+    renderer.setClearColor(0x000000, 0);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.1;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -456,12 +440,19 @@ export default function Home() {
           unique : bloc texte + photo carrée côte à côte, jamais en absolu.
           Mobile : empilé (tagline|logo en ligne, puis photo dessous).
           Desktop : grille 2 colonnes (texte à gauche, photo à droite). */}
+      {/* Desktop : le découpage n'est PAS 50/50. Relevé sur web-9 (en px 1920) :
+          logotype x 27→1140, photo x 1182→1866. Soit 1,4vw de marge à gauche,
+          une colonne texte de 58vw, 2,2vw de gouttière, la photo sur 35,6vw et
+          2,8vw à droite. En 50/50 le logotype sortait 20 % trop petit et
+          décollé du bord gauche. */}
       <section
         ref={introRef}
-        className="flex w-full flex-col justify-center bg-background min-h-[calc(100svh-57px)] md:grid md:grid-cols-2 md:items-center md:gap-6 md:min-h-0 md:h-[calc(100svh-96px)] md:px-14"
+        className="flex w-full flex-col justify-center bg-background min-h-[calc(100svh-57px)] md:grid md:grid-cols-[57.97fr_35.6fr] md:items-center md:gap-[2.19vw] md:min-h-0 md:h-[calc(100svh-96px)] md:pl-[1.4vw] md:pr-[2.8vw]"
       >
-        {/* Bloc texte : tagline + logotype */}
-        <div className="flex flex-row items-start justify-between gap-4 px-6 pb-10 pt-6 md:flex-col md:items-start md:justify-center md:gap-10 md:px-0 md:pb-0 md:pt-0">
+        {/* Bloc texte : tagline + logotype. En desktop la maquette ne le centre
+            pas — elle le cale en BAS, à hauteur du pied de la photo (logotype
+            jusqu'à y=1023 sur 1074). La photo, elle, reste centrée. */}
+        <div className="flex flex-row items-start justify-between gap-4 px-6 pb-10 pt-6 md:h-full md:flex-col md:items-start md:justify-end md:gap-10 md:px-0 md:pb-[51px] md:pt-0">
           <p
             className="max-w-[52%] font-medium leading-snug text-alto-brown dark:text-alto-cream md:max-w-none text-[clamp(15px,1.875vw,36px)]"
             style={{ fontFamily: "var(--font-nav)" }}
@@ -506,7 +497,7 @@ export default function Home() {
           <button
             onClick={goToShop}
             aria-label={t("landing.cta")}
-            className="group relative block aspect-[3/4] w-full overflow-hidden md:h-[88%] md:w-auto md:aspect-[3/4]"
+            className="group relative block aspect-[3/4] w-full overflow-hidden md:h-auto md:w-full md:aspect-[3/4]"
           >
             <AnimatePresence initial={false}>
               <motion.img
@@ -535,11 +526,14 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Parcours 3D piloté par le scroll (démarre sous le viewport maquette) */}
-      <div ref={trackRef} className="relative h-[550vh]">
+      {/* Parcours 3D piloté par le scroll (démarre sous le viewport maquette).
+          Le fond de page est répété ici : le canvas apparaît en fondu (et peut
+          ne jamais apparaître, sans WebGL), il ne doit y avoir aucune rupture
+          avec le hero pendant ce temps. */}
+      <div ref={trackRef} className="relative h-[550vh] bg-background">
         <div
           ref={stageRef}
-          className="sticky top-0 h-screen overflow-hidden"
+          className="sticky top-0 h-screen overflow-hidden bg-background"
         >
           {/* Rendu 3D */}
           <canvas
