@@ -30,14 +30,16 @@ export default function CreationsSurMesure() {
         <img
           src="/images/alto/surmesure-hero.jpg"
           alt="Lampes sur-mesure en cours de création dans l'atelier"
-          className="aspect-[16/9] w-full object-cover md:aspect-[1920/1064]"
+          className="aspect-[143/273] w-full object-cover md:aspect-[1920/1064]"
         />
-        <div className="absolute inset-x-0 bottom-0 px-[1%] pb-[1%]">
-          <p className="text-alto-cream drop-shadow text-[clamp(11px,1.6vw,30px)]">
+        {/* Titre géant : 218px sur la maquette, soit 45vw sur mobile (base 484)
+            et 11.4vw en desktop (base 1920) — il tient sur deux lignes en mobile. */}
+        <div className="absolute inset-x-0 bottom-0 px-[3%] pb-[2%] md:px-[1%] md:pb-[1%]">
+          <p className="text-alto-cream drop-shadow text-[2.6vw] md:text-[clamp(11px,1.6vw,30px)]">
             {t("sm.hero.tagline")}
           </p>
           <h1
-            className="font-bold uppercase leading-[0.9] text-alto-cream drop-shadow text-[clamp(44px,11.4vw,218px)]"
+            className="font-bold uppercase leading-[0.9] text-alto-cream drop-shadow text-[24vw] md:text-[clamp(44px,11.4vw,218px)]"
             style={{ fontFamily: "var(--font-titles)" }}
           >
             {t("sm.title")}
@@ -48,12 +50,12 @@ export default function CreationsSurMesure() {
       {/* Intro : titre Bold orange puis paragraphes orange (maquette). */}
       <section className="mx-auto max-w-[1920px] px-6 pt-12 md:px-[6.1vw] md:pt-20">
         <h2
-          className="font-bold text-alto-orange text-[clamp(22px,2.3vw,44px)]"
+          className="font-bold text-alto-orange text-[9vw] md:text-[clamp(22px,2.3vw,44px)]"
           style={{ fontFamily: "var(--font-titles)" }}
         >
           {t("sm.lead")}
         </h2>
-        <div className="mt-6 max-w-[1643px] space-y-5 leading-relaxed text-alto-orange text-[clamp(13px,1.4vw,27px)]">
+        <div className="mt-6 max-w-[1643px] space-y-5 leading-relaxed text-alto-orange text-[5.5vw] md:text-[clamp(13px,1.4vw,27px)]">
           <p>{t("sm.p1")}</p>
           <p>{t("sm.p2")}</p>
         </div>
@@ -137,7 +139,7 @@ export default function CreationsSurMesure() {
                     optiquement, comme la maquette. Les autres chiffres restent
                     centrés. */}
                 <span
-                  className={`absolute inset-0 flex items-start justify-center pt-[16%] font-bold leading-none text-alto-blue text-[7.2vw] md:pt-[13%] md:text-[clamp(28px,4.32vw,83px)] ${
+                  className={`absolute inset-0 flex items-start justify-center pt-[16%] font-bold leading-none text-alto-blue dark:text-alto-cream text-[7.2vw] md:pt-[13%] md:text-[clamp(28px,4.32vw,83px)] ${
                     n === 4 ? "pr-[8%]" : ""
                   }`}
                   style={{ fontFamily: "var(--font-titles)" }}
@@ -170,7 +172,8 @@ export default function CreationsSurMesure() {
 
       {/* Bloc devis — fond brun pleine largeur, CTA pill orange plein + tel en
           pill contour orange. */}
-      <section className="bg-alto-brown text-alto-cream">
+      {/* Bloc devis : brun en thème clair, ORANGE en sombre (maquette). */}
+      <section className="bg-alto-brown text-alto-cream dark:bg-alto-orange">
         <div className="mx-auto max-w-[1920px] px-6 py-14 md:px-[6.1vw] md:py-20">
           <h2
             className="font-bold text-[clamp(26px,3.9vw,75px)]"
@@ -185,7 +188,7 @@ export default function CreationsSurMesure() {
           <div className="mt-10 flex flex-col items-start gap-5 md:mt-20 md:flex-row md:items-center md:justify-center md:gap-8">
             <a
               href="mailto:altolille@gmail.com?subject=Projet%20sur-mesure"
-              className="inline-flex items-center gap-3 rounded-full bg-alto-orange px-8 py-4 font-bold text-white transition-transform hover:scale-105 md:px-12 md:py-6 text-[clamp(15px,2vw,38px)]"
+              className="inline-flex items-center gap-3 rounded-full bg-alto-orange px-8 py-4 font-bold text-white transition-transform hover:scale-105 dark:bg-alto-brown md:px-12 md:py-6 text-[clamp(15px,2vw,38px)]"
               style={{ fontFamily: "var(--font-titles)" }}
             >
               <img src="/images/alto/icon-mail.png" alt="" className="h-6 w-6 object-contain md:h-9 md:w-9" />
@@ -194,7 +197,7 @@ export default function CreationsSurMesure() {
             </a>
             <a
               href="tel:+33782086690"
-              className="inline-flex items-center gap-3 rounded-full border-[3px] border-alto-orange px-8 py-4 font-bold text-white transition-transform hover:scale-105 md:px-10 md:py-6 text-[clamp(15px,1.9vw,37px)]"
+              className="inline-flex items-center gap-3 rounded-full border-[3px] border-alto-orange px-8 py-4 font-bold text-white transition-transform hover:scale-105 dark:border-alto-brown dark:bg-alto-brown md:px-10 md:py-6 text-[clamp(15px,1.9vw,37px)]"
               style={{ fontFamily: "var(--font-titles)" }}
             >
               <img src="/images/alto/icon-phone.png" alt="" className="h-6 w-6 object-contain md:h-8 md:w-8" />
