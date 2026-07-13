@@ -1361,7 +1361,8 @@
     "sm.cta.delay": "Délai de réalisation : 3 à 6 semaines selon la complexité du projet",
     "sm.realisations": "Prestations sur mesure réalisées :",
     "product.reviews.google": "Donner mon avis sur Google",
-    "product.reviews.write": "Rédiger un avis"
+    "product.reviews.write": "Rédiger un avis",
+    "sm.hero.tagline": "Le design en solution pour vos projets d'architecture et d'aménagement"
   },
   "en": {
     "nav.home": "Home",
@@ -2699,6 +2700,7 @@
     "sm.cta.delay": "Lead time: 3 to 6 weeks depending on the complexity of the project",
     "sm.realisations": "Completed bespoke projects:",
     "product.reviews.google": "Review us on Google",
-    "product.reviews.write": "Write a review"
+    "product.reviews.write": "Write a review",
+    "sm.hero.tagline": "Design as a solution for your architecture and interior projects"
   }
 }

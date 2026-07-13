@@ -23,12 +23,16 @@ export default function About() {
 
   return (
     <Layout headerTone="surface" footerTone="blue">
-      {/* Hero : la photo occupe tout le cadre (ratio 3/2 de la maquette). */}
+      {/* Hero : photo pleine largeur au ratio 3/2 de la maquette, mais bornée à
+          la hauteur de l'écran (moins le header) pour qu'à l'arrivée sur la
+          page Anatole soit visible en entier — baskettes comprises — avec la
+          tagline bien cadrée en bas à droite. Le cadrage retombe sur le bas de
+          la photo, là où sont les pieds. */}
       <section className="relative">
         <img
           src="/images/alto/studio-portrait.jpg"
           alt="Anatole Collet dans son atelier, entouré de ses luminaires"
-          className="aspect-[3/2] w-full object-cover"
+          className="aspect-[3/2] max-h-[calc(100svh-96px)] w-full object-cover object-[center_65%]"
         />
         <p className="absolute bottom-[6%] right-[3%] text-right font-normal leading-tight text-alto-cream drop-shadow text-[clamp(22px,4.2vw,81px)]">
           {t("home.tagline").split(", ").map((part, i, arr) => (
