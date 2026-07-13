@@ -6,8 +6,11 @@
   :root {
     /* Identité Alto Lille — maquette RARE.design
        crème #FEF7E8 · brun #4A2020 · orange #F54501 · bleu #1B5EC4 · encre #161615 */
-    --background: 41 92% 95%;
-    --foreground: 60 2% 8%;
+    /* HSL avec décimales : arrondi à « 41 92% 95% », le crème sortait en
+       #FEF7E7 au lieu du #FEF7E8 de la maquette. Tout le design system passe par
+       hsl(var(--x)), on garde donc ce format, mais aux valeurs exactes. */
+    --background: 40.9 91.7% 95.3%; /* #FEF7E8 crème */
+    --foreground: 60 2.3% 8.4%; /* #161615 encre */
 
     --card: 0 0% 100%;
     --card-foreground: 60 2% 8%;
@@ -15,11 +18,11 @@
     --popover: 41 92% 97%;
     --popover-foreground: 60 2% 8%;
 
-    --primary: 17 99% 48%;
-    --primary-foreground: 41 92% 95%;
+    --primary: 16.7 99.2% 48.2%; /* #F54501 orange */
+    --primary-foreground: 40.9 91.7% 95.3%;
 
-    --secondary: 0 40% 21%;
-    --secondary-foreground: 41 92% 95%;
+    --secondary: 0 39.6% 20.8%; /* #4A2020 brun */
+    --secondary-foreground: 40.9 91.7% 95.3%;
 
     --muted: 40 45% 89%;
     --muted-foreground: 20 15% 38%;
@@ -32,7 +35,7 @@
 
     --border: 38 35% 82%;
     --input: 38 35% 82%;
-    --ring: 17 99% 48%;
+    --ring: 16.7 99.2% 48.2%;
 
     --radius: 0.5rem;
 
@@ -88,34 +91,34 @@
        Certaines surfaces claires y subsistent (vignettes catalogue, cadre photo
        de la fiche) : c'est conforme à la maquette, à revoir plus tard avec
        Anatole depuis /gestion. */
-    --background: 0 40% 21%;
-    --foreground: 41 92% 95%;
+    --background: 0 39.6% 20.8%;
+    --foreground: 40.9 91.7% 95.3%;
 
     --card: 0 42% 15%;
-    --card-foreground: 41 92% 95%;
+    --card-foreground: 40.9 91.7% 95.3%;
 
     --popover: 0 42% 15%;
-    --popover-foreground: 41 92% 95%;
+    --popover-foreground: 40.9 91.7% 95.3%;
 
     /* orange de la marque, inchangé */
-    --primary: 17 99% 48%;
-    --primary-foreground: 41 92% 95%;
+    --primary: 16.7 99.2% 48.2%; /* #F54501 orange */
+    --primary-foreground: 40.9 91.7% 95.3%;
 
     --secondary: 8 60% 8%;
-    --secondary-foreground: 41 92% 95%;
+    --secondary-foreground: 40.9 91.7% 95.3%;
 
     --muted: 0 40% 27%;
     --muted-foreground: 39 45% 80%;
 
     --accent: 0 40% 27%;
-    --accent-foreground: 41 92% 95%;
+    --accent-foreground: 40.9 91.7% 95.3%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
 
     --border: 0 33% 32%;
     --input: 0 33% 32%;
-    --ring: 17 99% 48%;
+    --ring: 16.7 99.2% 48.2%;
   }
 
   /* Variante « vrai sombre » — fond quasi-noir neutre au lieu du brun de la
@@ -125,22 +128,22 @@
      d'ajouter la classe `theme-true-dark` sur <html> en plus de `dark`. */
   .dark.theme-true-dark {
     --background: 30 5% 8%; /* #141312 */
-    --foreground: 41 92% 95%;
+    --foreground: 40.9 91.7% 95.3%;
 
     --card: 30 5% 12%;
-    --card-foreground: 41 92% 95%;
+    --card-foreground: 40.9 91.7% 95.3%;
 
     --popover: 30 5% 12%;
-    --popover-foreground: 41 92% 95%;
+    --popover-foreground: 40.9 91.7% 95.3%;
 
     --secondary: 30 5% 16%;
-    --secondary-foreground: 41 92% 95%;
+    --secondary-foreground: 40.9 91.7% 95.3%;
 
     --muted: 30 5% 16%;
     --muted-foreground: 39 30% 75%;
 
     --accent: 30 5% 18%;
-    --accent-foreground: 41 92% 95%;
+    --accent-foreground: 40.9 91.7% 95.3%;
 
     --border: 30 5% 22%;
     --input: 30 5% 22%;
