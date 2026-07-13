@@ -82,7 +82,7 @@ export default function DesignEnAction() {
   const { t } = useLanguage();
 
   return (
-    <Layout headerTone="surface" footerTone="blue">
+    <Layout headerTone="surface" footerTone="blue-brown-on-light-desktop">
       {/* Le fond suit le thème (crème en clair, brun en sombre) : les deux
           versions de la maquette ne diffèrent que par là — la structure, elle,
           est la même. */}

@@ -26,6 +26,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Lock, Save, Server, User } from "lucide-react";
 import { apiRequest, getApiBaseUrl } from "@/lib/queryClient";
+import ApparenceSettings from "./ApparenceSettings";
 
 const userAccountSchema = z
   .object({
@@ -110,8 +111,13 @@ export default function Parametres() {
       >
         <TabsList className="mb-6">
           <TabsTrigger value="account">Compte</TabsTrigger>
+          <TabsTrigger value="apparence">Apparence</TabsTrigger>
           <TabsTrigger value="config">Configuration</TabsTrigger>
         </TabsList>
+
+        <TabsContent value="apparence">
+          <ApparenceSettings />
+        </TabsContent>
 
         <TabsContent value="account">
           <Card>

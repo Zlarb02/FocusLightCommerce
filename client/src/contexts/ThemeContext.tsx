@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { useThemeConfig } from "@/hooks/useThemeConfig";
 
 type Theme = "light" | "dark";
 
@@ -77,6 +78,15 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   const toggleTheme = () => {
     setTheme(theme === "light" ? "dark" : "light");
   };
+
+  /* Variante « vrai sombre » : le sombre de la maquette a un fond BRUN. Anatole
+     peut lui préférer un sombre neutre depuis /gestion → Apparence ; c'est la
+     classe `theme-true-dark` (voir index.css) qui bascule les tokens. */
+  const { trueDark } = useThemeConfig();
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("theme-true-dark", trueDark);
+  }, [trueDark]);
 
   useEffect(() => {
     // Appliquer le thème initial

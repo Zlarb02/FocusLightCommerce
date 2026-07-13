@@ -106,7 +106,7 @@ export function OrderConfirmation({
 
   if (loading) {
     return (
-      <Layout showCart={false} headerTone="brown" footerTone="none">
+      <Layout showCart={false} headerTone="brown-desktop" footerTone="none">
         <div className="mx-auto max-w-4xl px-6 py-24 text-center">
           <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
           <p className="text-muted-foreground">
@@ -119,7 +119,7 @@ export function OrderConfirmation({
 
   if (error || !orderData) {
     return (
-      <Layout showCart={false} headerTone="brown" footerTone="none">
+      <Layout showCart={false} headerTone="brown-desktop" footerTone="none">
         <div className="mx-auto max-w-xl px-6 py-24 text-center">
           <div className="border-l-4 border-[#B3261E] bg-card p-5 text-left">
             <p className="font-semibold">
@@ -140,7 +140,7 @@ export function OrderConfirmation({
   }
 
   return (
-    <Layout showCart={false} headerTone="brown" footerTone="blue">
+    <Layout showCart={false} headerTone="brown-desktop" footerTone="blue">
       <div className="mx-auto max-w-4xl px-4 py-10 md:px-6 md:py-16">
         {/* En-tête de confirmation */}
         <div className="mb-10 text-center">

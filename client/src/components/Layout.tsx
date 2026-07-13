@@ -10,6 +10,7 @@ import { LanguageToggle } from "@/components/LanguageToggle";
 import { AltoMark, AltoLogotype } from "@/components/alto/AltoBrand";
 import { AltoMenu, NAV_ITEMS, scrollToContact } from "@/components/alto/AltoMenu";
 import ThemeDecorator from "@/components/decorations/ThemeDecorator";
+import { useThemeConfig } from "@/hooks/useThemeConfig";
 import { useQuery } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { ThemeDecoration } from "../../../shared/schema";
@@ -28,8 +29,14 @@ interface LayoutProps {
    *   web-9/-10 n'existe qu'en desktop : iphone-1 montre un header crème.
    */
   headerTone?: "brown-desktop" | "surface";
-  /** Couleur du footer : bleu partout (le footer brun de web-10/11 est une erreur du designer) */
-  footerTone?: "brown" | "blue" | "none";
+  /**
+   * Couleur du footer. Bleu partout, à une exception près : la maquette met un
+   * footer BRUN sur la seule variante Fabrication desktop clair (web-11) — le
+   * même artboard en sombre (web-14) et sa version mobile (iphone-5) l'ont
+   * bleu. Intention ou étourderie du designer : "blue-brown-on-light-desktop"
+   * reproduit la maquette, et /gestion → Apparence permet de revenir au bleu.
+   */
+  footerTone?: "blue" | "blue-brown-on-light-desktop" | "none";
 }
 
 const INSTAGRAM_URL = "https://www.instagram.com/alto_lille/";
@@ -173,7 +180,7 @@ export function Layout({
   children,
   showCart = true,
   headerTone = "surface",
-  footerTone = "brown",
+  footerTone = "blue",
 }: LayoutProps) {
   // Décoration thématique saisonnière (gérée depuis l'admin)
   const { data: themeData } = useQuery({
@@ -198,12 +205,21 @@ export function Layout({
   );
 }
 
-function AltoFooter({ tone }: { tone: "brown" | "blue" }) {
+function AltoFooter({
+  tone,
+}: {
+  tone: "blue" | "blue-brown-on-light-desktop";
+}) {
   const { t } = useLanguage();
+  const { brownFooterOnFabrication } = useThemeConfig();
+
+  /* Le brun ne vaut QUE pour le desktop en thème clair (web-11) : en mobile
+     (iphone-5) et en sombre (web-14) le footer redevient bleu. D'où le bleu de
+     base, surchargé au seul `md:` hors thème sombre. */
   const bg =
-    tone === "blue"
-      ? "bg-alto-blue"
-      : "bg-alto-brown";
+    tone === "blue-brown-on-light-desktop" && brownFooterOnFabrication
+      ? "bg-alto-blue md:bg-alto-brown dark:md:bg-alto-blue"
+      : "bg-alto-blue";
 
   return (
     <footer id="footer-contact" className={`${bg} text-alto-cream`}>

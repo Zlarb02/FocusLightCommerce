@@ -17,6 +17,7 @@ import illustrationRoutes from "./illustrationRoutes.js";
 import sliderRoutes from "./sliderRoutes.js";
 import productContentRoutes from "./productContentRoutes.js";
 import instagramRoutes from "./instagramRoutes.js";
+import themeRoutes from "./themeRoutes.js";
 
 // Déclaration pour étendre les sessions Express
 declare module "express-session" {
@@ -109,6 +110,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.use("/api/slider", sliderRoutes);
   app.use("/api/products", productContentRoutes);
   app.use("/api/instagram", instagramRoutes);
+  app.use("/api/theme", themeRoutes);
 
   return createServer(app);
 }
