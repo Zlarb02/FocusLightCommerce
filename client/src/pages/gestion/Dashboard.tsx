@@ -1,4 +1,5 @@
 import DashboardLayout from "./DashboardLayout";
+import { ContenuAVerifier } from "@/components/gestion/ContenuAVerifier";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -71,6 +72,8 @@ export default function Dashboard() {
 
   return (
     <DashboardLayout title="Tableau de bord">
+      <ContenuAVerifier compact />
+
       {/* Statistiques générales */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <Card>

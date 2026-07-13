@@ -1,4 +1,5 @@
 import DashboardLayout from "./DashboardLayout";
+import { ContenuAVerifier } from "@/components/gestion/ContenuAVerifier";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
@@ -663,6 +664,7 @@ export default function Contenu() {
 
   return (
     <DashboardLayout title="Contenu du site">
+      <ContenuAVerifier />
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
