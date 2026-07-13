@@ -128,7 +128,7 @@ export function OrderConfirmation({
           </div>
           <Button
             onClick={onBackToHome}
-            className="mt-6 rounded-none bg-alto-orange font-bold text-alto-cream hover:bg-alto-orange-soft"
+            className="mt-6 rounded-full bg-alto-orange px-8 font-bold text-alto-cream transition-colors hover:bg-alto-orange-soft"
             style={titleFont}
           >
             <Home className="mr-2 h-4 w-4" />
@@ -148,12 +148,12 @@ export function OrderConfirmation({
             <CheckCircle className="h-9 w-9 text-alto-cream" />
           </div>
           <h1
-            className="mb-2 text-3xl font-bold text-alto-brown dark:text-alto-cream md:text-5xl"
+            className="mb-2 text-[clamp(28px,2.4vw,46px)] font-bold text-alto-brown dark:text-alto-cream md:text-5xl"
             style={titleFont}
           >
             {t("checkout.confirmation.title")}
           </h1>
-          <p className="mb-6 text-lg text-muted-foreground md:text-xl">
+          <p className="mb-6 text-[clamp(18px,1.25vw,24px)] text-muted-foreground md:text-[clamp(20px,1.4vw,27px)]">
             {t("checkout.confirmation.subtitle")}
           </p>
           <div className="inline-block bg-alto-brown px-6 py-4 text-alto-cream dark:bg-alto-brown-deep">
@@ -163,7 +163,7 @@ export function OrderConfirmation({
                 {orderData.orderNumber}
               </span>
             </p>
-            <p className="mt-1 text-sm text-alto-cream/70">
+            <p className="mt-1 text-[clamp(14px,1.04vw,20px)] text-alto-cream/70">
               {t("checkout.confirmation.orderDate")}{" "}
               {new Date(orderData.createdAt).toLocaleDateString("fr-FR")}
             </p>
@@ -180,16 +180,16 @@ export function OrderConfirmation({
               <h3 className="mb-2 font-bold" style={titleFont}>
                 {t("checkout.confirmation.emailSent")}
               </h3>
-              <p className="mb-3 text-sm">
+              <p className="mb-3 text-[clamp(14px,1.04vw,20px)]">
                 {t("checkout.confirmation.emailTo")}{" "}
                 <strong>{orderData.customer.email}</strong>
               </p>
 
               <div className="mb-3 border-l-4 border-alto-orange bg-primary/5 p-3">
-                <p className="text-sm">{t("checkout.confirmation.checkSpam")}</p>
+                <p className="text-[clamp(14px,1.04vw,20px)]">{t("checkout.confirmation.checkSpam")}</p>
               </div>
 
-              <div className="space-y-1 text-sm text-muted-foreground">
+              <div className="space-y-1 text-[clamp(14px,1.04vw,20px)] text-muted-foreground">
                 <p className="flex items-center gap-2">
                   <Smartphone className="h-4 w-4 shrink-0" />
                   <span>
@@ -198,7 +198,7 @@ export function OrderConfirmation({
                     <strong>{orderData.customer.phone}</strong>
                   </span>
                 </p>
-                <p className="text-xs italic">
+                <p className="text-[clamp(12px,0.83vw,16px)] italic">
                   {t("checkout.confirmation.wrongContact")}
                 </p>
               </div>
@@ -209,7 +209,7 @@ export function OrderConfirmation({
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           {/* Message simple et sympathique */}
           <div className="flex items-center border-2 border-alto-brown/15 bg-card p-6 dark:border-alto-cream/15">
-            <p className="text-lg leading-relaxed">
+            <p className="text-[clamp(18px,1.25vw,24px)] leading-relaxed">
               {t("checkout.confirmation.simpleMessage")}
             </p>
           </div>
@@ -232,15 +232,15 @@ export function OrderConfirmation({
                     <p className="font-bold" style={titleFont}>
                       {orderData.relayPoint.name}
                     </p>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-[clamp(14px,1.04vw,20px)] text-muted-foreground">
                       {orderData.relayPoint.address}
                     </p>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-[clamp(14px,1.04vw,20px)] text-muted-foreground">
                       {orderData.relayPoint.postalCode}{" "}
                       {orderData.relayPoint.city}
                     </p>
                   </div>
-                  <p className="mt-2 text-sm text-muted-foreground">
+                  <p className="mt-2 text-[clamp(14px,1.04vw,20px)] text-muted-foreground">
                     {t("checkout.confirmation.deliveryDelay")}
                   </p>
                 </div>
@@ -258,7 +258,7 @@ export function OrderConfirmation({
           {orderData.invoice?.html && (
             <Button
               onClick={openInvoice}
-              className="w-full rounded-none bg-alto-orange font-bold text-alto-cream hover:bg-alto-orange-soft sm:w-auto"
+              className="w-full rounded-full bg-alto-orange px-8 font-bold text-alto-cream transition-colors hover:bg-alto-orange-soft sm:w-auto"
               style={titleFont}
             >
               <FileText className="mr-2 h-4 w-4" />
@@ -268,7 +268,7 @@ export function OrderConfirmation({
           <Button
             onClick={onBackToHome}
             variant="outline"
-            className="w-full rounded-none sm:w-auto"
+            className="w-full rounded-full border-2 border-alto-orange px-8 font-bold text-alto-orange hover:bg-alto-orange hover:text-alto-cream sm:w-auto"
             style={titleFont}
           >
             <Home className="mr-2 h-4 w-4" />
@@ -277,7 +277,7 @@ export function OrderConfirmation({
         </div>
 
         {/* Message rassurant */}
-        <div className="mt-10 border-l-4 border-primary bg-primary/5 p-4 text-sm">
+        <div className="mt-10 border-l-4 border-primary bg-primary/5 p-4 text-[clamp(14px,1.04vw,20px)]">
           {t("checkout.confirmation.emailConfirmation")}
           <br />
           {t("checkout.confirmation.smsTracking")}

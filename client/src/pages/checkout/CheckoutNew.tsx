@@ -55,7 +55,7 @@ function CheckoutSection({
     <section className="border-2 border-alto-brown/15 bg-card dark:border-alto-cream/15">
       <header className="flex items-center gap-3 border-b-2 border-alto-brown/15 px-5 py-4 dark:border-alto-cream/15">
         <span className="text-primary">{icon}</span>
-        <h2 className="text-lg font-bold md:text-xl" style={titleFont}>
+        <h2 className="text-[clamp(18px,1.25vw,24px)] font-bold md:text-[clamp(20px,1.4vw,27px)]" style={titleFont}>
           {title}
         </h2>
         {done && <CheckCircle2 className="ml-auto h-5 w-5 text-primary" />}
@@ -170,7 +170,7 @@ export default function CheckoutNew() {
             <button
               onClick={() => setShowPayment(false)}
               disabled={isProcessing}
-              className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-primary disabled:opacity-50"
+              className="mb-6 inline-flex items-center gap-2 text-[clamp(14px,1.04vw,20px)] font-medium text-muted-foreground transition-colors hover:text-primary disabled:opacity-50"
             >
               <ArrowLeft className="h-4 w-4" />
               {t("checkout.backToInfo")}
@@ -187,7 +187,7 @@ export default function CheckoutNew() {
                     <h3 className="mb-3 font-bold" style={titleFont}>
                       {t("checkout.summary")}
                     </h3>
-                    <div className="space-y-1 text-sm">
+                    <div className="space-y-1 text-[clamp(14px,1.04vw,20px)]">
                       <div className="font-semibold">
                         {formData.firstName} {formData.lastName}
                       </div>
@@ -198,7 +198,7 @@ export default function CheckoutNew() {
                           <div className="font-medium">
                             {formData.selectedRelayPoint.name}
                           </div>
-                          <div className="text-xs text-muted-foreground">
+                          <div className="text-[clamp(12px,0.83vw,16px)] text-muted-foreground">
                             {formData.selectedRelayPoint.address},{" "}
                             {formData.selectedRelayPoint.city}
                           </div>
@@ -214,7 +214,7 @@ export default function CheckoutNew() {
                     </h3>
                     <div className="space-y-2">
                       {items.map((item, index) => (
-                        <div key={index} className="flex justify-between text-sm">
+                        <div key={index} className="flex justify-between text-[clamp(14px,1.04vw,20px)]">
                           <span>
                             {item.product.productName} x{item.quantity}
                           </span>
@@ -279,19 +279,19 @@ export default function CheckoutNew() {
             <div>
               <button
                 onClick={() => navigate("/shop")}
-                className="mb-3 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+                className="mb-3 inline-flex items-center gap-2 text-[clamp(14px,1.04vw,20px)] font-medium text-muted-foreground transition-colors hover:text-primary"
               >
                 <ArrowLeft className="h-4 w-4" />
                 {t("checkout.backToShop")}
               </button>
               <h1
-                className="text-3xl font-bold text-alto-brown dark:text-alto-cream md:text-4xl"
+                className="text-[clamp(28px,2.4vw,46px)] font-bold text-alto-brown dark:text-alto-cream md:text-[clamp(32px,2.9vw,56px)]"
                 style={titleFont}
               >
                 {t("checkout.title")}
               </h1>
             </div>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <div className="flex items-center gap-2 text-[clamp(14px,1.04vw,20px)] text-muted-foreground">
               <ShoppingBag className="h-4 w-4" />
               <span>
                 {items.length}{" "}
@@ -299,7 +299,7 @@ export default function CheckoutNew() {
                   ? t("checkout.cart.items_plural")
                   : t("checkout.cart.items")}
               </span>
-              <span className="text-2xl font-bold text-primary" style={titleFont}>
+              <span className="text-[clamp(24px,1.8vw,34px)] font-bold text-primary" style={titleFont}>
                 {formatPrice(getTotalPrice())}
               </span>
             </div>
@@ -320,7 +320,7 @@ export default function CheckoutNew() {
               >
                 <span
                   className={cn(
-                    "flex h-6 w-6 shrink-0 items-center justify-center text-xs font-bold md:h-7 md:w-7",
+                    "flex h-6 w-6 shrink-0 items-center justify-center text-[clamp(12px,0.83vw,16px)] font-bold md:h-7 md:w-7",
                     step.done
                       ? "bg-primary text-primary-foreground"
                       : "border-2 border-alto-brown/25 text-muted-foreground dark:border-alto-cream/25"
@@ -331,7 +331,7 @@ export default function CheckoutNew() {
                 </span>
                 <span
                   className={cn(
-                    "truncate text-xs font-medium md:text-sm",
+                    "truncate text-[clamp(12px,0.83vw,16px)] font-medium md:text-[clamp(14px,1.04vw,20px)]",
                     step.done ? "text-primary" : "text-muted-foreground"
                   )}
                 >
@@ -357,10 +357,10 @@ export default function CheckoutNew() {
                       <h4 className="mb-1 font-bold" style={titleFont}>
                         {t("checkout.customer.welcome.title")}
                       </h4>
-                      <p className="mb-3 text-sm text-muted-foreground">
+                      <p className="mb-3 text-[clamp(14px,1.04vw,20px)] text-muted-foreground">
                         {t("checkout.customer.welcome.description")}
                       </p>
-                      <div className="inline-flex items-center gap-2 bg-alto-brown px-3 py-1.5 text-xs font-medium text-alto-cream dark:bg-alto-brown-deep">
+                      <div className="inline-flex items-center gap-2 bg-alto-brown px-3 py-1.5 text-[clamp(12px,0.83vw,16px)] font-medium text-alto-cream dark:bg-alto-brown-deep">
                         <Lock className="h-3 w-3" />
                         <span>{t("checkout.customer.promise")}</span>
                       </div>
@@ -452,10 +452,10 @@ export default function CheckoutNew() {
                   <div className="flex items-center gap-3">
                     <CheckCircle2 className="h-5 w-5 shrink-0 text-alto-blue dark:text-alto-cream" />
                     <div>
-                      <span className="text-sm font-semibold">
+                      <span className="text-[clamp(14px,1.04vw,20px)] font-semibold">
                         {t("checkout.customer.validation.success")}
                       </span>
-                      <p className="mt-0.5 text-xs text-muted-foreground">
+                      <p className="mt-0.5 text-[clamp(12px,0.83vw,16px)] text-muted-foreground">
                         {t("checkout.customer.validation.canSelectRelay")}
                       </p>
                     </div>
@@ -471,7 +471,7 @@ export default function CheckoutNew() {
               done={Boolean(isShippingValid)}
             >
               {!isContactValid ? (
-                <div className="flex items-center gap-3 border-l-4 border-alto-brown/40 bg-muted/50 p-4 text-sm text-muted-foreground">
+                <div className="flex items-center gap-3 border-l-4 border-alto-brown/40 bg-muted/50 p-4 text-[clamp(14px,1.04vw,20px)] text-muted-foreground">
                   <AlertCircle className="h-4 w-4 shrink-0" />
                   <span>{t("checkout.delivery.fillContactFirst")}</span>
                 </div>
@@ -484,7 +484,7 @@ export default function CheckoutNew() {
                       <h3 className="font-bold" style={titleFont}>
                         {t("checkout.delivery.free.title")}
                       </h3>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-[clamp(14px,1.04vw,20px)] text-muted-foreground">
                         {t("checkout.delivery.free.description")}
                       </p>
                     </div>
@@ -499,10 +499,10 @@ export default function CheckoutNew() {
                           <h4 className="font-bold" style={titleFont}>
                             {formData.selectedRelayPoint.name}
                           </h4>
-                          <p className="mt-1 text-sm text-muted-foreground">
+                          <p className="mt-1 text-[clamp(14px,1.04vw,20px)] text-muted-foreground">
                             {formData.selectedRelayPoint.address}
                           </p>
-                          <p className="text-sm text-muted-foreground">
+                          <p className="text-[clamp(14px,1.04vw,20px)] text-muted-foreground">
                             {formData.selectedRelayPoint.postalCode}{" "}
                             {formData.selectedRelayPoint.city}
                           </p>
@@ -560,12 +560,12 @@ export default function CheckoutNew() {
                 <span className="text-alto-cream/80">
                   {t("checkout.payment.total")}
                 </span>
-                <span className="text-3xl font-bold text-alto-orange-soft" style={titleFont}>
+                <span className="text-[clamp(28px,2.4vw,46px)] font-bold text-alto-orange-soft" style={titleFont}>
                   {formatPrice(getTotalPrice())}
                 </span>
               </div>
 
-              <div className="mt-4 flex items-center gap-3 border-t border-alto-cream/15 pt-4 text-sm">
+              <div className="mt-4 flex items-center gap-3 border-t border-alto-cream/15 pt-4 text-[clamp(14px,1.04vw,20px)]">
                 <Truck className="h-5 w-5 shrink-0 text-alto-orange-soft" />
                 <div>
                   <span className="font-semibold">
@@ -580,7 +580,7 @@ export default function CheckoutNew() {
               <Button
                 onClick={() => setShowPayment(true)}
                 disabled={!canProceedToPayment || isProcessing}
-                className="mt-6 h-14 w-full rounded-none bg-alto-orange text-lg font-bold text-alto-cream hover:bg-alto-orange-soft"
+                className="mt-6 h-14 w-full rounded-full bg-alto-orange text-[clamp(18px,1.25vw,24px)] font-bold text-alto-cream transition-colors hover:bg-alto-orange-soft md:h-16"
                 style={titleFont}
               >
                 <CreditCard className="mr-2 h-5 w-5" />
@@ -588,7 +588,7 @@ export default function CheckoutNew() {
                   ? `${t("checkout.payment.pay")} ${formatPrice(getTotalPrice())}`
                   : t("checkout.payment.completeInfo")}
               </Button>
-              <p className="mt-3 text-center text-sm text-alto-cream/70">
+              <p className="mt-3 text-center text-[clamp(14px,1.04vw,20px)] text-alto-cream/70">
                 {t("checkout.payment.secure")}
               </p>
             </section>
