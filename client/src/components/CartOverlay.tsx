@@ -82,12 +82,15 @@ export function CartOverlay({ open, onClose }: CartOverlayProps) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
               >
-                <Button
+                {/* Pill contour orange, comme « Rédiger un avis » : le gris
+                    ardoise d'avant n'appartenait pas à la marque. */}
+                <button
                   onClick={onClose}
-                  className="cart-continue-shopping-button bg-slate-800 text-white hover:bg-slate-900 dark:bg-slate-800 dark:text-white dark:hover:bg-slate-900 border border-slate-600 dark:border-slate-600 font-medium"
+                  className="inline-flex items-center justify-center rounded-full border-2 border-alto-orange px-8 py-3 font-bold text-alto-orange transition-colors hover:bg-alto-orange hover:text-alto-cream"
+                  style={{ fontFamily: "var(--font-titles)" }}
                 >
                   {t("cart.continueShopping")}
-                </Button>
+                </button>
               </motion.div>
             </motion.div>
           ) : (
@@ -137,10 +140,10 @@ export function CartOverlay({ open, onClose }: CartOverlayProps) {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.2 }}
-                className="flex justify-between mb-4 text-gray-700 dark:text-gray-300"
+                className="mb-4 flex justify-between text-alto-brown/80 dark:text-alto-cream/80"
               >
                 <span>{t("cart.shipping")}</span>
-                <span className="text-green-600 dark:text-green-400">
+                <span className="font-medium text-alto-blue dark:text-alto-cream">
                   {t("cart.freeShipping")}
                 </span>
               </motion.div>
@@ -148,7 +151,7 @@ export function CartOverlay({ open, onClose }: CartOverlayProps) {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.3 }}
-                className="flex justify-between mb-6 text-lg font-bold text-gray-900 dark:text-gray-100"
+                className="mb-6 flex justify-between text-lg font-bold text-alto-brown dark:text-alto-cream"
               >
                 <span>{t("cart.total")}</span>
                 <span>{formatPrice(getTotalPrice())}</span>
@@ -160,13 +163,13 @@ export function CartOverlay({ open, onClose }: CartOverlayProps) {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <Button
+                <button
                   onClick={handleCheckout}
-                  className="w-full py-6 cart-checkout-button dark:!bg-slate-800 dark:!text-white dark:hover:!bg-slate-700"
-                  variant="default"
+                  className="w-full rounded-full bg-alto-orange py-4 text-lg font-bold text-alto-cream transition-colors hover:bg-alto-orange-soft"
+                  style={{ fontFamily: "var(--font-titles)" }}
                 >
                   {t("cart.proceedToCheckout")}
-                </Button>
+                </button>
               </motion.div>
             </motion.div>
           )}

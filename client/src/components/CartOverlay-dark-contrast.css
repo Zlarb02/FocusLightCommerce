@@ -1,61 +1,9 @@
 /* Corrections spécifiques pour le panier en mode sombre */
 
 /* Bouton "Continuer mes achats" dans le panier vide - ciblage plus spécifique */
-.dark .cart-empty-container button {
-  background-color: #1e293b !important; /* slate-800 */
-  color: #ffffff !important;
-  border: 1px solid #475569 !important; /* slate-600 */
-  font-weight: 500 !important;
-}
-
-.dark .cart-empty-container button:hover {
-  background-color: #0f172a !important; /* slate-900 */
-  color: #ffffff !important;
-  border-color: #64748b !important; /* slate-500 */
-}
-
 /* Alternative avec sélecteur plus général pour tous les boutons du panier vide */
-.dark .sheet-content .cart-empty-container button,
-.dark [data-state="open"] .cart-empty-container button {
-  background-color: #1e293b !important;
-  color: #ffffff !important;
-  border: 1px solid #475569 !important;
-  font-weight: 500 !important;
-}
-
-.dark .sheet-content .cart-empty-container button:hover,
-.dark [data-state="open"] .cart-empty-container button:hover {
-  background-color: #0f172a !important;
-  color: #ffffff !important;
-  border-color: #64748b !important;
-}
-
 /* Bouton "Continuer vos achats" - amélioration du contraste en mode sombre */
-.dark [data-radix-scroll-area-viewport] button:not(.cart-checkout-button) {
-  background-color: hsl(var(--primary)) !important;
-  color: hsl(var(--primary-foreground)) !important;
-  border: 1px solid hsl(var(--primary)) !important;
-  font-weight: 500 !important;
-}
-
-.dark
-  [data-radix-scroll-area-viewport]
-  button:not(.cart-checkout-button):hover {
-  background-color: hsl(var(--primary) / 0.9) !important;
-  color: hsl(var(--primary-foreground)) !important;
-  border-color: hsl(var(--primary) / 0.9) !important;
-}
-
 /* Bouton "Procéder au paiement" - maintenir les styles existants */
-.dark button.cart-checkout-button {
-  background-color: #1e293b !important;
-  color: #ffffff !important;
-}
-
-.dark button.cart-checkout-button:hover {
-  background-color: #334155 !important;
-}
-
 /* Ces surcharges d'utilitaires ne valent QUE dans le panier : écrites sans
    `.alto-cart`, elles éclaircissaient tout `.text-gray-900` du site en thème
    sombre, y compris sur les surfaces claires de la maquette (les cartes d'avis
@@ -105,31 +53,7 @@
 }
 
 /* Styles plus spécifiques pour le bouton "Continuer mes achats" */
-.dark .cart-continue-shopping-button {
-  background-color: #1e293b !important; /* slate-800 */
-  color: #ffffff !important;
-  border: 1px solid #475569 !important; /* slate-600 */
-  font-weight: 500 !important;
-}
-
-.dark .cart-continue-shopping-button:hover {
-  background-color: #0f172a !important; /* slate-900 */
-  color: #ffffff !important;
-  border-color: #64748b !important; /* slate-500 */
-}
-
 /* Fallback avec !important pour forcer les styles */
-.dark button[class*="cart-continue-shopping"] {
-  background-color: #1e293b !important;
-  color: #ffffff !important;
-  border: 1px solid #475569 !important;
-}
-
-.dark button[class*="cart-continue-shopping"]:hover {
-  background-color: #0f172a !important;
-  color: #ffffff !important;
-}
-
 /* Amélioration du contraste pour les quantités */
 .dark .cart-quantity-controls button {
   border-color: #4b5563 !important;

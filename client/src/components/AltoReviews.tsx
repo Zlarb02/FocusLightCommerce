@@ -96,8 +96,8 @@ function Stars({ rating }: { rating: number }) {
           key={s}
           className={
             s <= Math.round(rating)
-              ? "h-4 w-4 fill-[#FBBC04] text-[#FBBC04]"
-              : "h-4 w-4 text-gray-300"
+              ? "h-4 w-4 fill-[#FBBC04] text-[#FBBC04] md:h-[1.15vw] md:w-[1.15vw]"
+              : "h-4 w-4 text-alto-ink/25 md:h-[1.15vw] md:w-[1.15vw]"
           }
         />
       ))}
@@ -148,22 +148,25 @@ export function AltoReviews({ showTitle = true }: { showTitle?: boolean }) {
         </h2>
       )}
 
-      <div className="rounded-lg bg-[#F6F6F6] p-4 md:p-6">
+      {/* Tout le bloc suit l'échelle fluide du site (clamp mobile→1920) : à
+          taille fixe, le texte restait en 13-14 px sur un écran de 1920 et le
+          bloc paraissait rapetissé par rapport au reste de la page. */}
+      <div className="rounded-lg bg-[#F6F6F6] p-4 md:p-[1.6vw]">
         {/* Bandeau : note globale + lien Google */}
         <div className="mb-5 flex flex-wrap items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2">
-              <GoogleLogo className="h-5 w-5" />
-              <span className="text-lg font-semibold text-gray-800">
+              <GoogleLogo className="h-5 w-5 md:h-[1.5vw] md:w-[1.5vw]" />
+              <span className="text-[clamp(17px,1.15vw,22px)] font-semibold text-alto-ink">
                 Reviews
               </span>
             </div>
             <div className="mt-1 flex items-center gap-2">
-              <span className="text-xl font-bold text-gray-900">
+              <span className="text-[clamp(20px,1.4vw,27px)] font-bold text-alto-ink">
                 {AVERAGE.toFixed(1)}
               </span>
               <Stars rating={AVERAGE} />
-              <span className="text-xs text-gray-500">
+              <span className="text-[clamp(12px,0.83vw,16px)] text-alto-ink/60">
                 ({REVIEWS.length})
               </span>
             </div>
@@ -173,38 +176,38 @@ export function AltoReviews({ showTitle = true }: { showTitle?: boolean }) {
             href={GOOGLE_REVIEW_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-full bg-[#1A73E8] px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#1765CC]"
+            className="rounded-full bg-alto-blue px-5 py-2.5 text-[clamp(14px,0.94vw,18px)] font-medium text-alto-cream transition-transform hover:scale-[1.03] md:px-[1.5vw] md:py-[0.7vw]"
           >
             {t("product.reviews.google")}
           </a>
         </div>
 
         {/* Cartes : défilement horizontal (la maquette montre une rangée coupée) */}
-        <div className="-mx-1 flex snap-x snap-mandatory gap-4 overflow-x-auto px-1 pb-2">
+        <div className="-mx-1 flex snap-x snap-mandatory gap-4 overflow-x-auto px-1 pb-2 md:gap-[1.25vw]">
           {REVIEWS.map((r, i) => (
             <article
               key={r.author}
-              className="w-[280px] shrink-0 snap-start rounded-lg bg-white p-4 md:w-[calc((100%-3rem)/4)]"
+              className="flex w-[280px] shrink-0 snap-start flex-col rounded-lg bg-white p-4 md:w-[calc((100%-3.75vw)/4)] md:p-[1.25vw]"
             >
               <div className="mb-2 flex items-center gap-3">
                 <div
-                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-semibold text-white"
+                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-semibold text-white md:h-[2.6vw] md:w-[2.6vw] md:text-[clamp(14px,1vw,19px)]"
                   style={{ background: AVATAR_COLORS[i % AVATAR_COLORS.length] }}
                   aria-hidden
                 >
                   {r.author.charAt(0).toUpperCase()}
                 </div>
                 <div className="min-w-0">
-                  <p className="truncate text-sm font-semibold text-gray-900">
+                  <p className="truncate text-[clamp(15px,1.04vw,20px)] font-semibold text-alto-ink">
                     {r.author}
                   </p>
-                  <p className="text-xs text-gray-500">
+                  <p className="text-[clamp(12px,0.83vw,16px)] text-alto-ink/60">
                     {timeAgo(r.date, language)}
                   </p>
                 </div>
               </div>
               <Stars rating={r.rating} />
-              <p className="mt-2 text-sm leading-relaxed text-gray-700">
+              <p className="mt-2 text-[clamp(14px,1.04vw,20px)] leading-relaxed text-alto-ink/80">
                 {r.text}
               </p>
             </article>
