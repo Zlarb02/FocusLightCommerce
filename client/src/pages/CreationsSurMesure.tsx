@@ -23,7 +23,7 @@ export default function CreationsSurMesure() {
   const { t } = useLanguage();
 
   return (
-    <Layout headerTone="brown-mobile" footerTone="blue">
+    <Layout headerTone="surface" footerTone="blue">
       {/* Hero : photo atelier, titre géant crème (218px sur 1920) débordant sur
           l'image, accroche fine juste au-dessus. */}
       <section className="relative">

@@ -22,7 +22,7 @@ export default function About() {
   const { t } = useLanguage();
 
   return (
-    <Layout headerTone="brown-mobile" footerTone="blue">
+    <Layout headerTone="surface" footerTone="blue">
       {/* Hero : photo pleine largeur au ratio 3/2 de la maquette, mais bornée à
           la hauteur de l'écran (moins le header) pour qu'à l'arrivée sur la
           page Anatole soit visible en entier — baskettes comprises — avec la

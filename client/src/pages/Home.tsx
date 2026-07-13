@@ -62,6 +62,18 @@ const CAPTION_POS = [
   "md:left-[6vw] md:top-[16%]", // cap4
   "md:bottom-[14%] md:left-[6vw]", // cap5
 ];
+/**
+ * Fond de page courant, pour que la scène 3D s'y fonde dans les deux thèmes.
+ * --background est stocké au format HSL de Tailwind (« 41 92% 95% »), que
+ * Three.js ne sait pas lire tel quel : on le repasse en hsl() CSS.
+ */
+function readBackgroundColor(): string {
+  const raw = getComputedStyle(document.documentElement)
+    .getPropertyValue("--background")
+    .trim();
+  return raw ? `hsl(${raw})` : "#FEF7E8";
+}
+
 /* Sur mobile : alternance design entre les coins haut/bas, jamais deux
    légendes consécutives dans la même zone (pas de chevauchement pendant
    les fondus), et le centre reste libre pour la lampe. */
@@ -122,12 +134,12 @@ export default function Home() {
 
   const heroSlide = heroSlides[heroIndex % heroSlides.length];
 
-  /* ----- Couleur de fond du rendu selon le thème ----- */
+  /* ----- Couleur de fond du rendu : celle du fond de page -----
+     Elle est lue sur --background plutôt que codée en dur, pour que la scène se
+     fonde dans la page dans les deux thèmes (crème en clair, quasi-noir en
+     sombre). Le brun de la marque n'est PAS un fond de thème. */
   useEffect(() => {
-    rendererRef.current?.setClearColor(
-      theme === "dark" ? "#4A2020" : "#FEF7E8",
-      1
-    );
+    rendererRef.current?.setClearColor(readBackgroundColor(), 1);
   }, [theme]);
 
   /* ----- Scène Three.js + boucle liée au scroll ----- */
@@ -160,9 +172,7 @@ export default function Home() {
       Math.min(window.devicePixelRatio, isLargeScreen ? 2 : 1.5)
     );
     renderer.setClearColor(
-      document.documentElement.classList.contains("dark")
-        ? "#4A2020"
-        : "#FEF7E8",
+      readBackgroundColor(),
       1
     );
     renderer.toneMapping = THREE.ACESFilmicToneMapping;

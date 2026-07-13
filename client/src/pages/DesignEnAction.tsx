@@ -67,23 +67,26 @@ function StepVisual({ media }: { media: StepMedia }) {
 }
 
 /**
- * Fabrication — artboard web-11 (desktop) / iphone-9 (mobile).
+ * Fabrication — web-11 / iphone-5 (thème clair) et web-14 / iphone-9 (sombre).
  *
- * Les deux versions diffèrent nettement, d'où les variantes responsive :
- * - desktop : fond crème, les 5 étapes alternent texte / image de part et
- *   d'autre, et la bande Sur-mesure est brune avec un CTA orange ;
- * - mobile : fond brun sur toute la page (texte crème, numéros et titres
- *   orange), étapes empilées avec l'image pleine largeur sous le texte, et
- *   bande Sur-mesure orange avec un CTA bleu.
- * Dans les deux cas : bande Recherche bleue, puis la matière recyclée.
+ * La maquette existe en deux versions par page, qui ne diffèrent QUE par le
+ * fond (crème en clair, brun en sombre) : la structure et les couleurs de
+ * marque sont les mêmes. Le fond suit donc `bg-background`, et la bande
+ * Sur-mesure reste brune avec un CTA orange dans les deux cas.
+ *
+ * Mise en page : hero avec le titre géant, citation orange, 5 étapes dont le
+ * visuel file jusqu'au bord (alternance gauche/droite en desktop, empilement en
+ * mobile), bande Sur-mesure, bande Recherche bleue, matière recyclée.
  */
 export default function DesignEnAction() {
   const { t } = useLanguage();
 
   return (
-    <Layout headerTone="brown-mobile" footerTone="blue">
-      {/* Fond brun sur mobile (maquette), crème à partir de md. */}
-      <div className="bg-alto-brown text-alto-cream md:bg-background md:text-foreground">
+    <Layout headerTone="surface" footerTone="blue">
+      {/* Le fond suit le thème (crème en clair, brun en sombre) : les deux
+          versions de la maquette ne diffèrent que par là — la structure, elle,
+          est la même. */}
+      <div className="bg-background text-foreground">
         {/* Hero : photo en gros plan, le titre géant (218px sur 1920) posé en bas
             À GAUCHE et débordant sur l'image, précédé de « Conçu et fabriqué à
             Lille » (30px). Le hero fait ~1010px de haut sur la maquette. */}
@@ -190,9 +193,9 @@ export default function DesignEnAction() {
         </section>
       </div>
 
-      {/* Bande Sur-mesure — orange avec CTA bleu sur mobile, brune avec CTA
-          orange en desktop (maquette). */}
-      <section className="bg-alto-orange text-alto-cream md:bg-alto-brown">
+      {/* Bande Sur-mesure : brune avec CTA orange, en mobile comme en desktop
+          (l'orange/bleu venait de la version sombre de la maquette). */}
+      <section className="bg-alto-brown text-alto-cream">
         <div className="mx-auto max-w-[1920px] px-6 py-12 md:flex md:items-end md:justify-between md:px-[5.7vw] md:py-20">
           <div>
             <p className="text-[3.4vw] md:text-[clamp(11px,1vw,20px)]">
@@ -207,7 +210,7 @@ export default function DesignEnAction() {
           </div>
           <Link
             href="/creations-sur-mesure"
-            className="mt-8 inline-block shrink-0 rounded-full bg-alto-blue px-8 py-3 font-bold text-alto-cream transition-transform hover:scale-105 md:mt-0 md:bg-alto-orange md:px-10 md:py-4 text-[4vw] md:text-[clamp(13px,1.05vw,20px)]"
+            className="mt-8 inline-block shrink-0 rounded-full bg-alto-orange px-8 py-3 font-bold text-alto-cream transition-transform hover:scale-105 md:mt-0 md:px-10 md:py-4 text-[4vw] md:text-[clamp(13px,1.05vw,20px)]"
             style={{ fontFamily: "var(--font-titles)" }}
           >
             {t("fab.surmesure.cta")}
@@ -217,7 +220,7 @@ export default function DesignEnAction() {
 
       {/* Atelier + vidéo d'assemblage : triptyque en desktop, la seule photo
           d'atelier sur mobile (maquette). */}
-      <section className="bg-alto-brown text-alto-cream md:bg-background">
+      <section className="bg-background text-foreground">
         <div className="mx-auto grid max-w-[1920px] gap-6 px-6 py-12 sm:grid-cols-3 md:px-[5.7vw] md:py-16">
           <img
             src="/images/alto/atelier.jpg"
@@ -273,7 +276,7 @@ export default function DesignEnAction() {
 
       {/* Matière recyclée : trois photos en desktop, une seule sur mobile
           (maquette), sur fond brun côté mobile. */}
-      <section className="bg-alto-brown text-alto-cream md:bg-background md:text-foreground">
+      <section className="bg-background text-foreground">
         <div className="mx-auto max-w-[1920px] px-6 py-12 md:px-[5.7vw] md:py-16">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             <img
