@@ -24,3 +24,6 @@ server/orders-backup/ALTO-1752614975821-GVM4ID_1752614984140.json
 
 # Sauvegardes DB prod (à pousser dans le repo privé de backup, jamais ici)
 backups/
+
+# Maquette Adobe XD décompressée (78 fichiers) : source de travail, jamais livrée
+.design/
