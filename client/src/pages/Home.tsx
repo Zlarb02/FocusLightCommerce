@@ -450,7 +450,7 @@ export default function Home() {
   return (
     <div className="bg-background text-foreground">
       {/* Header maquette sticky (demande Anatole : reste visible au scroll) */}
-      <AltoHeader tone="brown" />
+      <AltoHeader tone="brown-desktop" />
 
       {/* Premier viewport (Web 1920–9 / iPhone–1) — mobile-first, structure
           unique : bloc texte + photo carrée côte à côte, jamais en absolu.
@@ -473,18 +473,29 @@ export default function Home() {
             aria-label={t("landing.cta")}
             className="group w-[42%] shrink-0 md:w-full"
           >
-            {/* Logotype orange sur le fond crème du thème clair, crème sur le
-                fond brun du thème sombre (maquette web-9 / web-10). */}
-            <AltoLogotype
-              color="orange"
-              alt="ALTO Lille"
-              className="w-full transition-transform duration-300 group-hover:scale-[1.01] dark:hidden"
-            />
-            <AltoLogotype
-              color="cream"
-              alt="ALTO Lille"
-              className="hidden w-full transition-transform duration-300 group-hover:scale-[1.01] dark:block"
-            />
+            {/* En DESKTOP le logotype suit son fond : orange sur le crème du
+                thème clair (web-9), crème sur le brun du thème sombre (web-10).
+                En MOBILE il reste ORANGE dans les deux thèmes — iphone-1 et
+                iphone-4 le montrent orange sur crème comme sur brun. */}
+            <span className="md:hidden">
+              <AltoLogotype
+                color="orange"
+                alt="ALTO Lille"
+                className="w-full transition-transform duration-300 group-hover:scale-[1.01]"
+              />
+            </span>
+            <span className="hidden md:block">
+              <AltoLogotype
+                color="orange"
+                alt="ALTO Lille"
+                className="w-full transition-transform duration-300 group-hover:scale-[1.01] dark:hidden"
+              />
+              <AltoLogotype
+                color="cream"
+                alt="ALTO Lille"
+                className="hidden w-full transition-transform duration-300 group-hover:scale-[1.01] dark:block"
+              />
+            </span>
           </button>
         </div>
 

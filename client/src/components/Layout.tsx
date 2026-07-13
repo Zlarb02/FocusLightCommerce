@@ -23,9 +23,11 @@ interface LayoutProps {
    * - "surface" : suit le fond de page — crème en thème clair, brun en thème
    *   sombre, comme les deux versions de la maquette (Studio, Fabrication,
    *   Sur-mesure, fiche produit) ;
-   * - "brown" : bandeau brun dans les deux thèmes (Accueil, Catalogue).
+   * - "brown-desktop" : bandeau brun dans les deux thèmes en desktop, mais
+   *   header "surface" en mobile (Accueil, Catalogue). Le bandeau brun de
+   *   web-9/-10 n'existe qu'en desktop : iphone-1 montre un header crème.
    */
-  headerTone?: "brown" | "surface";
+  headerTone?: "brown-desktop" | "surface";
   /** Couleur du footer : bleu partout (le footer brun de web-10/11 est une erreur du designer) */
   footerTone?: "brown" | "blue" | "none";
 }
@@ -40,7 +42,7 @@ export function AltoHeader({
   tone = "surface",
   showCart = true,
 }: {
-  tone?: "brown" | "surface";
+  tone?: "brown-desktop" | "surface";
   showCart?: boolean;
 }) {
   const [cartOpen, setCartOpen] = useState(false);
@@ -53,21 +55,24 @@ export function AltoHeader({
 
   /* La maquette existe en deux versions par page — une claire, une sombre — en
      desktop comme en mobile, et on les suit à la lettre.
-     Header : crème en thème CLAIR, brun en thème SOMBRE (mesuré sur les paires
-     iphone-3/7, iphone-8/10, web-3/13…). Il ne dépend donc pas de la taille de
-     l'écran, mais du thème. Le monogramme suit son fond : orange sur crème,
-     crème sur brun.
-     Le ton "brown" reste le bandeau brun des pages qui en ont un dans les DEUX
-     thèmes (Accueil, Catalogue en desktop). */
-  const isBrown = tone === "brown";
+     Header "surface" : crème en thème CLAIR, brun en thème SOMBRE (mesuré sur
+     les paires iphone-3/7, iphone-8/10, web-3/13…).
+     Header "brown-desktop" (Accueil, Catalogue) : le bandeau brun des deux
+     thèmes n'existe qu'en DESKTOP (web-9/-10) ; en mobile la maquette repasse
+     à un header "surface" (iphone-1 crème, iphone-4 brun). */
+  const brownDesktop = tone === "brown-desktop";
 
-  const headerClasses = isBrown
-    ? "bg-alto-brown text-alto-cream"
-    : "bg-background text-alto-brown dark:bg-alto-brown dark:text-alto-cream";
+  const surfaceClasses =
+    "bg-background text-alto-brown dark:bg-alto-brown dark:text-alto-cream";
+  const headerClasses = brownDesktop
+    ? `${surfaceClasses} md:bg-alto-brown md:text-alto-cream`
+    : surfaceClasses;
 
-  const linkClasses = isBrown
-    ? "text-alto-cream/90 hover:text-alto-cream"
-    : "text-primary hover:text-alto-orange-soft dark:text-alto-cream/90 dark:hover:text-alto-cream";
+  const surfaceLinks =
+    "text-primary hover:text-alto-orange-soft dark:text-alto-cream/90 dark:hover:text-alto-cream";
+  const linkClasses = brownDesktop
+    ? `${surfaceLinks} md:text-alto-cream/90 md:hover:text-alto-cream`
+    : surfaceLinks;
 
   return (
     <>
@@ -91,30 +96,28 @@ export function AltoHeader({
             className="absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0 transition-opacity hover:opacity-80"
           >
             {/* Le monogramme suit son fond, en permutant les déclinaisons
-                officielles (jamais de recoloriage). Sur un header "surface" la
-                maquette montre : BRUN en mobile clair, ORANGE en desktop clair,
-                CRÈME dans les deux tailles en sombre (le header y est brun). */}
-            {isBrown ? (
+                officielles (jamais de recoloriage) :
+                - mobile clair (header crème) → BRUN, dans les deux tons ;
+                - mobile sombre (header brun) → CRÈME, dans les deux tons ;
+                - desktop clair → ORANGE sur le header crème de "surface",
+                  CRÈME sur le bandeau brun de "brown-desktop" ;
+                - desktop sombre (header brun) → CRÈME. */}
+            <AltoMark
+              color="brown"
+              className="h-[34px] w-[34px] dark:hidden md:hidden"
+            />
+            {!brownDesktop && (
               <AltoMark
-                color="cream"
-                className="h-[34px] w-[34px] md:h-[74px] md:w-[74px]"
+                color="orange"
+                className="hidden dark:hidden md:block md:h-[74px] md:w-[74px]"
               />
-            ) : (
-              <>
-                <AltoMark
-                  color="brown"
-                  className="h-[34px] w-[34px] dark:hidden md:hidden"
-                />
-                <AltoMark
-                  color="orange"
-                  className="hidden dark:hidden md:block md:h-[74px] md:w-[74px]"
-                />
-                <AltoMark
-                  color="cream"
-                  className="hidden h-[34px] w-[34px] dark:block md:h-[74px] md:w-[74px]"
-                />
-              </>
             )}
+            <AltoMark
+              color="cream"
+              className={`hidden h-[34px] w-[34px] dark:block md:h-[74px] md:w-[74px] ${
+                brownDesktop ? "md:block" : ""
+              }`}
+            />
           </Link>
 
           {/* Navigation desktop — alignée à gauche après le logo (maquette) */}
