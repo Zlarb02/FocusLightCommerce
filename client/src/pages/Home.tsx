@@ -7,7 +7,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import { RotateCcw, ChevronsDown } from "lucide-react";
 import { AltoLogotype } from "@/components/alto/AltoBrand";
-import { AltoHeader } from "@/components/Layout";
+import { AltoHeader, AltoFooter } from "@/components/Layout";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 /** Hero slider (piloté depuis /gestion) : la 1re image reste la photo lampe
@@ -650,6 +650,10 @@ export default function Home() {
           </button>
         </div>
       </div>
+
+      {/* L'artboard d'accueil ne couvre qu'un écran : la maquette ne dit donc
+          rien du bas de page. Le footer est celui de toutes les autres pages. */}
+      <AltoFooter />
     </div>
   );
 }

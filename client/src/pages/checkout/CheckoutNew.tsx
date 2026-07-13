@@ -164,7 +164,7 @@ export default function CheckoutNew() {
 
   if (showPayment) {
     return (
-      <Layout showCart={false} headerTone="brown-desktop" footerTone="none">
+      <Layout showCart={false} headerTone="brown-desktop" footerTone="blue">
         <div className="min-h-screen bg-background">
           <div className="mx-auto max-w-3xl px-4 py-8 md:px-8 md:py-12">
             <button
@@ -271,7 +271,7 @@ export default function CheckoutNew() {
 
   // Interface principale fluide
   return (
-    <Layout showCart={false} headerTone="brown-desktop" footerTone="none">
+    <Layout showCart={false} headerTone="brown-desktop" footerTone="blue">
       <div className="min-h-screen bg-background">
         <div className="mx-auto max-w-5xl px-4 py-8 md:px-8 md:py-12">
           {/* Titre + total */}

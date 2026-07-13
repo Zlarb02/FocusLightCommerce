@@ -204,10 +204,11 @@ export function Layout({
   );
 }
 
-function AltoFooter({
-  tone,
+/** Exporté pour l'Accueil, qui compose son header lui-même (hors `Layout`). */
+export function AltoFooter({
+  tone = "blue",
 }: {
-  tone: "blue" | "blue-brown-on-light-desktop";
+  tone?: "blue" | "blue-brown-on-light-desktop";
 }) {
   const { t } = useLanguage();
 

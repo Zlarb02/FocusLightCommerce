@@ -34,9 +34,12 @@ const STEP_MEDIA: StepMedia[] = [
     alt: "Impression 3D d'une pièce en PLA dans l'atelier",
   },
   {
-    type: "image",
-    src: "/images/alto/fab-bois.jpg",
-    alt: "Pièces de chêne prêtes à être assemblées et mises en colis",
+    // L'étape 05 est l'ASSEMBLAGE : elle a sa vidéo (la même qu'en bas de page).
+    // Elle affichait fab-bois.jpg, c'est-à-dire la photo de l'étape 01 en double.
+    type: "video",
+    src: "/videos/fabrication-assemblage.mp4",
+    poster: "/images/alto/poster-assemblage.jpg",
+    alt: "Assemblage à la main d'une lampe dans l'atelier",
   },
 ];
 
