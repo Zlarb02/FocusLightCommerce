@@ -23,7 +23,7 @@ export default function CreationsSurMesure() {
   const { t } = useLanguage();
 
   return (
-    <Layout headerTone="surface" footerTone="blue">
+    <Layout headerTone="brown-mobile" footerTone="blue">
       {/* Hero : photo atelier, titre géant crème (218px sur 1920) débordant sur
           l'image, accroche fine juste au-dessus. */}
       <section className="relative">
@@ -151,7 +151,9 @@ export default function CreationsSurMesure() {
                 >
                   {t(`sm.step${n}.title`)}
                 </h3>
-                <p className="mt-2 leading-relaxed text-alto-brown text-[4.5vw] md:mx-auto md:max-w-[316px] md:text-[clamp(13px,1.15vw,22px)]">
+                {/* Texte brun posé sur la surface crème : il suit son support et
+                    passe en crème quand celle-ci s'inverse en thème sombre. */}
+                <p className="mt-2 leading-relaxed text-alto-brown dark:text-alto-cream/90 text-[4.5vw] md:mx-auto md:max-w-[316px] md:text-[clamp(13px,1.15vw,22px)]">
                   {t(`sm.step${n}.text`)}
                 </p>
               </div>
@@ -162,7 +164,7 @@ export default function CreationsSurMesure() {
 
       {/* Bloc devis — fond brun pleine largeur, CTA pill orange plein + tel en
           pill contour orange. */}
-      <section className="bg-alto-brown text-alto-cream dark:bg-alto-brown-deep">
+      <section className="bg-alto-brown text-alto-cream">
         <div className="mx-auto max-w-[1920px] px-6 py-14 md:px-[6.1vw] md:py-20">
           <h2
             className="font-bold text-[clamp(26px,3.9vw,75px)]"

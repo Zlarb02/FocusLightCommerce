@@ -75,7 +75,7 @@ export default function DesignEnAction() {
   const { t } = useLanguage();
 
   return (
-    <Layout headerTone="surface" footerTone="brown">
+    <Layout headerTone="brown-mobile" footerTone="brown">
       {/* Hero : duo d'images + citation */}
       <section className="mx-auto max-w-[1600px] px-4 pt-6 md:px-10">
         <h1 className="sr-only">{t("nav.fabrication")}</h1>
@@ -153,7 +153,7 @@ export default function DesignEnAction() {
       </section>
 
       {/* Bandeau Sur-mesure */}
-      <section className="bg-alto-brown text-alto-cream dark:bg-alto-brown-deep">
+      <section className="bg-alto-brown text-alto-cream">
         <div className="mx-auto flex max-w-[1600px] flex-col gap-8 px-6 py-16 md:flex-row md:items-end md:justify-between md:px-10 md:py-24">
           <div>
             <p className="mb-4 text-lg opacity-90">

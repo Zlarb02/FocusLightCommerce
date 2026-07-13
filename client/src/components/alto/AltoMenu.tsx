@@ -91,7 +91,7 @@ export function AltoMenu({ open, onClose }: AltoMenuProps) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className="fixed inset-0 z-[60] flex flex-col bg-alto-brown text-alto-cream dark:bg-alto-brown-deep"
+          className="fixed inset-0 z-[60] flex flex-col bg-alto-brown text-alto-cream"
           role="dialog"
           aria-modal="true"
         >

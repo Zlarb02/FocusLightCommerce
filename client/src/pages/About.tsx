@@ -22,7 +22,7 @@ export default function About() {
   const { t } = useLanguage();
 
   return (
-    <Layout headerTone="surface" footerTone="blue">
+    <Layout headerTone="brown-mobile" footerTone="blue">
       {/* Hero : photo pleine largeur au ratio 3/2 de la maquette, mais bornée à
           la hauteur de l'écran (moins le header) pour qu'à l'arrivée sur la
           page Anatole soit visible en entier — baskettes comprises — avec la
@@ -47,7 +47,7 @@ export default function About() {
 
       {/* Anatole Collet — nom Bold 102px à gauche, rôle Regular calé à droite,
           manifeste Regular 39px sur fond brun. */}
-      <section className="bg-alto-brown text-alto-cream dark:bg-alto-brown-deep">
+      <section className="bg-alto-brown text-alto-cream">
         <div className="mx-auto max-w-[1920px] px-6 py-14 md:px-[2.5vw] md:py-20">
           <h1
             className="font-bold uppercase leading-none text-[clamp(36px,5.3vw,102px)]"

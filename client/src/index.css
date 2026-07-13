@@ -81,34 +81,43 @@
   }
 
   .dark {
-    /* Thème sombre maquette : fond bordeaux #4A2020, texte crème */
-    --background: 0 40% 21%;
+    /* Thème sombre — RÈGLE : la maquette n'a pas de thème sombre. On ne touche
+       donc à AUCUNE couleur de marque (brun #4A2020, bleu #1B5EC4, orange
+       #F54501 : identiques dans les deux thèmes, sections colorées comprises).
+       Le thème sombre se contente d'inverser les surfaces crème/blanches en
+       surfaces quasi-noires, avec le texte en crème par-dessus.
+
+       Le fond est un gris très sombre neutre (#141312) et NON le brun de la
+       marque : sinon les sections brunes de la maquette se fondraient dans le
+       fond et la page perdrait sa structure. */
+    --background: 30 5% 8%;
     --foreground: 41 92% 95%;
 
-    --card: 0 42% 15%;
+    --card: 30 5% 12%;
     --card-foreground: 41 92% 95%;
 
-    --popover: 0 42% 15%;
+    --popover: 30 5% 12%;
     --popover-foreground: 41 92% 95%;
 
-    --primary: 17 99% 52%;
+    /* orange de la marque, inchangé */
+    --primary: 17 99% 48%;
     --primary-foreground: 41 92% 95%;
 
-    --secondary: 8 60% 8%;
+    --secondary: 30 5% 16%;
     --secondary-foreground: 41 92% 95%;
 
-    --muted: 0 40% 27%;
-    --muted-foreground: 39 45% 80%;
+    --muted: 30 5% 16%;
+    --muted-foreground: 39 30% 75%;
 
-    --accent: 0 40% 27%;
+    --accent: 30 5% 18%;
     --accent-foreground: 41 92% 95%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 0 33% 32%;
-    --input: 0 33% 32%;
-    --ring: 17 99% 52%;
+    --border: 30 5% 22%;
+    --input: 30 5% 22%;
+    --ring: 17 99% 48%;
   }
 
   * {

@@ -18,8 +18,16 @@ import "./Layout-dark-contrast.css";
 interface LayoutProps {
   children: ReactNode;
   showCart?: boolean;
-  /** brown = bandeau brun (Accueil, Catalogue) · surface = fond de page (autres pages) */
-  headerTone?: "brown" | "surface";
+  /**
+   * Fond du header, tel que le montre la maquette — il s'accorde au haut de la
+   * page, et le hero étant cadré autrement sur mobile, le ton s'y inverse :
+   * - "brown"   : brun aux deux tailles ;
+   * - "surface" : fond de page (crème) aux deux tailles ;
+   * - "brown-mobile"  : brun sur mobile, crème en desktop
+   *                     (Studio, Fabrication, Sur-mesure) ;
+   * - "brown-desktop" : crème sur mobile, brun en desktop (Accueil, Catalogue).
+   */
+  headerTone?: "brown" | "surface" | "brown-mobile" | "brown-desktop";
   /** Couleur du footer selon la maquette : brun (commerce) ou bleu (studio / sur-mesure) */
   footerTone?: "brown" | "blue" | "none";
 }
@@ -34,7 +42,7 @@ export function AltoHeader({
   tone = "surface",
   showCart = true,
 }: {
-  tone?: "brown" | "surface";
+  tone?: "brown" | "surface" | "brown-mobile" | "brown-desktop";
   showCart?: boolean;
 }) {
   const [cartOpen, setCartOpen] = useState(false);
@@ -44,15 +52,28 @@ export function AltoHeader({
   const { t } = useLanguage();
 
   const cartItemCount = getTotalItems();
-  const isBrown = tone === "brown";
 
-  // Mobile : header toujours crème (maquette iPhone), le tone ne s'applique qu'à partir de md:
-  const headerClasses = isBrown
-    ? "bg-background text-alto-brown dark:text-alto-cream md:bg-alto-brown md:text-alto-cream dark:md:bg-alto-brown-deep"
-    : "bg-background text-alto-brown dark:text-alto-cream md:text-primary";
-  const linkClasses = isBrown
-    ? "text-alto-cream/90 hover:text-alto-cream"
-    : "text-primary hover:text-alto-orange-soft dark:text-alto-cream/90 dark:hover:text-alto-cream";
+  /* Le header s'accorde au haut de la page (maquette). Le brun est une couleur
+     de marque : il est IDENTIQUE en thème sombre. Seul le fond crème s'inverse
+     en quasi-noir — c'est tout ce que le thème change ici.
+     Le monogramme suit son fond : crème sur brun, orange sur crème (l'orange
+     reste lisible aussi bien sur le crème que sur le noir). */
+  const brownMobile = tone === "brown" || tone === "brown-mobile";
+  const brownDesktop = tone === "brown" || tone === "brown-desktop";
+
+  const BROWN_BG = "bg-alto-brown text-alto-cream";
+  const SURFACE_BG = "bg-background text-alto-brown dark:text-alto-cream";
+  const headerClasses = [
+    brownMobile ? BROWN_BG : SURFACE_BG,
+    brownDesktop
+      ? "md:bg-alto-brown md:text-alto-cream"
+      : "md:bg-background md:text-alto-brown dark:md:text-alto-cream",
+  ].join(" ");
+
+  const BROWN_LINKS = "text-alto-cream/90 hover:text-alto-cream";
+  const SURFACE_LINKS =
+    "text-primary hover:text-alto-orange-soft dark:text-alto-cream/90 dark:hover:text-alto-cream";
+  const linkClasses = brownDesktop ? BROWN_LINKS : SURFACE_LINKS;
 
   return (
     <>
@@ -75,7 +96,16 @@ export function AltoHeader({
             aria-label="Accueil Alto Lille"
             className="absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0 transition-opacity hover:opacity-80"
           >
-            <AltoMark className="h-[34px] w-[34px] md:h-[74px] md:w-[74px]" />
+            {/* Le monogramme change de déclinaison au breakpoint quand le fond du
+                header s'inverse entre mobile et desktop (cf. maquette). */}
+            <AltoMark
+              color={brownMobile ? "cream" : "orange"}
+              className="h-[34px] w-[34px] md:hidden"
+            />
+            <AltoMark
+              color={brownDesktop ? "cream" : "orange"}
+              className="hidden md:block md:h-[74px] md:w-[74px]"
+            />
           </Link>
 
           {/* Navigation desktop — alignée à gauche après le logo (maquette) */}
@@ -161,7 +191,7 @@ function AltoFooter({ tone }: { tone: "brown" | "blue" }) {
   const bg =
     tone === "blue"
       ? "bg-alto-blue"
-      : "bg-alto-brown dark:bg-alto-brown-deep";
+      : "bg-alto-brown";
 
   return (
     <footer id="footer-contact" className={`${bg} text-alto-cream`}>
