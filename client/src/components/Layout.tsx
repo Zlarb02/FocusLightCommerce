@@ -90,9 +90,10 @@ export function AltoHeader({
             aria-label="Accueil Alto Lille"
             className="absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0 transition-opacity hover:opacity-80"
           >
-            {/* Le monogramme suit le fond du header. Sur un header "surface",
-                celui-ci passe du crème au brun en thème sombre : on permute donc
-                les deux déclinaisons officielles au lieu de recolorier le logo. */}
+            {/* Le monogramme suit son fond, en permutant les déclinaisons
+                officielles (jamais de recoloriage). Sur un header "surface" la
+                maquette montre : BRUN en mobile clair, ORANGE en desktop clair,
+                CRÈME dans les deux tailles en sombre (le header y est brun). */}
             {isBrown ? (
               <AltoMark
                 color="cream"
@@ -101,8 +102,12 @@ export function AltoHeader({
             ) : (
               <>
                 <AltoMark
+                  color="brown"
+                  className="h-[34px] w-[34px] dark:hidden md:hidden"
+                />
+                <AltoMark
                   color="orange"
-                  className="h-[34px] w-[34px] dark:hidden md:h-[74px] md:w-[74px]"
+                  className="hidden dark:hidden md:block md:h-[74px] md:w-[74px]"
                 />
                 <AltoMark
                   color="cream"
@@ -200,8 +205,9 @@ function AltoFooter({ tone }: { tone: "brown" | "blue" }) {
   return (
     <footer id="footer-contact" className={`${bg} text-alto-cream`}>
       <div className="mx-auto grid max-w-[1600px] gap-12 px-6 py-14 md:grid-cols-2 md:px-14 md:py-20">
-        {/* Logotype géant */}
-        <div className="flex items-end">
+        {/* Logotype géant — sous les liens sur mobile (maquette), à leur gauche
+            en desktop. */}
+        <div className="order-2 flex items-end md:order-1">
           <AltoLogotype
             color="cream"
             className="w-full max-w-[440px] lg:max-w-[706px] h-auto"
@@ -209,7 +215,7 @@ function AltoFooter({ tone }: { tone: "brown" | "blue" }) {
         </div>
 
         {/* Colonnes de liens */}
-        <div className="grid grid-cols-2 gap-10 text-[clamp(20px,1.56vw,30px)]">
+        <div className="order-1 grid grid-cols-2 gap-10 text-[clamp(20px,1.56vw,30px)] md:order-2">
           <div className="space-y-4">
             <Link href="/shop" className="block font-bold hover:underline">
               {t("nav.catalogue")}
