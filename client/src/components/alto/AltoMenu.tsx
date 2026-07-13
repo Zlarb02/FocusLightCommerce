@@ -229,9 +229,14 @@ export function AltoMenu({ open, onClose }: AltoMenuProps) {
                 Instagram
               </a>
             </div>
-            <div className="flex items-center gap-4">
-              <LanguageToggle variant="switch" size="default" showLabel={true} />
-              <ThemeToggle size="md" />
+            {/* Langue et thème : le même design sobre que celui du header (le
+                libellé FR/EN, l'icône lune/soleil), qui hérite de la couleur du
+                menu. Les switches génériques d'avant amenaient leurs propres
+                gris et un soleil jaune, étrangers à la palette, et leurs
+                libellés en `text-foreground` disparaissaient sur le fond brun. */}
+            <div className="flex items-center gap-2">
+              <LanguageToggle variant="minimal" size="default" showLabel={false} />
+              <ThemeToggle variant="minimal" size="md" showLabel={false} />
             </div>
           </motion.div>
         </motion.div>

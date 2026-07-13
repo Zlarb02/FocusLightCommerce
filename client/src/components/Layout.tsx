@@ -149,7 +149,8 @@ export function AltoHeader({
             </button>
           </nav>
 
-          {/* Actions à droite */}
+          {/* Actions à droite. En desktop, langue et thème sont ici (le menu
+              burger n'y est pas déployé) ; en mobile, ils sont dans le menu. */}
           <div className="ml-auto flex items-center gap-1 md:gap-2">
             <span className="hidden md:flex items-center gap-1">
               <LanguageToggle variant="minimal" size="sm" showLabel={false} />

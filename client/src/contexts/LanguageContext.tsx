@@ -29,7 +29,15 @@ interface LanguageProviderProps {
 }
 
 export function LanguageProvider({ children }: LanguageProviderProps) {
-  const [language, setLanguage] = useState<Language>("fr");
+  /* La préférence est lue DÈS l'initialisation de l'état, et non dans un effet.
+     Chargée après coup, elle était écrasée par l'effet de synchronisation qui,
+     lui, tournait encore avec le « fr » par défaut : la langue choisie ne
+     survivait pas à un rechargement. */
+  const [language, setLanguage] = useState<Language>(() => {
+    if (typeof window === "undefined") return "fr";
+    const saved = localStorage.getItem("lang");
+    return saved === "en" || saved === "fr" ? saved : "fr";
+  });
   const [translations, setTranslations] = useState<Translations>(
     translationsData as Translations
   );
@@ -53,14 +61,6 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
       // Garde les traductions existantes (fichier local)
     }
   };
-
-  // Charger la langue depuis le localStorage au montage
-  useEffect(() => {
-    const savedLang = localStorage.getItem("lang");
-    if (savedLang === "fr" || savedLang === "en") {
-      setLanguage(savedLang);
-    }
-  }, []);
 
   // Charger les traductions depuis l'API au montage
   useEffect(() => {
