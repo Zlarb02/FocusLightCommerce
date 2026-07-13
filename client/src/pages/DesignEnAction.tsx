@@ -195,9 +195,11 @@ export default function DesignEnAction() {
         </section>
       </div>
 
-      {/* Bande Sur-mesure : brune en clair, ORANGE en sombre — comme le bandeau
-          Anatole (Studio) et le bloc devis (Sur-mesure). */}
-      <section className="bg-alto-brown text-alto-cream dark:bg-alto-orange">
+      {/* Bande Sur-mesure. En CLAIR : brune, titre crème, CTA orange (web-11,
+          iphone-5). En SOMBRE la maquette diverge selon la taille, et on la
+          suit à la lettre : mobile ORANGE avec CTA bleu (iphone-9), desktop
+          CRÈME avec titre brun et CTA orange (web-14). */}
+      <section className="bg-alto-brown text-alto-cream dark:bg-alto-orange dark:md:bg-alto-cream dark:md:text-alto-brown">
         <div className="mx-auto max-w-[1920px] px-6 py-12 md:flex md:items-end md:justify-between md:px-[5.7vw] md:py-20">
           <div>
             <p className="text-[3.4vw] md:text-[clamp(11px,1vw,20px)]">
@@ -212,7 +214,7 @@ export default function DesignEnAction() {
           </div>
           <Link
             href="/creations-sur-mesure"
-            className="mt-8 inline-block shrink-0 rounded-full bg-alto-orange px-8 py-3 font-bold text-alto-cream transition-transform hover:scale-105 dark:bg-alto-blue md:mt-0 md:px-10 md:py-4 text-[4vw] md:text-[clamp(13px,1.05vw,20px)]"
+            className="mt-8 inline-block shrink-0 rounded-full bg-alto-orange px-8 py-3 font-bold text-alto-cream transition-transform hover:scale-105 dark:bg-alto-blue dark:md:bg-alto-orange md:mt-0 md:px-10 md:py-4 text-[4vw] md:text-[clamp(13px,1.05vw,20px)]"
             style={{ fontFamily: "var(--font-titles)" }}
           >
             {t("fab.surmesure.cta")}
