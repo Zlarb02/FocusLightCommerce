@@ -7,7 +7,7 @@ import CheckoutNew from "@/pages/checkout/CheckoutNew";
 import { OrderConfirmation } from "@/pages/checkout/OrderConfirmation";
 import { CartProvider } from "@/hooks/useCart";
 import { CheckoutProvider } from "@/hooks/useCheckout";
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import Home from "@/pages/Home";
 import Shop from "@/pages/Shop";
 import ProductDetail from "@/pages/ProductDetail";
@@ -46,7 +46,15 @@ const lazyFallback = (
 );
 
 function Router() {
-  const [, navigate] = useLocation();
+  const [location, navigate] = useLocation();
+
+  /* wouter ne réinitialise pas le scroll d'une route à l'autre : sans ça, en
+     partant du bas d'une page (typiquement depuis le footer), on arrive en bas
+     de la suivante. Le lien « Contact », lui, scrolle volontairement vers le
+     footer une fois la page rendue. */
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
 
   return (
     <Switch>

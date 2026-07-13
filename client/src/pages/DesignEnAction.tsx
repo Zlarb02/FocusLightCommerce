@@ -81,7 +81,7 @@ export default function DesignEnAction() {
   const { t } = useLanguage();
 
   return (
-    <Layout headerTone="brown-mobile" footerTone="brown">
+    <Layout headerTone="brown-mobile" footerTone="blue">
       {/* Fond brun sur mobile (maquette), crème à partir de md. */}
       <div className="bg-alto-brown text-alto-cream md:bg-background md:text-foreground">
         {/* Hero : photo en gros plan, le titre géant (218px sur 1920) posé en bas

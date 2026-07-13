@@ -140,7 +140,7 @@ export function OrderConfirmation({
   }
 
   return (
-    <Layout showCart={false} headerTone="brown" footerTone="brown">
+    <Layout showCart={false} headerTone="brown" footerTone="blue">
       <div className="mx-auto max-w-4xl px-4 py-10 md:px-6 md:py-16">
         {/* En-tête de confirmation */}
         <div className="mb-10 text-center">

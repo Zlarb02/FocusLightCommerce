@@ -64,7 +64,7 @@ export default function Shop() {
   const { t } = useLanguage();
 
   return (
-    <Layout headerTone="brown" footerTone="brown">
+    <Layout headerTone="brown" footerTone="blue">
       {/* Marges maquette : 200/1920 = 10.42% ; grille limitée à 1920 comme l'artboard */}
       <div className="mx-auto max-w-[1920px] px-[6vw] pb-16 pt-[6vw] md:px-[10.42vw] md:pb-24 md:pt-[5.6vw]">
         {isLoading && (

@@ -132,8 +132,14 @@ export default function CreationsSurMesure() {
                 {/* Chiffre bleu, posé dans le disque évidé du logo (donc sur le
                     fond crème de la section) et légèrement remonté par rapport au
                     centre du carré. */}
+                {/* Le « 4 » a sa masse à gauche et une hampe fine à droite : centré
+                    géométriquement, il paraît fuir à droite. On le recale
+                    optiquement, comme la maquette. Les autres chiffres restent
+                    centrés. */}
                 <span
-                  className="absolute inset-0 flex items-start justify-center pt-[16%] font-bold leading-none text-alto-blue text-[7.2vw] md:pt-[13%] md:text-[clamp(28px,4.32vw,83px)]"
+                  className={`absolute inset-0 flex items-start justify-center pt-[16%] font-bold leading-none text-alto-blue text-[7.2vw] md:pt-[13%] md:text-[clamp(28px,4.32vw,83px)] ${
+                    n === 4 ? "pr-[8%]" : ""
+                  }`}
                   style={{ fontFamily: "var(--font-titles)" }}
                 >
                   {n}
