@@ -1,28 +1,32 @@
 /**
  * Éléments d'identité Alto Lille (maquette RARE.design).
- * Le monogramme est un carré plein percé d'un cercle (fill-rule evenodd),
- * il hérite de currentColor pour s'adapter à tous les fonds.
+ *
+ * Le monogramme n'est PAS redessiné : ce sont les fichiers livrés par le
+ * designer, extraits de la maquette XD (Fichier 10/11/13/19 V1.png). Chaque
+ * couleur est une déclinaison officielle distincte — ne jamais recolorier ni
+ * recréer la forme.
  */
 
+type AltoMarkColor = "cream" | "orange" | "blue" | "brown";
+
 interface AltoMarkProps {
+  /** cream = fonds bruns/bleus · orange = fonds crème · blue = pastilles · brown */
+  color?: AltoMarkColor;
   className?: string;
   title?: string;
 }
 
-export function AltoMark({ className = "h-9 w-9", title }: AltoMarkProps) {
+export function AltoMark({
+  color = "orange",
+  className = "h-9 w-9",
+  title,
+}: AltoMarkProps) {
   return (
-    <svg
-      viewBox="0 0 100 100"
+    <img
+      src={`/images/alto/mark-alto-${color}.png`}
+      alt={title ?? "Alto Lille"}
       className={className}
-      role="img"
-      aria-label={title ?? "Alto Lille"}
-    >
-      <path
-        fill="currentColor"
-        fillRule="evenodd"
-        d="M0 0h100v100H0V0zm50 1.5A48.5 48.5 0 1 0 50 98.5 48.5 48.5 0 0 0 50 1.5z"
-      />
-    </svg>
+    />
   );
 }
 

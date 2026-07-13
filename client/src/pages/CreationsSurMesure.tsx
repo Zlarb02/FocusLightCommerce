@@ -59,49 +59,99 @@ export default function CreationsSurMesure() {
         </div>
       </section>
 
-      {/* Process : 4 pastilles Alto bleues numérotées, reliées par la ligne bleue. */}
+      {/* Process : 4 pastilles (logo Alto bleu) numérotées, reliées par le trait bleu.
+          Le trait est porté par chaque étape sauf la dernière et relie sa pastille
+          à la suivante :
+          - mobile (vertical) : il part du bas du carré du logo et monte jusqu'au
+            haut du chiffre suivant, sans marge ;
+          - desktop (horizontal) : même tracé de gauche à droite, mais avec une
+            marge visible à chaque extrémité — il ne touche ni le carré ni le chiffre.
+          Le chiffre est bleu sur mobile, crème sur desktop, et légèrement décentré
+          vers le haut du logo dans les deux cas. */}
       <section className="mx-auto max-w-[1920px] px-6 py-16 md:px-[10.9vw] md:py-24">
-        <ol className="relative grid gap-y-10 md:grid-cols-4 md:gap-x-[12%] md:gap-y-0">
-          {/* Ligne bleue — mobile : verticale, bornée au centre des pastilles
-              extrêmes (la pastille fait 4rem, donc 2rem de marge haut/bas). */}
-          <span
-            aria-hidden="true"
-            className="absolute left-8 top-8 bottom-8 w-[3px] bg-alto-blue md:hidden"
-          />
-          {/* Ligne bleue — desktop : horizontale, à hauteur du centre des
-              pastilles (168px sur 1920 → 8.75vw), bornée d'un demi-pas. */}
-          <span
-            aria-hidden="true"
-            className="absolute hidden h-[3px] bg-alto-blue md:block"
-            style={{
-              top: "calc(min(8.75vw, 168px) / 2)",
-              left: "calc((100% - 3 * 12%) / 8)",
-              right: "calc((100% - 3 * 12%) / 8)",
-            }}
-          />
-
+        <ol
+          className="sm-steps grid gap-y-10 md:grid-cols-4 md:gap-x-0 md:gap-y-0"
+          style={
+            {
+              /* Mesures de la maquette, rapportées aux bords du carré (--sm-mark
+                 est défini dans index.css, en responsive) : le trait démarre 11 %
+                 après le bord sortant du logo et se termine 25 % après le bord
+                 entrant du logo suivant — il pénètre donc dans le disque évidé et
+                 vient buter contre le chiffre. */
+              "--sm-out": "calc(0.11 * var(--sm-mark))",
+              "--sm-in": "calc(0.25 * var(--sm-mark))",
+            } as React.CSSProperties
+          }
+        >
           {STEPS.map((n) => (
             <li
               key={n}
               className="relative flex items-start gap-5 md:block md:text-center"
             >
-              <div className="relative z-10 h-16 w-16 shrink-0 text-alto-blue md:mx-auto md:h-[8.75vw] md:max-h-[168px] md:w-[8.75vw] md:max-w-[168px]">
-                <AltoMark className="h-full w-full" title={`Étape ${n}`} />
+              {/* Desktop : le trait relie cette pastille à la suivante en passant
+                  par les disques évidés — il s'arrête juste avant chaque chiffre.
+                  Les colonnes étant jointives, le pas centre-à-centre vaut
+                  exactement la largeur du <li>, soit 100 %. */}
+              {n < STEPS.length && (
+                <>
+                  {/* Mobile : trait vertical, calé sur l'axe du monogramme. Il part
+                      du bas du carré (+ marge sortante) et descend jusqu'au carré
+                      de l'étape suivante — donc par-dessus tout le bloc de texte,
+                      quelle que soit sa hauteur (le <li> suivant commence après le
+                      gap-y-10) — puis pénètre dans son disque jusqu'au chiffre. */}
+                  <span
+                    aria-hidden="true"
+                    className="absolute w-[3px] bg-alto-blue md:hidden"
+                    style={{
+                      left: "calc(var(--sm-mark) / 2)",
+                      transform: "translateX(-50%)",
+                      /* le trait démarre au ras du carré, sans marge */
+                      top: "var(--sm-mark)",
+                      bottom: "calc(-2.5rem - var(--sm-in))",
+                    }}
+                  />
+                  {/* Desktop : trait horizontal — du bord droit du carré (+ marge
+                      sortante) jusque dans le disque du logo suivant (+ marge
+                      entrante). Colonnes jointives : le pas vaut 100 %. */}
+                  <span
+                    aria-hidden="true"
+                    className="absolute hidden h-[3px] bg-alto-blue md:block"
+                    style={{
+                      top: "calc(var(--sm-mark) / 2)",
+                      left: "calc(50% + var(--sm-mark) / 2 + var(--sm-out))",
+                      width:
+                        "calc(100% - var(--sm-mark) - var(--sm-out) + var(--sm-in))",
+                    }}
+                  />
+                </>
+              )}
+
+              <div className="relative h-16 w-16 shrink-0 md:mx-auto md:h-[8.75vw] md:max-h-[168px] md:w-[8.75vw] md:max-w-[168px]">
+                {/* Monogramme du designer, déclinaison bleue (disque évidé). */}
+                <AltoMark color="blue" className="h-full w-full" title="" />
+                {/* Chiffre bleu, posé dans le disque évidé du logo (donc sur le
+                    fond crème de la section) et légèrement remonté par rapport au
+                    centre du carré. */}
                 <span
-                  className="absolute inset-0 flex items-center justify-center font-bold text-alto-blue text-[clamp(24px,4.3vw,83px)]"
+                  className="absolute inset-0 flex items-start justify-center pt-[16%] font-bold leading-none text-alto-blue text-[7.2vw] md:pt-[13%] md:text-[clamp(28px,4.32vw,83px)]"
                   style={{ fontFamily: "var(--font-titles)" }}
                 >
                   {n}
                 </span>
+
               </div>
+              {/* Corps de texte : la maquette mobile (484px) emploie les mêmes
+                  tailles que la desktop (1920px) — 45px pour le titre d'étape,
+                  22px pour la description. Les vw diffèrent donc selon la base :
+                  45/484 = 9.3vw sur mobile, 45/1920 = 2.34vw à partir de md. */}
               <div className="md:mt-6">
                 <h3
-                  className="font-bold text-alto-orange text-[clamp(18px,2.3vw,45px)]"
+                  className="font-bold text-alto-orange text-[9.3vw] md:text-[clamp(24px,2.34vw,45px)]"
                   style={{ fontFamily: "var(--font-titles)" }}
                 >
                   {t(`sm.step${n}.title`)}
                 </h3>
-                <p className="mt-2 leading-relaxed text-alto-brown dark:text-alto-cream/90 text-[clamp(11px,1.15vw,22px)] md:mx-auto md:max-w-[316px]">
+                <p className="mt-2 leading-relaxed text-alto-brown text-[4.5vw] md:mx-auto md:max-w-[316px] md:text-[clamp(13px,1.15vw,22px)]">
                   {t(`sm.step${n}.text`)}
                 </p>
               </div>

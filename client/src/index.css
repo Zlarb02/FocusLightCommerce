@@ -332,3 +332,17 @@
     box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
   }
 }
+
+/* Sur-mesure — process en 4 étapes.
+   La taille de la pastille (monogramme Alto) pilote les marges du trait qui
+   relie les étapes : 4rem sur mobile, 8.75vw (= 168px sur la maquette 1920)
+   à partir de md. */
+.sm-steps {
+  --sm-mark: 4rem;
+}
+
+@media (min-width: 768px) {
+  .sm-steps {
+    --sm-mark: min(8.75vw, 168px);
+  }
+}
