@@ -1,9 +1,10 @@
-/* Styles pour assurer que le footer reste en bas naturellement */
-html,
-body {
-  height: 100%;
-}
+/* Le footer reste en bas grâce au Layout (flex flex-col min-h-screen + main
+   flex-1), pas à une hauteur imposée ici.
 
+   PIÈGE : `html, body { height: 100% }` figeait la hauteur du document à celle
+   du viewport. Le header `position: sticky` se retrouvait borné à ce conteneur
+   et défilait avec la page au lieu de rester en haut de l'écran (seule la Home
+   y échappait, car elle rend son header hors du Layout). */
 body {
   display: flex;
   flex-direction: column;
