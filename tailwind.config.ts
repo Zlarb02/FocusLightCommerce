@@ -11,6 +11,18 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       colors: {
+        /* Palette maquette RARE.design, valeurs relevées dans le .agc.
+           Appliquée telle quelle dans les deux thèmes : le thème sombre
+           n'inverse que les fonds crème/blancs, pas les sections colorées. */
+        alto: {
+          cream: "#FEF7E8",
+          orange: "#F54501",
+          "orange-soft": "#FF7402",
+          brown: "#4A2020",
+          "brown-deep": "#2B1212",
+          blue: "#1B5EC4",
+          ink: "#161615",
+        },
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {

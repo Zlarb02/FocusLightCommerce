@@ -1,4 +1,5 @@
 import { Layout } from "@/components/Layout";
+import { InstagramFeed, INSTAGRAM_URL } from "@/components/alto/InstagramFeed";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const VALUES: Array<{ src: string; labelKey: string }> = [
@@ -10,53 +11,26 @@ const VALUES: Array<{ src: string; labelKey: string }> = [
   { src: "/images/alto/value-production.png", labelKey: "studio.value.production" },
 ];
 
-export const INSTAGRAM_URL = "https://www.instagram.com/alto_lille/";
-
-const FEED: Array<{ src: string; alt: string }> = [
-  { src: "/images/alto/fab-macro-rouge.jpg", alt: "Abat-jour Focus rouge imprimé en 3D" },
-  { src: "/images/alto/prod-auferte.jpg", alt: "Vide-poche Auferte.01" },
-  { src: "/images/alto/surmesure-lampe.jpg", alt: "Lampe sur-mesure orange" },
-];
+export { INSTAGRAM_URL };
 
 /**
- * Studio — présentation d'Anatole Collet, manifeste et valeurs (maquette).
+ * Studio — artboard web-3 : hero photo plein cadre (1920×1280) avec la tagline
+ * calée en bas à droite, bandeau brun « Anatole Collet », manifeste, pictos
+ * valeurs face au texte « Je ne produis pas des objets. », puis Instagram.
  */
 export default function About() {
   const { t } = useLanguage();
 
   return (
     <Layout headerTone="surface" footerTone="blue">
-      {/* Hero portrait + tagline. Sur desktop la photo est montrée en pleine
-          hauteur ancrée à gauche (jamais coupée en haut/bas) ; l'écran plus
-          large que la photo est comblé par studio-backdrop-tile.jpg : la
-          tranche droite (gris pur) de la photo suivie de son miroir, répétée
-          en x. La tuile démarre sur le pixel du bord droit de la photo donc
-          le raccord est invisible, et Anatole ne peut jamais apparaître en
-          double. Un écran plus étroit coupe la droite, pas la gauche où se
-          trouve Anatole. */}
-      <section
-        className="relative overflow-hidden md:h-[75vh] md:max-h-[900px]"
-        style={{
-          background: "linear-gradient(180deg, #777a81 0%, #797b83 55%, #6b6c70 100%)",
-        }}
-      >
-        <div className="md:flex md:h-full">
-          <img
-            src="/images/alto/studio-portrait.jpg"
-            alt="Anatole Collet dans son atelier, entouré de ses luminaires"
-            className="h-[60vh] max-h-[780px] w-full object-cover object-[25%_center] md:h-full md:max-h-none md:w-auto md:max-w-none md:shrink-0"
-          />
-          <div
-            aria-hidden="true"
-            className="hidden md:block md:h-full md:flex-1"
-            style={{
-              backgroundImage: "url(/images/alto/studio-backdrop-tile.jpg)",
-              backgroundSize: "auto 100%",
-              backgroundRepeat: "repeat-x",
-            }}
-          />
-        </div>
-        <p className="absolute bottom-8 right-6 text-right font-normal text-alto-cream drop-shadow md:bottom-14 md:right-14 text-[clamp(26px,4.2vw,81px)] leading-none">
+      {/* Hero : la photo occupe tout le cadre (ratio 3/2 de la maquette). */}
+      <section className="relative">
+        <img
+          src="/images/alto/studio-portrait.jpg"
+          alt="Anatole Collet dans son atelier, entouré de ses luminaires"
+          className="aspect-[3/2] w-full object-cover"
+        />
+        <p className="absolute bottom-[6%] right-[3%] text-right font-normal leading-tight text-alto-cream drop-shadow text-[clamp(22px,4.2vw,81px)]">
           {t("home.tagline").split(", ").map((part, i, arr) => (
             <span key={part}>
               {part}
@@ -67,88 +41,64 @@ export default function About() {
         </p>
       </section>
 
-      {/* Anatole Collet — manifeste (maquette : nom Bold aligné à gauche,
-          rôle Regular calé à droite, manifeste pleine largeur) */}
+      {/* Anatole Collet — nom Bold 102px à gauche, rôle Regular calé à droite,
+          manifeste Regular 39px sur fond brun. */}
       <section className="bg-alto-brown text-alto-cream dark:bg-alto-brown-deep">
-        <div className="mx-auto max-w-[1920px] px-6 py-16 md:px-[2.5vw] md:py-24">
+        <div className="mx-auto max-w-[1920px] px-6 py-14 md:px-[2.5vw] md:py-20">
           <h1
-            className="font-bold leading-none text-[clamp(48px,5.3vw,102px)]"
+            className="font-bold uppercase leading-none text-[clamp(36px,5.3vw,102px)]"
             style={{ fontFamily: "var(--font-titles)" }}
           >
             {t("studio.name")}
           </h1>
-          <p className="mt-4 text-[clamp(18px,1.8vw,35px)] opacity-90 md:pl-[60%]">
+          <p className="mt-3 text-[clamp(15px,1.8vw,35px)] md:pl-[62%]">
             {t("studio.role")}
           </p>
-          <div className="mt-12 max-w-[1557px] space-y-6 leading-relaxed text-[clamp(18px,2vw,39px)]">
+          <div className="mt-10 max-w-[1557px] space-y-6 leading-relaxed text-[clamp(16px,2vw,39px)] md:mt-20">
             <p>{t("studio.manifesto1")}</p>
             <p>{t("studio.manifesto2")}</p>
           </div>
         </div>
       </section>
 
-      {/* Valeurs + Je ne produis pas des objets */}
-      <section className="mx-auto grid max-w-[1400px] gap-14 px-6 py-16 md:grid-cols-2 md:gap-20 md:px-10 md:py-24">
-        <div className="grid grid-cols-2 content-center gap-x-8 gap-y-12 sm:grid-cols-3 md:grid-cols-2">
+      {/* Pictos valeurs (2 colonnes, libellés orange 21px) face au manifeste
+          « Je ne produis pas des objets. » (Bold 64px brun). */}
+      <section className="mx-auto grid max-w-[1920px] gap-12 px-6 py-16 md:grid-cols-2 md:gap-[6%] md:px-[5.7vw] md:py-24">
+        <div className="grid grid-cols-2 content-start justify-items-center gap-x-6 gap-y-10 md:gap-y-12">
           {VALUES.map((value) => (
-            <figure key={value.labelKey} className="text-center">
+            <figure key={value.labelKey} className="w-full max-w-[220px] text-center">
               <img
                 src={value.src}
                 alt=""
-                className="mx-auto h-24 w-24 object-contain md:h-28 md:w-28"
+                className="mx-auto h-20 w-20 object-contain md:h-[8.5vw] md:max-h-[164px] md:w-auto"
                 loading="lazy"
               />
-              <figcaption className="mt-3 text-[clamp(14px,1.1vw,21px)] font-normal text-alto-orange">
+              <figcaption className="mt-2 font-normal text-alto-orange text-[clamp(12px,1.1vw,21px)]">
                 {t(value.labelKey)}
               </figcaption>
             </figure>
           ))}
         </div>
 
-        <div className="max-w-xl">
+        <div>
           <h2
-            className="whitespace-pre-line font-bold leading-none text-alto-brown dark:text-alto-cream text-[clamp(32px,3.3vw,64px)]"
+            className="whitespace-pre-line font-bold uppercase leading-tight text-alto-brown dark:text-alto-cream text-[clamp(26px,3.3vw,64px)]"
             style={{ fontFamily: "var(--font-titles)" }}
           >
             {t("studio.noObjects.title")}
           </h2>
-          <div className="mt-8 space-y-5 leading-relaxed text-foreground/90 text-[clamp(15px,1.5vw,23px)]">
+          <div className="mt-6 space-y-4 leading-relaxed text-alto-brown dark:text-alto-cream/90 text-[clamp(13px,1.2vw,23px)] md:mt-10">
             <p>{t("studio.noObjects.p1")}</p>
-            <p className="font-semibold">{t("studio.noObjects.strong")}</p>
+            <p>{t("studio.noObjects.strong")}</p>
             <p>{t("studio.noObjects.p2")}</p>
             <p className="whitespace-pre-line">{t("studio.noObjects.p3")}</p>
           </div>
-          <hr className="mt-10 border-border" />
+          {/* Filet orange sous la colonne de texte (maquette : y=3114). */}
+          <hr className="mt-10 border-alto-orange md:mt-16" />
         </div>
       </section>
 
-      {/* Instagram */}
-      <section className="mx-auto max-w-[1400px] px-6 pb-20 md:px-10 md:pb-28">
-        <h2
-          className="font-bold text-alto-orange text-[clamp(32px,4.1vw,78px)]"
-          style={{ fontFamily: "var(--font-titles)" }}
-        >
-          {t("studio.instagram")}
-        </h2>
-        <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-3">
-          {FEED.map((post) => (
-            <a
-              key={post.src}
-              href={INSTAGRAM_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group block overflow-hidden bg-white"
-            >
-              <img
-                src={post.src}
-                alt={post.alt}
-                className="aspect-[2/3] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                loading="lazy"
-              />
-            </a>
-          ))}
-        </div>
-      </section>
+      <InstagramFeed />
     </Layout>
   );
 }
