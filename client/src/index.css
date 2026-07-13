@@ -355,3 +355,12 @@
     --sm-mark: min(8.75vw, 168px);
   }
 }
+
+/* Fabrication — étapes 01 à 05 (maquette web-11).
+   Le numéro fait 180px sur une base 1920 ; le titre se pose à sa droite et le
+   corps de texte s'aligne sous le titre, donc en retrait de la largeur du
+   numéro (deux chiffres ≈ 0.62 em chacun) plus la gouttière de 3 %. */
+.fab-step {
+  --fab-num: clamp(64px, 9.37vw, 180px);
+  --fab-indent: calc(1.24 * var(--fab-num) + 3%);
+}

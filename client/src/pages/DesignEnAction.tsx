@@ -2,14 +2,15 @@ import { Link } from "wouter";
 import { Layout } from "@/components/Layout";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-interface StepMediaDef {
+interface StepMedia {
   type: "video" | "image";
   src: string;
   poster?: string;
   alt: string;
 }
 
-const STEP_MEDIA: StepMediaDef[] = [
+/** Média de chaque étape, dans l'ordre de la maquette (web-11 / iphone-9). */
+const STEP_MEDIA: StepMedia[] = [
   {
     type: "image",
     src: "/images/alto/fab-bois.jpg",
@@ -33,19 +34,17 @@ const STEP_MEDIA: StepMediaDef[] = [
     alt: "Impression 3D d'une pièce en PLA dans l'atelier",
   },
   {
-    type: "video",
-    src: "/videos/fabrication-assemblage.mp4",
-    poster: "/images/alto/poster-assemblage.jpg",
-    alt: "Assemblage d'une lampe Alto Lille",
+    type: "image",
+    src: "/images/alto/fab-bois.jpg",
+    alt: "Pièces de chêne prêtes à être assemblées et mises en colis",
   },
 ];
 
-function StepMedia({ media }: { media: StepMediaDef }) {
+function StepVisual({ media }: { media: StepMedia }) {
   if (media.type === "video") {
-    // Ratio natif conservé : les vidéos (dont une verticale) ne sont jamais coupées
     return (
       <video
-        className="mx-auto max-h-[72vh] w-auto max-w-full"
+        className="aspect-[4/3] w-full object-cover md:aspect-[3/2]"
         src={media.src}
         poster={media.poster}
         autoPlay
@@ -61,106 +60,146 @@ function StepMedia({ media }: { media: StepMediaDef }) {
     <img
       src={media.src}
       alt={media.alt}
-      className="aspect-[4/3] w-full object-cover"
+      className="aspect-[4/3] w-full object-cover md:aspect-[3/2]"
       loading="lazy"
     />
   );
 }
 
 /**
- * Fabrication — le processus complet en 5 étapes (maquette),
- * du réemploi du chêne à la mise en colis.
+ * Fabrication — artboard web-11 (desktop) / iphone-9 (mobile).
+ *
+ * Les deux versions diffèrent nettement, d'où les variantes responsive :
+ * - desktop : fond crème, les 5 étapes alternent texte / image de part et
+ *   d'autre, et la bande Sur-mesure est brune avec un CTA orange ;
+ * - mobile : fond brun sur toute la page (texte crème, numéros et titres
+ *   orange), étapes empilées avec l'image pleine largeur sous le texte, et
+ *   bande Sur-mesure orange avec un CTA bleu.
+ * Dans les deux cas : bande Recherche bleue, puis la matière recyclée.
  */
 export default function DesignEnAction() {
   const { t } = useLanguage();
 
   return (
     <Layout headerTone="brown-mobile" footerTone="brown">
-      {/* Hero : duo d'images + citation */}
-      <section className="mx-auto max-w-[1600px] px-4 pt-6 md:px-10">
-        <h1 className="sr-only">{t("nav.fabrication")}</h1>
-        <div className="grid grid-cols-2 gap-3 md:gap-5">
+      {/* Fond brun sur mobile (maquette), crème à partir de md. */}
+      <div className="bg-alto-brown text-alto-cream md:bg-background md:text-foreground">
+        {/* Hero : photo en gros plan, le titre géant (218px sur 1920) posé en bas
+            À GAUCHE et débordant sur l'image, précédé de « Conçu et fabriqué à
+            Lille » (30px). Le hero fait ~1010px de haut sur la maquette. */}
+        <section className="relative overflow-hidden">
+          {/* La photo source est verticale (1600×2400) et la lampe occupe son
+              tiers supérieur : le cadre large de la maquette se cale donc en
+              haut de l'image, pas au centre — sinon on ne voit que la laine. */}
           <img
             src="/images/alto/fab-macro-rouge.jpg"
-            alt="Abat-jour Focus rouge imprimé en 3D"
-            className="aspect-square w-full object-cover md:aspect-[4/3]"
+            alt="Abat-jour Focus rouge imprimé en 3D, éclairé"
+            className="aspect-[4/3] w-full object-cover object-[center_22%] md:aspect-[1920/1010]"
           />
-          <img
-            src="/images/alto/fab-bois.jpg"
-            alt="Chutes de chêne massif prêtes à être revalorisées"
-            className="aspect-square w-full object-cover object-bottom md:aspect-[4/3]"
-          />
-        </div>
-        <blockquote className="max-w-2xl py-12 md:py-16">
-          <p className="text-xl font-medium leading-relaxed md:text-2xl">
-            «&nbsp;{t("fab.quote")}&nbsp;»
-          </p>
-          <footer className="mt-4 text-lg font-bold text-primary">
-            {t("fab.quoteBy")}
-          </footer>
-        </blockquote>
-      </section>
-
-      {/* Les 5 étapes */}
-      <section className="mx-auto max-w-[1600px] space-y-20 px-4 pb-24 md:space-y-28 md:px-10">
-        {STEP_MEDIA.map((media, i) => {
-          const n = i + 1;
-          const mediaLeft = i % 2 === 1;
-          return (
-            <article
-              key={n}
-              className="grid items-center gap-8 md:grid-cols-2 md:gap-14"
+          {/* Titre géant à gauche ; l'accroche se pose en bout de ligne, à
+              droite, sur la dernière ligne du titre. */}
+          <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 px-[3%] pb-[1%] md:px-[3.3%]">
+            <h1
+              className="font-bold uppercase leading-[0.9] text-alto-cream drop-shadow text-[11vw] md:text-[clamp(64px,11.35vw,218px)]"
+              style={{ fontFamily: "var(--font-titles)" }}
             >
-              <div className={mediaLeft ? "md:order-2" : ""}>
-                <div className="flex items-start gap-5">
-                  <span
-                    aria-hidden
-                    className="select-none text-6xl font-bold text-primary md:text-8xl"
-                    style={{
-                      fontFamily: "var(--font-titles)",
-                      WebkitTextStroke: "2px currentColor",
-                      WebkitTextFillColor: "transparent",
-                    }}
-                  >
-                    {String(n).padStart(2, "0")}
-                  </span>
-                  <h2
-                    className="pt-2 text-3xl font-bold text-primary md:pt-4 md:text-4xl"
-                    style={{ fontFamily: "var(--font-titles)" }}
-                  >
-                    {t(`fab.step${n}.title`)}
-                  </h2>
-                </div>
-                <p className="mt-6 font-semibold">{t(`fab.step${n}.lead`)}</p>
-                <div className="mt-4 space-y-4 leading-relaxed text-foreground/90">
-                  {t(`fab.step${n}.body`)
-                    .split("\n\n")
-                    .map((paragraph) => (
-                      <p key={paragraph.slice(0, 24)}>{paragraph}</p>
-                    ))}
-                </div>
-              </div>
-              <div
-                className={`self-center overflow-hidden ${
-                  mediaLeft ? "md:order-1" : ""
-                }`}
-              >
-                <StepMedia media={media} />
-              </div>
-            </article>
-          );
-        })}
-      </section>
+              {t("nav.fabrication")}
+            </h1>
+            <p className="mb-[2%] shrink-0 text-alto-cream drop-shadow text-[2.6vw] md:text-[clamp(11px,1.56vw,30px)]">
+              {t("fab.quoteBy")}
+            </p>
+          </div>
+        </section>
 
-      {/* Bandeau Sur-mesure */}
-      <section className="bg-alto-brown text-alto-cream">
-        <div className="mx-auto flex max-w-[1600px] flex-col gap-8 px-6 py-16 md:flex-row md:items-end md:justify-between md:px-10 md:py-24">
+        {/* Citation orange (37px sur 1920), centrée sous un guillemet. */}
+        <section className="mx-auto max-w-[1400px] px-6 py-10 text-center md:py-16">
+          <p
+            className="font-bold leading-none text-alto-orange text-[6vw] md:text-[clamp(20px,1.93vw,37px)]"
+            style={{ fontFamily: "var(--font-titles)" }}
+            aria-hidden="true"
+          >
+            &quot;
+          </p>
+          <p className="mt-2 leading-relaxed text-alto-orange text-[4.6vw] md:text-[clamp(16px,1.93vw,37px)]">
+            {t("fab.quote")}
+          </p>
+        </section>
+
+        {/* Les 5 étapes. Dans la maquette l'image de chaque étape file jusqu'au
+            bord de la page (aucune marge extérieure) : la section n'a donc pas de
+            padding horizontal, c'est la colonne de texte qui porte le sien. */}
+        <section className="mx-auto max-w-[1920px] pb-12 md:pb-24">
+          {STEP_MEDIA.map((media, i) => {
+            const n = i + 1;
+            // Desktop : l'image passe à gauche une ligne sur deux (maquette).
+            const mediaFirst = i % 2 === 1;
+            return (
+              <article
+                key={n}
+                className="mb-12 md:mb-24 md:grid md:grid-cols-2 md:items-center md:gap-[6%]"
+              >
+                {/* Maquette : numéro géant (180px) à gauche, titre (60px) posé à
+                    sa droite, et le corps de texte (23px) aligné sous le titre —
+                    pas sous le numéro. Sur mobile tout s'empile. */}
+                <div
+                  className={`px-6 md:px-0 ${
+                    mediaFirst
+                      ? "md:order-2 md:pr-[5.7vw] md:pl-[6%]"
+                      : "md:pl-[5.7vw] md:pr-[6%]"
+                  }`}
+                >
+                  <div className="fab-step">
+                    <div className="md:flex md:items-baseline md:gap-[3%]">
+                      <p
+                        className="shrink-0 font-bold leading-none text-alto-orange text-[16vw] md:text-[length:var(--fab-num)]"
+                        style={{ fontFamily: "var(--font-titles)" }}
+                      >
+                        {String(n).padStart(2, "0")}
+                      </p>
+                      <h2
+                        className="mt-2 font-bold leading-tight text-alto-orange text-[9.3vw] md:mt-0 md:text-[clamp(24px,3.12vw,60px)]"
+                        style={{ fontFamily: "var(--font-titles)" }}
+                      >
+                        {t(`fab.step${n}.title`)}
+                      </h2>
+                    </div>
+                    {/* Le corps s'aligne sous le titre, donc en retrait de la
+                        largeur du numéro (2 chiffres) plus la gouttière. */}
+                    <div className="md:pl-[var(--fab-indent)]">
+                      <p className="mt-5 text-[3.6vw] md:mt-6 md:text-[clamp(12px,1.2vw,23px)]">
+                        {t(`fab.step${n}.lead`)}
+                      </p>
+                      <div className="mt-3 space-y-3 leading-relaxed text-[3.4vw] md:space-y-4 md:text-[clamp(11px,1.2vw,23px)]">
+                        {t(`fab.step${n}.body`)
+                          .split("\n\n")
+                          .map((paragraph) => (
+                            <p key={paragraph.slice(0, 24)}>{paragraph}</p>
+                          ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {/* Mobile : l'image vient sous le texte, pleine largeur.
+                    Desktop : elle occupe toute sa moitié, jusqu'au bord. */}
+                <div className={`mt-8 md:mt-0 ${mediaFirst ? "md:order-1" : ""}`}>
+                  <StepVisual media={media} />
+                </div>
+              </article>
+            );
+          })}
+        </section>
+      </div>
+
+      {/* Bande Sur-mesure — orange avec CTA bleu sur mobile, brune avec CTA
+          orange en desktop (maquette). */}
+      <section className="bg-alto-orange text-alto-cream md:bg-alto-brown">
+        <div className="mx-auto max-w-[1920px] px-6 py-12 md:flex md:items-end md:justify-between md:px-[5.7vw] md:py-20">
           <div>
-            <p className="mb-4 text-lg opacity-90">
+            <p className="text-[3.4vw] md:text-[clamp(11px,1vw,20px)]">
               {t("fab.surmesure.intro")}
             </p>
             <h2
-              className="text-5xl font-bold md:text-8xl"
+              className="mt-2 font-bold uppercase leading-[0.9] text-[15vw] md:mt-3 md:text-[clamp(48px,7.6vw,146px)]"
               style={{ fontFamily: "var(--font-titles)" }}
             >
               {t("fab.surmesure.title")}
@@ -168,57 +207,63 @@ export default function DesignEnAction() {
           </div>
           <Link
             href="/creations-sur-mesure"
-            className="inline-block self-start rounded-full bg-alto-orange px-10 py-4 text-lg font-bold text-alto-cream transition-transform hover:scale-105 md:self-auto"
+            className="mt-8 inline-block shrink-0 rounded-full bg-alto-blue px-8 py-3 font-bold text-alto-cream transition-transform hover:scale-105 md:mt-0 md:bg-alto-orange md:px-10 md:py-4 text-[4vw] md:text-[clamp(13px,1.05vw,20px)]"
+            style={{ fontFamily: "var(--font-titles)" }}
           >
             {t("fab.surmesure.cta")}
           </Link>
         </div>
       </section>
 
-      {/* Galerie atelier */}
-      <section className="mx-auto grid max-w-[1600px] grid-cols-1 gap-6 px-6 py-16 sm:grid-cols-3 md:px-10 md:py-24">
-        <img
-          src="/images/alto/atelier.jpg"
-          alt="L'atelier Alto Lille"
-          className="aspect-[3/4] w-full object-cover"
-          loading="lazy"
-        />
-        <div className="relative aspect-[3/4] w-full overflow-hidden">
-          {/* Le poster flouté comble les côtés : la vidéo verticale reste
-              entière, sans bandes blanches */}
+      {/* Atelier + vidéo d'assemblage : triptyque en desktop, la seule photo
+          d'atelier sur mobile (maquette). */}
+      <section className="bg-alto-brown text-alto-cream md:bg-background">
+        <div className="mx-auto grid max-w-[1920px] gap-6 px-6 py-12 sm:grid-cols-3 md:px-[5.7vw] md:py-16">
           <img
-            src="/images/alto/poster-assemblage.jpg"
-            alt=""
-            aria-hidden
-            className="absolute inset-0 h-full w-full scale-110 object-cover blur-lg"
+            src="/images/alto/atelier.jpg"
+            alt="L'atelier Alto Lille"
+            className="aspect-[3/4] w-full object-cover"
             loading="lazy"
           />
-          <video
-            className="absolute inset-0 h-full w-full object-contain"
-            src="/videos/fabrication-assemblage.mp4"
-            poster="/images/alto/poster-assemblage.jpg"
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            aria-label="Vidéo d'assemblage d'une lampe"
+          <div className="relative hidden aspect-[3/4] w-full overflow-hidden bg-alto-cream sm:block">
+            {/* Vidéo verticale : le poster flouté comble les côtés pour ne pas
+                la déformer ni laisser de bandes. */}
+            <img
+              src="/images/alto/poster-assemblage.jpg"
+              alt=""
+              aria-hidden="true"
+              className="absolute inset-0 h-full w-full scale-110 object-cover blur-lg"
+              loading="lazy"
+            />
+            <video
+              className="absolute inset-0 h-full w-full object-contain"
+              src="/videos/fabrication-assemblage.mp4"
+              poster="/images/alto/poster-assemblage.jpg"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              aria-label={t("fab.videoAssemblage").replace("\n", " ")}
+            />
+          </div>
+          <img
+            src="/images/alto/fab-orange-base.jpg"
+            alt="Détail du socle orange d'une lampe"
+            className="hidden aspect-[3/4] w-full object-cover sm:block"
+            loading="lazy"
           />
         </div>
-        <img
-          src="/images/alto/fab-orange-base.jpg"
-          alt="Détail du socle orange d'une lampe sur-mesure"
-          className="aspect-[3/4] w-full object-cover"
-          loading="lazy"
-        />
       </section>
 
-      {/* Bandeau Recherche */}
+      {/* Bande Recherche — bleue, titre géant crème. */}
       <section className="bg-alto-blue text-alto-cream">
-        <div className="mx-auto max-w-[1600px] px-6 py-16 md:px-10 md:py-24">
-          <p className="mb-4 text-lg opacity-90">{t("fab.recherche.intro")}</p>
+        <div className="mx-auto max-w-[1920px] px-6 py-12 md:px-[5.7vw] md:py-20">
+          <p className="text-[3vw] md:text-[clamp(11px,1vw,20px)]">
+            {t("fab.recherche.intro")}
+          </p>
           <h2
-            className="text-5xl font-bold md:text-8xl"
+            className="mt-2 font-bold uppercase leading-[0.9] text-[14vw] md:mt-3 md:text-[clamp(48px,7.6vw,146px)]"
             style={{ fontFamily: "var(--font-titles)" }}
           >
             {t("fab.recherche.title")}
@@ -226,31 +271,34 @@ export default function DesignEnAction() {
         </div>
       </section>
 
-      {/* Matière recyclée */}
-      <section className="mx-auto max-w-[1600px] px-6 py-16 md:px-10 md:py-20">
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-          <img
-            src="/images/alto/fab-broyeur.jpg"
-            alt="Broyeur de plastique recyclé"
-            className="aspect-[4/3] w-full object-cover"
-            loading="lazy"
-          />
-          <img
-            src="/images/alto/fab-bouteilles.jpg"
-            alt="Bouteilles plastique collectées pour recyclage"
-            className="aspect-[4/3] w-full object-cover"
-            loading="lazy"
-          />
-          <img
-            src="/images/alto/fab-flocons.jpg"
-            alt="Flocons de plastique recyclé issus de bouteilles d'eau"
-            className="aspect-[4/3] w-full object-cover"
-            loading="lazy"
-          />
+      {/* Matière recyclée : trois photos en desktop, une seule sur mobile
+          (maquette), sur fond brun côté mobile. */}
+      <section className="bg-alto-brown text-alto-cream md:bg-background md:text-foreground">
+        <div className="mx-auto max-w-[1920px] px-6 py-12 md:px-[5.7vw] md:py-16">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <img
+              src="/images/alto/fab-broyeur.jpg"
+              alt="Broyeur de plastique recyclé"
+              className="hidden aspect-[4/3] w-full object-cover sm:block"
+              loading="lazy"
+            />
+            <img
+              src="/images/alto/fab-bouteilles.jpg"
+              alt="Bouteilles plastique collectées pour recyclage"
+              className="hidden aspect-[4/3] w-full object-cover sm:block"
+              loading="lazy"
+            />
+            <img
+              src="/images/alto/fab-flocons.jpg"
+              alt="Flocons de plastique recyclé issus de bouteilles d'eau"
+              className="aspect-[3/4] w-full object-cover sm:aspect-[4/3]"
+              loading="lazy"
+            />
+          </div>
+          <p className="mt-6 leading-relaxed text-[4vw] md:text-[clamp(12px,1.05vw,20px)]">
+            {t("fab.recherche.caption")}
+          </p>
         </div>
-        <p className="mt-6 font-medium text-alto-blue dark:text-alto-cream">
-          {t("fab.recherche.caption")}
-        </p>
       </section>
     </Layout>
   );
