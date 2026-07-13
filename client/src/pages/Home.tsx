@@ -473,10 +473,17 @@ export default function Home() {
             aria-label={t("landing.cta")}
             className="group w-[42%] shrink-0 md:w-full"
           >
+            {/* Logotype orange sur le fond crème du thème clair, crème sur le
+                fond brun du thème sombre (maquette web-9 / web-10). */}
             <AltoLogotype
               color="orange"
               alt="ALTO Lille"
-              className="w-full transition-transform duration-300 group-hover:scale-[1.01]"
+              className="w-full transition-transform duration-300 group-hover:scale-[1.01] dark:hidden"
+            />
+            <AltoLogotype
+              color="cream"
+              alt="ALTO Lille"
+              className="hidden w-full transition-transform duration-300 group-hover:scale-[1.01] dark:block"
             />
           </button>
         </div>
