@@ -15,7 +15,7 @@ export default function FAQ() {
           >
             {t("faq.title")}
           </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+          <p className="text-lg text-alto-brown/70 dark:text-alto-cream/80 max-w-2xl mx-auto">
             {t("faq.subtitle")}
           </p>
         </div>
@@ -25,36 +25,36 @@ export default function FAQ() {
           {/* Produits */}
           <section>
             <h2
-              className="text-2xl font-semibold text-[var(--color-text)] mb-6 pb-2 border-b border-gray-200 dark:border-gray-700"
+              className="text-2xl font-semibold text-[var(--color-text)] mb-6 pb-2 border-b border-alto-brown/15 dark:border-alto-cream/15"
               style={{ fontFamily: "var(--font-titles)" }}
             >
               {t("faq.products.title")}
             </h2>
 
             <div className="space-y-6">
-              <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg">
+              <div className="bg-alto-brown/5 dark:bg-alto-cream/5 p-6 rounded-lg">
                 <h3 className="text-lg font-medium text-[var(--color-text)] mb-3">
                   {t("faq.products.materials.title")}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                <p className="text-alto-brown/70 dark:text-alto-cream/80 leading-relaxed">
                   {t("faq.products.materials.answer")}
                 </p>
               </div>
 
-              <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg">
+              <div className="bg-alto-brown/5 dark:bg-alto-cream/5 p-6 rounded-lg">
                 <h3 className="text-lg font-medium text-[var(--color-text)] mb-3">
                   {t("faq.products.consumption.title")}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                <p className="text-alto-brown/70 dark:text-alto-cream/80 leading-relaxed">
                   {t("faq.products.consumption.answer")}
                 </p>
               </div>
 
-              <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg">
+              <div className="bg-alto-brown/5 dark:bg-alto-cream/5 p-6 rounded-lg">
                 <h3 className="text-lg font-medium text-[var(--color-text)] mb-3">
                   {t("faq.products.durability.title")}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                <p className="text-alto-brown/70 dark:text-alto-cream/80 leading-relaxed">
                   {t("faq.products.durability.answer")}
                 </p>
               </div>
@@ -64,36 +64,36 @@ export default function FAQ() {
           {/* Commande et livraison */}
           <section>
             <h2
-              className="text-2xl font-semibold text-[var(--color-text)] mb-6 pb-2 border-b border-gray-200 dark:border-gray-700"
+              className="text-2xl font-semibold text-[var(--color-text)] mb-6 pb-2 border-b border-alto-brown/15 dark:border-alto-cream/15"
               style={{ fontFamily: "var(--font-titles)" }}
             >
               {t("faq.delivery.title")}
             </h2>
 
             <div className="space-y-6">
-              <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg">
+              <div className="bg-alto-brown/5 dark:bg-alto-cream/5 p-6 rounded-lg">
                 <h3 className="text-lg font-medium text-[var(--color-text)] mb-3">
                   {t("faq.delivery.time.title")}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                <p className="text-alto-brown/70 dark:text-alto-cream/80 leading-relaxed">
                   {t("faq.delivery.time.answer")}
                 </p>
               </div>
 
-              <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg">
+              <div className="bg-alto-brown/5 dark:bg-alto-cream/5 p-6 rounded-lg">
                 <h3 className="text-lg font-medium text-[var(--color-text)] mb-3">
                   {t("faq.delivery.cost.title")}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                <p className="text-alto-brown/70 dark:text-alto-cream/80 leading-relaxed">
                   {t("faq.delivery.cost.answer")}
                 </p>
               </div>
 
-              <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg">
+              <div className="bg-alto-brown/5 dark:bg-alto-cream/5 p-6 rounded-lg">
                 <h3 className="text-lg font-medium text-[var(--color-text)] mb-3">
                   {t("faq.delivery.tracking.title")}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                <p className="text-alto-brown/70 dark:text-alto-cream/80 leading-relaxed">
                   {t("faq.delivery.tracking.answer")}
                 </p>
               </div>
@@ -105,27 +105,27 @@ export default function FAQ() {
           {/* Technique */}
           <section>
             <h2
-              className="text-2xl font-semibold text-[var(--color-text)] mb-6 pb-2 border-b border-gray-200 dark:border-gray-700"
+              className="text-2xl font-semibold text-[var(--color-text)] mb-6 pb-2 border-b border-alto-brown/15 dark:border-alto-cream/15"
               style={{ fontFamily: "var(--font-titles)" }}
             >
               {t("faq.technical.title")}
             </h2>
 
             <div className="space-y-6">
-              <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg">
+              <div className="bg-alto-brown/5 dark:bg-alto-cream/5 p-6 rounded-lg">
                 <h3 className="text-lg font-medium text-[var(--color-text)] mb-3">
                   {t("faq.technical.installation.title")}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                <p className="text-alto-brown/70 dark:text-alto-cream/80 leading-relaxed">
                   {t("faq.technical.installation.answer")}
                 </p>
               </div>
 
-              <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg">
+              <div className="bg-alto-brown/5 dark:bg-alto-cream/5 p-6 rounded-lg">
                 <h3 className="text-lg font-medium text-[var(--color-text)] mb-3">
                   {t("faq.technical.maintenance.title")}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                <p className="text-alto-brown/70 dark:text-alto-cream/80 leading-relaxed">
                   {t("faq.technical.maintenance.answer")}
                 </p>
               </div>
@@ -133,7 +133,7 @@ export default function FAQ() {
           </section>
 
           {/* Contact */}
-          <section className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
+          <section className="mt-12 pt-8 border-t border-alto-brown/15 dark:border-alto-cream/15">
             <div className="text-center">
               <h2
                 className="text-2xl font-semibold text-[var(--color-text)] mb-4"
@@ -141,7 +141,7 @@ export default function FAQ() {
               >
                 {t("faq.contact.title")}
               </h2>
-              <p className="text-gray-600 dark:text-gray-300 mb-6">
+              <p className="text-alto-brown/70 dark:text-alto-cream/80 mb-6">
                 {t("faq.contact.subtitle")}
               </p>
               <a

@@ -16,7 +16,7 @@ export default function Delivery() {
             >
               Livraison
             </h1>
-            <p className="text-gray-600 max-w-2xl mx-auto">
+            <p className="text-alto-brown/70 max-w-2xl mx-auto">
               Toutes les informations sur nos options de livraison, délais et
               tarifs.
             </p>
@@ -24,17 +24,17 @@ export default function Delivery() {
 
           {/* Options de livraison */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-            <div className="border border-gray-200 rounded-lg p-6">
+            <div className="border border-alto-brown/15 rounded-lg p-6">
               <div className="flex items-center mb-4">
                 <Truck className="h-6 w-6 text-primary mr-3" />
                 <h3 className="text-xl font-semibold">Livraison Standard</h3>
               </div>
               <div className="space-y-3">
-                <p className="text-gray-600">
+                <p className="text-alto-brown/70">
                   <Clock className="h-4 w-4 inline mr-2" />
                   3-5 jours ouvrés
                 </p>
-                <p className="text-gray-600">
+                <p className="text-alto-brown/70">
                   <Package className="h-4 w-4 inline mr-2" />
                   Gratuite dès 50€ d'achat
                 </p>
@@ -42,17 +42,17 @@ export default function Delivery() {
               </div>
             </div>
 
-            <div className="border border-gray-200 rounded-lg p-6">
+            <div className="border border-alto-brown/15 rounded-lg p-6">
               <div className="flex items-center mb-4">
                 <Package className="h-6 w-6 text-primary mr-3" />
                 <h3 className="text-xl font-semibold">Livraison Express</h3>
               </div>
               <div className="space-y-3">
-                <p className="text-gray-600">
+                <p className="text-alto-brown/70">
                   <Clock className="h-4 w-4 inline mr-2" />
                   24-48h ouvrées
                 </p>
-                <p className="text-gray-600">
+                <p className="text-alto-brown/70">
                   <Package className="h-4 w-4 inline mr-2" />
                   Suivi en temps réel
                 </p>
@@ -70,24 +70,24 @@ export default function Delivery() {
               Zones de livraison
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="text-center p-6 border border-gray-200 rounded-lg">
+              <div className="text-center p-6 border border-alto-brown/15 rounded-lg">
                 <MapPin className="h-8 w-8 text-primary mx-auto mb-3" />
                 <h4 className="font-semibold mb-2">France Métropolitaine</h4>
-                <p className="text-gray-600 text-sm">
+                <p className="text-alto-brown/70 text-sm">
                   Livraison standard et express disponibles
                 </p>
               </div>
-              <div className="text-center p-6 border border-gray-200 rounded-lg">
+              <div className="text-center p-6 border border-alto-brown/15 rounded-lg">
                 <MapPin className="h-8 w-8 text-primary mx-auto mb-3" />
                 <h4 className="font-semibold mb-2">Union Européenne</h4>
-                <p className="text-gray-600 text-sm">
+                <p className="text-alto-brown/70 text-sm">
                   Livraison standard uniquement
                 </p>
               </div>
-              <div className="text-center p-6 border border-gray-200 rounded-lg">
+              <div className="text-center p-6 border border-alto-brown/15 rounded-lg">
                 <MapPin className="h-8 w-8 text-primary mx-auto mb-3" />
                 <h4 className="font-semibold mb-2">Mondial</h4>
-                <p className="text-gray-600 text-sm">
+                <p className="text-alto-brown/70 text-sm">
                   Sur devis - nous contacter
                 </p>
               </div>
@@ -95,11 +95,11 @@ export default function Delivery() {
           </div>
 
           {/* Informations importantes */}
-          <div className="bg-gray-50 rounded-lg p-6 mb-12">
+          <div className="bg-alto-brown/5 rounded-lg p-6 mb-12">
             <h3 className="text-xl font-semibold mb-4">
               Informations importantes
             </h3>
-            <ul className="space-y-3 text-gray-600">
+            <ul className="space-y-3 text-alto-brown/70">
               <li className="flex items-start">
                 <span className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></span>
                 Les délais de livraison sont donnés à titre indicatif et peuvent
@@ -123,11 +123,11 @@ export default function Delivery() {
           </div>
 
           {/* Contact */}
-          <div className="text-center bg-white border border-gray-200 rounded-lg p-8">
+          <div className="text-center bg-white border border-alto-brown/15 rounded-lg p-8">
             <h3 className="text-xl font-semibold mb-4">
               Des questions sur la livraison ?
             </h3>
-            <p className="text-gray-600 mb-6">
+            <p className="text-alto-brown/70 mb-6">
               Notre équipe est à votre disposition pour répondre à toutes vos
               questions.
             </p>

@@ -148,8 +148,8 @@ export default function ProductDetail() {
       <Layout>
         <div className="min-h-screen flex items-center justify-center">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 dark:border-white mx-auto mb-4"></div>
-            <p className="text-gray-600 dark:text-gray-400">Chargement du produit...</p>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-alto-orange mx-auto mb-4"></div>
+            <p className="text-alto-brown/70 dark:text-alto-cream/70">Chargement du produit...</p>
           </div>
         </div>
       </Layout>
@@ -162,10 +162,10 @@ export default function ProductDetail() {
       <Layout>
         <div className="min-h-screen flex items-center justify-center">
           <div className="text-center">
-            <h1 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
+            <h1 className="mb-4 text-[clamp(28px,2.1vw,40px)] font-bold text-alto-brown dark:text-alto-cream">
               Produit non trouvé
             </h1>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">
+            <p className="mb-6 text-alto-brown/70 dark:text-alto-cream/70">
               Le produit que vous recherchez n'existe pas ou a été supprimé.
             </p>
             <Link href="/shop">
@@ -222,7 +222,7 @@ export default function ProductDetail() {
                     return images.length > 0 ? (
                       <button
                         type="button"
-                        className="absolute top-2 right-2 z-20 bg-white/80 dark:bg-gray-900/80 rounded-full p-1 shadow hover:bg-white dark:hover:bg-gray-800 transition"
+                        className="absolute top-2 right-2 z-20 rounded-full bg-alto-cream/80 p-1 shadow transition hover:bg-alto-cream"
                         title="Agrandir l'image"
                         onClick={() =>
                           setModalImage({
@@ -231,7 +231,7 @@ export default function ProductDetail() {
                           })
                         }
                       >
-                        <Maximize2 className="w-5 h-5 text-gray-700 dark:text-gray-200" />
+                        <Maximize2 className="h-5 w-5 text-alto-brown" />
                       </button>
                     ) : null;
                   })()}
@@ -481,15 +481,15 @@ export default function ProductDetail() {
         {modalImage && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm animate fade-in">
             <button
-              className="absolute top-4 right-4 bg-white/90 dark:bg-gray-900/90 rounded-full p-2 shadow-lg hover:bg-white dark:hover:bg-gray-800 transition z-50"
+              className="absolute top-4 right-4 z-50 rounded-full bg-alto-cream/90 p-2 shadow-lg transition hover:bg-alto-cream"
               onClick={() => setModalImage(null)}
               title="Fermer"
             >
-              <X className="w-6 h-6 text-gray-900 dark:text-gray-100" />
+              <X className="h-6 w-6 text-alto-brown" />
             </button>
             {modalImage.images.length > 1 && (
               <button
-                className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 dark:bg-gray-900/80 rounded-full p-2 shadow-lg hover:bg-white dark:hover:bg-gray-800 transition z-50"
+                className="absolute left-4 top-1/2 -translate-y-1/2 z-50 rounded-full bg-alto-cream/80 p-2 shadow-lg transition hover:bg-alto-cream"
                 onClick={(e) => {
                   e.stopPropagation();
                   setModalImage((prev) =>
@@ -500,19 +500,19 @@ export default function ProductDetail() {
                   );
                 }}
               >
-                <ArrowLeft className="w-7 h-7 text-gray-900 dark:text-gray-100" />
+                <ArrowLeft className="h-7 w-7 text-alto-brown" />
               </button>
             )}
             <img
               src={modalImage.images[modalImage.index]}
               alt="Aperçu du produit"
-              className="max-w-[90vw] max-h-[90vh] rounded-xl shadow-2xl border-4 border-white dark:border-gray-900 animate fade-in"
+              className="max-w-[90vw] max-h-[90vh] rounded-xl shadow-2xl border-4 border-alto-cream animate fade-in"
               onClick={() => setModalImage(null)}
               style={{ cursor: "zoom-out" }}
             />
             {modalImage.images.length > 1 && (
               <button
-                className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 dark:bg-gray-900/80 rounded-full p-2 shadow-lg hover:bg-white dark:hover:bg-gray-800 transition z-50"
+                className="absolute right-4 top-1/2 -translate-y-1/2 z-50 rounded-full bg-alto-cream/80 p-2 shadow-lg transition hover:bg-alto-cream"
                 onClick={(e) => {
                   e.stopPropagation();
                   setModalImage((prev) =>
@@ -523,11 +523,11 @@ export default function ProductDetail() {
                   );
                 }}
               >
-                <ArrowRight className="w-7 h-7 text-gray-900 dark:text-gray-100" />
+                <ArrowRight className="h-7 w-7 text-alto-brown" />
               </button>
             )}
             {modalImage.images.length > 1 && (
-              <div className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-white/90 dark:bg-gray-900/90 rounded-full px-4 py-1 text-sm font-medium text-gray-900 dark:text-gray-100 shadow">
+              <div className="absolute bottom-8 left-1/2 -translate-x-1/2 rounded-full bg-alto-cream/90 px-4 py-1 text-sm font-medium text-alto-brown shadow">
                 {modalImage.index + 1} / {modalImage.images.length}
               </div>
             )}

@@ -8,25 +8,25 @@ export default function Retours() {
     <Layout>
       <div className="max-w-4xl mx-auto px-4 py-8">
         <h1
-          className="text-3xl font-bold mb-8 text-gray-900 dark:text-gray-100"
+          className="text-3xl font-bold mb-8 text-alto-brown dark:text-alto-cream"
           style={{ fontFamily: "var(--font-titles)" }}
         >
           {t("retours.title")}
         </h1>
 
-        <div className="max-w-none text-gray-900 dark:text-gray-100">
+        <div className="max-w-none text-alto-brown dark:text-alto-cream">
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+            <h2 className="text-2xl font-semibold mb-4 text-alto-brown dark:text-alto-cream">
               {t("retours.withdrawal.title")}
             </h2>
-            <p className="text-gray-700 dark:text-gray-300 mb-4">
+            <p className="text-alto-brown/80 dark:text-alto-cream/80 mb-4">
               {t("retours.withdrawal.description")}
             </p>
             <div className="bg-blue-50 dark:bg-blue-900/30 p-6 rounded-lg mt-4">
-              <h3 className="text-lg font-medium mb-3 text-gray-900 dark:text-gray-100">
+              <h3 className="text-lg font-medium mb-3 text-alto-brown dark:text-alto-cream">
                 ⏰ {t("retours.withdrawal.deadline.title")}
               </h3>
-              <ul className="list-disc pl-6 text-gray-700 dark:text-gray-300">
+              <ul className="list-disc pl-6 text-alto-brown/80 dark:text-alto-cream/80">
                 <li>{t("retours.withdrawal.deadline.period")}</li>
                 <li>{t("retours.withdrawal.deadline.postmark")}</li>
                 <li>{t("retours.withdrawal.deadline.noPenalty")}</li>
@@ -35,13 +35,13 @@ export default function Retours() {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+            <h2 className="text-2xl font-semibold mb-4 text-alto-brown dark:text-alto-cream">
               {t("retours.conditions.title")}
             </h2>
-            <p className="text-gray-700 dark:text-gray-300 mb-4">
+            <p className="text-alto-brown/80 dark:text-alto-cream/80 mb-4">
               {t("retours.conditions.description")}
             </p>
-            <ul className="list-disc pl-6 mb-4 text-gray-700 dark:text-gray-300">
+            <ul className="list-disc pl-6 mb-4 text-alto-brown/80 dark:text-alto-cream/80">
               <li>{t("retours.conditions.originalPackaging")}</li>
               <li>{t("retours.conditions.perfectCondition")}</li>
               <li>{t("retours.conditions.allAccessories")}</li>
@@ -60,7 +60,7 @@ export default function Retours() {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+            <h2 className="text-2xl font-semibold mb-4 text-alto-brown dark:text-alto-cream">
               {t("retours.process.title")}
             </h2>
 
@@ -70,10 +70,10 @@ export default function Retours() {
                   1
                 </div>
                 <div>
-                  <h3 className="font-medium text-gray-900 dark:text-gray-100">
+                  <h3 className="font-medium text-alto-brown dark:text-alto-cream">
                     {t("retours.process.step1.title")}
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-400">
+                  <p className="text-alto-brown/70 dark:text-alto-cream/70">
                     {t("retours.process.step1.description")}
                   </p>
                 </div>
@@ -84,10 +84,10 @@ export default function Retours() {
                   2
                 </div>
                 <div>
-                  <h3 className="font-medium text-gray-900 dark:text-gray-100">
+                  <h3 className="font-medium text-alto-brown dark:text-alto-cream">
                     {t("retours.process.step2.title")}
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-400">
+                  <p className="text-alto-brown/70 dark:text-alto-cream/70">
                     {t("retours.process.step2.description")}
                   </p>
                 </div>
@@ -98,10 +98,10 @@ export default function Retours() {
                   3
                 </div>
                 <div>
-                  <h3 className="font-medium text-gray-900 dark:text-gray-100">
+                  <h3 className="font-medium text-alto-brown dark:text-alto-cream">
                     {t("retours.process.step3.title")}
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-400">
+                  <p className="text-alto-brown/70 dark:text-alto-cream/70">
                     {t("retours.process.step3.description")}
                   </p>
                 </div>
@@ -112,10 +112,10 @@ export default function Retours() {
                   4
                 </div>
                 <div>
-                  <h3 className="font-medium text-gray-900 dark:text-gray-100">
+                  <h3 className="font-medium text-alto-brown dark:text-alto-cream">
                     {t("retours.process.step4.title")}
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-400">
+                  <p className="text-alto-brown/70 dark:text-alto-cream/70">
                     {t("retours.process.step4.description")}
                   </p>
                 </div>
@@ -124,7 +124,7 @@ export default function Retours() {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+            <h2 className="text-2xl font-semibold mb-4 text-alto-brown dark:text-alto-cream">
               {t("retours.fees.title")}
             </h2>
             <div className="grid md:grid-cols-2 gap-4">
@@ -154,13 +154,13 @@ export default function Retours() {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+            <h2 className="text-2xl font-semibold mb-4 text-alto-brown dark:text-alto-cream">
               {t("retours.exchanges.title")}
             </h2>
-            <p className="text-gray-700 dark:text-gray-300">
+            <p className="text-alto-brown/80 dark:text-alto-cream/80">
               {t("retours.exchanges.description")}
             </p>
-            <ul className="list-disc pl-6 mb-4 text-gray-700 dark:text-gray-300">
+            <ul className="list-disc pl-6 mb-4 text-alto-brown/80 dark:text-alto-cream/80">
               <li>{t("retours.exchanges.contactFirst")}</li>
               <li>{t("retours.exchanges.checkAvailability")}</li>
               <li>{t("retours.exchanges.freeSameValue")}</li>
@@ -170,14 +170,14 @@ export default function Retours() {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+            <h2 className="text-2xl font-semibold mb-4 text-alto-brown dark:text-alto-cream">
               {t("retours.processing.title")}
             </h2>
-            <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg">
-              <h3 className="text-lg font-medium mb-3 text-gray-900 dark:text-gray-100">
+            <div className="bg-alto-brown/5 dark:bg-alto-cream/5 p-6 rounded-lg">
+              <h3 className="text-lg font-medium mb-3 text-alto-brown dark:text-alto-cream">
                 📋 {t("retours.processing.timeline.title")}
               </h3>
-              <ul className="list-disc pl-6 space-y-1 text-gray-700 dark:text-gray-300">
+              <ul className="list-disc pl-6 space-y-1 text-alto-brown/80 dark:text-alto-cream/80">
                 <li>{t("retours.processing.timeline.reception")}</li>
                 <li>{t("retours.processing.timeline.qualityCheck")}</li>
                 <li>{t("retours.processing.timeline.refund")}</li>
@@ -187,31 +187,31 @@ export default function Retours() {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+            <h2 className="text-2xl font-semibold mb-4 text-alto-brown dark:text-alto-cream">
               {t("retours.refund.title")}
             </h2>
-            <p className="text-gray-700 dark:text-gray-300">
+            <p className="text-alto-brown/80 dark:text-alto-cream/80">
               {t("retours.refund.description")}
             </p>
-            <ul className="list-disc pl-6 mb-4 text-gray-700 dark:text-gray-300">
+            <ul className="list-disc pl-6 mb-4 text-alto-brown/80 dark:text-alto-cream/80">
               <li>{t("retours.refund.bankCard")}</li>
               <li>{t("retours.refund.bankTransfer")}</li>
               <li>{t("retours.refund.paypal")}</li>
             </ul>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-sm text-alto-brown/70 dark:text-alto-cream/70">
               {t("retours.refund.includes")}
             </p>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+            <h2 className="text-2xl font-semibold mb-4 text-alto-brown dark:text-alto-cream">
               {t("retours.defective.title")}
             </h2>
-            <p className="text-gray-700 dark:text-gray-300">
+            <p className="text-alto-brown/80 dark:text-alto-cream/80">
               {t("retours.defective.intro")}
             </p>
             <div className="bg-red-50 dark:bg-red-900/30 p-4 rounded-lg">
-              <ul className="list-disc pl-6 text-sm text-gray-700 dark:text-gray-300">
+              <ul className="list-disc pl-6 text-sm text-alto-brown/80 dark:text-alto-cream/80">
                 <li>{t("retours.defective.contactImmediately")}</li>
                 <li>{t("retours.defective.dontUse")}</li>
                 <li>{t("retours.defective.weCoverCosts")}</li>
@@ -222,48 +222,48 @@ export default function Retours() {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+            <h2 className="text-2xl font-semibold mb-4 text-alto-brown dark:text-alto-cream">
               {t("retours.address.title")}
             </h2>
-            <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg">
-              <p className="font-medium text-gray-900 dark:text-gray-100">
+            <div className="bg-alto-brown/5 dark:bg-alto-cream/5 p-4 rounded-lg">
+              <p className="font-medium text-alto-brown dark:text-alto-cream">
                 {t("retours.address.company")}
               </p>
-              <p className="text-gray-700 dark:text-gray-300">
+              <p className="text-alto-brown/80 dark:text-alto-cream/80">
                 {t("retours.address.street")}
               </p>
-              <p className="text-gray-700 dark:text-gray-300">
+              <p className="text-alto-brown/80 dark:text-alto-cream/80">
                 {t("retours.address.city")}
               </p>
-              <p className="text-gray-700 dark:text-gray-300">
+              <p className="text-alto-brown/80 dark:text-alto-cream/80">
                 {t("retours.address.country")}
               </p>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+              <p className="text-sm text-alto-brown/70 dark:text-alto-cream/70 mt-2">
                 {t("retours.address.warning")}
               </p>
             </div>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+            <h2 className="text-2xl font-semibold mb-4 text-alto-brown dark:text-alto-cream">
               {t("retours.contact.title")}
             </h2>
             <div className="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-lg">
-              <p className="text-gray-700 dark:text-gray-300">
+              <p className="text-alto-brown/80 dark:text-alto-cream/80">
                 {t("retours.contact.email")}
                 <br />
                 {t("retours.contact.phone")}
                 <br />
                 {t("retours.contact.hours")}
               </p>
-              <p className="text-sm mt-2 text-gray-600 dark:text-gray-400">
+              <p className="text-sm mt-2 text-alto-brown/70 dark:text-alto-cream/70">
                 {t("retours.contact.emailSubject")}
               </p>
             </div>
           </section>
 
           <div className="bg-green-50 dark:bg-green-900/30 border-l-4 border-green-400 dark:border-green-600 p-4 mt-8">
-            <p className="text-sm text-gray-700 dark:text-gray-300">
+            <p className="text-sm text-alto-brown/80 dark:text-alto-cream/80">
               {t("retours.commitment")}
             </p>
           </div>
