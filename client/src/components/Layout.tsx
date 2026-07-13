@@ -10,7 +10,6 @@ import { LanguageToggle } from "@/components/LanguageToggle";
 import { AltoMark, AltoLogotype } from "@/components/alto/AltoBrand";
 import { AltoMenu, NAV_ITEMS, scrollToContact } from "@/components/alto/AltoMenu";
 import ThemeDecorator from "@/components/decorations/ThemeDecorator";
-import { useThemeConfig } from "@/hooks/useThemeConfig";
 import { useQuery } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { ThemeDecoration } from "../../../shared/schema";
@@ -30,11 +29,10 @@ interface LayoutProps {
    */
   headerTone?: "brown-desktop" | "surface";
   /**
-   * Couleur du footer. Bleu partout, à une exception près : la maquette met un
-   * footer BRUN sur la seule variante Fabrication desktop clair (web-11) — le
-   * même artboard en sombre (web-14) et sa version mobile (iphone-5) l'ont
-   * bleu. Intention ou étourderie du designer : "blue-brown-on-light-desktop"
-   * reproduit la maquette, et /gestion → Apparence permet de revenir au bleu.
+   * Couleur du footer. Bleu partout, à une exception près, fidèle à la
+   * maquette : elle met un footer BRUN sur la seule variante Fabrication
+   * desktop clair (web-11) — le même artboard en sombre (web-14) et sa version
+   * mobile (iphone-5) l'ont bleu.
    */
   footerTone?: "blue" | "blue-brown-on-light-desktop" | "none";
 }
@@ -211,13 +209,12 @@ function AltoFooter({
   tone: "blue" | "blue-brown-on-light-desktop";
 }) {
   const { t } = useLanguage();
-  const { brownFooterOnFabrication } = useThemeConfig();
 
   /* Le brun ne vaut QUE pour le desktop en thème clair (web-11) : en mobile
      (iphone-5) et en sombre (web-14) le footer redevient bleu. D'où le bleu de
      base, surchargé au seul `md:` hors thème sombre. */
   const bg =
-    tone === "blue-brown-on-light-desktop" && brownFooterOnFabrication
+    tone === "blue-brown-on-light-desktop"
       ? "bg-alto-blue md:bg-alto-brown dark:md:bg-alto-blue"
       : "bg-alto-blue";
 

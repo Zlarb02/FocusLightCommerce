@@ -121,34 +121,6 @@
     --ring: 16.7 99.2% 48.2%;
   }
 
-  /* Variante « vrai sombre » — fond quasi-noir neutre au lieu du brun de la
-     maquette, pour les utilisateurs qui attendent un sombre franc (et pour que
-     les sections brunes ne se fondent pas dans le fond).
-     Prête à être proposée à Anatole comme option depuis /gestion : il suffit
-     d'ajouter la classe `theme-true-dark` sur <html> en plus de `dark`. */
-  .dark.theme-true-dark {
-    --background: 30 5% 8%; /* #141312 */
-    --foreground: 40.9 91.7% 95.3%;
-
-    --card: 30 5% 12%;
-    --card-foreground: 40.9 91.7% 95.3%;
-
-    --popover: 30 5% 12%;
-    --popover-foreground: 40.9 91.7% 95.3%;
-
-    --secondary: 30 5% 16%;
-    --secondary-foreground: 40.9 91.7% 95.3%;
-
-    --muted: 30 5% 16%;
-    --muted-foreground: 39 30% 75%;
-
-    --accent: 30 5% 18%;
-    --accent-foreground: 40.9 91.7% 95.3%;
-
-    --border: 30 5% 22%;
-    --input: 30 5% 22%;
-  }
-
   * {
     @apply border-border;
   }
