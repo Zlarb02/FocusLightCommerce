@@ -56,39 +56,42 @@
   background-color: #334155 !important;
 }
 
-/* Amélioration des couleurs de texte en mode sombre */
-.dark .text-muted-foreground {
+/* Ces surcharges d'utilitaires ne valent QUE dans le panier : écrites sans
+   `.alto-cart`, elles éclaircissaient tout `.text-gray-900` du site en thème
+   sombre, y compris sur les surfaces claires de la maquette (les cartes d'avis
+   de la fiche produit en ressortaient en blanc sur blanc). */
+.dark .alto-cart .text-muted-foreground {
   color: #94a3b8 !important;
 }
 
-.dark .text-gray-700 {
+.dark .alto-cart .text-gray-700 {
   color: #e2e8f0 !important;
 }
 
-.dark .text-gray-900 {
+.dark .alto-cart .text-gray-900 {
   color: #f1f5f9 !important;
 }
 
 /* Amélioration des bordures en mode sombre */
-.dark .border-gray-200 {
+.dark .alto-cart .border-gray-200 {
   border-color: #374151 !important;
 }
 
-.dark .border-gray-600 {
+.dark .alto-cart .border-gray-600 {
   border-color: #4b5563 !important;
 }
 
 /* Amélioration de la visibilité des icônes en mode sombre */
-.dark .text-red-500 {
+.dark .alto-cart .text-red-500 {
   color: #ef4444 !important;
 }
 
-.dark .text-red-400 {
+.dark .alto-cart .text-red-400 {
   color: #f87171 !important;
 }
 
-.dark .text-red-500:hover,
-.dark .text-red-400:hover {
+.dark .alto-cart .text-red-500:hover,
+.dark .alto-cart .text-red-400:hover {
   color: #dc2626 !important;
 }
 
@@ -145,12 +148,12 @@
 }
 
 /* Amélioration du contraste pour le texte de livraison gratuite */
-.dark .text-green-600 {
+.dark .alto-cart .text-green-600 {
   color: #22c55e !important;
   font-weight: 500 !important;
 }
 
-.dark .text-green-400 {
+.dark .alto-cart .text-green-400 {
   color: #4ade80 !important;
   font-weight: 500 !important;
 }

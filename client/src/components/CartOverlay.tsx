@@ -32,7 +32,7 @@ export function CartOverlay({ open, onClose }: CartOverlayProps) {
 
   return (
     <Sheet open={open} onOpenChange={onClose}>
-      <SheetContent className="flex flex-col h-full w-full sm:max-w-md">
+      <SheetContent className="alto-cart flex flex-col h-full w-full sm:max-w-md">
         <SheetHeader className="border-b pb-4">
           <div className="flex justify-between items-center">
             <SheetTitle className="font-heading font-bold text-xl">
