@@ -26,15 +26,21 @@ export default function CreationsSurMesure() {
     <Layout headerTone="surface" footerTone="blue">
       {/* Hero : photo atelier, titre géant crème (218px sur 1920) débordant sur
           l'image, accroche fine juste au-dessus. */}
-      <section className="relative">
+      <section className="relative" data-reveal-bottom>
         {/* Hauteurs relevées sur la dernière ligne pleine largeur de la photo :
             291 unités en mobile (iphone-8, base 143) et 966 px en desktop
             (web-12, base 1920). Mesurer le bloc « hors palette » ne marche pas
-            ici : le titre géant SUR-MESURE, en crème, mord sur la photo. */}
+            ici : le titre géant SUR-MESURE, en crème, mord sur la photo.
+            En desktop on affiche désormais la PHOTO ENTIÈRE : `md:aspect-[2/3]`
+            est le format du fichier (1920×2880), rien n'est rogné. Le bandeau de
+            966 px n'en montrait que 33 %, centrés. Contrepartie assumée : sur un
+            moniteur large, le hero fait près de trois écrans de haut. Le `min-h`
+            reste un plancher pour les écrans étroits, et le défilement d'arrivée
+            (App.tsx, `data-reveal-bottom`) descend jusqu'au titre géant. */}
         <img
           src="/images/alto/surmesure-hero.jpg"
           alt="Lampes sur-mesure en cours de création dans l'atelier"
-          className="aspect-[143/291] w-full object-cover md:aspect-[1920/966]"
+          className="aspect-[143/291] w-full object-cover md:aspect-[2/3] md:min-h-[calc(100svh-48px)]"
         />
         {/* Titre géant : 218px sur la maquette, soit 45vw sur mobile (base 484)
             et 11.4vw en desktop (base 1920) — il tient sur deux lignes en mobile. */}

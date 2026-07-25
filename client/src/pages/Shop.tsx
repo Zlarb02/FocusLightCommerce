@@ -89,6 +89,10 @@ export default function Shop() {
               return (
                 <motion.div
                   key={product.id}
+                  /* La première vignette sert de repère au défilement d'arrivée
+                     (voir App.tsx) : on descend jusqu'au bas de la première
+                     ligne de produits pour qu'elle soit entière à l'écran. */
+                  {...(index === 0 ? { "data-reveal-bottom": true } : {})}
                   initial={{ opacity: 0, y: 24 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{

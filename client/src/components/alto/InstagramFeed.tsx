@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -23,19 +23,19 @@ const FALLBACK_POSTS: InstagramPost[] = [
   { url: "/images/alto/instagram/insta-3.jpg", alt: "Création Alto Lille en situation", order: 3 },
 ];
 
-/** La maquette montre 3 vignettes de front (463×695 sur 1920). */
-const PER_VIEW = 3;
-
 /**
  * Section « Retrouvez-moi sur Instagram » (maquette : titre Bold orange,
  * vignettes 2/3 cliquables vers le compte, chevron à droite).
- * Le contenu vient de /gestion → Instagram : au-delà de 3 photos la grille
- * devient un slider, conformément au chevron déjà présent dans la maquette.
+ * Le contenu vient de /gestion → Instagram. La bande défile nativement
+ * (doigt, trackpad, clavier) : en desktop 3 vignettes tiennent de front comme
+ * dans la maquette, et les chevrons n'apparaissent que s'il reste à défiler —
+ * en mobile une vignette et un bout de la suivante, qu'on fait glisser.
  */
 export function InstagramFeed() {
   const { t } = useLanguage();
-  const [start, setStart] = useState(0);
   const trackRef = useRef<HTMLDivElement>(null);
+  const [canScrollPrev, setCanScrollPrev] = useState(false);
+  const [canScrollNext, setCanScrollNext] = useState(false);
 
   const { data } = useQuery<InstagramFeed>({
     queryKey: ["/api/instagram/feed"],
@@ -47,11 +47,38 @@ export function InstagramFeed() {
   }, [data]);
 
   const profileUrl = data?.profileUrl || INSTAGRAM_URL;
-  const isSlider = posts.length > PER_VIEW;
-  const maxStart = Math.max(0, posts.length - PER_VIEW);
+
+  /** Les chevrons ne servent que s'il reste réellement de la piste à parcourir. */
+  const syncArrows = useCallback(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    // Marge de quelques pixels : les largeurs en % tombent rarement rondes,
+    // et 3 vignettes pile ne doivent pas faire clignoter un chevron.
+    const remaining = track.scrollWidth - track.clientWidth - track.scrollLeft;
+    setCanScrollPrev(track.scrollLeft > 4);
+    setCanScrollNext(remaining > 4);
+  }, []);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    syncArrows();
+    track.addEventListener("scroll", syncArrows, { passive: true });
+    window.addEventListener("resize", syncArrows);
+    return () => {
+      track.removeEventListener("scroll", syncArrows);
+      window.removeEventListener("resize", syncArrows);
+    };
+  }, [syncArrows, posts.length]);
 
   const go = (direction: -1 | 1) => {
-    setStart((s) => Math.min(maxStart, Math.max(0, s + direction)));
+    const track = trackRef.current;
+    if (!track) return;
+    // Un cran = une vignette (gouttière comprise), déduite de la position
+    // réelle des deux premières ; à défaut, la largeur visible.
+    const [first, second] = Array.from(track.children) as HTMLElement[];
+    const step = second ? second.offsetLeft - first.offsetLeft : track.clientWidth;
+    track.scrollBy({ left: direction * step, behavior: "smooth" });
   };
 
   return (
@@ -64,62 +91,48 @@ export function InstagramFeed() {
       </h2>
 
       <div className="relative mt-8 md:mt-12">
-        <div className="overflow-hidden">
-          <div
-            ref={trackRef}
-            className="flex gap-4 transition-transform duration-500 ease-out md:gap-[3.3%]"
-            style={
-              isSlider
-                ? {
-                    // Chaque vignette occupe 1/3 de la piste visible : on décale
-                    // d'autant de vignettes que d'index de départ.
-                    transform: `translateX(calc(-${start} * (100% + 3.3%) / ${PER_VIEW}))`,
-                  }
-                : undefined
-            }
-          >
-            {posts.map((post) => (
-              <a
-                key={`${post.url}-${post.order}`}
-                href={profileUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group block shrink-0 basis-[78%] overflow-hidden bg-white sm:basis-[calc((100%-2*3.3%)/3)]"
-              >
-                <img
-                  src={post.url}
-                  alt={post.alt}
-                  className="aspect-[463/695] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                  loading="lazy"
-                />
-              </a>
-            ))}
-          </div>
+        <div
+          ref={trackRef}
+          className="scrollbar-hide flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain md:gap-[3.3%]"
+        >
+          {posts.map((post) => (
+            <a
+              key={`${post.url}-${post.order}`}
+              href={profileUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group block shrink-0 snap-start basis-[78%] overflow-hidden bg-white sm:basis-[calc((100%-2*3.3%)/3)]"
+            >
+              <img
+                src={post.url}
+                alt={post.alt}
+                className="aspect-[463/695] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                loading="lazy"
+                draggable={false}
+              />
+            </a>
+          ))}
         </div>
 
-        {isSlider && (
-          <>
-            {start > 0 && (
-              <button
-                type="button"
-                onClick={() => go(-1)}
-                aria-label="Photos précédentes"
-                className="absolute -left-2 top-1/2 -translate-y-1/2 text-alto-orange transition hover:opacity-70 md:-left-10"
-              >
-                <ChevronLeft className="h-10 w-10 md:h-16 md:w-16" strokeWidth={4} />
-              </button>
-            )}
-            {start < maxStart && (
-              <button
-                type="button"
-                onClick={() => go(1)}
-                aria-label="Photos suivantes"
-                className="absolute -right-2 top-1/2 -translate-y-1/2 text-alto-orange transition hover:opacity-70 md:-right-10"
-              >
-                <ChevronRight className="h-10 w-10 md:h-16 md:w-16" strokeWidth={4} />
-              </button>
-            )}
-          </>
+        {canScrollPrev && (
+          <button
+            type="button"
+            onClick={() => go(-1)}
+            aria-label="Photos précédentes"
+            className="absolute -left-2 top-1/2 hidden -translate-y-1/2 text-alto-orange transition hover:opacity-70 sm:block md:-left-10"
+          >
+            <ChevronLeft className="h-10 w-10 md:h-16 md:w-16" strokeWidth={4} />
+          </button>
+        )}
+        {canScrollNext && (
+          <button
+            type="button"
+            onClick={() => go(1)}
+            aria-label="Photos suivantes"
+            className="absolute -right-2 top-1/2 hidden -translate-y-1/2 text-alto-orange transition hover:opacity-70 sm:block md:-right-10"
+          >
+            <ChevronRight className="h-10 w-10 md:h-16 md:w-16" strokeWidth={4} />
+          </button>
         )}
       </div>
     </section>

@@ -54,6 +54,34 @@ function Router() {
      footer une fois la page rendue. */
   useEffect(() => {
     window.scrollTo(0, 0);
+
+    /* Certaines pages cachent l'essentiel sous la ligne de flottaison : le titre
+       et la tagline sont posés TOUT EN BAS du hero (Studio, Fabrication,
+       Sur-mesure), et sur le catalogue c'est le pied de la première ligne de
+       produits. Arriver à scroll 0 ne montre alors qu'un mur d'image. On repère
+       donc l'élément marqué `data-reveal-bottom` et on descend en douceur
+       jusqu'à son bas.
+       Le marqueur peut arriver après coup (le catalogue attend son API) : on
+       réessaie pendant ~1,3 s, et on abandonne dès que l'utilisateur a pris la
+       main sur le scroll. */
+    let attempts = 0;
+    const reveal = window.setInterval(() => {
+      if (window.scrollY > 0 || attempts++ > 10) {
+        window.clearInterval(reveal);
+        return;
+      }
+      const target = document.querySelector<HTMLElement>("[data-reveal-bottom]");
+      if (!target) return;
+      window.clearInterval(reveal);
+      const overflow = Math.round(
+        target.getBoundingClientRect().bottom - window.innerHeight
+      );
+      if (overflow < 8) return;
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      window.scrollTo({ top: overflow, behavior: reduced ? "auto" : "smooth" });
+    }, 120);
+
+    return () => window.clearInterval(reveal);
   }, [location]);
 
   return (

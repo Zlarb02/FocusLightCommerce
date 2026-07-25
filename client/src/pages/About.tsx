@@ -23,14 +23,24 @@ export default function About() {
 
   return (
     <Layout headerTone="surface" footerTone="blue">
-      {/* Hero : cadre presque carré sur mobile (143×166 dans la maquette), 3/2 en
-          desktop, borné à la hauteur de l'écran pour qu'Anatole soit visible en
-          entier — baskettes comprises — avec la tagline cadrée en bas à droite. */}
-      <section className="relative">
+      {/* Hero : cadre presque carré sur mobile (143×166 dans la maquette),
+          PHOTO ENTIÈRE en desktop — `md:aspect-[3/2]` est exactement le format
+          du fichier (1600×1066), donc rien n'est rogné, ni en haut ni en bas :
+          Anatole reste entier, de la mèche aux baskets.
+          Ne jamais remettre de `max-h` ici : avec `object-cover` il rognait
+          jusqu'à un tiers de la hauteur sur un écran large et bas, et c'est la
+          tête qui sautait. Le `min-h`, lui, fait l'inverse — il garantit que le
+          hero dépasse l'écran, donc qu'il y a toujours quelque chose à
+          découvrir en bas (la tagline « Produire moins, fabriquer mieux »), et
+          quand il s'applique la case devient plus HAUTE que son ratio :
+          `object-cover` rogne alors dans le mur gris à droite, pas la hauteur.
+          Le défilement d'arrivée (App.tsx, `data-reveal-bottom`) amène ce bas à
+          l'écran à chaque navigation. */}
+      <section className="relative" data-reveal-bottom>
         <img
           src="/images/alto/studio-portrait.jpg"
           alt="Anatole Collet dans son atelier, entouré de ses luminaires"
-          className="aspect-[143/166] w-full object-cover object-[35%_center] md:aspect-[3/2] md:max-h-[calc(100svh-96px)] md:object-[center_65%]"
+          className="aspect-[143/166] w-full object-cover object-[35%_center] md:aspect-[3/2] md:min-h-[calc(100svh-48px)]"
         />
         <p className="absolute bottom-[6%] right-[3%] text-right font-normal leading-tight text-alto-cream drop-shadow text-[clamp(22px,4.2vw,81px)]">
           {t("home.tagline").split(", ").map((part, i, arr) => (

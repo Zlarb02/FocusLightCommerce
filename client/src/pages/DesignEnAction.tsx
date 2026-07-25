@@ -93,14 +93,20 @@ export default function DesignEnAction() {
         {/* Hero : photo en gros plan, le titre géant (218px sur 1920) posé en bas
             À GAUCHE et débordant sur l'image, précédé de « Conçu et fabriqué à
             Lille » (30px). Le hero fait ~1010px de haut sur la maquette. */}
-        <section className="relative overflow-hidden">
-          {/* La photo source est verticale (1600×2400) et la lampe occupe son
-              tiers supérieur : le cadre large de la maquette se cale donc en
-              haut de l'image, pas au centre — sinon on ne voit que la laine. */}
+        <section className="relative overflow-hidden" data-reveal-bottom>
+          {/* PHOTO ENTIÈRE en desktop : `md:aspect-[2/3]` est le format du
+              fichier (1600×2400), donc rien n'est rogné. Le bandeau de la
+              maquette (1010 px sur 1920) n'en montrait que 35 % et coupait
+              surtout le haut. La contrepartie assumée : la photo étant
+              verticale, le hero fait près de trois écrans de haut sur un moniteur
+              large. Le `min-h` reste un plancher pour les écrans étroits, et le
+              défilement d'arrivée (App.tsx, `data-reveal-bottom`) descend
+              jusqu'au titre géant posé en bas. En mobile le cadre reste celui de
+              la maquette (143×305, calé à 22 % pour garder la lampe). */}
           <img
             src="/images/alto/fab-macro-rouge.jpg"
             alt="Abat-jour Focus rouge imprimé en 3D, éclairé"
-            className="aspect-[143/305] w-full object-cover object-[center_22%] md:aspect-[1920/1010]"
+            className="aspect-[143/305] w-full object-cover object-[center_22%] md:aspect-[2/3] md:min-h-[calc(100svh-48px)]"
           />
           {/* Titre géant à gauche ; l'accroche se pose en bout de ligne, à
               droite, sur la dernière ligne du titre. */}
@@ -235,20 +241,20 @@ export default function DesignEnAction() {
             className="aspect-[3/4] w-full object-cover"
             loading="lazy"
           />
-          <div className="relative hidden aspect-[3/4] w-full overflow-hidden bg-alto-cream sm:block">
-            {/* Vidéo verticale : le poster flouté comble les côtés pour ne pas
-                la déformer ni laisser de bandes. */}
-            <img
-              src="/images/alto/poster-assemblage.jpg"
-              alt=""
-              aria-hidden="true"
-              className="absolute inset-0 h-full w-full scale-110 object-cover blur-lg"
-              loading="lazy"
-            />
+          {/* Le reel est vertical (9:16) dans une case 3:4 : on affiche la
+              version au format de la case (`surmesure-reel-cadre-v3.mp4`,
+              1080×1440).
+              L'image y est ENTIÈRE au centre (810×1440, rien de rogné) et les
+              deux bandes de 135 px sont les 60 px de bord du reel, étirés et
+              floutés. La case reste pleine, comme les deux photos voisines. */}
+          <div className="relative hidden aspect-[3/4] w-full overflow-hidden bg-background sm:block">
+            {/* Le montage final : on visse l'ampoule et on pose l'abat-jour sur
+                la lampe orange. La vidéo d'assemblage de l'étape 05 (lampe
+                bleue) était affichée deux fois. */}
             <video
-              className="absolute inset-0 h-full w-full object-contain"
-              src="/videos/fabrication-assemblage.mp4"
-              poster="/images/alto/poster-assemblage.jpg"
+              className="absolute inset-0 h-full w-full object-cover"
+              src="/videos/surmesure-reel-cadre-v3.mp4"
+              poster="/images/alto/poster-surmesure-reel.jpg"
               autoPlay
               muted
               loop
