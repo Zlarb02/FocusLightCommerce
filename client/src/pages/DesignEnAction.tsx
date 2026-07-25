@@ -43,11 +43,18 @@ const STEP_MEDIA: StepMedia[] = [
   },
 ];
 
+/**
+ * Visuel d'une étape. Le cadre desktop est celui de la maquette, relevé dans le
+ * fichier XD (artboard « Web 1920 – 11 », cadres nommés bois / conception /
+ * Séquence 01_1) : 1082×1019, donc quasi carré. Le 3/2 posé au départ était
+ * beaucoup trop paysage — il rognait les sources (les vidéos font 960×904) et
+ * la colonne image pesait moins que sa colonne de texte.
+ */
 function StepVisual({ media }: { media: StepMedia }) {
   if (media.type === "video") {
     return (
       <video
-        className="aspect-[4/3] w-full object-cover md:aspect-[3/2]"
+        className="aspect-[4/3] w-full object-cover md:aspect-[1082/1019]"
         src={media.src}
         poster={media.poster}
         autoPlay
@@ -63,7 +70,7 @@ function StepVisual({ media }: { media: StepMedia }) {
     <img
       src={media.src}
       alt={media.alt}
-      className="aspect-[4/3] w-full object-cover md:aspect-[3/2]"
+      className="aspect-[4/3] w-full object-cover md:aspect-[1082/1019]"
       loading="lazy"
     />
   );
