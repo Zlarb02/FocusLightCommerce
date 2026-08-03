@@ -444,7 +444,17 @@ export default function Home() {
           logotype x 27→1140, photo x 1182→1866. Soit 1,4vw de marge à gauche,
           une colonne texte de 58vw, 2,2vw de gouttière, la photo sur 35,6vw et
           2,8vw à droite. En 50/50 le logotype sortait 20 % trop petit et
-          décollé du bord gauche. */}
+          décollé du bord gauche.
+          PIÈGE — la section a une hauteur fixe (100svh-96px) mais sa RANGÉE de
+          grille, elle, ne descend jamais sous la hauteur de son contenu : sur un
+          écran large et bas (ultrawide, fenêtre étirée), la photo (35,6vw en 3/4
+          = 47,5vw de haut) faisait grandir la rangée au-delà de la section. Tout
+          le bloc texte, calé en bas, débordait alors SOUS la section — et le
+          parcours 3D qui suit, opaque, repeignait par-dessus : le bas du
+          logotype disparaissait sans qu'aucun scroll ne le rattrape. D'où les
+          deux `max-w` dérivés de la hauteur disponible ci-dessous : ils bornent
+          la photo et le logotype par leur hauteur, à ratio conservé, et
+          n'entrent en jeu que sur ces écrans-là. */}
       <section
         ref={introRef}
         className="flex w-full flex-col justify-center bg-background min-h-[calc(100svh-57px)] md:grid md:grid-cols-[57.97fr_35.6fr] md:items-center md:gap-[2.19vw] md:min-h-0 md:h-[calc(100svh-96px)] md:pl-[1.4vw] md:pr-[2.8vw]"
@@ -462,7 +472,7 @@ export default function Home() {
           <button
             onClick={goToShop}
             aria-label={t("landing.cta")}
-            className="group w-[42%] shrink-0 md:w-full"
+            className="group w-[42%] shrink-0 md:w-full md:max-w-[calc((100svh_-_286px)_*_2.12)]"
           >
             {/* En DESKTOP le logotype suit son fond : orange sur le crème du
                 thème clair (web-9), crème sur le brun du thème sombre (web-10).
@@ -497,7 +507,7 @@ export default function Home() {
           <button
             onClick={goToShop}
             aria-label={t("landing.cta")}
-            className="group relative block aspect-[3/4] w-full overflow-hidden md:h-auto md:w-full md:aspect-[3/4]"
+            className="group relative block aspect-[3/4] w-full overflow-hidden md:h-auto md:w-full md:aspect-[3/4] md:max-w-[calc((100svh_-_96px)_*_0.75)]"
           >
             <AnimatePresence initial={false}>
               <motion.img
