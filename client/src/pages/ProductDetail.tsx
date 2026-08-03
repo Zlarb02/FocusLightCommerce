@@ -95,12 +95,25 @@ export default function ProductDetail() {
     return value === productKey ? t(`focus.${suffix}`) : value;
   };
 
-  // Sélectionner la première variation par défaut quand le produit charge
+  // Sélectionner la première variation par défaut quand le produit charge.
+  // PIÈGE : d'une fiche à l'autre (bloc « Autres produits »), la route ne change
+  // pas — le composant n'est pas remonté et gardait la variation du produit
+  // PRÉCÉDENT : photo, couleurs, prix et panier restaient ceux de l'ancienne
+  // fiche. On ne conserve donc la sélection que si elle appartient au produit
+  // affiché, sinon on retombe sur sa première variation.
   useEffect(() => {
-    if (product && product.variations && product.variations.length > 0 && !selectedVariation) {
-      setSelectedVariation(product.variations[0]);
-    }
-  }, [product, selectedVariation]);
+    const variations = product?.variations ?? [];
+    setSelectedVariation((current) =>
+      current && variations.some((v) => v.id === current.id)
+        ? current
+        : variations[0] ?? null
+    );
+  }, [product]);
+
+  // Idem pour la visionneuse : elle ne doit pas survivre au changement de fiche
+  useEffect(() => {
+    setModalImage(null);
+  }, [productId]);
 
   const handleVariationSelect = (variation: ProductVariation) => {
     setSelectedVariation(variation);
