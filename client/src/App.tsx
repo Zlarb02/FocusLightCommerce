@@ -55,10 +55,12 @@ function Router() {
   useEffect(() => {
     window.scrollTo(0, 0);
 
-    /* Certaines pages cachent l'essentiel sous la ligne de flottaison : le titre
-       et la tagline sont posés TOUT EN BAS du hero (Studio, Fabrication,
-       Sur-mesure), et sur le catalogue c'est le pied de la première ligne de
-       produits. Arriver à scroll 0 ne montre alors qu'un mur d'image. On repère
+    /* Certaines pages cachent l'essentiel sous la ligne de flottaison : sur le
+       Studio la tagline est posée TOUT EN BAS du hero (photo entière, Anatole
+       jamais rogné), et sur le catalogue c'est le pied de la première ligne de
+       produits. Fabrication et Sur-mesure ne sont plus concernées : leur hero
+       tient désormais dans le premier écran, écriture comprise.
+       Arriver à scroll 0 ne montre alors qu'un mur d'image. On repère
        donc l'élément marqué `data-reveal-bottom` et on descend en douceur
        jusqu'à son bas.
        Le marqueur peut arriver après coup (le catalogue attend son API) : on

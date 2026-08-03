@@ -26,25 +26,26 @@ export default function CreationsSurMesure() {
     <Layout headerTone="surface" footerTone="blue">
       {/* Hero : photo atelier, titre géant crème (218px sur 1920) débordant sur
           l'image, accroche fine juste au-dessus. */}
-      <section className="relative" data-reveal-bottom>
-        {/* Hauteurs relevées sur la dernière ligne pleine largeur de la photo :
-            291 unités en mobile (iphone-8, base 143) et 966 px en desktop
-            (web-12, base 1920). Mesurer le bloc « hors palette » ne marche pas
-            ici : le titre géant SUR-MESURE, en crème, mord sur la photo.
-            En desktop on affiche désormais la PHOTO ENTIÈRE : `md:aspect-[2/3]`
-            est le format du fichier (1920×2880), rien n'est rogné. Le bandeau de
-            966 px n'en montrait que 33 %, centrés. Contrepartie assumée : sur un
-            moniteur large, le hero fait près de trois écrans de haut. Le `min-h`
-            reste un plancher pour les écrans étroits, et le défilement d'arrivée
-            (App.tsx, `data-reveal-bottom`) descend jusqu'au titre géant. */}
+      <section className="relative overflow-hidden">
+        {/* Le hero tient dans le PREMIER ÉCRAN en desktop (demande d'Anatole,
+            29/07 : l'écriture doit être lue à l'arrivée). La photo est verticale
+            (1920×2880) : la montrer entière faisait près de trois écrans de
+            haut, on revient donc au bandeau de la maquette (966 px sur 1920,
+            soit 33 % de la photo, centrés) — haut et bas rognés à parts égales,
+            ce que `object-cover` fait par défaut. En mobile le cadre reste celui
+            de la maquette (iphone-8 : 143×291). */}
         <img
           src="/images/alto/surmesure-hero.jpg"
           alt="Lampes sur-mesure en cours de création dans l'atelier"
-          className="aspect-[143/291] w-full object-cover md:aspect-[2/3] md:min-h-[calc(100svh-48px)]"
+          className="aspect-[143/291] w-full object-cover md:aspect-auto md:h-[calc(100svh-96px)]"
         />
-        {/* Titre géant : 218px sur la maquette, soit 45vw sur mobile (base 484)
-            et 11.4vw en desktop (base 1920) — il tient sur deux lignes en mobile. */}
-        <div className="absolute inset-x-0 bottom-0 px-[3%] pb-[2%] md:px-[1%] md:pb-[1%]">
+        {/* Écriture en BAS À DROITE du premier écran : accroche puis titre géant
+            (218px sur la maquette, soit 24vw sur mobile et 11.4vw en desktop).
+            Le cadre de placement fait la hauteur du premier écran (header déduit :
+            56 px + 1 px de bordure en mobile, 96 px en desktop) et jamais plus
+            que la photo (`max-h-full`), pour que le texte reste sur l'image
+            quand celle-ci est plus courte. */}
+        <div className="absolute inset-x-0 top-0 flex h-[calc(100svh-57px)] max-h-full flex-col justify-end px-[3%] pb-[2%] text-right md:h-[calc(100svh-96px)] md:px-[1%] md:pb-[1%]">
           <p className="text-alto-cream drop-shadow text-[2.6vw] md:text-[clamp(11px,1.6vw,30px)]">
             {t("sm.hero.tagline")}
           </p>
