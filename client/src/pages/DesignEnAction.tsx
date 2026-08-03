@@ -100,31 +100,30 @@ export default function DesignEnAction() {
         {/* Hero : photo en gros plan, le titre géant (218px sur 1920) posé en bas
             À GAUCHE et débordant sur l'image, précédé de « Conçu et fabriqué à
             Lille » (30px). Le hero fait ~1010px de haut sur la maquette. */}
-        <section className="relative overflow-hidden" data-reveal-bottom>
-          {/* PHOTO ENTIÈRE en desktop : `md:aspect-[2/3]` est le format du
-              fichier (1600×2400), donc rien n'est rogné. Le bandeau de la
-              maquette (1010 px sur 1920) n'en montrait que 35 % et coupait
-              surtout le haut. La contrepartie assumée : la photo étant
-              verticale, le hero fait près de trois écrans de haut sur un moniteur
-              large. Le `min-h` reste un plancher pour les écrans étroits, et le
-              défilement d'arrivée (App.tsx, `data-reveal-bottom`) descend
-              jusqu'au titre géant posé en bas. En mobile le cadre reste celui de
-              la maquette (143×305, calé à 22 % pour garder la lampe). */}
+        <section className="relative overflow-hidden">
+          {/* Le hero tient dans le PREMIER ÉCRAN en desktop (demande d'Anatole,
+              29/07 : l'écriture doit être lue à l'arrivée, pas deux écrans plus
+              bas). La photo étant verticale (1600×2400), la montrer entière
+              faisait un hero de près de trois écrans : on recadre donc en
+              bandeau — beaucoup de bas, un peu de haut — en calant la fenêtre
+              visible sur le quart supérieur, où est la lampe. En mobile le cadre
+              reste celui de la maquette (143×305, calé à 22 %). */}
           <img
             src="/images/alto/fab-macro-rouge.jpg"
             alt="Abat-jour Focus rouge imprimé en 3D, éclairé"
-            className="aspect-[143/305] w-full object-cover object-[center_22%] md:aspect-[2/3] md:min-h-[calc(100svh-48px)]"
+            className="aspect-[143/305] w-full object-cover object-[center_22%] md:aspect-auto md:h-[calc(100svh-96px)] md:object-[center_25%]"
           />
-          {/* Titre géant à gauche ; l'accroche se pose en bout de ligne, à
-              droite, sur la dernière ligne du titre. */}
-          {/* Mobile : accroche au-dessus du titre, alignée à droite. Desktop :
-              en bout de la dernière ligne du titre. */}
-          <div className="absolute inset-x-0 bottom-0 px-[3%] pb-[2%] md:flex md:items-end md:justify-between md:gap-4 md:px-[3.3%] md:pb-[1%]">
-            <p className="order-2 text-right text-alto-cream drop-shadow text-[2.6vw] md:mb-[2%] md:shrink-0 md:text-[clamp(11px,1.56vw,30px)]">
+          {/* Écriture en BAS À DROITE du premier écran : accroche puis titre
+              géant. Le cadre de placement fait la hauteur du premier écran
+              (header déduit : 56 px + 1 px de bordure en mobile, 96 px en
+              desktop) et jamais plus que la photo (`max-h-full`), pour que le
+              texte reste sur l'image quand celle-ci est plus courte. */}
+          <div className="absolute inset-x-0 top-0 flex h-[calc(100svh-57px)] max-h-full flex-col justify-end px-[3%] pb-[2%] text-right md:h-[calc(100svh-96px)] md:px-[3.3%] md:pb-[1%]">
+            <p className="text-alto-cream drop-shadow text-[2.6vw] md:text-[clamp(11px,1.56vw,30px)]">
               {t("fab.quoteBy")}
             </p>
             <h1
-              className="order-1 font-bold uppercase leading-[0.9] text-alto-cream drop-shadow text-[13vw] md:text-[clamp(64px,11.35vw,218px)]"
+              className="font-bold uppercase leading-[0.9] text-alto-cream drop-shadow text-[13vw] md:text-[clamp(64px,11.35vw,218px)]"
               style={{ fontFamily: "var(--font-titles)" }}
             >
               {t("nav.fabrication")}
@@ -169,24 +168,25 @@ export default function DesignEnAction() {
                       : "md:pl-[5.7vw] md:pr-[6%]"
                   }`}
                 >
-                  <div className="fab-step">
-                    <div className="md:flex md:items-baseline md:gap-[3%]">
-                      <p
-                        className="shrink-0 font-bold leading-none text-alto-orange text-[16vw] md:text-[length:var(--fab-num)]"
-                        style={{ fontFamily: "var(--font-titles)" }}
-                      >
-                        {String(n).padStart(2, "0")}
-                      </p>
+                  {/* Le titre ET le corps forment UNE colonne posée à droite du
+                      numéro : leur bord gauche est le même par construction. Le
+                      retrait était calculé auparavant (largeur estimée de « 01 »
+                      en em), ce qui décalait le texte de quelques pixels sous le
+                      titre. */}
+                  <div className="fab-step md:flex md:items-baseline md:gap-[3%]">
+                    <p
+                      className="shrink-0 font-bold leading-none text-alto-orange text-[16vw] md:text-[length:var(--fab-num)]"
+                      style={{ fontFamily: "var(--font-titles)" }}
+                    >
+                      {String(n).padStart(2, "0")}
+                    </p>
+                    <div className="md:min-w-0 md:flex-1">
                       <h2
                         className="mt-2 font-bold leading-tight text-alto-orange text-[9.3vw] md:mt-0 md:text-[clamp(24px,3.12vw,60px)]"
                         style={{ fontFamily: "var(--font-titles)" }}
                       >
                         {t(`fab.step${n}.title`)}
                       </h2>
-                    </div>
-                    {/* Le corps s'aligne sous le titre, donc en retrait de la
-                        largeur du numéro (2 chiffres) plus la gouttière. */}
-                    <div className="md:pl-[var(--fab-indent)]">
                       <p className="mt-5 text-[3.6vw] md:mt-6 md:text-[clamp(12px,1.2vw,23px)]">
                         {t(`fab.step${n}.lead`)}
                       </p>
