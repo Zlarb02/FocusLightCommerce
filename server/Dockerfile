@@ -49,6 +49,10 @@ COPY data/translations.json ./data-defaults/translations.json
 COPY data/illustrations.json ./data-defaults/illustrations.json
 COPY data/sliderConfig.json ./data-defaults/sliderConfig.json
 COPY data/productContent.json ./data-defaults/productContent.json
+COPY data/sitePages.json ./data-defaults/sitePages.json
+
+# Migrations des fichiers JSON (complète ceux déjà présents dans le volume)
+COPY server/scripts ./scripts
 
 # Définir la variable d'environnement pour le port
 ENV PORT=5005

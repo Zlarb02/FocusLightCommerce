@@ -23,7 +23,7 @@ echo "✅ PostgreSQL est prêt!"
 
 # Initialiser les fichiers JSON manquants depuis les défauts
 echo "📁 Vérification des fichiers de configuration JSON..."
-for file in translations.json illustrations.json sliderConfig.json productContent.json; do
+for file in translations.json illustrations.json sliderConfig.json productContent.json sitePages.json; do
     if [ ! -f "/app/data/$file" ]; then
         if [ -f "/app/data-defaults/$file" ]; then
             echo "  → Copie de $file depuis les défauts"
@@ -35,6 +35,11 @@ for file in translations.json illustrations.json sliderConfig.json productConten
         echo "  ✓ $file existe déjà"
     fi
 done
+
+# Compléter les fichiers JSON déjà présents dans le volume : la boucle
+# ci-dessus ne sait que créer les fichiers absents, jamais ajouter une nouvelle
+# clé à un fichier existant.
+node scripts/seed-data.mjs || echo "⚠️  Migrations JSON ignorées"
 
 # Exécuter les migrations
 echo "🔄 Exécution des migrations..."

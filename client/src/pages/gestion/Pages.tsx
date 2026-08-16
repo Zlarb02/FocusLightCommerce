@@ -123,16 +123,28 @@ export default function Pages() {
   return (
     <DashboardLayout title="Pages du site">
       <div className="space-y-6">
-        <div>
-          <h1 className="text-2xl font-bold">Pages du site</h1>
-          <p className="text-sm text-muted-foreground">
-            Livraison, retours, FAQ et pages légales. Ajoutez, déplacez ou
-            supprimez les blocs : la page publique suit à la lettre.
-          </p>
-        </div>
+        {/* Le titre est déjà posé par DashboardLayout : ici, seulement le mode
+            d'emploi. */}
+        <p className="text-sm text-muted-foreground">
+          Livraison, retours, FAQ et pages légales. Ajoutez, déplacez ou
+          supprimez les blocs : la page publique suit à la lettre.
+        </p>
 
         {isLoading && (
           <p className="text-sm text-muted-foreground">Chargement…</p>
+        )}
+
+        {/* Un écran vide serait indéchiffrable : si le serveur ne renvoie
+            aucune page, on dit pourquoi. */}
+        {!isLoading && slugs.length === 0 && (
+          <Card className="border-dashed">
+            <CardContent className="py-6 text-sm text-muted-foreground">
+              Aucune page n'est encore installée sur le serveur. Le contenu
+              vient du fichier <code>data/sitePages.json</code> côté API : il
+              faut redéployer le backend pour qu'il soit créé. Les pages
+              publiques, elles, s'affichent normalement en attendant.
+            </CardContent>
+          </Card>
         )}
 
         <div className="flex flex-wrap gap-2">
