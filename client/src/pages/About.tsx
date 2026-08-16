@@ -27,6 +27,14 @@ export default function About() {
           PHOTO ENTIÈRE en desktop — `md:aspect-[3/2]` est exactement le format
           du fichier (1600×1066), donc rien n'est rogné, ni en haut ni en bas :
           Anatole reste entier, de la mèche aux baskets.
+          MOBILE : `object-left`, et surtout pas de valeur plus grande. Anatole
+          et le fauteuil tiennent dans les 665 premiers pixels de la photo, et
+          la fenêtre de recadrage mobile en fait 918 : calée à gauche, elle
+          prend tout le sujet (lampe bleue et bras compris) et le laisse à peu
+          près centré, le reste étant le mur gris. À 35 %, elle commençait à
+          240 px et coupait le bras gauche — le recadrage qu'Anatole a signalé
+          le 16/08. Le 35 % ne sert plus qu'en desktop, où il ne joue que sur
+          les écrans assez hauts pour déclencher le `min-h` ci-dessous.
           Ne jamais remettre de `max-h` ici : avec `object-cover` il rognait
           jusqu'à un tiers de la hauteur sur un écran large et bas, et c'est la
           tête qui sautait. Le `min-h`, lui, fait l'inverse — il garantit que le
@@ -40,7 +48,7 @@ export default function About() {
         <img
           src="/images/alto/studio-portrait.jpg"
           alt="Anatole Collet dans son atelier, entouré de ses luminaires"
-          className="aspect-[143/166] w-full object-cover object-[35%_center] md:aspect-[3/2] md:min-h-[calc(100svh-48px)]"
+          className="aspect-[143/166] w-full object-cover object-left md:aspect-[3/2] md:object-[35%_center] md:min-h-[calc(100svh-48px)]"
         />
         <p className="absolute bottom-[6%] right-[3%] text-right font-normal leading-tight text-alto-cream drop-shadow text-[clamp(22px,4.2vw,81px)]">
           {t("home.tagline").split(", ").map((part, i, arr) => (

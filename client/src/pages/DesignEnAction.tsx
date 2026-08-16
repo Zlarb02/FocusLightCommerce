@@ -1,6 +1,8 @@
+import type { CSSProperties } from "react";
 import { Link } from "wouter";
 import { Layout } from "@/components/Layout";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { heroTitleFitVw } from "@/lib/heroTitle";
 
 interface StepMedia {
   type: "video" | "image";
@@ -106,12 +108,15 @@ export default function DesignEnAction() {
               bas). La photo étant verticale (1600×2400), la montrer entière
               faisait un hero de près de trois écrans : on recadre donc en
               bandeau — beaucoup de bas, un peu de haut — en calant la fenêtre
-              visible sur le quart supérieur, où est la lampe. En mobile le cadre
-              reste celui de la maquette (143×305, calé à 22 %). */}
+              visible sur le quart supérieur, où est la lampe. En mobile PAREIL :
+              la photo fait exactement un écran (demande d'Anatole, 16/08 — « les
+              photos peuvent être coupées comme ça »), et non plus le cadre
+              143×305 de la maquette, qui dépassait d'un bon tiers d'écran et
+              repoussait le titre hors de vue à l'arrivée. */}
           <img
             src="/images/alto/fab-macro-rouge.jpg"
             alt="Abat-jour Focus rouge imprimé en 3D, éclairé"
-            className="aspect-[143/305] w-full object-cover object-[center_22%] md:aspect-auto md:h-[calc(100svh-96px)] md:object-[center_25%]"
+            className="h-[calc(100svh-57px)] w-full object-cover object-[center_22%] md:h-[calc(100svh-96px)] md:object-[center_25%]"
           />
           {/* Écriture en BAS À DROITE du premier écran : accroche puis titre
               géant. Le cadre de placement fait la hauteur du premier écran
@@ -122,9 +127,16 @@ export default function DesignEnAction() {
             <p className="text-alto-cream drop-shadow text-[2.6vw] md:text-[clamp(11px,1.56vw,30px)]">
               {t("fab.quoteBy")}
             </p>
+            {/* La taille vient de la maquette (218px sur 1920), mais ne dépasse
+                jamais `--fit`, la largeur du cadre — voir `heroTitleFitVw`. */}
             <h1
-              className="font-bold uppercase leading-[0.9] text-alto-cream drop-shadow text-[13vw] md:text-[clamp(64px,11.35vw,218px)]"
-              style={{ fontFamily: "var(--font-titles)" }}
+              className="font-bold uppercase leading-[0.9] text-alto-cream drop-shadow text-[min(13vw,var(--fit))] md:text-[min(clamp(64px,11.35vw,218px),var(--fit))]"
+              style={
+                {
+                  fontFamily: "var(--font-titles)",
+                  "--fit": `${heroTitleFitVw(t("nav.fabrication")).toFixed(2)}vw`,
+                } as CSSProperties
+              }
             >
               {t("nav.fabrication")}
             </h1>

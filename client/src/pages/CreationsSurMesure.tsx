@@ -1,6 +1,8 @@
+import type { CSSProperties } from "react";
 import { Layout } from "@/components/Layout";
 import { AltoMark } from "@/components/alto/AltoBrand";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { heroTitleFitVw } from "@/lib/heroTitle";
 
 const STEPS = [1, 2, 3, 4] as const;
 
@@ -32,12 +34,15 @@ export default function CreationsSurMesure() {
             (1920×2880) : la montrer entière faisait près de trois écrans de
             haut, on revient donc au bandeau de la maquette (966 px sur 1920,
             soit 33 % de la photo, centrés) — haut et bas rognés à parts égales,
-            ce que `object-cover` fait par défaut. En mobile le cadre reste celui
-            de la maquette (iphone-8 : 143×291). */}
+            ce que `object-cover` fait par défaut. En mobile PAREIL : la photo
+            fait exactement un écran (demande d'Anatole, 16/08 — « les photos
+            peuvent être coupées comme ça »), et non plus le cadre 143×291 de la
+            maquette, qui dépassait d'un bon tiers d'écran et repoussait le titre
+            hors de vue à l'arrivée. */}
         <img
           src="/images/alto/surmesure-hero.jpg"
           alt="Lampes sur-mesure en cours de création dans l'atelier"
-          className="aspect-[143/291] w-full object-cover md:aspect-auto md:h-[calc(100svh-96px)]"
+          className="h-[calc(100svh-57px)] w-full object-cover md:h-[calc(100svh-96px)]"
         />
         {/* Écriture en BAS À DROITE du premier écran : accroche puis titre géant
             (218px sur la maquette, soit 24vw sur mobile et 11.4vw en desktop).
@@ -49,9 +54,16 @@ export default function CreationsSurMesure() {
           <p className="text-alto-cream drop-shadow text-[2.6vw] md:text-[clamp(11px,1.6vw,30px)]">
             {t("sm.hero.tagline")}
           </p>
+          {/* La taille vient de la maquette (218px sur 1920), mais ne dépasse
+              jamais `--fit`, la largeur du cadre — voir `heroTitleFitVw`. */}
           <h1
-            className="font-bold uppercase leading-[0.9] text-alto-cream drop-shadow text-[24vw] md:text-[clamp(44px,11.4vw,218px)]"
-            style={{ fontFamily: "var(--font-titles)" }}
+            className="font-bold uppercase leading-[0.9] text-alto-cream drop-shadow text-[min(24vw,var(--fit))] md:text-[min(clamp(44px,11.4vw,218px),var(--fit))]"
+            style={
+              {
+                fontFamily: "var(--font-titles)",
+                "--fit": `${heroTitleFitVw(t("sm.title")).toFixed(2)}vw`,
+              } as CSSProperties
+            }
           >
             {t("sm.title")}
           </h1>
