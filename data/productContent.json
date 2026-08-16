@@ -78,7 +78,23 @@
     }
   },
   "3": {
-    "sections": [],
+    "sections": [
+      {
+        "id": "features",
+        "type": "features",
+        "enabled": true
+      },
+      {
+        "id": "details",
+        "type": "details",
+        "enabled": true
+      },
+      {
+        "id": "testimonials",
+        "type": "elfsight",
+        "enabled": false
+      }
+    ],
     "images": {},
     "silhouette": {
       "cream": "/images/alto/silhouettes/auferte-cream.png",
@@ -86,7 +102,23 @@
     }
   },
   "4": {
-    "sections": [],
+    "sections": [
+      {
+        "id": "features",
+        "type": "features",
+        "enabled": true
+      },
+      {
+        "id": "details",
+        "type": "details",
+        "enabled": true
+      },
+      {
+        "id": "testimonials",
+        "type": "elfsight",
+        "enabled": false
+      }
+    ],
     "images": {},
     "silhouette": {
       "cream": "/images/alto/silhouettes/applique-focus-cream.png",
@@ -94,7 +126,23 @@
     }
   },
   "5": {
-    "sections": [],
+    "sections": [
+      {
+        "id": "features",
+        "type": "features",
+        "enabled": true
+      },
+      {
+        "id": "details",
+        "type": "details",
+        "enabled": true
+      },
+      {
+        "id": "testimonials",
+        "type": "elfsight",
+        "enabled": false
+      }
+    ],
     "images": {},
     "silhouette": {
       "cream": "/images/alto/silhouettes/lampadaire-focus-cream.png",

@@ -2,6 +2,7 @@ import { db } from "./storage/db.js";
 import { products, productVariations, media } from "../shared/schema.js";
 import { sql } from "drizzle-orm";
 import { testDatabaseConnection } from "./storage/db.js";
+import { registerSilhouetteMedias } from "./register-silhouettes.js";
 import path from "path";
 import fs from "fs";
 import { fileURLToPath } from "url";
@@ -91,6 +92,11 @@ async function initDatabase() {
       );
       return;
     }
+
+    // Les silhouettes rejoignent la médiathèque à chaque démarrage, avant le
+    // test ci-dessous : elles doivent y apparaître même sur une base déjà
+    // remplie, où l'initialisation s'arrête tout de suite.
+    await registerSilhouetteMedias();
 
     // 1. Vérifier si des produits existent déjà
     const existingProducts = await db.execute(

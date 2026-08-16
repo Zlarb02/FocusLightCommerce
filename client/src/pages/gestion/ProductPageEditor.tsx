@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Save, Sparkles } from "lucide-react";
-import { SilhouettePicker } from "@/components/gestion/SilhouettePicker";
 
 /**
  * Éditeur de page produit détaillée.
@@ -206,8 +205,6 @@ export function ProductPageEditor({ productId, hasSections }: ProductPageEditorP
 
   return (
     <div className="space-y-6">
-      <SilhouettePicker productId={productId} />
-
       {!hasSections && (
         <Card className="border-dashed">
           <CardContent className="flex flex-col items-center gap-3 py-6 text-center">

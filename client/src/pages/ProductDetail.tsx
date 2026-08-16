@@ -6,7 +6,6 @@ import { Layout } from "@/components/Layout";
 import { EnhancedHeroProductDisplay } from "@/components/EnhancedHeroProductDisplay";
 import { ProductVariation, ProductWithVariations } from "@shared/schema";
 import { AltoReviews } from "@/components/AltoReviews";
-import { findSilhouette } from "@/lib/silhouettes";
 import { Button } from "@/components/ui/button";
 import { AnimatedAddToCartButton } from "@/components/AnimatedAddToCartButton";
 import { ToastContainer } from "@/components/EnhancedToast";
@@ -24,9 +23,6 @@ import {
 } from "@/lib/utils";
 import { useCart } from "@/hooks/useCart";
 import { useLanguage } from "@/contexts/LanguageContext";
-
-/** Silhouette servie tant qu'aucune n'a été choisie en gestion pour ce produit. */
-const FALLBACK_SILHOUETTE = findSilhouette("focus")!;
 
 export default function ProductDetail() {
   const { id } = useParams<{ id: string }>();
@@ -60,10 +56,12 @@ export default function ProductDetail() {
     enabled: productId > 0,
   });
 
-  const silhouette = {
-    cream: productContent?.silhouette?.cream || FALLBACK_SILHOUETTE.cream,
-    brown: productContent?.silhouette?.brown || FALLBACK_SILHOUETTE.brown,
-  };
+  // Pas de repli : mieux vaut aucune silhouette que celle d'un autre produit.
+  // La Locus affichait la lampe Focus, faute d'avoir la sienne.
+  const silhouette =
+    productContent?.silhouette?.cream && productContent?.silhouette?.brown
+      ? productContent.silhouette
+      : null;
 
   // Autres produits du catalogue (maquette : bloc « Autres produits »)
   const { data: allProducts = [] } = useQuery<ProductWithVariations[]>({
@@ -388,7 +386,11 @@ export default function ProductDetail() {
       {isSectionEnabled("details") && (
           <section id="product-details" className="animate fade-in">
             <div className="alto-caracteristique relative overflow-hidden px-[6vw] py-12 md:px-[8.4vw] md:py-20">
-              <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-10 md:gap-16 items-center">
+              <div
+                className={`grid grid-cols-1 gap-10 md:gap-16 items-center ${
+                  silhouette ? "md:grid-cols-[1fr_auto]" : ""
+                }`}
+              >
                 {/* Colonne texte */}
                 <div>
                   <h2
@@ -417,23 +419,25 @@ export default function ProductDetail() {
                 </div>
 
                 {/* Silhouette produit — crème sur fond brun (clair) / brune sur
-                    crème (sombre). Réglée par produit dans la gestion ; à défaut
-                    on garde celle de la Focus, seule silhouette du site avant
-                    que les autres n'arrivent. */}
-                <div className="flex justify-center md:justify-end">
-                  <img
-                    src={silhouette.cream}
-                    alt=""
-                    aria-hidden
-                    className="block dark:hidden h-[280px] md:h-[420px] w-auto object-contain"
-                  />
-                  <img
-                    src={silhouette.brown}
-                    alt=""
-                    aria-hidden
-                    className="hidden dark:block h-[280px] md:h-[420px] w-auto object-contain"
-                  />
-                </div>
+                    crème (sombre). Réglée par produit dans la gestion ; sans
+                    elle, la colonne disparaît et le texte prend toute la
+                    largeur (voir la grille ci-dessus). */}
+                {silhouette && (
+                  <div className="flex justify-center md:justify-end">
+                    <img
+                      src={silhouette.cream}
+                      alt=""
+                      aria-hidden
+                      className="block dark:hidden h-[280px] md:h-[420px] w-auto object-contain"
+                    />
+                    <img
+                      src={silhouette.brown}
+                      alt=""
+                      aria-hidden
+                      className="hidden dark:block h-[280px] md:h-[420px] w-auto object-contain"
+                    />
+                  </div>
+                )}
               </div>
             </div>
           </section>

@@ -51,6 +51,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ProductPageSettings } from "@/components/gestion/ProductPageSettings";
 import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
@@ -169,6 +170,9 @@ export default function Stocks() {
 
   // États pour la gestion des produits
   const [isProductDialogOpen, setIsProductDialogOpen] = useState(false);
+
+  // Fiche produit dont les réglages (sections, silhouette) sont dépliés.
+  const [openSettings, setOpenSettings] = useState<number | null>(null);
   const [selectedProduct, setSelectedProduct] =
     useState<ProductWithVariations | null>(null);
   const [isDeleteProductAlertOpen, setIsDeleteProductAlertOpen] =
@@ -793,8 +797,9 @@ export default function Stocks() {
                   return (
                     <div
                       key={product.id}
-                      className="flex flex-col gap-4 rounded-lg border bg-card p-4 sm:flex-row sm:items-center"
+                      className="rounded-lg border bg-card p-4"
                     >
+                      <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
                       {/* Photo sur tuile blanche, fond flouté (pattern du site) */}
                       <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden bg-white">
                         {previewImage ? (
@@ -903,6 +908,29 @@ export default function Stocks() {
                             Textes de la page
                           </a>
                         </div>
+                      </div>
+                      </div>
+
+                      {/* Réglages de la fiche : sections affichées et
+                          silhouette. Repliés par défaut pour ne pas noyer la
+                          liste des stocks. */}
+                      <div className="mt-4">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="px-0 text-xs text-muted-foreground hover:bg-transparent"
+                          onClick={() =>
+                            setOpenSettings((id) =>
+                              id === product.id ? null : product.id
+                            )
+                          }
+                        >
+                          {openSettings === product.id ? "▾" : "▸"} Réglages de
+                          la fiche produit (sections et silhouette)
+                        </Button>
+                        {openSettings === product.id && (
+                          <ProductPageSettings productId={product.id} />
+                        )}
                       </div>
                     </div>
                   );

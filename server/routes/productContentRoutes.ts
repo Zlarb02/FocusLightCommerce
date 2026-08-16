@@ -100,6 +100,14 @@ router.put("/:productId/content", requireAuth, async (req: Request, res: Respons
     const data = productContentSchema.parse(req.body);
     const content = readProductContent();
 
+    // La silhouette survit à une mise à jour qui ne la mentionne pas : plusieurs
+    // écrans de la gestion ne renvoient que les sections, et effaçaient sinon un
+    // réglage qu'ils n'ont jamais eu l'intention de toucher.
+    const previous = content[productId];
+    if (!data.silhouette && previous?.silhouette) {
+      data.silhouette = previous.silhouette;
+    }
+
     content[productId] = data;
 
     const success = writeProductContent(content);

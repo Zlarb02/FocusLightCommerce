@@ -76,4 +76,30 @@ migrate("silhouettes-produits", () => {
   return `${added} produit(s) complété(s)`;
 });
 
+// Auferte, Applique Focus et Lampadaire Focus n'avaient aucune section activée :
+// leur bandeau « Caractéristique » ne s'affichait pas, et donc leur silhouette
+// non plus. On ne complète que les produits dont la liste est vide côté volume.
+migrate("sections-produits-manquantes", () => {
+  const livePath = path.join(DATA, "productContent.json");
+  const defaults = readJson(path.join(DEFAULTS, "productContent.json"));
+  const live = readJson(livePath);
+  if (!defaults || !live) return "aucun fichier à compléter";
+
+  let added = 0;
+  for (const [productId, entry] of Object.entries(defaults)) {
+    if (!entry?.sections?.length) continue;
+    const current = live[productId];
+    if (!current) {
+      live[productId] = entry;
+      added += 1;
+    } else if (!current.sections?.length) {
+      current.sections = entry.sections;
+      added += 1;
+    }
+  }
+
+  if (added > 0) writeJson(livePath, live);
+  return `${added} produit(s) complété(s)`;
+});
+
 console.log("✅ Migrations terminées");
