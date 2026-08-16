@@ -29,6 +29,7 @@ import Contenu from "./pages/gestion/Contenu";
 import Parametres from "./pages/gestion/Parametres";
 import Medias from "./pages/gestion/Medias";
 import SliderConfig from "./pages/gestion/SliderConfig";
+import GestionPages from "./pages/gestion/Pages";
 import ProtectedGestionRoute from "./components/ProtectedGestionRoute";
 
 // Pages légales et services
@@ -160,6 +161,9 @@ function Router() {
       </Route>
       <Route path="/gestion/parametres">
         <ProtectedGestionRoute component={Parametres} />
+      </Route>
+      <Route path="/gestion/pages">
+        <ProtectedGestionRoute component={GestionPages} />
       </Route>
       <Route path="/gestion/landing">
         <ProtectedGestionRoute component={SliderConfig} />

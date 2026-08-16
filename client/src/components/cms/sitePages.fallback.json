@@ -1,0 +1,2009 @@
+{
+  "livraison": {
+    "slug": "livraison",
+    "route": "/livraison",
+    "label": "Livraison",
+    "title": {
+      "fr": "Livraison",
+      "en": "Delivery"
+    },
+    "blocks": [
+      {
+        "id": "livraison-1",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Zones de livraison",
+          "en": "Delivery zones"
+        }
+      },
+      {
+        "id": "livraison-2",
+        "type": "paragraph",
+        "text": {
+          "fr": "Nous livrons actuellement dans les zones suivantes :",
+          "en": "We currently deliver to the following areas:"
+        }
+      },
+      {
+        "id": "livraison-3",
+        "type": "list",
+        "items": [
+          {
+            "fr": "France métropolitaine - Livraison standard et express",
+            "en": "Metropolitan France - Standard and express delivery"
+          },
+          {
+            "fr": "Corse - Livraison standard uniquement",
+            "en": "Corsica - Standard delivery only"
+          },
+          {
+            "fr": "DOM-TOM - Sur devis uniquement",
+            "en": "DOM-TOM - Quote only"
+          },
+          {
+            "fr": "Union Européenne - Livraison internationale",
+            "en": "European Union - International delivery"
+          }
+        ]
+      },
+      {
+        "id": "livraison-4",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Modes de livraison",
+          "en": "Delivery modes"
+        }
+      },
+      {
+        "id": "livraison-5",
+        "type": "heading",
+        "level": 3,
+        "text": {
+          "fr": "Livraison standard (France métropolitaine)",
+          "en": "Standard delivery (Metropolitan France)"
+        }
+      },
+      {
+        "id": "livraison-6",
+        "type": "list",
+        "items": [
+          {
+            "fr": "Délai : 3 à 5 jours ouvrés",
+            "en": "Delay: 3 to 5 working days"
+          },
+          {
+            "fr": "Prix : 9,90€",
+            "en": "Price: €9.90"
+          },
+          {
+            "fr": "Gratuite dès 100€ d'achat",
+            "en": "Free from €100 purchase"
+          },
+          {
+            "fr": "Transporteur : Mondial Relay",
+            "en": "Carrier: Mondial Relay"
+          },
+          {
+            "fr": "Numéro de suivi fourni pour chaque colis",
+            "en": "Tracking number provided for each package"
+          }
+        ]
+      },
+      {
+        "id": "livraison-7",
+        "type": "heading",
+        "level": 3,
+        "text": {
+          "fr": "Livraison express (France métropolitaine)",
+          "en": "Express delivery (Metropolitan France)"
+        }
+      },
+      {
+        "id": "livraison-8",
+        "type": "list",
+        "items": [
+          {
+            "fr": "Délai : 24 à 48h",
+            "en": "Delay: 24 to 48h"
+          },
+          {
+            "fr": "Prix : 19,90€",
+            "en": "Price: €19.90"
+          },
+          {
+            "fr": "Transporteur : Chronopost",
+            "en": "Carrier: Chronopost"
+          },
+          {
+            "fr": "Commande avant 14h, livraison le lendemain",
+            "en": "Order before 2 PM, next day delivery"
+          }
+        ]
+      },
+      {
+        "id": "livraison-9",
+        "type": "heading",
+        "level": 3,
+        "text": {
+          "fr": "Livraison internationale",
+          "en": "International delivery"
+        }
+      },
+      {
+        "id": "livraison-10",
+        "type": "list",
+        "items": [
+          {
+            "fr": "Délai : 5 à 10 jours ouvrés",
+            "en": "Delay: 5 to 10 working days"
+          },
+          {
+            "fr": "Prix : À partir de 19,90€",
+            "en": "Price: From €19.90"
+          },
+          {
+            "fr": "Transporteur : Mondial Relay International",
+            "en": "Carrier: Mondial Relay International"
+          },
+          {
+            "fr": "Numéro de suivi fourni",
+            "en": "Tracking number provided"
+          },
+          {
+            "fr": "Droits de douane : À la charge du destinataire",
+            "en": "Customs duties: Charged to recipient"
+          }
+        ]
+      },
+      {
+        "id": "livraison-11",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Préparation et expédition",
+          "en": "Preparation and shipping"
+        }
+      },
+      {
+        "id": "livraison-12",
+        "type": "paragraph",
+        "text": {
+          "fr": "Délai de préparation : 1 à 2 jours ouvrés",
+          "en": "Preparation time: 1 to 2 working days"
+        }
+      },
+      {
+        "id": "livraison-13",
+        "type": "paragraph",
+        "text": {
+          "fr": "Nos produits étant fabriqués à la main dans notre atelier lillois, certains articles peuvent nécessiter un délai de fabrication supplémentaire. Ce délai vous sera communiqué lors de la validation de votre commande.",
+          "en": "Our products being handcrafted in our Lille workshop, some items may require additional manufacturing time. This delay will be communicated to you when validating your order."
+        }
+      },
+      {
+        "id": "livraison-14",
+        "type": "list",
+        "items": [
+          {
+            "fr": "Commandes passées avant 14h : expédiées le jour même (si en stock)",
+            "en": "Orders placed before 2 PM: shipped same day (if in stock)"
+          },
+          {
+            "fr": "Commandes du vendredi après 14h : expédiées le lundi suivant",
+            "en": "Friday orders after 2 PM: shipped on Monday"
+          },
+          {
+            "fr": "Pas d'expédition les weekends et jours fériés",
+            "en": "No shipping on weekends and holidays"
+          }
+        ]
+      },
+      {
+        "id": "livraison-15",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Suivi de commande",
+          "en": "Order tracking"
+        }
+      },
+      {
+        "id": "livraison-16",
+        "type": "paragraph",
+        "text": {
+          "fr": "Dès l'expédition de votre commande, vous recevrez :",
+          "en": "Upon shipping your order, you will receive:"
+        }
+      },
+      {
+        "id": "livraison-17",
+        "type": "list",
+        "items": [
+          {
+            "fr": "Un email de confirmation d'expédition",
+            "en": "A shipping confirmation email"
+          },
+          {
+            "fr": "Un numéro de suivi pour tracker votre colis",
+            "en": "A tracking number to track your package"
+          },
+          {
+            "fr": "Des notifications SMS (optionnel)",
+            "en": "SMS notifications (optional)"
+          }
+        ]
+      },
+      {
+        "id": "livraison-18",
+        "type": "paragraph",
+        "text": {
+          "fr": "Vous pouvez suivre votre commande en temps réel sur le site du transporteur ou directement depuis votre espace client avec le numéro de suivi Mondial Relay fourni.",
+          "en": "You can track your order in real time on the carrier's website or directly from your customer area with the Mondial Relay tracking number provided."
+        }
+      },
+      {
+        "id": "livraison-19",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Réception de votre commande",
+          "en": "Receiving your order"
+        }
+      },
+      {
+        "id": "livraison-20",
+        "type": "heading",
+        "level": 3,
+        "text": {
+          "fr": "Livraison à domicile",
+          "en": "Home delivery"
+        }
+      },
+      {
+        "id": "livraison-21",
+        "type": "list",
+        "items": [
+          {
+            "fr": "Remise en main propre ou dans votre boîte aux lettres (selon la taille)",
+            "en": "Hand delivery or in your mailbox (depending on size)"
+          },
+          {
+            "fr": "Possibilité de livraison en point relais si absent",
+            "en": "Option for relay point delivery if absent"
+          },
+          {
+            "fr": "Vérifiez l'état du colis avant de signer",
+            "en": "Check the package condition before signing"
+          }
+        ]
+      },
+      {
+        "id": "livraison-22",
+        "type": "heading",
+        "level": 3,
+        "text": {
+          "fr": "Livraison en point relais",
+          "en": "Relay point delivery"
+        }
+      },
+      {
+        "id": "livraison-23",
+        "type": "list",
+        "items": [
+          {
+            "fr": "Conservation du colis pendant 14 jours",
+            "en": "Package kept for 14 days"
+          },
+          {
+            "fr": "Pensez à vous munir d'une pièce d'identité",
+            "en": "Remember to bring ID"
+          },
+          {
+            "fr": "Avis de passage SMS",
+            "en": "SMS pickup notice"
+          }
+        ]
+      },
+      {
+        "id": "livraison-24",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Emballage éco-responsable",
+          "en": "Eco-friendly packaging"
+        }
+      },
+      {
+        "id": "livraison-25",
+        "type": "paragraph",
+        "text": {
+          "fr": "Nous accordons une grande importance à l'environnement :",
+          "en": "We care deeply about the environment:"
+        }
+      },
+      {
+        "id": "livraison-26",
+        "type": "list",
+        "items": [
+          {
+            "fr": "Emballages en carton recyclé et recyclable",
+            "en": "Recycled and recyclable cardboard packaging"
+          },
+          {
+            "fr": "Matériaux de protection biodégradables",
+            "en": "Biodegradable protection materials"
+          },
+          {
+            "fr": "Réduction des emballages au strict nécessaire",
+            "en": "Packaging reduced to the strict minimum"
+          },
+          {
+            "fr": "Aucun plastique dans nos emballages",
+            "en": "No plastic in our packaging"
+          }
+        ]
+      },
+      {
+        "id": "livraison-27",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Problèmes de livraison",
+          "en": "Delivery problems"
+        }
+      },
+      {
+        "id": "livraison-28",
+        "type": "paragraph",
+        "text": {
+          "fr": "En cas de problème avec votre livraison :",
+          "en": "In case of delivery problems:"
+        }
+      },
+      {
+        "id": "livraison-29",
+        "type": "list",
+        "items": [
+          {
+            "fr": "Colis endommagé : Refusez la livraison et contactez-nous immédiatement",
+            "en": "Damaged package: Refuse delivery and contact us immediately"
+          },
+          {
+            "fr": "Colis perdu : Nous lançons une enquête avec le transporteur",
+            "en": "Lost package: We launch investigation with carrier"
+          },
+          {
+            "fr": "Adresse incorrecte : Frais de réexpédition à votre charge",
+            "en": "Incorrect address: Reshipping costs at your expense"
+          },
+          {
+            "fr": "Absence lors de la livraison : Retrait en point relais ou nouvelle livraison",
+            "en": "Absent during delivery: Collection at relay point or new delivery"
+          }
+        ]
+      },
+      {
+        "id": "livraison-30",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Questions sur votre livraison ?",
+          "en": "Questions about your delivery?"
+        }
+      },
+      {
+        "id": "livraison-31",
+        "type": "paragraph",
+        "text": {
+          "fr": "Pour toute question concernant votre livraison :",
+          "en": "For any questions regarding your delivery:"
+        }
+      },
+      {
+        "id": "livraison-32",
+        "type": "paragraph",
+        "text": {
+          "fr": "📧 Email : altolille@gmail.com\n📞 Téléphone : +33 782 086 690\n🕒 Horaires : Lundi au vendredi, 9h-18h",
+          "en": "📧 Email: altolille@gmail.com\n📞 Phone: +33 782 086 690\n🕒 Hours: Monday to Friday, 9am-6pm"
+        }
+      },
+      {
+        "id": "livraison-33",
+        "type": "paragraph",
+        "text": {
+          "fr": "💡 Bon à savoir : Nos délais de livraison sont donnés à titre indicatif. En période de forte affluence (fêtes, promotions), ces délais peuvent être légèrement allongés. Nous vous tiendrons informé de tout retard éventuel.",
+          "en": "💡 Good to know: Our delivery times are given as an indication. During busy periods (holidays, promotions), these delays may be slightly extended. We will keep you informed of any potential delays."
+        }
+      }
+    ]
+  },
+  "retours": {
+    "slug": "retours",
+    "route": "/retours",
+    "label": "Retours et remboursements",
+    "title": {
+      "fr": "Retours et échanges",
+      "en": "Returns and exchanges"
+    },
+    "blocks": [
+      {
+        "id": "retours-1",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Droit de rétractation",
+          "en": "Right of withdrawal"
+        }
+      },
+      {
+        "id": "retours-2",
+        "type": "paragraph",
+        "text": {
+          "fr": "Conformément à la réglementation en vigueur, vous disposez de 14 jours à compter de la réception de votre commande pour exercer votre droit de rétractation.",
+          "en": "In accordance with current regulations, you have 14 days from receipt of your order to exercise your right of withdrawal."
+        }
+      },
+      {
+        "id": "retours-3",
+        "type": "heading",
+        "level": 3,
+        "text": {
+          "fr": "Délai de rétractation",
+          "en": "Withdrawal period"
+        }
+      },
+      {
+        "id": "retours-4",
+        "type": "list",
+        "items": [
+          {
+            "fr": "14 jours calendaires à partir de la réception",
+            "en": "14 calendar days from receipt"
+          },
+          {
+            "fr": "Le cachet de la poste fait foi pour le retour",
+            "en": "Postmark is proof for return"
+          },
+          {
+            "fr": "Aucune pénalité ni frais supplémentaire (hors frais de retour)",
+            "en": "No penalty or additional fees (excluding return costs)"
+          }
+        ]
+      },
+      {
+        "id": "retours-5",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Conditions de retour",
+          "en": "Return conditions"
+        }
+      },
+      {
+        "id": "retours-6",
+        "type": "paragraph",
+        "text": {
+          "fr": "Pour être accepté, votre retour doit respecter les conditions suivantes :",
+          "en": "To be accepted, your return must meet the following conditions:"
+        }
+      },
+      {
+        "id": "retours-7",
+        "type": "list",
+        "items": [
+          {
+            "fr": "✅ Produit dans son emballage d'origine",
+            "en": "✅ Product in original packaging"
+          },
+          {
+            "fr": "✅ Produit en parfait état, non utilisé",
+            "en": "✅ Product in perfect condition, unused"
+          },
+          {
+            "fr": "✅ Tous les accessoires et documents inclus",
+            "en": "✅ All accessories and documents included"
+          },
+          {
+            "fr": "✅ Étiquettes et protections non retirées",
+            "en": "✅ Labels and protections not removed"
+          }
+        ]
+      },
+      {
+        "id": "retours-8",
+        "type": "heading",
+        "level": 3,
+        "text": {
+          "fr": "Exclusions",
+          "en": "Exclusions"
+        }
+      },
+      {
+        "id": "retours-9",
+        "type": "paragraph",
+        "text": {
+          "fr": "Les produits personnalisés ou fabriqués sur mesure ne peuvent pas être retournés, sauf en cas de défaut de fabrication.",
+          "en": "Personalized or custom-made products cannot be returned, except in case of manufacturing defect."
+        }
+      },
+      {
+        "id": "retours-10",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Comment effectuer un retour",
+          "en": "How to make a return"
+        }
+      },
+      {
+        "id": "retours-11",
+        "type": "heading",
+        "level": 3,
+        "text": {
+          "fr": "Contactez notre service client",
+          "en": "Contact our customer service"
+        }
+      },
+      {
+        "id": "retours-12",
+        "type": "paragraph",
+        "text": {
+          "fr": "Envoyez un email à altolille@gmail.com avec votre numéro de commande et le motif du retour.",
+          "en": "Send an email to altolille@gmail.com with your order number and reason for return."
+        }
+      },
+      {
+        "id": "retours-13",
+        "type": "heading",
+        "level": 3,
+        "text": {
+          "fr": "Recevez votre étiquette de retour",
+          "en": "Receive your return label"
+        }
+      },
+      {
+        "id": "retours-14",
+        "type": "paragraph",
+        "text": {
+          "fr": "Nous vous enverrons une étiquette de retour prépayée et les instructions détaillées.",
+          "en": "We will send you a prepaid return label and detailed instructions."
+        }
+      },
+      {
+        "id": "retours-15",
+        "type": "heading",
+        "level": 3,
+        "text": {
+          "fr": "Préparez votre colis",
+          "en": "Prepare your package"
+        }
+      },
+      {
+        "id": "retours-16",
+        "type": "paragraph",
+        "text": {
+          "fr": "Emballez soigneusement le produit dans son emballage d'origine avec tous les accessoires.",
+          "en": "Carefully pack the product in its original packaging with all accessories."
+        }
+      },
+      {
+        "id": "retours-17",
+        "type": "heading",
+        "level": 3,
+        "text": {
+          "fr": "Expédiez votre retour",
+          "en": "Ship your return"
+        }
+      },
+      {
+        "id": "retours-18",
+        "type": "paragraph",
+        "text": {
+          "fr": "Déposez le colis dans un point de retrait du transporteur indiqué.",
+          "en": "Drop off the package at an indicated carrier pickup point."
+        }
+      },
+      {
+        "id": "retours-19",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Frais de retour",
+          "en": "Return fees"
+        }
+      },
+      {
+        "id": "retours-20",
+        "type": "heading",
+        "level": 3,
+        "text": {
+          "fr": "Retours gratuits",
+          "en": "Free returns"
+        }
+      },
+      {
+        "id": "retours-21",
+        "type": "list",
+        "items": [
+          {
+            "fr": "Produit défectueux",
+            "en": "Defective product"
+          },
+          {
+            "fr": "Erreur de notre part",
+            "en": "Our error"
+          },
+          {
+            "fr": "Produit non conforme",
+            "en": "Non-compliant product"
+          },
+          {
+            "fr": "Commande supérieure à 100€",
+            "en": "Order over €100"
+          }
+        ]
+      },
+      {
+        "id": "retours-22",
+        "type": "heading",
+        "level": 3,
+        "text": {
+          "fr": "Frais à votre charge",
+          "en": "Fees charged to you"
+        }
+      },
+      {
+        "id": "retours-23",
+        "type": "list",
+        "items": [
+          {
+            "fr": "Changement d'avis",
+            "en": "Change of mind"
+          },
+          {
+            "fr": "Commande inférieure à 100€",
+            "en": "Order under €100"
+          },
+          {
+            "fr": "Frais : 9,90€ déduits du remboursement",
+            "en": "Fee: €9.90 deducted from refund"
+          }
+        ]
+      },
+      {
+        "id": "retours-24",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Échanges",
+          "en": "Exchanges"
+        }
+      },
+      {
+        "id": "retours-25",
+        "type": "paragraph",
+        "text": {
+          "fr": "Vous souhaitez échanger votre produit contre une autre couleur ou un autre modèle ?",
+          "en": "Want to exchange your product for another color or model?"
+        }
+      },
+      {
+        "id": "retours-26",
+        "type": "list",
+        "items": [
+          {
+            "fr": "Contactez-nous avant de renvoyer le produit",
+            "en": "Contact us before returning the product"
+          },
+          {
+            "fr": "Vérifiez la disponibilité du produit souhaité",
+            "en": "Check availability of desired product"
+          },
+          {
+            "fr": "Les frais d'échange sont gratuits si la valeur est identique",
+            "en": "Exchange fees are free if value is identical"
+          },
+          {
+            "fr": "Supplément à régler si le nouveau produit est plus cher",
+            "en": "Additional payment if new product is more expensive"
+          },
+          {
+            "fr": "Remboursement de la différence si le nouveau produit est moins cher",
+            "en": "Refund of difference if new product is cheaper"
+          }
+        ]
+      },
+      {
+        "id": "retours-27",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Traitement des retours",
+          "en": "Return processing"
+        }
+      },
+      {
+        "id": "retours-28",
+        "type": "heading",
+        "level": 3,
+        "text": {
+          "fr": "Délais de traitement",
+          "en": "Processing times"
+        }
+      },
+      {
+        "id": "retours-29",
+        "type": "list",
+        "items": [
+          {
+            "fr": "Réception : 2-3 jours ouvrés après expédition",
+            "en": "Reception: 2-3 working days after shipping"
+          },
+          {
+            "fr": "Contrôle qualité : 1-2 jours ouvrés",
+            "en": "Quality control: 1-2 working days"
+          },
+          {
+            "fr": "Remboursement : 3-5 jours ouvrés après validation",
+            "en": "Refund: 3-5 working days after validation"
+          },
+          {
+            "fr": "Délai total : 7-10 jours ouvrés maximum",
+            "en": "Total time: 7-10 working days maximum"
+          }
+        ]
+      },
+      {
+        "id": "retours-30",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Mode de remboursement",
+          "en": "Refund method"
+        }
+      },
+      {
+        "id": "retours-31",
+        "type": "paragraph",
+        "text": {
+          "fr": "Le remboursement s'effectue selon le mode de paiement utilisé lors de la commande :",
+          "en": "Refund is made according to payment method used during order:"
+        }
+      },
+      {
+        "id": "retours-32",
+        "type": "list",
+        "items": [
+          {
+            "fr": "Carte bancaire : Remboursement automatique sur la carte utilisée",
+            "en": "Bank card: Automatic refund to used card"
+          },
+          {
+            "fr": "Virement bancaire : Sous 3-5 jours ouvrés",
+            "en": "Bank transfer: Within 3-5 working days"
+          },
+          {
+            "fr": "PayPal : Remboursement sur le compte PayPal",
+            "en": "PayPal: Refund to PayPal account"
+          }
+        ]
+      },
+      {
+        "id": "retours-33",
+        "type": "paragraph",
+        "text": {
+          "fr": "Le remboursement inclut le prix du produit et les frais de livraison initiaux (si le retour est de notre fait).",
+          "en": "Refund includes product price and initial shipping costs (if return is our fault)."
+        }
+      },
+      {
+        "id": "retours-34",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Produits défectueux",
+          "en": "Defective products"
+        }
+      },
+      {
+        "id": "retours-35",
+        "type": "paragraph",
+        "text": {
+          "fr": "Si vous recevez un produit défectueux ou endommagé :",
+          "en": "If you receive a defective or damaged product:"
+        }
+      },
+      {
+        "id": "retours-36",
+        "type": "list",
+        "items": [
+          {
+            "fr": "Contactez-nous immédiatement avec photos à l'appui",
+            "en": "Contact us immediately with supporting photos"
+          },
+          {
+            "fr": "N'utilisez pas le produit si vous suspectez un défaut",
+            "en": "Do not use product if you suspect defect"
+          },
+          {
+            "fr": "Nous prenons en charge tous les frais de retour",
+            "en": "We cover all return costs"
+          },
+          {
+            "fr": "Remplacement prioritaire ou remboursement intégral",
+            "en": "Priority replacement or full refund"
+          },
+          {
+            "fr": "Dédommagement possible selon la situation",
+            "en": "Possible compensation depending on situation"
+          }
+        ]
+      },
+      {
+        "id": "retours-37",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Adresse de retour",
+          "en": "Return address"
+        }
+      },
+      {
+        "id": "retours-38",
+        "type": "paragraph",
+        "text": {
+          "fr": "Service Retours - Alto Lille",
+          "en": "Returns Service - Alto Lille"
+        }
+      },
+      {
+        "id": "retours-39",
+        "type": "paragraph",
+        "text": {
+          "fr": "95 rue Pierre Ledent",
+          "en": "95 rue Pierre Ledent"
+        }
+      },
+      {
+        "id": "retours-40",
+        "type": "paragraph",
+        "text": {
+          "fr": "62170 Montreuil-sur-Mer",
+          "en": "62170 Montreuil-sur-Mer"
+        }
+      },
+      {
+        "id": "retours-41",
+        "type": "paragraph",
+        "text": {
+          "fr": "France",
+          "en": "France"
+        }
+      },
+      {
+        "id": "retours-42",
+        "type": "paragraph",
+        "text": {
+          "fr": "⚠️ N'expédiez jamais un retour sans avoir contacté notre service client au préalable.",
+          "en": "⚠️ Never ship a return without contacting our customer service first."
+        }
+      },
+      {
+        "id": "retours-43",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Contact retours",
+          "en": "Returns contact"
+        }
+      },
+      {
+        "id": "retours-44",
+        "type": "paragraph",
+        "text": {
+          "fr": "📧 Email : altolille@gmail.com\n📞 Téléphone : +33 782 086 690\n🕒 Horaires : Lundi au vendredi, 9h-18h",
+          "en": "📧 Email: altolille@gmail.com\n📞 Phone: +33 782 086 690\n🕒 Hours: Monday to Friday, 9am-6pm"
+        }
+      },
+      {
+        "id": "retours-45",
+        "type": "paragraph",
+        "text": {
+          "fr": "Objet email : \"Demande de retour - Commande n°[votre numéro]\"",
+          "en": "Email subject: \"Return request - Order #[your number]\""
+        }
+      },
+      {
+        "id": "retours-46",
+        "type": "paragraph",
+        "text": {
+          "fr": "💚 Notre engagement : Votre satisfaction est notre priorité. Nous mettons tout en œuvre pour traiter vos retours dans les meilleurs délais et vous offrir une expérience client exceptionnelle.",
+          "en": "💚 Our commitment: Your satisfaction is our priority. We do everything possible to process your returns in the best time frame and offer you an exceptional customer experience."
+        }
+      }
+    ]
+  },
+  "faq": {
+    "slug": "faq",
+    "route": "/faq",
+    "label": "FAQ",
+    "title": {
+      "fr": "Questions fréquentes",
+      "en": "Frequently Asked Questions"
+    },
+    "blocks": [
+      {
+        "id": "faq-1",
+        "type": "paragraph",
+        "text": {
+          "fr": "Retrouvez les réponses aux questions les plus courantes sur nos produits, la livraison et le service client.",
+          "en": "Find answers to the most common questions about our products, delivery and customer service."
+        }
+      },
+      {
+        "id": "faq-2",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Nos produits",
+          "en": "Our products"
+        }
+      },
+      {
+        "id": "faq-3",
+        "type": "faq",
+        "items": [
+          {
+            "question": {
+              "fr": "Quels sont les matériaux utilisés pour vos lampes ?",
+              "en": "What materials are used for your lamps?"
+            },
+            "answer": {
+              "fr": "Nos lampes sont fabriquées avec des matériaux durables et écologiques : bois massif français (chêne, hêtre), LED basse consommation, composants électroniques recyclables et finitions naturelles sans solvants nocifs.",
+              "en": "Our lamps are made with durable and eco-friendly materials: French solid wood (oak, beech), low-consumption LEDs, recyclable electronic components and natural finishes without harmful solvents."
+            }
+          },
+          {
+            "question": {
+              "fr": "Quelle est la consommation électrique de vos lampes ?",
+              "en": "What is the electrical consumption of your lamps?"
+            },
+            "answer": {
+              "fr": "Nos lampes LED consomment entre 5W et 15W maximum selon le modèle, soit 10 fois moins qu'une ampoule classique. Elles permettent de réduire significativement votre facture électrique.",
+              "en": "Our LED lamps consume between 5W and 15W maximum depending on the model, which is 10 times less than a conventional bulb. They significantly reduce your electricity bill."
+            }
+          },
+          {
+            "question": {
+              "fr": "Quelle est la durée de vie de vos produits ?",
+              "en": "What is the lifespan of your products?"
+            },
+            "answer": {
+              "fr": "Nos lampes sont conçues pour durer : LED avec 25 000h de fonctionnement minimum, bois traité pour résister à l'humidité et aux variations de température, assemblages mécaniques robustes sans colle.",
+              "en": "Our lamps are designed to last: LEDs with minimum 25,000h of operation, wood treated to resist humidity and temperature variations, robust mechanical assemblies without glue."
+            }
+          }
+        ]
+      },
+      {
+        "id": "faq-4",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Livraison",
+          "en": "Delivery"
+        }
+      },
+      {
+        "id": "faq-5",
+        "type": "faq",
+        "items": [
+          {
+            "question": {
+              "fr": "Quels sont les délais de livraison ?",
+              "en": "What are the delivery times?"
+            },
+            "answer": {
+              "fr": "France métropolitaine : 3-5 jours ouvrés en standard, 24-48h en express. Union Européenne : 5-10 jours ouvrés. Préparation : 1-2 jours ouvrés.",
+              "en": "Metropolitan France: 3-5 working days standard, 24-48h express. European Union: 5-10 working days. Preparation: 1-2 working days."
+            }
+          },
+          {
+            "question": {
+              "fr": "Quels sont les frais de livraison ?",
+              "en": "What are the delivery costs?"
+            },
+            "answer": {
+              "fr": "France : 9,90€ (gratuit dès 100€), Express : 19,90€. Union Européenne : à partir de 19,90€. Livraison en point relais disponible.",
+              "en": "France: €9.90 (free from €100), Express: €19.90. European Union: from €19.90. Relay point delivery available."
+            }
+          },
+          {
+            "question": {
+              "fr": "Comment suivre ma commande ?",
+              "en": "How can I track my order?"
+            },
+            "answer": {
+              "fr": "Vous recevez un email avec le numéro de suivi dès l'expédition. Suivez votre colis sur le site du transporteur ou dans votre espace client avec votre numéro Mondial Relay.",
+              "en": "You receive an email with the tracking number as soon as it's shipped. Track your package on the carrier's website or in your customer area with your Mondial Relay number."
+            }
+          }
+        ]
+      },
+      {
+        "id": "faq-6",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Technique",
+          "en": "Technical"
+        }
+      },
+      {
+        "id": "faq-7",
+        "type": "faq",
+        "items": [
+          {
+            "question": {
+              "fr": "Comment installer la lampe ?",
+              "en": "How to install the lamp?"
+            },
+            "answer": {
+              "fr": "La FOCUS.01 se monte sans outils en quelques minutes. Un manuel illustré est fourni avec le produit. Il suffit d'assembler la base en chêne, d'insérer l'abat-jour en PLA et de brancher l'ampoule LED incluse.",
+              "en": "The FOCUS.01 is assembled without tools in a few minutes. An illustrated manual is provided with the product. Simply assemble the oak base, insert the PLA lampshade and plug in the included LED bulb."
+            }
+          },
+          {
+            "question": {
+              "fr": "Comment entretenir ma lampe ?",
+              "en": "How to maintain my lamp?"
+            },
+            "answer": {
+              "fr": "Nettoyez l'abat-jour en PLA avec un chiffon légèrement humide. Pour la base en chêne, utilisez un produit d'entretien spécifique au bois. Évitez les produits chimiques agressifs.",
+              "en": "Clean the PLA lampshade with a slightly damp cloth. For the oak base, use a wood-specific care product. Avoid aggressive chemicals."
+            }
+          }
+        ]
+      },
+      {
+        "id": "faq-8",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Vous ne trouvez pas votre réponse ?",
+          "en": "Can't find your answer?"
+        }
+      },
+      {
+        "id": "faq-9",
+        "type": "paragraph",
+        "text": {
+          "fr": "Notre équipe est là pour vous aider. N'hésitez pas à nous contacter, nous vous répondrons dans les plus brefs délais.",
+          "en": "Our team is here to help. Don't hesitate to contact us, we will respond as soon as possible."
+        }
+      }
+    ]
+  },
+  "mentions-legales": {
+    "slug": "mentions-legales",
+    "route": "/mentions-legales",
+    "label": "Mentions légales",
+    "title": {
+      "fr": "Mentions légales",
+      "en": "Legal Notice"
+    },
+    "blocks": [
+      {
+        "id": "mentions-legales-1",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Éditeur du site",
+          "en": "Site Publisher"
+        }
+      },
+      {
+        "id": "mentions-legales-2",
+        "type": "paragraph",
+        "text": {
+          "fr": "Alto Lille\n95 rue Pierre Ledent\n62170 Montreuil-sur-Mer\nFrance",
+          "en": "Alto Lille\n95 rue Pierre Ledent\n62170 Montreuil-sur-Mer\nFrance"
+        }
+      },
+      {
+        "id": "mentions-legales-3",
+        "type": "paragraph",
+        "text": {
+          "fr": "Email : altolille@gmail.com\nTéléphone : +33 782 086 690",
+          "en": "Email: altolille@gmail.com\nPhone: +33 782 086 690"
+        }
+      },
+      {
+        "id": "mentions-legales-4",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Directeur de publication",
+          "en": "Publication Director"
+        }
+      },
+      {
+        "id": "mentions-legales-5",
+        "type": "paragraph",
+        "text": {
+          "fr": "Alto Lille",
+          "en": "Alto Lille"
+        }
+      },
+      {
+        "id": "mentions-legales-6",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Hébergement",
+          "en": "Hosting"
+        }
+      },
+      {
+        "id": "mentions-legales-7",
+        "type": "heading",
+        "level": 3,
+        "text": {
+          "fr": "Site web",
+          "en": "Website"
+        }
+      },
+      {
+        "id": "mentions-legales-8",
+        "type": "paragraph",
+        "text": {
+          "fr": "Interface utilisateur hébergée par Vercel Inc.\n340 S Lemon Ave #4133\nWalnut, CA 91789\nÉtats-Unis",
+          "en": "User interface hosted by Vercel Inc.\n340 S Lemon Ave #4133\nWalnut, CA 91789\nUnited States"
+        }
+      },
+      {
+        "id": "mentions-legales-9",
+        "type": "heading",
+        "level": 3,
+        "text": {
+          "fr": "Données et API",
+          "en": "Data and API"
+        }
+      },
+      {
+        "id": "mentions-legales-10",
+        "type": "paragraph",
+        "text": {
+          "fr": "Serveur backend et base de données hébergés par OVH SAS\n2 rue Kellermann\n59100 Roubaix\nFrance",
+          "en": "Backend server and database hosted by OVH SAS\n2 rue Kellermann\n59100 Roubaix\nFrance"
+        }
+      },
+      {
+        "id": "mentions-legales-11",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Développement",
+          "en": "Development"
+        }
+      },
+      {
+        "id": "mentions-legales-12",
+        "type": "paragraph",
+        "text": {
+          "fr": "Site développé par Etienne Pogoda\npogodev.com",
+          "en": "Website developed by Etienne Pogoda\npogodev.com"
+        }
+      },
+      {
+        "id": "mentions-legales-13",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Propriété intellectuelle",
+          "en": "Intellectual Property"
+        }
+      },
+      {
+        "id": "mentions-legales-14",
+        "type": "paragraph",
+        "text": {
+          "fr": "L'ensemble de ce site relève de la législation française et internationale sur le droit d'auteur et la propriété intellectuelle. Tous les droits de reproduction sont réservés, y compris pour les documents téléchargeables et les représentations iconographiques et photographiques.",
+          "en": "This entire site is subject to French and international legislation on copyright and intellectual property. All reproduction rights are reserved, including for downloadable documents and iconographic and photographic representations."
+        }
+      },
+      {
+        "id": "mentions-legales-15",
+        "type": "paragraph",
+        "text": {
+          "fr": "La reproduction de tout ou partie de ce site sur un support électronique quel qu'il soit est formellement interdite sauf autorisation expresse du directeur de la publication.",
+          "en": "The reproduction of all or part of this site on any electronic medium whatsoever is formally prohibited without express authorization from the publication director."
+        }
+      },
+      {
+        "id": "mentions-legales-16",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Responsabilité",
+          "en": "Responsibility"
+        }
+      },
+      {
+        "id": "mentions-legales-17",
+        "type": "paragraph",
+        "text": {
+          "fr": "Les informations contenues sur ce site sont aussi précises que possible et le site remis à jour à différentes périodes de l'année, mais peut toutefois contenir des inexactitudes ou des omissions.",
+          "en": "The information contained on this site is as accurate as possible and the site is updated at different periods of the year, but may nevertheless contain inaccuracies or omissions."
+        }
+      },
+      {
+        "id": "mentions-legales-18",
+        "type": "paragraph",
+        "text": {
+          "fr": "Si vous constatez une lacune, erreur ou ce qui parait être un dysfonctionnement, merci de bien vouloir le signaler par email, à l'adresse altolille@gmail.com, en décrivant le problème de la façon la plus précise possible.",
+          "en": "If you notice a gap, error or what appears to be a malfunction, please report it by email to altolille@gmail.com, describing the problem as precisely as possible."
+        }
+      },
+      {
+        "id": "mentions-legales-19",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Liens hypertextes",
+          "en": "Hyperlinks"
+        }
+      },
+      {
+        "id": "mentions-legales-20",
+        "type": "paragraph",
+        "text": {
+          "fr": "Les liens hypertextes mis en place dans le cadre du présent site internet en direction d'autres ressources présentes sur le réseau Internet ne sauraient engager la responsabilité d'Alto Lille.",
+          "en": "The hyperlinks set up within the framework of this website towards other resources present on the Internet cannot engage the responsibility of Alto Lille."
+        }
+      },
+      {
+        "id": "mentions-legales-21",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Droit applicable",
+          "en": "Applicable Law"
+        }
+      },
+      {
+        "id": "mentions-legales-22",
+        "type": "paragraph",
+        "text": {
+          "fr": "Tant le présent site que les modalités et conditions de son utilisation sont régis par le droit français, quel que soit le lieu d'utilisation. En cas de contestation éventuelle, et après l'échec de toute tentative de recherche d'une solution amiable, les tribunaux français seront seuls compétents pour connaître de ce litige.",
+          "en": "Both this site and the terms and conditions of its use are governed by French law, regardless of the place of use. In the event of possible dispute, and after the failure of any attempt to find an amicable solution, French courts will have sole jurisdiction to hear this dispute."
+        }
+      }
+    ]
+  },
+  "politique-confidentialite": {
+    "slug": "politique-confidentialite",
+    "route": "/politique-confidentialite",
+    "label": "Politique de confidentialité",
+    "title": {
+      "fr": "Politique de confidentialité",
+      "en": "Privacy Policy"
+    },
+    "blocks": [
+      {
+        "id": "politique-confidentialite-1",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Introduction",
+          "en": "Introduction"
+        }
+      },
+      {
+        "id": "politique-confidentialite-2",
+        "type": "paragraph",
+        "text": {
+          "fr": "Alto Lille s'engage à protéger votre vie privée. Cette politique de confidentialité explique comment nous collectons, utilisons et protégeons vos informations personnelles lorsque vous utilisez notre site web.",
+          "en": "Alto Lille is committed to protecting your privacy. This privacy policy explains how we collect, use and protect your personal information when you use our website."
+        }
+      },
+      {
+        "id": "politique-confidentialite-3",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Données collectées",
+          "en": "Data Collected"
+        }
+      },
+      {
+        "id": "politique-confidentialite-4",
+        "type": "heading",
+        "level": 3,
+        "text": {
+          "fr": "Données que vous nous fournissez",
+          "en": "Data you provide us"
+        }
+      },
+      {
+        "id": "politique-confidentialite-5",
+        "type": "list",
+        "items": [
+          {
+            "fr": "Nom et prénom",
+            "en": "First and last name"
+          },
+          {
+            "fr": "Adresse email",
+            "en": "Email address"
+          },
+          {
+            "fr": "Adresse postale de livraison",
+            "en": "Delivery postal address"
+          },
+          {
+            "fr": "Numéro de téléphone (requis pour la livraison en point relais et le suivi de votre commande, y compris par SMS)",
+            "en": "Phone number (required for relay point delivery and order updates, including by SMS)"
+          },
+          {
+            "fr": "Informations de paiement (traitées de manière sécurisée par Stripe, jamais stockées sur nos serveurs)",
+            "en": "Payment information (processed securely by Stripe, never stored on our servers)"
+          }
+        ]
+      },
+      {
+        "id": "politique-confidentialite-6",
+        "type": "heading",
+        "level": 3,
+        "text": {
+          "fr": "Données collectées automatiquement",
+          "en": "Automatically collected data"
+        }
+      },
+      {
+        "id": "politique-confidentialite-7",
+        "type": "list",
+        "items": [
+          {
+            "fr": "Adresse IP",
+            "en": "IP address"
+          },
+          {
+            "fr": "Type de navigateur et version",
+            "en": "Browser type and version"
+          },
+          {
+            "fr": "Pages visitées et temps passé sur le site",
+            "en": "Pages visited and time spent on site"
+          },
+          {
+            "fr": "Données de géolocalisation approximative (pays/région)",
+            "en": "Approximate geolocation data (country/region)"
+          }
+        ]
+      },
+      {
+        "id": "politique-confidentialite-8",
+        "type": "heading",
+        "level": 3,
+        "text": {
+          "fr": "🔒 Principe de minimisation",
+          "en": "🔒 Principle of minimization"
+        }
+      },
+      {
+        "id": "politique-confidentialite-9",
+        "type": "paragraph",
+        "text": {
+          "fr": "Nous ne collectons que les données strictement nécessaires à la réalisation de votre commande. Aucun compte utilisateur n'est créé, ce qui limite considérablement les données personnelles traitées.",
+          "en": "We only collect data strictly necessary for fulfilling your order. No user account is created, which considerably limits the personal data processed."
+        }
+      },
+      {
+        "id": "politique-confidentialite-10",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Utilisation des données",
+          "en": "Data Usage"
+        }
+      },
+      {
+        "id": "politique-confidentialite-11",
+        "type": "paragraph",
+        "text": {
+          "fr": "Nous utilisons vos données personnelles pour :",
+          "en": "We use your personal data to:"
+        }
+      },
+      {
+        "id": "politique-confidentialite-12",
+        "type": "list",
+        "items": [
+          {
+            "fr": "Traiter vos commandes et assurer la livraison",
+            "en": "Process your orders and ensure delivery"
+          },
+          {
+            "fr": "Vous informer du suivi de votre commande par email et, le cas échéant, par SMS (confirmation, expédition, livraison)",
+            "en": "Keep you informed about your order by email and, where applicable, by SMS (confirmation, shipping, delivery)"
+          },
+          {
+            "fr": "Fournir un service client et support technique",
+            "en": "Provide customer service and technical support"
+          },
+          {
+            "fr": "Améliorer notre site web et nos services",
+            "en": "Improve our website and services"
+          },
+          {
+            "fr": "Respecter nos obligations légales",
+            "en": "Comply with our legal obligations"
+          }
+        ]
+      },
+      {
+        "id": "politique-confidentialite-13",
+        "type": "paragraph",
+        "text": {
+          "fr": "Note :Nous ne créons pas de comptes clients. Vos données sont uniquement utilisées pour le traitement de votre commande et supprimées conformément à la réglementation.",
+          "en": "Note :We do not create customer accounts. Your data is only used for processing your order and deleted in accordance with regulations."
+        }
+      },
+      {
+        "id": "politique-confidentialite-14",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Partage des données",
+          "en": "Data Sharing"
+        }
+      },
+      {
+        "id": "politique-confidentialite-15",
+        "type": "paragraph",
+        "text": {
+          "fr": "Nous ne vendons, n'échangeons ni ne louons vos informations personnelles à des tiers. Nous pouvons partager vos données avec :",
+          "en": "We do not sell, exchange or rent your personal information to third parties. We may share your data with:"
+        }
+      },
+      {
+        "id": "politique-confidentialite-16",
+        "type": "list",
+        "items": [
+          {
+            "fr": "Nos prestataires de services (Stripe pour le paiement, Mondial Relay pour la livraison, hébergement)",
+            "en": "Our service providers (Stripe for payment, Mondial Relay for delivery, hosting)"
+          },
+          {
+            "fr": "Les autorités légales si requis par la loi",
+            "en": "Legal authorities if required by law"
+          }
+        ]
+      },
+      {
+        "id": "politique-confidentialite-17",
+        "type": "paragraph",
+        "text": {
+          "fr": "Hébergement sécurisé :Les données sensibles sont stockées sur nos serveurs VPS OVH situés en France, garantissant la conformité RGPD et la protection de vos données.",
+          "en": "Hébergement sécurisé :Sensitive data is stored on our OVH VPS servers located in France, ensuring GDPR compliance and protection of your data."
+        }
+      },
+      {
+        "id": "politique-confidentialite-18",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Cookies",
+          "en": "Cookies"
+        }
+      },
+      {
+        "id": "politique-confidentialite-19",
+        "type": "paragraph",
+        "text": {
+          "fr": "Notre site utilise des cookies pour améliorer votre expérience de navigation. Les cookies sont de petits fichiers stockés sur votre appareil qui nous aident à :",
+          "en": "Our site uses cookies to improve your browsing experience. Cookies are small files stored on your device that help us:"
+        }
+      },
+      {
+        "id": "politique-confidentialite-20",
+        "type": "list",
+        "items": [
+          {
+            "fr": "Mémoriser vos préférences",
+            "en": "Remember your preferences"
+          },
+          {
+            "fr": "Analyser l'utilisation du site",
+            "en": "Analyze site usage"
+          },
+          {
+            "fr": "Personnaliser le contenu",
+            "en": "Personalize content"
+          }
+        ]
+      },
+      {
+        "id": "politique-confidentialite-21",
+        "type": "paragraph",
+        "text": {
+          "fr": "Vous pouvez désactiver les cookies dans les paramètres de votre navigateur, mais cela peut affecter le fonctionnement du site.",
+          "en": "You can disable cookies in your browser settings, but this may affect site functionality."
+        }
+      },
+      {
+        "id": "politique-confidentialite-22",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Sécurité des données",
+          "en": "Data Security"
+        }
+      },
+      {
+        "id": "politique-confidentialite-23",
+        "type": "paragraph",
+        "text": {
+          "fr": "Nous mettons en place des mesures de sécurité appropriées pour protéger vos données personnelles contre l'accès non autorisé, la modification, la divulgation ou la destruction.",
+          "en": "We implement appropriate security measures to protect your personal data against unauthorized access, modification, disclosure or destruction."
+        }
+      },
+      {
+        "id": "politique-confidentialite-24",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Vos droits",
+          "en": "Your Rights"
+        }
+      },
+      {
+        "id": "politique-confidentialite-25",
+        "type": "paragraph",
+        "text": {
+          "fr": "Conformément au RGPD, vous avez le droit de :",
+          "en": "In accordance with GDPR, you have the right to:"
+        }
+      },
+      {
+        "id": "politique-confidentialite-26",
+        "type": "list",
+        "items": [
+          {
+            "fr": "Accéder à vos données personnelles",
+            "en": "Access your personal data"
+          },
+          {
+            "fr": "Rectifier vos données inexactes",
+            "en": "Rectify your inaccurate data"
+          },
+          {
+            "fr": "Supprimer vos données (droit à l'oubli)",
+            "en": "Delete your data (right to be forgotten)"
+          },
+          {
+            "fr": "Limiter le traitement de vos données",
+            "en": "Limit the processing of your data"
+          },
+          {
+            "fr": "Vous opposer au traitement",
+            "en": "Object to processing"
+          },
+          {
+            "fr": "Recevoir vos données dans un format portable",
+            "en": "Receive your data in a portable format"
+          }
+        ]
+      },
+      {
+        "id": "politique-confidentialite-27",
+        "type": "paragraph",
+        "text": {
+          "fr": "Pour exercer ces droits, contactez-nous à : altolille@gmail.com",
+          "en": "To exercise these rights, contact us at: altolille@gmail.com"
+        }
+      },
+      {
+        "id": "politique-confidentialite-28",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Conservation des données",
+          "en": "Data Retention"
+        }
+      },
+      {
+        "id": "politique-confidentialite-29",
+        "type": "paragraph",
+        "text": {
+          "fr": "Nous conservons vos données personnelles uniquement pendant la durée nécessaire au traitement de votre commande et au suivi post-vente (garantie), soit maximum 2 ans après livraison, ou selon les exigences légales (comptabilité : 10 ans).",
+          "en": "We retain your personal data only for the time necessary to process your order and post-sale follow-up (warranty), i.e. maximum 2 years after delivery, or according to legal requirements (accounting: 10 years)."
+        }
+      },
+      {
+        "id": "politique-confidentialite-30",
+        "type": "paragraph",
+        "text": {
+          "fr": "Sans création de compte client, vos données ne sont pas conservées à des fins commerciales au-delà du traitement de votre commande.",
+          "en": "Without creating a customer account, your data is not retained for commercial purposes beyond processing your order."
+        }
+      },
+      {
+        "id": "politique-confidentialite-31",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Modifications",
+          "en": "Modifications"
+        }
+      },
+      {
+        "id": "politique-confidentialite-32",
+        "type": "paragraph",
+        "text": {
+          "fr": "Nous nous réservons le droit de modifier cette politique de confidentialité à tout moment. Les modifications seront publiées sur cette page avec la date de mise à jour.",
+          "en": "We reserve the right to modify this privacy policy at any time. Modifications will be published on this page with the update date."
+        }
+      },
+      {
+        "id": "politique-confidentialite-33",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Contact",
+          "en": "Contact"
+        }
+      },
+      {
+        "id": "politique-confidentialite-34",
+        "type": "paragraph",
+        "text": {
+          "fr": "Pour toute question concernant cette politique de confidentialité, contactez-nous :",
+          "en": "For any questions regarding this privacy policy, contact us:"
+        }
+      },
+      {
+        "id": "politique-confidentialite-35",
+        "type": "paragraph",
+        "text": {
+          "fr": "Email : altolille@gmail.com\nAdresse : 95 rue Pierre\n              Ledent, 62170 Montreuil-sur-Mer, France\nTéléphone : +33 782 086 690",
+          "en": "Email: altolille@gmail.com\nAddress: 95 rue Pierre\n              Ledent, 62170 Montreuil-sur-Mer, France\nPhone: +33 782 086 690"
+        }
+      },
+      {
+        "id": "politique-confidentialite-36",
+        "type": "paragraph",
+        "text": {
+          "fr": "Dernière mise à jour : 11 juillet 2026",
+          "en": "Last updated: July 11, 2026"
+        }
+      }
+    ]
+  },
+  "cgv": {
+    "slug": "cgv",
+    "route": "/cgv",
+    "label": "CGV",
+    "title": {
+      "fr": "Conditions Générales de Vente",
+      "en": "Terms and Conditions of Sale"
+    },
+    "blocks": [
+      {
+        "id": "cgv-1",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Article 1 - Objet",
+          "en": "Article 1 - Purpose"
+        }
+      },
+      {
+        "id": "cgv-2",
+        "type": "paragraph",
+        "text": {
+          "fr": "Les présentes conditions générales de vente s'appliquent, sans restriction ni réserve, à toutes les ventes de produits effectuées par Alto Lille aux acheteurs non professionnels (« consommateurs »), qui acceptent sans réserve ces conditions.",
+          "en": "These general terms and conditions of sale apply, without restriction or reservation, to all sales of products carried out by Alto Lille to non-professional buyers (\"consumers\"), who accept these conditions without reservation."
+        }
+      },
+      {
+        "id": "cgv-3",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Article 2 - Produits",
+          "en": "Article 2 - Products"
+        }
+      },
+      {
+        "id": "cgv-4",
+        "type": "paragraph",
+        "text": {
+          "fr": "Les produits proposés sont ceux qui figurent dans le catalogue publié dans le site Internet d'Alto Lille. Ces produits sont proposés dans la limite des stocks disponibles.",
+          "en": "The products offered are those shown in the catalog published on the Alto Lille website. These products are offered subject to availability."
+        }
+      },
+      {
+        "id": "cgv-5",
+        "type": "paragraph",
+        "text": {
+          "fr": "Chaque produit est accompagné d'un descriptif établi par Alto Lille. Les photographies illustrant les produits n'entrent pas dans le champ contractuel.",
+          "en": "Each product is accompanied by a description established by Alto Lille. Photographs illustrating the products are not part of the contractual scope."
+        }
+      },
+      {
+        "id": "cgv-6",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Article 3 - Prix",
+          "en": "Article 3 - Prices"
+        }
+      },
+      {
+        "id": "cgv-7",
+        "type": "paragraph",
+        "text": {
+          "fr": "Les prix sont indiqués en euros, toutes taxes comprises (TTC), hors frais de livraison. Alto Lille se réserve le droit de modifier ses tarifs à tout moment, étant toutefois entendu que le prix figurant au catalogue le jour de la commande sera le seul applicable à l'acheteur.",
+          "en": "Prices are indicated in euros, all taxes included (ATI), excluding delivery costs. Alto Lille reserves the right to modify its rates at any time, it being understood that the price shown in the catalog on the day of the order will be the only one applicable to the buyer."
+        }
+      },
+      {
+        "id": "cgv-8",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Article 4 - Commandes",
+          "en": "Article 4 - Orders"
+        }
+      },
+      {
+        "id": "cgv-9",
+        "type": "paragraph",
+        "text": {
+          "fr": "Les commandes sont effectuées sur le site Internet d'Alto Lille. L'acheteur sélectionne les produits qu'il désire commander, puis valide sa commande après avoir vérifié le contenu de son panier.",
+          "en": "Orders are placed on the Alto Lille website. The buyer selects the products they wish to order, then validates their order after checking the contents of their cart."
+        }
+      },
+      {
+        "id": "cgv-10",
+        "type": "paragraph",
+        "text": {
+          "fr": "La confirmation de commande entraîne acceptation des présentes conditions de vente, la reconnaissance d'en avoir parfaite connaissance et la renonciation à se prévaloir de ses propres conditions d'achat.",
+          "en": "Order confirmation entails acceptance of these terms of sale, acknowledgment of having perfect knowledge of them and waiver of relying on one's own purchase conditions."
+        }
+      },
+      {
+        "id": "cgv-11",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Article 5 - Validation de commande",
+          "en": "Article 5 - Order validation"
+        }
+      },
+      {
+        "id": "cgv-12",
+        "type": "paragraph",
+        "text": {
+          "fr": "Toute commande passée sur le site Internet d'Alto Lille constitue la formation d'un contrat entre l'acheteur et Alto Lille. Alto Lille se réserve le droit d'annuler ou de refuser toute commande d'un acheteur avec lequel il existerait un litige.",
+          "en": "Any order placed on the Alto Lille website constitutes the formation of a contract between the buyer and Alto Lille. Alto Lille reserves the right to cancel or refuse any order from a buyer with whom there would be a dispute."
+        }
+      },
+      {
+        "id": "cgv-13",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Article 6 - Paiement",
+          "en": "Article 6 - Payment"
+        }
+      },
+      {
+        "id": "cgv-14",
+        "type": "paragraph",
+        "text": {
+          "fr": "Le paiement s'effectue par carte bancaire via Stripe, notre prestataire de paiement sécurisé.",
+          "en": "Payment is made by credit card via Stripe, our secure payment provider."
+        }
+      },
+      {
+        "id": "cgv-15",
+        "type": "list",
+        "items": [
+          {
+            "fr": "Cartes acceptées : Visa, Mastercard, American Express",
+            "en": "Cards accepted: Visa, Mastercard, American Express"
+          },
+          {
+            "fr": "Paiement sécurisé SSL via Stripe",
+            "en": "SSL secure payment via Stripe"
+          },
+          {
+            "fr": "Aucune donnée bancaire stockée sur nos serveurs",
+            "en": "No banking data stored on our servers"
+          }
+        ]
+      },
+      {
+        "id": "cgv-16",
+        "type": "paragraph",
+        "text": {
+          "fr": "Le paiement est dû en totalité à la commande. Le débit s'effectue immédiatement lors de la validation de la commande.",
+          "en": "Payment is due in full upon order. Debiting takes place immediately upon order validation."
+        }
+      },
+      {
+        "id": "cgv-17",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Article 7 - Livraison",
+          "en": "Article 7 - Delivery"
+        }
+      },
+      {
+        "id": "cgv-18",
+        "type": "paragraph",
+        "text": {
+          "fr": "Les produits sont livrés via Mondial Relay au point relais choisi par l'acheteur lors de sa commande. L'acheteur est informé de l'expédition de sa commande par email et, le cas échéant, par SMS ; Mondial Relay le prévient ensuite dès que le colis est disponible en point relais. Les délais de livraison sont communiqués à titre indicatif lors de la validation de la commande.",
+          "en": "Products are delivered via Mondial Relay to the relay point chosen by the buyer when ordering. The buyer is informed of the shipment by email and, where applicable, by SMS; Mondial Relay then notifies them as soon as the parcel is available at the relay point. Delivery times are communicated for information only when validating the order."
+        }
+      },
+      {
+        "id": "cgv-19",
+        "type": "paragraph",
+        "text": {
+          "fr": "Alto Lille s'engage à expédier les produits commandés dans un délai maximum de 2 jours ouvrés et à livrer dans un délai maximum de 10 jours ouvrés à compter de la validation de la commande.",
+          "en": "Alto Lille undertakes to ship the ordered products within a maximum period of 2 working days and to deliver within a maximum period of 10 working days from order validation."
+        }
+      },
+      {
+        "id": "cgv-20",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Article 8 - Transfert de propriété et des risques",
+          "en": "Article 8 - Transfer of ownership and risks"
+        }
+      },
+      {
+        "id": "cgv-21",
+        "type": "paragraph",
+        "text": {
+          "fr": "Le transfert de propriété des produits au profit de l'acheteur ne sera réalisé qu'après complet paiement du prix. Le transfert des risques de perte et de détérioration s'effectue dès livraison et prise de possession physique des produits par l'acheteur.",
+          "en": "The transfer of ownership of the products to the buyer will only be carried out after complete payment of the price. The transfer of risks of loss and deterioration takes effect upon delivery and physical possession of the products by the buyer."
+        }
+      },
+      {
+        "id": "cgv-22",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Article 9 - Droit de rétractation",
+          "en": "Article 9 - Right of withdrawal"
+        }
+      },
+      {
+        "id": "cgv-23",
+        "type": "paragraph",
+        "text": {
+          "fr": "Conformément à l'article L121-21 du Code de la consommation, l'acheteur dispose d'un délai de quatorze jours ouvrables à compter de la réception de sa commande pour exercer son droit de rétractation et ainsi retourner le produit au vendeur pour échange ou remboursement sans pénalité, à l'exception des frais de retour.",
+          "en": "In accordance with article L121-21 of the Consumer Code, the buyer has a period of fourteen working days from receipt of their order to exercise their right of withdrawal and thus return the product to the seller for exchange or refund without penalty, except for return costs."
+        }
+      },
+      {
+        "id": "cgv-24",
+        "type": "paragraph",
+        "text": {
+          "fr": "Pour exercer ce droit, l'acheteur doit retourner le produit dans son emballage d'origine, en parfait état, accompagné de tous les accessoires livrés et de la facture d'achat.",
+          "en": "To exercise this right, the buyer must return the product in its original packaging, in perfect condition, accompanied by all delivered accessories and the purchase invoice."
+        }
+      },
+      {
+        "id": "cgv-25",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Article 11 - Responsabilité",
+          "en": "Article 11 - Liability"
+        }
+      },
+      {
+        "id": "cgv-26",
+        "type": "paragraph",
+        "text": {
+          "fr": "Alto Lille ne saurait être tenu responsable de l'inexécution du contrat conclu en cas de rupture de stock ou d'indisponibilité du produit, cas fortuit ou de force majeure.",
+          "en": "Alto Lille cannot be held responsible for non-performance of the concluded contract in case of stock shortage or product unavailability, fortuitous event or force majeure."
+        }
+      },
+      {
+        "id": "cgv-27",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Article 12 - Propriété intellectuelle",
+          "en": "Article 12 - Intellectual property"
+        }
+      },
+      {
+        "id": "cgv-28",
+        "type": "paragraph",
+        "text": {
+          "fr": "Tous les éléments du site d'Alto Lille sont et restent la propriété intellectuelle et exclusive d'Alto Lille. Personne n'est autorisé à reproduire, exploiter, rediffuser, ou utiliser à quelque titre que ce soit, même partiellement, des éléments du site qu'ils soient logiciels, visuels ou sonores.",
+          "en": "All elements of the Alto Lille site are and remain the exclusive intellectual property of Alto Lille. No one is authorized to reproduce, exploit, redistribute, or use in any capacity whatsoever, even partially, elements of the site whether they are software, visual or audio."
+        }
+      },
+      {
+        "id": "cgv-29",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Article 13 - Données personnelles",
+          "en": "Article 13 - Personal data"
+        }
+      },
+      {
+        "id": "cgv-30",
+        "type": "paragraph",
+        "text": {
+          "fr": "Alto Lille s'engage à préserver la confidentialité des informations fournies par l'acheteur. Toute information le concernant est soumise aux dispositions de la loi n° 78-17 du 6 janvier 1978. A ce titre, l'internaute dispose d'un droit d'accès, de modification et de suppression des informations le concernant.",
+          "en": "Alto Lille undertakes to preserve the confidentiality of information provided by the buyer. Any information concerning them is subject to the provisions of law no. 78-17 of January 6, 1978. As such, the user has a right of access, modification and deletion of information concerning them."
+        }
+      },
+      {
+        "id": "cgv-31",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Article 14 - Droit applicable",
+          "en": "Article 14 - Applicable law"
+        }
+      },
+      {
+        "id": "cgv-32",
+        "type": "paragraph",
+        "text": {
+          "fr": "Toutes les ventes réalisées par Alto Lille sont soumises au droit français. En cas de litige, les tribunaux français seront seuls compétents.",
+          "en": "All sales made by Alto Lille are subject to French law. In case of dispute, French courts will have sole jurisdiction."
+        }
+      },
+      {
+        "id": "cgv-33",
+        "type": "heading",
+        "level": 2,
+        "text": {
+          "fr": "Article 15 - Contact",
+          "en": "Article 15 - Contact"
+        }
+      },
+      {
+        "id": "cgv-34",
+        "type": "paragraph",
+        "text": {
+          "fr": "Pour toute information ou réclamation, l'acheteur peut s'adresser à :",
+          "en": "For any information or complaint, the buyer can contact:"
+        }
+      },
+      {
+        "id": "cgv-35",
+        "type": "paragraph",
+        "text": {
+          "fr": "Alto Lille\n95 rue Pierre Ledent\n62170 Montreuil-sur-Mer\nFrance\nEmail :\nTéléphone : +33 782 086\n              690",
+          "en": "Alto Lille\n95 rue Pierre Ledent\n62170 Montreuil-sur-Mer\nFrance\nEmail:\nPhone: +33 782 086\n              690"
+        }
+      },
+      {
+        "id": "cgv-36",
+        "type": "paragraph",
+        "text": {
+          "fr": "Dernière mise à jour : 11 juillet 2026",
+          "en": "Last updated: July 11, 2026"
+        }
+      }
+    ]
+  }
+}

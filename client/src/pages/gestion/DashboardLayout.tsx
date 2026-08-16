@@ -18,6 +18,7 @@ import {
   X,
   ImageIcon,
   LayoutDashboard,
+  FileStack,
 } from "lucide-react";
 
 interface DashboardLayoutProps {
@@ -58,6 +59,7 @@ export default function DashboardLayout({
     { name: "Commandes", href: "/gestion/commandes", icon: ShoppingCart },
     { name: "Médias", href: "/gestion/medias", icon: ImageIcon },
     { name: "Contenu du site", href: "/gestion/contenu", icon: FileText },
+    { name: "Pages du site", href: "/gestion/pages", icon: FileStack },
     { name: "Landing Page", href: "/gestion/landing", icon: LayoutDashboard },
     { name: "Paramètres", href: "/gestion/parametres", icon: Settings },
   ];
