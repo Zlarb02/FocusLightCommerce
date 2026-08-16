@@ -6,6 +6,7 @@ import { Layout } from "@/components/Layout";
 import { EnhancedHeroProductDisplay } from "@/components/EnhancedHeroProductDisplay";
 import { ProductVariation, ProductWithVariations } from "@shared/schema";
 import { AltoReviews } from "@/components/AltoReviews";
+import { findSilhouette } from "@/lib/silhouettes";
 import { Button } from "@/components/ui/button";
 import { AnimatedAddToCartButton } from "@/components/AnimatedAddToCartButton";
 import { ToastContainer } from "@/components/EnhancedToast";
@@ -23,6 +24,9 @@ import {
 } from "@/lib/utils";
 import { useCart } from "@/hooks/useCart";
 import { useLanguage } from "@/contexts/LanguageContext";
+
+/** Silhouette servie tant qu'aucune n'a été choisie en gestion pour ce produit. */
+const FALLBACK_SILHOUETTE = findSilhouette("focus")!;
 
 export default function ProductDetail() {
   const { id } = useParams<{ id: string }>();
@@ -47,12 +51,19 @@ export default function ProductDetail() {
   interface ProductContent {
     sections: ProductContentSection[];
     images?: Record<string, string>;
+    /** Silhouette du bandeau « Caractéristique », réglée dans la gestion. */
+    silhouette?: { cream?: string; brown?: string };
   }
 
   const { data: productContent } = useQuery<ProductContent>({
     queryKey: [`/api/products/${productId}/content`],
     enabled: productId > 0,
   });
+
+  const silhouette = {
+    cream: productContent?.silhouette?.cream || FALLBACK_SILHOUETTE.cream,
+    brown: productContent?.silhouette?.brown || FALLBACK_SILHOUETTE.brown,
+  };
 
   // Autres produits du catalogue (maquette : bloc « Autres produits »)
   const { data: allProducts = [] } = useQuery<ProductWithVariations[]>({
@@ -405,16 +416,19 @@ export default function ProductDetail() {
                   </Link>
                 </div>
 
-                {/* Silhouette lampe — crème sur fond brun (clair) / brune sur crème (sombre) */}
+                {/* Silhouette produit — crème sur fond brun (clair) / brune sur
+                    crème (sombre). Réglée par produit dans la gestion ; à défaut
+                    on garde celle de la Focus, seule silhouette du site avant
+                    que les autres n'arrivent. */}
                 <div className="flex justify-center md:justify-end">
                   <img
-                    src="/images/alto/silhouette-focus-cream.png"
+                    src={silhouette.cream}
                     alt=""
                     aria-hidden
                     className="block dark:hidden h-[280px] md:h-[420px] w-auto object-contain"
                   />
                   <img
-                    src="/images/alto/silhouette-focus-brown.png"
+                    src={silhouette.brown}
                     alt=""
                     aria-hidden
                     className="hidden dark:block h-[280px] md:h-[420px] w-auto object-contain"

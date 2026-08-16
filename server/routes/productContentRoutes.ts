@@ -25,9 +25,17 @@ const sectionSchema = z.object({
   customContent: z.string().optional(),
 });
 
+// Silhouette du bandeau « Caractéristique » : deux chemins d'images, l'un pour
+// fond brun (thème clair), l'autre pour fond crème (thème sombre).
+const silhouetteSchema = z.object({
+  cream: z.string(),
+  brown: z.string(),
+});
+
 const productContentSchema = z.object({
   sections: z.array(sectionSchema),
   images: z.record(z.string()).optional(),
+  silhouette: silhouetteSchema.optional(),
 });
 
 // Chemin vers le fichier de contenu produits
@@ -108,6 +116,43 @@ router.put("/:productId/content", requireAuth, async (req: Request, res: Respons
     handleError(res, error);
   }
 });
+
+// Route admin - choisir la silhouette d'un produit.
+// Route à part : la gestion peut régler la silhouette d'un produit qui n'a
+// aucune section configurée, sans avoir à réécrire tout son contenu (et donc
+// sans risquer d'effacer ses sections au passage).
+router.put(
+  "/:productId/content/silhouette",
+  requireAuth,
+  async (req: Request, res: Response) => {
+    try {
+      const { productId } = req.params;
+      const content = readProductContent();
+      const current = content[productId] ?? { sections: [], images: {} };
+
+      if (req.body === null || req.body?.silhouette === null) {
+        // Retour à la silhouette par défaut.
+        delete current.silhouette;
+      } else {
+        current.silhouette = silhouetteSchema.parse(req.body);
+      }
+
+      content[productId] = current;
+
+      if (!writeProductContent(content)) {
+        res.status(500).json({ error: "Erreur lors de l'écriture du fichier" });
+        return;
+      }
+
+      res.json({
+        message: "Silhouette mise à jour",
+        silhouette: current.silhouette ?? null,
+      });
+    } catch (error) {
+      handleError(res, error);
+    }
+  }
+);
 
 // Route admin - activer/désactiver une section
 router.put("/:productId/content/sections/:sectionId/toggle", requireAuth, async (req: Request, res: Response) => {

@@ -6,9 +6,18 @@
         "type": "features",
         "enabled": true,
         "items": [
-          { "icon": "leaf", "titleKey": "focus.features.eco" },
-          { "icon": "tree", "titleKey": "focus.features.wood" },
-          { "icon": "lightbulb", "titleKey": "focus.features.led" }
+          {
+            "icon": "leaf",
+            "titleKey": "focus.features.eco"
+          },
+          {
+            "icon": "tree",
+            "titleKey": "focus.features.wood"
+          },
+          {
+            "icon": "lightbulb",
+            "titleKey": "focus.features.led"
+          }
         ]
       },
       {
@@ -16,9 +25,21 @@
         "type": "details",
         "enabled": true,
         "cards": [
-          { "icon": "leaf", "titleKey": "focus.sustainableMaterials", "textKey": "focus.sustainableMaterials.text" },
-          { "icon": "lightbulb", "titleKey": "focus.lighting.title", "textKey": "focus.lighting.text" },
-          { "icon": "tool", "titleKey": "focus.artisanalCrafting", "textKey": "focus.artisanalCrafting.text" }
+          {
+            "icon": "leaf",
+            "titleKey": "focus.sustainableMaterials",
+            "textKey": "focus.sustainableMaterials.text"
+          },
+          {
+            "icon": "lightbulb",
+            "titleKey": "focus.lighting.title",
+            "textKey": "focus.lighting.text"
+          },
+          {
+            "icon": "tool",
+            "titleKey": "focus.artisanalCrafting",
+            "textKey": "focus.artisanalCrafting.text"
+          }
         ]
       },
       {
@@ -26,9 +47,18 @@
         "type": "specifications",
         "enabled": true,
         "items": [
-          { "labelKey": "product.dimensions", "valueKey": "focus.dimensions.text" },
-          { "labelKey": "product.materials", "valueKey": "focus.materials.text" },
-          { "labelKey": "focus.lighting.label", "valueKey": "focus.lighting.details" }
+          {
+            "labelKey": "product.dimensions",
+            "valueKey": "focus.dimensions.text"
+          },
+          {
+            "labelKey": "product.materials",
+            "valueKey": "focus.materials.text"
+          },
+          {
+            "labelKey": "focus.lighting.label",
+            "valueKey": "focus.lighting.details"
+          }
         ]
       },
       {
@@ -41,6 +71,58 @@
     "images": {
       "lifestyle1": "shopFocus.lifestyle1",
       "lifestyle2": "shopFocus.lifestyle2"
+    },
+    "silhouette": {
+      "cream": "/images/alto/silhouette-focus-cream.png",
+      "brown": "/images/alto/silhouette-focus-brown.png"
+    }
+  },
+  "3": {
+    "sections": [],
+    "images": {},
+    "silhouette": {
+      "cream": "/images/alto/silhouettes/auferte-cream.png",
+      "brown": "/images/alto/silhouettes/auferte-brown.png"
+    }
+  },
+  "4": {
+    "sections": [],
+    "images": {},
+    "silhouette": {
+      "cream": "/images/alto/silhouettes/applique-focus-cream.png",
+      "brown": "/images/alto/silhouettes/applique-focus-brown.png"
+    }
+  },
+  "5": {
+    "sections": [],
+    "images": {},
+    "silhouette": {
+      "cream": "/images/alto/silhouettes/lampadaire-focus-cream.png",
+      "brown": "/images/alto/silhouettes/lampadaire-focus-brown.png"
+    }
+  },
+  "6": {
+    "sections": [],
+    "images": {},
+    "silhouette": {
+      "cream": "/images/alto/silhouettes/caligo-cream.png",
+      "brown": "/images/alto/silhouettes/caligo-brown.png"
+    }
+  },
+  "8": {
+    "sections": [],
+    "images": {},
+    "silhouette": {
+      "cream": "/images/alto/silhouettes/deposit-cream.png",
+      "brown": "/images/alto/silhouettes/deposit-brown.png"
+    }
+  },
+  "9": {
+    "sections": [],
+    "images": {},
+    "silhouette": {
+      "cream": "/images/alto/silhouettes/aurora-cream.png",
+      "brown": "/images/alto/silhouettes/aurora-brown.png"
     }
   }
 }
