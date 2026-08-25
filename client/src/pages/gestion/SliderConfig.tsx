@@ -694,14 +694,14 @@ export default function SliderConfig() {
 
       {/* Dialog de sélection de média */}
       <Dialog open={isMediaSelectorOpen} onOpenChange={setIsMediaSelectorOpen}>
-        <DialogContent className="max-w-3xl max-h-[80vh]">
+        <DialogContent className="max-w-3xl">
           <DialogHeader>
             <DialogTitle>Sélectionner une image</DialogTitle>
             <DialogDescription>
               Choisissez une image depuis votre bibliothèque de médias
             </DialogDescription>
           </DialogHeader>
-          <div className="grid grid-cols-3 gap-4 overflow-y-auto max-h-[50vh] p-1">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 p-1">
             {imageMedias.length > 0 ? (
               imageMedias.map((media) => (
                 <button

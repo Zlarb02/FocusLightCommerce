@@ -1091,8 +1091,8 @@ export default function Stocks() {
           }
         }}
       >
-        <DialogContent className="sm:max-w-[600px] max-h-[90vh] flex flex-col">
-          <DialogHeader className="flex-shrink-0">
+        <DialogContent className="sm:max-w-[600px]">
+          <DialogHeader>
             <DialogTitle>
               {editingVariation
                 ? "Modifier une variation"
@@ -1105,11 +1105,8 @@ export default function Stocks() {
             )}
           </DialogHeader>
           <Form {...variationForm}>
-            <form
-              onSubmit={variationForm.handleSubmit(onSubmitVariation)}
-              className="flex flex-col h-full"
-            >
-              <div className="flex-1 overflow-y-auto space-y-4 pr-2">
+            <form onSubmit={variationForm.handleSubmit(onSubmitVariation)}>
+              <div className="space-y-4">
                 <FormField
                   control={variationForm.control}
                   name="variationType"
@@ -1159,7 +1156,7 @@ export default function Stocks() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Images de la variation</FormLabel>
-                      <div className="max-h-60 overflow-y-auto space-y-3 pr-2">
+                      <div className="space-y-3">
                         {field.value.map((img, idx) => (
                           <div
                             key={idx}
@@ -1333,7 +1330,7 @@ export default function Stocks() {
                 />
               </div>
 
-              <DialogFooter className="flex-shrink-0 mt-4 pt-4 border-t">
+              <DialogFooter className="mt-4 pt-4 border-t">
                 <Button
                   type="button"
                   variant="outline"
@@ -1415,7 +1412,7 @@ export default function Stocks() {
 
       {/* Modale d'images */}
       <Dialog open={isImagesModalOpen} onOpenChange={setIsImagesModalOpen}>
-        <DialogContent className="sm:max-w-[800px] max-h-[80vh] overflow-y-auto">
+        <DialogContent className="sm:max-w-[800px]">
           <DialogHeader>
             <DialogTitle>
               Images de la variation{" "}
