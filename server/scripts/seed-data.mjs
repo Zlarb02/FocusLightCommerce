@@ -102,4 +102,32 @@ migrate("sections-produits-manquantes", () => {
   return `${added} produit(s) complété(s)`;
 });
 
+// Les textes des pages éditoriales (Fabrication, Studio, Sur-mesure, landing…)
+// sont arrivés après la mise en service : le volume garde un translations.json
+// d'avant, où ces clés n'existent pas. Les pages s'affichaient quand même —
+// le client embarque les traductions en repli — mais la gestion ne pouvait pas
+// les montrer, donc Anatole ne pouvait pas les modifier.
+migrate("textes-manquants-2026-08", () => {
+  const livePath = path.join(DATA, "translations.json");
+  const defaults = readJson(path.join(DEFAULTS, "translations.json"));
+  const live = readJson(livePath);
+  if (!defaults || !live) return "aucun fichier à compléter";
+
+  let added = 0;
+  for (const lang of ["fr", "en"]) {
+    if (!defaults[lang]) continue;
+    live[lang] = live[lang] ?? {};
+    for (const [key, value] of Object.entries(defaults[lang])) {
+      // On n'écrase jamais un texte saisi en gestion : on ne comble que les trous.
+      if (!(key in live[lang])) {
+        live[lang][key] = value;
+        added += 1;
+      }
+    }
+  }
+
+  if (added > 0) writeJson(livePath, live);
+  return `${added} clé(s) ajoutée(s)`;
+});
+
 console.log("✅ Migrations terminées");
