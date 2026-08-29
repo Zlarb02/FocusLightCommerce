@@ -34,54 +34,6 @@ export function isProductOutOfStock(product: {
   return product.variations.every((v) => isVariationOutOfStock(v));
 }
 
-export interface LampColor {
-  name: string;
-  displayName: string;
-  bgClass: string;
-  borderClass: string;
-  textClass: string;
-  imagePath: string;
-}
-
-export const lampColors: Record<string, LampColor> = {
-  Blanc: {
-    name: "Blanc",
-    displayName: "Blanc",
-    bgClass: "bg-gray-100",
-    borderClass: "border-gray-200",
-    textClass: "text-gray-700",
-    imagePath: "/images/alto/swatch-blanc.png",
-  },
-  Bleu: {
-    name: "Bleu",
-    displayName: "Bleu",
-    bgClass: "bg-blue-500",
-    borderClass: "border-blue-600",
-    textClass: "text-blue-500",
-    imagePath: "/images/alto/swatch-bleu.jpg",
-  },
-  Rouge: {
-    name: "Rouge",
-    displayName: "Rouge",
-    bgClass: "bg-red-500",
-    borderClass: "border-red-600",
-    textClass: "text-red-500",
-    imagePath: "/images/alto/swatch-rouge.jpg",
-  },
-  Orange: {
-    name: "Orange",
-    displayName: "Orange",
-    bgClass: "bg-orange-500",
-    borderClass: "border-orange-600",
-    textClass: "text-orange-500",
-    imagePath: "/images/alto/swatch-orange.jpg",
-  },
-};
-
-export function getColorInfo(colorName: string): LampColor {
-  return lampColors[colorName] || lampColors["Blanc"];
-}
-
 /**
  * Traduit le nom d'une couleur selon la langue actuelle
  * @param colorName - Nom de la couleur en français (Bleu, Rouge, Orange, Blanc)

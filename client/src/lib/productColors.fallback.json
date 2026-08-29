@@ -1,0 +1,30 @@
+{
+  "Blanc": {
+    "swatchUrl": "/images/alto/swatch-blanc.png",
+    "hex": "#F3F4F6"
+  },
+  "Bleu": {
+    "swatchUrl": "/images/alto/swatch-bleu.jpg",
+    "hex": "#3B82F6"
+  },
+  "Rouge": {
+    "swatchUrl": "/images/alto/swatch-rouge.jpg",
+    "hex": "#EF4444"
+  },
+  "Orange": {
+    "swatchUrl": "/images/alto/swatch-orange.jpg",
+    "hex": "#F97316"
+  },
+  "Bleu navy": {
+    "swatchUrl": "",
+    "hex": "#1E3A5F"
+  },
+  "Jaune": {
+    "swatchUrl": "",
+    "hex": "#F2C14E"
+  },
+  "Beige blanc orange": {
+    "swatchUrl": "",
+    "hex": "#E4D5BE"
+  }
+}

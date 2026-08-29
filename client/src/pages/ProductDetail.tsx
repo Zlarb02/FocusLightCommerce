@@ -16,17 +16,20 @@ import {
 import { useEnhancedToast } from "@/hooks/useEnhancedToast";
 import {
   formatPrice,
-  getColorInfo,
   getSliderImages,
   isProductOutOfStock,
   isVariationOutOfStock,
 } from "@/lib/utils";
+import { swatchStyle } from "@/lib/productColors";
+import { useColorInfo } from "@/hooks/use-product-colors";
 import { useCart } from "@/hooks/useCart";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function ProductDetail() {
   const { id } = useParams<{ id: string }>();
   const productId = parseInt(id || "0", 10);
+  // Les pastilles viennent du registre de couleurs éditable en gestion.
+  const getColorInfo = useColorInfo();
 
   // Récupérer le produit par son ID
   const { data: product, isLoading, error } = useQuery<ProductWithVariations>({
@@ -327,11 +330,7 @@ export default function ProductDetail() {
                               ? "scale-105 ring-2 ring-alto-orange ring-offset-2 ring-offset-background"
                               : "hover:scale-105"
                           }`}
-                          style={{
-                            backgroundImage: `url(${colorInfo.imagePath})`,
-                            backgroundSize: "cover",
-                            backgroundPosition: "center",
-                          }}
+                          style={swatchStyle(colorInfo)}
                           aria-label={`Option ${variation.variationValue}`}
                           aria-pressed={isSelected}
                           title={variation.variationValue}

@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { ProductVariation } from "@shared/schema";
-import { cn, getColorInfo } from "@/lib/utils";
+import { cn } from "@/lib/utils";
+import { swatchStyle } from "@/lib/productColors";
+import { useColorInfo } from "@/hooks/use-product-colors";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 interface EnhancedLampColorSelectorProps {
@@ -19,6 +21,7 @@ export function EnhancedLampColorSelector({
   className,
 }: EnhancedLampColorSelectorProps) {
   const isMobile = useIsMobile();
+  const getColorInfo = useColorInfo();
 
   const colorVariations = variations.filter(
     (variation) => variation.variationType === "color"
@@ -46,11 +49,11 @@ export function EnhancedLampColorSelector({
                     "relative w-12 h-12 md:w-14 md:h-14 rounded-xl transition-all duration-300",
                     "border-2 shadow-md hover:shadow-lg",
                     "hover:scale-110 active:scale-95",
-                    colorInfo.bgClass,
                     isSelected
                       ? "border-gray-800 dark:border-white scale-110 shadow-xl ring-2 ring-blue-500/50"
                       : "border-white/50 dark:border-gray-600/50 hover:border-gray-300 dark:hover:border-gray-500"
                   )}
+                  style={swatchStyle(colorInfo)}
                   onClick={() => onVariationSelect(variation)}
                   title={`${productName} en ${variation.variationValue}`}
                   aria-label={`Sélectionner la couleur ${variation.variationValue}`}

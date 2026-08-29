@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useCart } from "@/hooks/useCart";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { formatPrice, cn, getColorInfo } from "@/lib/utils";
+import { formatPrice, cn } from "@/lib/utils";
+import { useColorInfo } from "@/hooks/use-product-colors";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -33,6 +34,7 @@ export const EditableOrderSummary: React.FC<EditableOrderSummaryProps> = ({
   showTitle = true,
 }) => {
   const { t } = useLanguage();
+  const getColorInfo = useColorInfo();
   const {
     items,
     updateQuantity,
@@ -316,9 +318,15 @@ export const EditableOrderSummary: React.FC<EditableOrderSummaryProps> = ({
                                       ? "bg-[#e6b7b7] dark:bg-[#6b3a3a]"
                                       : variation.variationValue === "Orange"
                                       ? "bg-[#e6ceb7] dark:bg-[#6b4a3a]"
-                                      : colorInfo?.bgClass ||
-                                        "bg-gray-50 dark:bg-gray-800"
+                                      : ""
                                   }`}
+                                  style={
+                                    ["Bleu", "Rouge", "Orange"].includes(
+                                      variation.variationValue
+                                    )
+                                      ? undefined
+                                      : { backgroundColor: colorInfo.hex }
+                                  }
                                   title={variation.variationValue}
                                   aria-label={`${t("cart.colorVariation")}: ${
                                     variation.variationValue

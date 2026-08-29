@@ -23,7 +23,7 @@ echo "✅ PostgreSQL est prêt!"
 
 # Initialiser les fichiers JSON manquants depuis les défauts
 echo "📁 Vérification des fichiers de configuration JSON..."
-for file in translations.json illustrations.json sliderConfig.json productContent.json sitePages.json; do
+for file in translations.json illustrations.json sliderConfig.json productContent.json sitePages.json productColors.json; do
     if [ ! -f "/app/data/$file" ]; then
         if [ -f "/app/data-defaults/$file" ]; then
             echo "  → Copie de $file depuis les défauts"

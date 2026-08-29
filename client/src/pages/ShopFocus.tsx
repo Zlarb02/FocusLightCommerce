@@ -19,7 +19,8 @@ import {
 } from "@/components/ProductAddedIndicator";
 import { useEnhancedToast } from "@/hooks/useEnhancedToast";
 import { Leaf, Lightbulb, ShoppingBag, Trees } from "lucide-react";
-import { formatPrice, getColorInfo, getSliderImages } from "@/lib/utils";
+import { formatPrice, getSliderImages } from "@/lib/utils";
+import { useColorInfo } from "@/hooks/use-product-colors";
 import { useCart } from "@/hooks/useCart";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -64,7 +65,20 @@ const sortVariationsForColorSection = (
   });
 };
 
+/**
+ * Teinte de fond des pastilles du catalogue. Les trois couleurs d'origine ont
+ * leur nuance douce dessinée à la main (avec sa variante sombre) ; toute couleur
+ * ajoutée depuis la gestion retombe sur son aplat du registre.
+ */
+function tintClassFor(colorName: string): string {
+  if (colorName === "Bleu") return "bg-[#b7c7e6] dark:bg-[#3a4a6b]";
+  if (colorName === "Rouge") return "bg-[#e6b7b7] dark:bg-[#6b3a3a]";
+  if (colorName === "Orange") return "bg-[#e6ceb7] dark:bg-[#6b4a3a]";
+  return "";
+}
+
 export default function ShopFocus() {
+  const getColorInfo = useColorInfo();
   // Pour la modal d'agrandissement d'image (avec navigation)
   const [modalImage, setModalImage] = useState<{
     images: string[];
@@ -182,6 +196,10 @@ export default function ShopFocus() {
                         variation.images && variation.images.length > 0
                           ? variation.images[0]
                           : undefined;
+                      // Palette plus douce et premium pour les trois couleurs
+                      // historiques ; les couleurs ajoutées en gestion prennent
+                      // leur propre teinte.
+                      const tintClass = tintClassFor(variation.variationValue);
 
                       return (
                         <button
@@ -191,17 +209,8 @@ export default function ShopFocus() {
                             isSelected
                               ? "scale-105 shadow-lg border-2 border-gray-300 dark:border-gray-500"
                               : "hover:scale-105 shadow-md hover:shadow-lg"
-                          } ${
-                            // Palette plus douce et premium pour les couleurs
-                            variation.variationValue === "Bleu"
-                              ? "bg-[#b7c7e6] dark:bg-[#3a4a6b]"
-                              : variation.variationValue === "Rouge"
-                              ? "bg-[#e6b7b7] dark:bg-[#6b3a3a]"
-                              : variation.variationValue === "Orange"
-                              ? "bg-[#e6ceb7] dark:bg-[#6b4a3a]"
-                              : colorInfo?.bgClass ||
-                                "bg-gray-50 dark:bg-gray-800"
-                          }`}
+                          } ${tintClass}`}
+                          style={tintClass ? undefined : { backgroundColor: colorInfo.hex }}
                           aria-label={`Couleur ${variation.variationValue}`}
                           title={variation.variationValue}
                         >
@@ -370,16 +379,8 @@ export default function ShopFocus() {
                         ? variation.images[0]
                         : undefined;
 
-                    // Palette premium harmonisée (bleu, rouge, orange, blanc)
-                    let bgColor =
-                      colorInfo?.bgClass || "bg-gray-50 dark:bg-gray-800";
-                    if (variation.variationValue === "Bleu") {
-                      bgColor = "bg-[#b7c7e6] dark:bg-[#3a4a6b]";
-                    } else if (variation.variationValue === "Rouge") {
-                      bgColor = "bg-[#e6b7b7] dark:bg-[#6b3a3a]";
-                    } else if (variation.variationValue === "Orange") {
-                      bgColor = "bg-[#e6ceb7] dark:bg-[#6b4a3a]";
-                    }
+                    // Palette premium harmonisée pour les couleurs historiques
+                    const tintClass = tintClassFor(variation.variationValue);
 
                     return (
                       <button
@@ -389,7 +390,8 @@ export default function ShopFocus() {
                           isSelected
                             ? "scale-105 shadow-lg border-2 border-gray-300 dark:border-gray-500"
                             : "hover:scale-105 shadow-md hover:shadow-lg"
-                        } ${bgColor}`}
+                        } ${tintClass}`}
+                        style={tintClass ? undefined : { backgroundColor: colorInfo.hex }}
                         aria-label={`Couleur ${variation.variationValue}`}
                         title={variation.variationValue}
                       >

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { formatPrice, getColorInfo, translateColor } from "@/lib/utils";
+import { formatPrice, translateColor } from "@/lib/utils";
 import { ProductVariation, ProductWithVariations } from "@shared/schema";
 import { useState } from "react";
 import { useCart } from "@/hooks/useCart";
@@ -50,7 +50,6 @@ export function ProductCard({ product, variation }: ProductCardProps) {
     }, 1500);
   };
 
-  const colorInfo = getColorInfo(variation.variationValue);
   const displayPrice = variation.price || product.price;
 
   return (

@@ -1,4 +1,6 @@
-import { cn, getColorInfo } from "@/lib/utils";
+import { cn } from "@/lib/utils";
+import { swatchStyle } from "@/lib/productColors";
+import { useColorInfo } from "@/hooks/use-product-colors";
 import { ProductVariation, ProductWithVariations } from "@shared/schema";
 import { useState, useRef, useEffect } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -22,6 +24,7 @@ export function LampColorSelector({
 }: LampColorSelectorProps) {
   const [selectedValue, setSelectedValue] = useState(initialVariationValue);
   const isMobile = useIsMobile();
+  const getColorInfo = useColorInfo();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
@@ -97,11 +100,10 @@ export function LampColorSelector({
                 className={cn(
                   "w-12 h-12 rounded-full border-2 border-white shadow-lg transition-all duration-300 flex-shrink-0",
                   "active:scale-95 touch-manipulation",
-                  colorInfo.bgClass,
                   isSelected &&
                     "transform scale-125 shadow-xl ring-2 ring-gray-400 ring-offset-2"
                 )}
-                style={{ scrollSnapAlign: "center" }}
+                style={{ ...swatchStyle(colorInfo), scrollSnapAlign: "center" }}
                 onClick={() => handleVariationSelect(variation)}
                 title={`${productName} en ${variation.variationValue}`}
                 aria-label={`Sélectionner la couleur ${variation.variationValue}`}
@@ -124,10 +126,10 @@ export function LampColorSelector({
                 key={variation.id}
                 className={cn(
                   "w-8 h-8 rounded-full border-2 border-white shadow-md transition-transform hover:scale-110",
-                  colorInfo.bgClass,
                   isSelected &&
                     "transform scale-115 shadow-lg ring-2 ring-gray-300 ring-offset-1"
                 )}
+                style={swatchStyle(colorInfo)}
                 onClick={() => handleVariationSelect(variation)}
                 title={`${productName} en ${variation.variationValue}`}
                 aria-label={`Sélectionner la couleur ${variation.variationValue}`}

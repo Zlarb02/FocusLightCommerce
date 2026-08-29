@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { ProductVariation, ProductWithVariations } from "@shared/schema";
 import { ColorTransition } from "./ColorTransition";
 import { ProductAddedIndicator } from "./ProductAddedIndicator";
-import { getColorInfo, getSliderImages } from "@/lib/utils";
+import { getSliderImages } from "@/lib/utils";
 
 interface EnhancedHeroProductDisplayProps {
   product: ProductWithVariations;

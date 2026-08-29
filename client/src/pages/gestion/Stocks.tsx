@@ -1,6 +1,6 @@
 import DashboardLayout from "./DashboardLayout";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { queryClient, apiRequest } from "@/lib/queryClient";
 import {
   ProductVariation,
@@ -10,6 +10,9 @@ import {
   VariationImage,
 } from "@shared/schema";
 import { formatPrice } from "@/lib/utils";
+import { Media } from "@shared/schema";
+import { swatchStyle, resolveProductColor } from "@/lib/productColors";
+import { useProductColors } from "@/hooks/use-product-colors";
 import { useToast } from "@/hooks/use-toast";
 
 import {
@@ -102,6 +105,13 @@ const variationFormSchema = z.object({
     .min(1, "Au moins une image est requise"),
   price: z.coerce.number().nullable().optional(),
   stock: z.coerce.number().int().min(0).default(0),
+  // Pastille de la couleur : enregistrée à part, dans le registre des couleurs.
+  swatchUrl: z.string().default(""),
+  hex: z
+    .string()
+    .regex(/^#[0-9a-fA-F]{6}$/, "Couleur hexadécimale attendue (ex : #F97316)")
+    .or(z.literal(""))
+    .default(""),
 });
 
 type VariationFormValues = z.infer<typeof variationFormSchema>;
@@ -148,10 +158,13 @@ export default function Stocks() {
     product: ProductWithVariations
   ) => {
     setProductForVariation(product);
+    const color = productColors[variation.variationValue];
     variationForm.reset({
       productId: product.id,
       variationType: variation.variationType,
       variationValue: variation.variationValue,
+      swatchUrl: color?.swatchUrl ?? "",
+      hex: color?.hex ?? "",
       images:
         variation.images && variation.images.length > 0
           ? variation.images
@@ -225,6 +238,83 @@ export default function Stocks() {
       images: [{ url: "", order: 0 }],
       price: null,
       stock: 0,
+      swatchUrl: "",
+      hex: "",
+    },
+  });
+
+  /* Registre des couleurs : la pastille montrée sur la fiche produit. Elle est
+     rattachée au NOM de la couleur, pas à la variation — deux produits
+     « Bleu » partagent donc la même pastille. */
+  const productColors = useProductColors();
+  const { data: medias = [] } = useQuery<Media[]>({
+    queryKey: ["/api/medias"],
+  });
+
+  /* La pastille suit le NOM tapé : passer de « Bleu » à « Vert olive » doit
+     montrer la pastille du vert, pas garder celle du bleu. */
+  const watchedColorName = variationForm.watch("variationValue");
+  const watchedVariationType = variationForm.watch("variationType");
+  const lastSyncedColor = useRef<string | null>(null);
+  useEffect(() => {
+    if (!isVariationDialogOpen) {
+      lastSyncedColor.current = null;
+      return;
+    }
+    if (lastSyncedColor.current === watchedColorName) return;
+    lastSyncedColor.current = watchedColorName;
+    const color = productColors[watchedColorName];
+    variationForm.setValue("swatchUrl", color?.swatchUrl ?? "");
+    variationForm.setValue("hex", color?.hex ?? "");
+  }, [watchedColorName, isVariationDialogOpen, productColors, variationForm]);
+
+  const { mutate: saveProductColor } = useMutation({
+    mutationFn: async ({
+      name,
+      swatchUrl,
+      hex,
+    }: {
+      name: string;
+      swatchUrl: string;
+      hex: string;
+    }) =>
+      apiRequest("PUT", `/api/product-colors/${encodeURIComponent(name)}`, {
+        swatchUrl,
+        hex,
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/product-colors"] });
+    },
+    onError: (error) => {
+      toast({
+        title: "Erreur",
+        description: "La pastille de la couleur n'a pas pu être enregistrée.",
+        variant: "destructive",
+      });
+      console.error(error);
+    },
+  });
+
+  const { mutate: uploadSwatch, isPending: isUploadingSwatch } = useMutation({
+    mutationFn: async (file: File) => {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("type", "image");
+      return apiRequest<Media>("POST", "/api/medias/upload", formData, {
+        formData: true,
+      });
+    },
+    onSuccess: (media) => {
+      variationForm.setValue("swatchUrl", media.path, { shouldDirty: true });
+      queryClient.invalidateQueries({ queryKey: ["/api/medias"] });
+    },
+    onError: (error) => {
+      toast({
+        title: "Erreur",
+        description: "L'image de la pastille n'a pas pu être téléversée.",
+        variant: "destructive",
+      });
+      console.error(error);
     },
   });
 
@@ -400,6 +490,8 @@ export default function Stocks() {
       images: [],
       price: null,
       stock: 0,
+      swatchUrl: "",
+      hex: "",
     });
   };
 
@@ -482,10 +574,27 @@ export default function Stocks() {
 
   // Soumettre le formulaire de variation (création ou édition)
   const onSubmitVariation = (data: VariationFormValues) => {
+    const { swatchUrl, hex, ...variation } = data;
+
+    /* La pastille n'appartient pas à la variation mais à la couleur : elle part
+       dans le registre, pour que toutes les fiches produit l'utilisent. */
+    if (variation.variationType === "color" && variation.variationValue) {
+      const known = productColors[variation.variationValue];
+      const changed =
+        (known?.swatchUrl ?? "") !== swatchUrl || (known?.hex ?? "") !== hex;
+      if (changed) {
+        saveProductColor({
+          name: variation.variationValue,
+          swatchUrl,
+          hex,
+        });
+      }
+    }
+
     if (editingVariation) {
-      updateVariation({ id: editingVariation.id, data });
+      updateVariation({ id: editingVariation.id, data: variation });
     } else {
-      createVariation(data);
+      createVariation(variation);
     }
   };
 
@@ -686,9 +795,26 @@ export default function Stocks() {
                               </TableCell>
                               <TableCell>{product.name}</TableCell>
                               <TableCell>
-                                <Badge variant="outline">
-                                  {variation.variationValue}
-                                </Badge>
+                                <div className="flex items-center gap-2">
+                                  {/* La pastille telle que le client la verra :
+                                      une couleur sans pastille se repère d'un
+                                      coup d'œil. */}
+                                  {variation.variationType === "color" && (
+                                    <span
+                                      className="h-5 w-5 flex-shrink-0 rounded-full border"
+                                      style={swatchStyle(
+                                        resolveProductColor(
+                                          productColors,
+                                          variation.variationValue
+                                        )
+                                      )}
+                                      aria-hidden
+                                    />
+                                  )}
+                                  <Badge variant="outline">
+                                    {variation.variationValue}
+                                  </Badge>
+                                </div>
                               </TableCell>
                               <TableCell>
                                 {formatPrice(variation.price || product.price)}
@@ -1149,6 +1275,134 @@ export default function Stocks() {
                     </FormItem>
                   )}
                 />
+
+                {/* Pastille : l'image ronde que le client voit sous « Couleurs
+                    disponibles » sur la fiche produit. Elle est rangée par nom
+                    de couleur, donc saisie une fois pour tout le catalogue. */}
+                {watchedVariationType === "color" && (
+                  <div className="space-y-3 rounded-lg border p-3">
+                    <div className="flex items-center gap-3">
+                      <div
+                        className="h-14 w-14 flex-shrink-0 rounded border"
+                        style={swatchStyle(
+                          resolveProductColor(
+                            {
+                              [watchedColorName || "—"]: {
+                                swatchUrl: variationForm.watch("swatchUrl"),
+                                hex: variationForm.watch("hex"),
+                              },
+                            },
+                            watchedColorName || "—"
+                          )
+                        )}
+                        aria-hidden
+                      />
+                      <div>
+                        <p className="text-sm font-medium">
+                          Pastille de la couleur
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          Affichée sur la fiche produit. Sans image, c'est
+                          l'aplat de couleur ci-dessous qui s'affiche.
+                        </p>
+                      </div>
+                    </div>
+
+                    <FormField
+                      control={variationForm.control}
+                      name="swatchUrl"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-xs text-muted-foreground">
+                            Image (parmi les médias)
+                          </FormLabel>
+                          <FormControl>
+                            <select
+                              className="w-full rounded border bg-background p-2 text-sm"
+                              value={field.value}
+                              onChange={(e) => field.onChange(e.target.value)}
+                            >
+                              <option value="">— aucune —</option>
+                              {/* Une pastille déjà en place peut venir du dossier
+                                  public : on la garde dans la liste. */}
+                              {field.value &&
+                                !medias.some((m) => m.path === field.value) && (
+                                  <option value={field.value}>
+                                    {field.value}
+                                  </option>
+                                )}
+                              {medias
+                                .filter((m) => m.type === "image")
+                                .map((m) => (
+                                  <option key={m.id} value={m.path}>
+                                    {m.filename}
+                                  </option>
+                                ))}
+                            </select>
+                          </FormControl>
+                          <div className="flex items-center gap-2 pt-1">
+                            <Input
+                              type="file"
+                              accept="image/*"
+                              className="text-xs"
+                              disabled={isUploadingSwatch}
+                              onChange={(e) => {
+                                const file = e.target.files?.[0];
+                                if (file) uploadSwatch(file);
+                                e.target.value = "";
+                              }}
+                            />
+                            {isUploadingSwatch && (
+                              <span className="text-xs text-muted-foreground">
+                                Envoi…
+                              </span>
+                            )}
+                          </div>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={variationForm.control}
+                      name="hex"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-xs text-muted-foreground">
+                            Aplat de couleur
+                          </FormLabel>
+                          <div className="flex items-center gap-2">
+                            <FormControl>
+                              <Input
+                                type="color"
+                                className="h-9 w-14 p-1"
+                                value={field.value || "#E5E7EB"}
+                                onChange={(e) => field.onChange(e.target.value)}
+                              />
+                            </FormControl>
+                            <Input
+                              className="flex-1"
+                              placeholder="#F97316"
+                              value={field.value}
+                              onChange={(e) => field.onChange(e.target.value)}
+                            />
+                            {field.value && (
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => field.onChange("")}
+                              >
+                                Effacer
+                              </Button>
+                            )}
+                          </div>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                )}
 
                 <FormField
                   control={variationForm.control}
